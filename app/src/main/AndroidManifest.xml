@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jht.doctor">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
+    <application
+        android:name=".application.CustomerApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/logo_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- 防止有的构建工具（如Maven、Ant等）不支持manifest merging，特意在主project的manifest中声明一次 -->
+        <meta-data
+            android:name="com.bumptech.glide.integration.okhttp3.OkHttpGlideModule"
+            android:value="GlideModule" />
+
+        <!-- 7.0 文件临时权限路径 -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".ui.activity.welcome.MainActivity_JHT"
+            android:theme="@style/TranslucentAppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.jht.doctor.ui.activity.welcome.SplashActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashAppTheme" />
+        <activity android:name=".ui.activity.loan.DemoActivity" />
+        <activity
+            android:name=".ui.activity.mine.LoginActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".ui.activity.mine.setting.SettingActivity" />
+        <activity android:name=".ui.activity.mine.setting.ResetPasswordActivity" />
+        <activity android:name=".ui.activity.loan.HomeLoanActivity" />
+        <activity android:name=".ui.activity.mine.PersonalActivity" />
+        <activity android:name=".ui.activity.loan.BasicInfoActivity" />
+        <activity android:name=".ui.activity.mine.webview.WebViewActivity" />
+        <activity android:name=".ui.activity.repayment.MessageActivity" />
+        <activity
+            android:name=".ui.activity.loan.JobInfoActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.activity.loan.HouseInfoActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".ui.activity.loan.LoanMoneyActivity" />
+        <activity android:name=".ui.activity.loan.LoanApplyStateActivity" />
+        <activity android:name=".ui.activity.repayment.HomeRepaymentActivity" />
+        <activity android:name=".ui.activity.mine.MyLoanActivity" />
+        <activity android:name=".ui.activity.mine.LoanDetailActivity" />
+        <activity android:name=".ui.activity.mine.FeedbackActivity" />
+        <activity android:name=".ui.activity.mine.MyInfoActivity" />
+        <activity android:name=".ui.activity.mine.myinfo.ShowMyInfoActivity" />
+        <activity
+            android:name=".ui.activity.repayment.MyAccountActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".ui.activity.repayment.TradeDetailActivity" />
+        <activity android:name=".ui.activity.repayment.OfflineRepaymentActivity" />
+        <activity android:name=".ui.activity.repayment.RechageActivity" />
+        <activity android:name=".ui.activity.repayment.RepaymentVerifyCodeActivity" />
+        <activity android:name=".ui.activity.repayment.RechargeSuccessActivity" />
+        <activity android:name=".ui.activity.repayment.WithdrawCashActivity" />
+        <activity android:name=".ui.activity.repayment.WithdrawSuccessActivity" />
+        <activity android:name=".ui.activity.mine.bankcard.MyBankCardActivity" />
+        <activity android:name=".ui.activity.mine.bankcard.BankCardSettingActivity" />
+        <activity android:name=".ui.activity.mine.bankcard.AddMainCardActivity" />
+        <activity android:name=".ui.activity.mine.bankcard.AddBankCardVerifyActivity" />
+        <activity android:name=".ui.activity.mine.bankcard.AddCoborrowerActivity" />
+        <activity android:name=".ui.activity.mine.bankcard.AddCoborrowerBankCardActivity" />
+        <activity android:name=".ui.activity.mine.myinfo.MyImageInfoActivity" />
+        <activity android:name=".ui.activity.mine.MyLoanListActivity" />
+        <activity android:name=".ui.activity.mine.bankcard.CoborrowerHistoryActivity" />
+        <activity android:name=".ui.activity.mine.bankcard.SupportBankActivity" />
+        <activity android:name=".ui.activity.welcome.MainActivity"></activity>
+    </application>
+
+</manifest>

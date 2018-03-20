@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="black_70">#B3000000</color>
+    <color name="color_main">#C2A370</color>
+    <color name="color_main_55">#8CC2A370</color>
+    <color name="statueBar_color">#ffcccccc</color>
+    <color name="color_main_gray">#9d845a</color>
+    <color name="color_main_blue">#3F425A</color>
+    <color name="color_bg_main">#fafafb</color>
+    <color name="color_line">#F7F7F7</color>
+    <color name="color_line_2">#F2F2F2</color>
+    <color name="color_button_disabled">#CCCCCC</color>
+    <color name="color_popup_btn">#4F9EF3</color>
+    <color name="color_phone">#828C9B</color>
+    <color name="splash_tv_color">#B7B7B7</color>
+    <color name="toolbar_title">#666666</color>
+    <color name="tab_selected">#4F9EF3</color>
+    <color name="tab_unselected">#EDAF4A</color>
+    <color name="card_start">#4F557F</color>
+    <color name="card_end">#3F425A</color>
+    <color name="color_trade_failure">#E96464</color>
+    <color name="color_loading_bg">#80000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="color_bg_toast">#b3000000</color>
+
+    <color name="indicator_selected_color">#C29E6A</color>
+    <color name="indicator_bg_color">#EEEEEE</color>
+
+
+    <color name="welcome_tv_color">#7F7F7F</color>
+
+    <color name="color_333">#333333</color>
+    <color name="color_666">#666666</color>
+    <color name="color_999">#999999</color>
+    <color name="color_f0f0f0">#F0F0F0</color>
+    <color name="color_e8e8e8">#e8e8e8</color>
+    <color name="color_a9a9a9">#a9a9a9</color>
+    <color name="color_yellow">#EDAF4A</color>
+    <color name="color_444">#444444</color>
+    <color name="color_ccc">#cccccc</color>
+    <color name="color_5b6187">#5B6187</color>
+    
+
+    <color name="color_f5f5f5">#F5F5F5</color>
+    <color name="color_c1944c">#C1944C</color>
+    <color name="color_f7f7f7">#f7f7f7</color>
+
+
+    <color name="color_cacaca">#CACACA</color>
+    <color name="color_e7d5b8">#E7D5B8</color>
+    <color name="color_4f9ef3">#4F9EF3</color>
+    <color name="color_c2a370">#C2A370</color>
+
+
+
+    <color name="red">#ff0000</color>
+
+</resources>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_activity_loan_money"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg_main"
+    android:orientation="vertical">
+
+    <include layout="@layout/base_toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="186dp"
+        android:background="@color/color_main_blue">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="您可申请的最高额度为"
+                android:textColor="@color/color_main"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/id_tv_max_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2000万元"
+                android:textColor="@color/color_main"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/id_ll_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="73dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/id_ed_loan_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="center_vertical|right"
+                android:hint="请输入借款金额（万元）"
+                android:inputType="number"
+                android:maxLength="5"
+                android:textColor="@color/color_main"
+                android:textColorHint="@color/color_main_55"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/id_tv_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="万元"
+                android:textColor="@color/color_main"
+                android:textSize="18sp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="258dp"
+            android:layout_height="1dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="111dp"
+            android:background="@color/color_main_55" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="139dp"
+            android:background="@drawable/line_dash"
+            android:layerType="software" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="155dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@drawable/attention" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:text="实际额度根据征信资料综合审核"
+                android:textColor="@color/color_main_55"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <com.jht.doctor.widget.EditableLayout
+        android:id="@+id/id_ed_loan_usage"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:edit_leftText="借款用途"
+        app:edit_mode="select"
+        app:edit_textMainSize="14sp"></com.jht.doctor.widget.EditableLayout>
+
+    <com.jht.doctor.widget.EditableLayout
+        android:id="@+id/id_ed_repayment_method"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        app:edit_leftText="还款方式"
+        app:edit_mode="select"
+        app:edit_textMainSize="14sp"></com.jht.doctor.widget.EditableLayout>
+
+    <TextView
+        android:id="@+id/id_btn_apply"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/selector_bg_button_login"
+        android:clickable="true"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="申请"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+</LinearLayout>

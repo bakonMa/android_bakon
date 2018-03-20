@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg_main"
+    android:orientation="vertical">
+
+    <include layout="@layout/base_toolbar" />
+
+    <com.jht.doctor.widget.RelativeWithText
+        android:id="@+id/id_basic_info"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        app:isShowTab="false"
+        app:titleT="基本信息" />
+
+    <com.jht.doctor.widget.RelativeWithText
+        android:id="@+id/id_job_info"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:isShowTab="false"
+        app:titleT="工作信息" />
+
+    <com.jht.doctor.widget.RelativeWithText
+        android:id="@+id/id_house_info"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:isShowLineT="false"
+        app:isShowTab="false"
+        app:titleT="房产信息" />
+</LinearLayout>

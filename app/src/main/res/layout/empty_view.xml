@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/id_toolbar"
+    android:background="@color/color_bg_main">
+
+    <ImageView
+        android:id="@+id/id_img"
+        android:layout_width="191dp"
+        android:layout_height="118dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="140dp"
+        android:src="@drawable/msg_1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/id_img"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="这里空空如也～"
+        android:textColor="@color/color_999"
+        android:textSize="14sp" />
+</RelativeLayout>
+

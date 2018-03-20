@@ -56,7 +56,3 @@ freeline.py
 freeline/
 freeline_project_description.json
 
-.gitignore
-.idea/android_doctor.iml
-.idea/misc.xml
-.idea/modules.xml

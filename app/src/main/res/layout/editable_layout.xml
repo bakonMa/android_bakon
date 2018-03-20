@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/id_tv_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:text=""
+        android:textColor="@color/color_333"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/id_yuan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:text=""
+        android:textColor="@color/color_333"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/id_edittext"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/id_yuan"
+        android:layout_toRightOf="@+id/id_tv_left"
+        android:layout_marginLeft="10dp"
+        android:background="@null"
+        android:gravity="right|center_vertical"
+        android:hint="请输入"
+        android:singleLine="true"
+        android:textColor="@color/color_333"
+        android:textSize="14sp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/id_showtext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:gravity="right"
+        android:text=""
+        android:textColor="@color/color_333"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:id="@+id/id_ll_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/id_tv_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:hint="请选择"
+            android:textColor="@color/black"
+            android:textColorHint="@color/color_999"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/id_iv_arrow"
+            android:layout_width="4.7dp"
+            android:layout_height="8.4dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/icon_xuanze"
+            android:visibility="visible" />
+    </LinearLayout>
+
+</RelativeLayout>

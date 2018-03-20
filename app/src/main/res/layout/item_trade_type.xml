@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+
+    <CheckBox
+        android:id="@+id/id_cb"
+        android:layout_width="105dp"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/selector_trade_type_bg"
+        android:button="@null"
+        android:checked="false"
+        android:gravity="center"
+        android:text="全部"
+        android:textColor="@drawable/selector_trade_detail_textcolor"
+        android:textSize="14sp" />
+    <View
+        android:id="@+id/type_lines"
+        style="@style/line_gray_hor"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

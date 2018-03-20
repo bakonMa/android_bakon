@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg_main"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/id_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <View style="@style/line_gray_hor" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp">
+
+        <com.jht.doctor.widget.BottomBarItem
+            android:id="@+id/tab_home"
+            style="@style/home_botton_text"
+            app:iconDrawable="@drawable/tab_home_btn"
+            app:itemText="@string/home_workroom"
+            app:itemTextSize="12sp"
+            app:textColorNormal="@color/color_333"
+            app:textColorSelected="@color/color_4f9ef3" />
+
+        <com.jht.doctor.widget.BottomBarItem
+            android:id="@+id/tab_patient"
+            style="@style/home_botton_text"
+            app:iconDrawable="@drawable/tab_home_btn"
+            app:itemText="@string/home_patient"
+            app:itemTextSize="12sp"
+            app:textColorNormal="@color/color_333"
+            app:textColorSelected="@color/color_4f9ef3" />
+
+        <com.jht.doctor.widget.BottomBarItem
+            android:id="@+id/tab_find"
+            style="@style/home_botton_text"
+            app:iconDrawable="@drawable/tab_home_btn"
+            app:itemText="@string/home_find"
+            app:itemTextSize="12sp"
+            app:textColorNormal="@color/color_333"
+            app:textColorSelected="@color/color_4f9ef3" />
+
+        <com.jht.doctor.widget.BottomBarItem
+            android:id="@+id/tab_me"
+            style="@style/home_botton_text"
+            app:iconDrawable="@drawable/tab_home_btn"
+            app:itemText="@string/home_me"
+            app:itemTextSize="12sp"
+            app:textColorNormal="@color/color_333"
+            app:textColorSelected="@color/color_4f9ef3" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

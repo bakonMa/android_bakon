@@ -1,0 +1,156 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "com.jht.doctor"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("$keystore_path")
+            storePassword "$keystore_password"//key pwd
+            keyAlias "$keyalias_name"//key alias
+            keyPassword "$key_password"//key alias pwd
+        }
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL", devAddress()
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+        }
+        release {
+            buildConfigField "String", "BASE_URL", onLineAddress()
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+greendao {
+    //数据库schema版本号,默认1，数据库升级必须修改值
+    schemaVersion 1
+    daoPackage 'com.jht.doctor.greendao.gen'
+    targetGenDir 'src/main/java'
+}
+
+def devAddress() {
+    //"\"http://116.62.244.195:8777/\""  //开发环境(1期测试环境)
+    //"\"http://10.255.233.220:8777/\""  //开发环境(2期存管内网环境)
+    "\"http://house-uat.sd-bao.cn:10000/app/\""  //开发环境(2期存管阿里云环境)
+}
+
+def onLineAddress() {
+//    "\"http://118.31.211.237/app/\""  //线上环境
+    "\"http://front.sd-bao.com/app/\""  //正式线上环境
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //Android
+    implementation "com.android.support:appcompat-v7:$support_version"
+    implementation "com.android.support.constraint:constraint-layout:$constraintlayout_version"
+    implementation "com.android.support:design:$support_version"
+    implementation "com.android.support:recyclerview-v7:$support_version"
+
+    //Dagger2
+    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
+
+    //Butterknife
+    implementation "com.jakewharton:butterknife:$butterknife_version"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
+
+    //Eventbus
+    implementation "org.greenrobot:eventbus:$eventbus_version"
+    //annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    //OkHttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    //Gson
+    implementation "com.google.code.gson:gson:$gson_version"
+
+    //RxJava
+    implementation "io.reactivex:rxjava:$rxjava_version"
+
+    //RxAndroid
+    implementation "io.reactivex:rxandroid:$rxandroid_version"
+    //RxLifecycle
+    implementation "com.trello:rxlifecycle:$rxlifecycle_version"
+    // If you want to bind to Android-specific lifecycles
+    implementation "com.trello:rxlifecycle-android:$rxlifecycle_version"
+    // If you want pre-written Activities and Fragments you can subclass as providers
+    implementation "com.trello:rxlifecycle-components:$rxlifecycle_version"
+    // If you want to use Navi for providers
+    implementation "com.trello:rxlifecycle-navi:$rxlifecycle_version"
+
+//    //RxBinding
+//    implementation "com.jakewharton.rxbinding:rxbinding:$rxbinding_version"
+//    //'support-v4' library bindings:
+//    implementation "com.jakewharton.rxbinding:rxbinding-support-v4:$rxbinding_version"
+//    //'appcompat-v7' library bindings:
+//    implementation "com.jakewharton.rxbinding:rxbinding-appcompat-v7:$rxbinding_version"
+//    //'design' library bindings:
+//    implementation "com.jakewharton.rxbinding:rxbinding-design:$rxbinding_version"
+//    //'recyclerview-v7' library bindings:
+//    implementation "com.jakewharton.rxbinding:rxbinding-recyclerview-v7:$rxbinding_version"
+//    //    'leanback-v17' library bindings:
+//    //    compile 'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
+
+    //RxPermissions
+    implementation "com.tbruyelle.rxpermissions:rxpermissions:$rxpermissions_version@aar"
+
+    //RxSharePreferences
+    implementation "com.f2prateek.rx.preferences:rx-preferences:$rxsharepreferences_version"
+
+    //Glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+
+    //内存泄漏监控
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
+    testCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+
+    //方法数超过65k
+    implementation "com.android.support:multidex:$multidex_version"
+
+    //circleimageView
+    implementation "de.hdodenhof:circleimageview:$circleImage_version"
+
+    //refreshView
+    implementation "com.zt.maven.widget:refreshview:$refreshview_version"
+    //BaseRecyclerViewAdapterHelper
+    implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$brvah_version"
+    //greendao
+    implementation "org.greenrobot:greendao:$greendao_version"
+    implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_bg_main">
+    <include layout="@layout/base_toolbar"/>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/id_swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.jht.doctor.widget.recycle_view.RecycleWithEmpty
+                android:id="@+id/id_recycle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="20dp"/>
+            <RelativeLayout
+                android:id="@+id/id_empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                android:layout_below="@+id/id_toolbar"
+                android:background="@color/color_bg_main">
+                <ImageView
+                    android:id="@+id/id_img"
+                    android:layout_width="191dp"
+                    android:layout_height="118dp"
+                    android:src="@drawable/msg_1"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="140dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/id_img"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="31dp"
+                    android:text="这里空空如也～"
+                    android:textColor="@color/color_999"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

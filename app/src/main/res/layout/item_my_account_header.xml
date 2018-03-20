@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:elevation="10dp"
+            android:background="@drawable/bg_account_card"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="48dp"
+                android:text="当前应还（元）"
+                android:textColor="@color/color_main"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/id_tv_remain_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/color_main"
+                android:textSize="36sp"
+                android:visibility="gone"
+                tools:text="150,000.00" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="当前应还总计（元）"
+                android:visibility="gone"
+                android:textColor="@color/color_main"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/id_tv_total_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/color_main"
+                android:textSize="36sp"
+                tools:text="600,000.00" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

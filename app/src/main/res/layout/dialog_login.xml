@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginLeft="25dp"
+    android:layout_marginRight="25dp"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:singleLine="true"
+        android:text="顾问邀请码"
+        android:textColor="@color/color_333"
+        android:textSize="16sp"/>
+
+    <EditText
+        android:id="@+id/et_invitation_code"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/shape_stroke_bg_1"
+        android:gravity="center"
+        android:hint="请输入顾问邀请码"
+        android:inputType="number"
+        android:maxLength="11"
+        android:textColor="@color/color_333"
+        android:textColorHint="@color/color_cacaca"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:gravity="center"
+        android:text="若没有专属顾问，我们将为您分配一位，竭诚为您服务"
+        android:textColor="@color/color_999"
+        android:textSize="16sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_no"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_stroke_bg_1"
+            android:text="无邀请码"
+            android:textColor="@color/color_c2a370"
+            android:textSize="16sp"/>
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_bg_button_login"
+            android:text="确认提交"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+
+</LinearLayout>
