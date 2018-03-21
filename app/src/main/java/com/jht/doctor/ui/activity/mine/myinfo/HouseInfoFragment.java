@@ -84,7 +84,7 @@ public class HouseInfoFragment extends BaseAppCompatFragment {
             //具体地址
             tvHouseAddress.setText(TextUtils.isEmpty(bean.detailAddress) ? "" : bean.detailAddress);
 
-            if ("0".equals(bean.hasLoan)) {//有贷款
+            if ("0".equals(bean.hasLoan)) {
                 tvIshasBorrow.setText("是");
                 rltBorrowFrom.setVisibility(View.VISIBLE);
                 rltBorrowMoney.setVisibility(View.VISIBLE);

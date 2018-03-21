@@ -96,7 +96,7 @@ public class HouseInfoActivity extends BaseAppCompatActivity implements HouseInf
     @BindView(R.id.id_ll_house)
     LinearLayout idLlHouse;
 
-    private List<String> loanInstitution = new ArrayList<>(); //贷款机构
+    private List<String> loanInstitution = new ArrayList<>(); //机构
 
     private List<ConfigBean.ConfigItem> houseTypeList; //房屋类型
 
@@ -267,7 +267,7 @@ public class HouseInfoActivity extends BaseAppCompatActivity implements HouseInf
                 ScreenUtils.lightOff(this);
                 break;
             case R.id.id_ed_loan_institution:
-                //贷款机构
+
                 KeyBoardUtils.hideKeyBoard(view, this);
                 mPopupWheel = new OnePopupWheel(this, loanInstitution, new OnePopupWheel.Listener() {
                     @Override
@@ -375,7 +375,6 @@ public class HouseInfoActivity extends BaseAppCompatActivity implements HouseInf
             idEdHouseAddress.setText(GreenDaoHelp.getLongCityName(mProvinceCode, mCityCode, mDistrictCode));
             idEdDetailAddress.setText(userHouseDTOBean.getDetailAddress());
             if ("0".equals(userHouseDTOBean.getHasLoan())) {
-                //有贷款
                 idLlLoan.setVisibility(View.VISIBLE);
                 idRbYes.setChecked(true);
                 idRbNo.setChecked(false);
@@ -383,7 +382,6 @@ public class HouseInfoActivity extends BaseAppCompatActivity implements HouseInf
                 idEdLoanMoney.setText((int) userHouseDTOBean.getLoanAmt() + "");
                 idEdLoanMoney.showUnit("元");
             } else {
-                //没有贷款
                 idLlLoan.setVisibility(View.GONE);
                 idRbYes.setChecked(false);
                 idRbNo.setChecked(true);

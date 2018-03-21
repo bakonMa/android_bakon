@@ -102,7 +102,7 @@ public interface HttpAPI {
     @POST("customerApp/loanApply/insertUserHouseByAPP")
     Observable<HttpResponse<HouseInfoResponse>> commitHouseInfo(@Body Params params);
 
-    //获取是否有未完成订单，是否有在还款中贷款，是否过了初审
+    //获取是否有未完成订单
     @GET("customerApp/loanApply/applyJudge")
     Observable<HttpResponse<HomeLoanBean>> applyStatus();
 
@@ -110,7 +110,7 @@ public interface HttpAPI {
     @GET("customerApp/userCenter/userBaseInfo")
     Observable<HttpResponse<PersonalBean>> getPersonalInfo();
 
-    //获取客户申请贷款三步骤资料
+    //获取客户申请三步骤资料
     @GET("customerApp/userCenter/userInfo")
     Observable<HttpResponse<ApplyInfoBean>> getApplyInfo();
 
