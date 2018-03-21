@@ -1,4 +1,4 @@
-package com.jht.doctor.ui.activity.welcome;
+package com.jht.doctor.view.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,10 +7,10 @@ import android.view.View;
 
 import com.jht.doctor.R;
 import com.jht.doctor.ui.base.BaseAppCompatActivity;
-import com.jht.doctor.ui.fragment.HomeFragment;
-import com.jht.doctor.ui.fragment.MineFragment;
-import com.jht.doctor.ui.fragment.OrderFragment;
-import com.jht.doctor.ui.fragment.WorkRoomFragment;
+import com.jht.doctor.view.fragment.HomeFragment;
+import com.jht.doctor.view.fragment.MineFragment;
+import com.jht.doctor.view.fragment.OrderFragment;
+import com.jht.doctor.view.fragment.WorkRoomFragment;
 import com.jht.doctor.widget.BottomBarItem;
 
 import java.util.HashMap;

@@ -37,7 +37,7 @@ import com.jht.doctor.ui.activity.mine.MyInfoActivity;
 import com.jht.doctor.ui.activity.mine.bankcard.AddBankCardVerifyActivity;
 import com.jht.doctor.ui.activity.repayment.RechageActivity;
 import com.jht.doctor.ui.activity.repayment.TradeDetailActivity;
-import com.jht.doctor.ui.fragment.HomeFragment;
+import com.jht.doctor.view.fragment.HomeFragment;
 
 import dagger.Component;
 

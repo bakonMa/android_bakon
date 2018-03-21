@@ -16,11 +16,11 @@ import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.ui.activity.mine.LoginActivity;
 import com.jht.doctor.ui.base.BaseAppCompatActivity;
-import com.jht.doctor.ui.fragment.HomeFragment;
-import com.jht.doctor.ui.fragment.MineFragment;
-import com.jht.doctor.ui.fragment.OrderFragment;
-import com.jht.doctor.ui.fragment.WorkRoomFragment;
 import com.jht.doctor.utils.StringUtils;
+import com.jht.doctor.view.fragment.HomeFragment;
+import com.jht.doctor.view.fragment.MineFragment;
+import com.jht.doctor.view.fragment.OrderFragment;
+import com.jht.doctor.view.fragment.WorkRoomFragment;
 import com.jht.doctor.widget.FragmentTabHost;
 
 import org.greenrobot.eventbus.Subscribe;

@@ -1,4 +1,4 @@
-package com.jht.doctor.ui.fragment;
+package com.jht.doctor.view.fragment;
 
 import android.app.Activity;
 import android.content.Intent;

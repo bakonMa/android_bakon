@@ -67,6 +67,9 @@
         <attr name="pivPasswordLength" format="integer"/>
     </declare-styleable>
 
+
+
+    <!--JHT-->
     <declare-styleable name="BottomBarItem">
         <!--默认状态下的图标-->
         <attr name="iconDrawable" format="reference"/>
@@ -90,6 +93,15 @@
         <attr name="msgTextSize" format="dimension"/>
         <!--设置未读数组阈值 大于阈值的数字将显示为 n+ n为设置的阈值-->
         <attr name="unreadThreshold" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="ScheduleView_jht">
+        <attr name="step1" format="integer">
+            <enum name="one" value="1"/>
+            <enum name="two" value="2"/>
+            <enum name="three" value="3"/>
+            <enum name="four" value="4"/>
+        </attr>
     </declare-styleable>
 
 </resources>

@@ -8,7 +8,7 @@ import com.jht.doctor.application.CustomerApplication;
 public class LogUtil {
 
     //根据是否debug模式显示log
-    private static final String TAG = CustomerApplication.getInstance().getPackageName();
+    private static final String TAG = "logcat";
 
     public static void d(String msg) {
         if (BuildConfig.LOG_DEBUG) {
