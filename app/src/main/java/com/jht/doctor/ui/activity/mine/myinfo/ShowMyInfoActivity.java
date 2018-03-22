@@ -2,6 +2,7 @@ package com.jht.doctor.ui.activity.mine.myinfo;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -72,7 +73,7 @@ public class ShowMyInfoActivity extends BaseAppCompatActivity {
 
     //title
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle(getResources().getString(titles[infoType]))
                 .setLeft(false)
                 .setStatuBar(R.color.white)

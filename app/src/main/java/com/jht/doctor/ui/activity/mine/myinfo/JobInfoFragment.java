@@ -36,12 +36,12 @@ public class JobInfoFragment extends BaseAppCompatFragment {
     private MyInfoBean.UserJobDTOBean bean;
 
     @Override
-    public View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View setViewId(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_job_info, null);
     }
 
     @Override
-    public void initData(Bundle savedInstanceState) {
+    public void initView(Bundle savedInstanceState) {
         bean = (MyInfoBean.UserJobDTOBean) getArguments().get(PersonalActivity.KEY_INFO);
         if (bean != null) {
             tvCompanyName.setText(TextUtils.isEmpty(bean.companyName) ? "" : bean.companyName);

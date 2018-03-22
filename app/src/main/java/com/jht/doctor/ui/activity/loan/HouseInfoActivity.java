@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -19,7 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.data.eventbus.EventBusUtil;
@@ -165,7 +166,7 @@ public class HouseInfoActivity extends BaseAppCompatActivity implements HouseInf
 
 
     private void initToolBar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("房产信息")
                 .setStatuBar(R.color.white)
                 .setLeft(false)
@@ -182,7 +183,7 @@ public class HouseInfoActivity extends BaseAppCompatActivity implements HouseInf
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }
@@ -321,13 +322,13 @@ public class HouseInfoActivity extends BaseAppCompatActivity implements HouseInf
         switch (errorCode) {
             case HouseInfoPresenter.COMMIT_ERROR:
                 //预审失败，房产信息已经提交
-                CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+                DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
                 EventBusUtil.sendEvent(new Event(EventConfig.REFRESH_APPLY_INFO_BASIC));//刷新基本资料
                 EventBusUtil.sendEvent(new Event(EventConfig.REFRESH_APPLY_INFO_JOB));//刷新工作信息
                 mPresenter.requestInfo();//自我刷新
                 break;
             case HouseInfoPresenter.REQUEST_ERROR:
-                CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+                DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
                 break;
         }
 

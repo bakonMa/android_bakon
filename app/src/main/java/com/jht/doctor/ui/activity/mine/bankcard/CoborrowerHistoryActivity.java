@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +17,7 @@ import android.widget.CompoundButton;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.data.eventbus.EventBusUtil;
@@ -142,7 +143,7 @@ public class CoborrowerHistoryActivity extends BaseAppCompatActivity implements 
     }
 
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("历史共借人")
                 .setLeft(false)
                 .setRightText("添加共借人", true, R.color.color_4f9ef3)
@@ -169,7 +170,7 @@ public class CoborrowerHistoryActivity extends BaseAppCompatActivity implements 
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }
@@ -178,7 +179,7 @@ public class CoborrowerHistoryActivity extends BaseAppCompatActivity implements 
     public void onViewClicked() {
         //确认使用历史共借人
         if (pos == -1) {
-            CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请选择你要使用的历史共借人");
+            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请选择你要使用的历史共借人");
         } else {
             JudgeIfTiedBean.DataBean bean = mData.get(pos);
             mPresenter.reusingBank(bean.getId(), bean.getIdCardNo(), bean.getOrderNo(),
@@ -203,7 +204,7 @@ public class CoborrowerHistoryActivity extends BaseAppCompatActivity implements 
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
     }
 
     @Override
@@ -213,7 +214,7 @@ public class CoborrowerHistoryActivity extends BaseAppCompatActivity implements 
                 case CoborrowerHistoryPresenter.REUSING_BANK:
                     if ("02".equals(isBank)) {
                         //复用历史共借人信息不需要绑卡
-                        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("添加成功");
+                        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("添加成功");
                         EventBusUtil.sendEvent(new Event(EventConfig.REFRESH_BANKLIST));
                         finish();
                     } else if (("03").equals(isBank)) {
@@ -245,7 +246,7 @@ public class CoborrowerHistoryActivity extends BaseAppCompatActivity implements 
                     break;
                 case CoborrowerHistoryPresenter.UNBIND:
                     //解绑历史主借人银行卡成功
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("解绑成功");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("解绑成功");
                     jumpToAddCard();
                     break;
                 case CoborrowerHistoryPresenter.ENSURE_CARD:

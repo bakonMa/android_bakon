@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.ui.activity.welcome.SplashActivity;
 import com.jht.doctor.ui.activity.welcome.TranslucentActivity;
@@ -48,7 +48,7 @@ public class SplashGuideView extends LinearLayout {
             idBtnEnter.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    CustomerApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.FIRST_ENTER, false);
+                    DocApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.FIRST_ENTER, false);
                     context.startActivity(new Intent(context, TranslucentActivity.class));
                     ((SplashActivity)context).finish();
                 }

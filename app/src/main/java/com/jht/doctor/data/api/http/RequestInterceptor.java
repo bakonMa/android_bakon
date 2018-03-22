@@ -1,8 +1,8 @@
 package com.jht.doctor.data.api.http;
 
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.HttpConfig;
 import com.jht.doctor.config.SPConfig;
-import com.jht.doctor.application.CustomerApplication;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -26,7 +26,7 @@ public class RequestInterceptor implements Interceptor {
             request = chain.request()
                     .newBuilder()
                     .header(HttpConfig.HTTP_HEADER_CONTENTTYPE_KEY, HttpConfig.HTTP_HEADER_CONTENTTYPE_VALUE)
-                    .header(HttpConfig.HTTP_HEADER_TOKEN_KEY, CustomerApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))
+                    .header(HttpConfig.HTTP_HEADER_TOKEN_KEY, DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))
                     .build();
         }
         return chain.proceed(request);

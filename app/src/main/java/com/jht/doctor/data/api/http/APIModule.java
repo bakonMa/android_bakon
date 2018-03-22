@@ -1,7 +1,7 @@
 package com.jht.doctor.data.api.http;
 
 import com.jht.doctor.BuildConfig;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.HttpConfig;
 import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.api.local.sharepreferences.SharePreferencesWrapper;
@@ -29,9 +29,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public final class APIModule {
 
-    private final CustomerApplication mApplication;
+    private final DocApplication mApplication;
 
-    public APIModule(CustomerApplication application) {
+    public APIModule(DocApplication application) {
         mApplication = application;
     }
 

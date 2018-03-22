@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 
 
 public class NetUtil {
@@ -13,7 +13,7 @@ public class NetUtil {
 	 * 判断当前网络是否可用
 	 */
 	public static boolean isNetWorkAviliable() {
-		ConnectivityManager connectivityManager = (ConnectivityManager) CustomerApplication.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connectivityManager = (ConnectivityManager) DocApplication.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (connectivityManager != null) {
 			NetworkInfo info = connectivityManager.getActiveNetworkInfo();
 			if (info != null) {

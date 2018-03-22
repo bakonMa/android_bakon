@@ -1,9 +1,9 @@
 package com.jht.doctor.ui.presenter;
 
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.widget.dialog.LoadingDialog;
-import com.jht.doctor.application.CustomerApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.ui.bean.ApplyInfoBean;
 import com.jht.doctor.ui.bean.HouseInfoResponse;
@@ -61,8 +61,8 @@ public class HouseInfoPresenter implements HouseInfoContact.Presenter {
         params.put("loanAmt", loanAmt);
         params.put("tradingAmt", tradingAmt);
         params.put("monthRentalAmount", monthRentalAmount);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().commitHouseInfo(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().commitHouseInfo(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null)
@@ -84,8 +84,8 @@ public class HouseInfoPresenter implements HouseInfoContact.Presenter {
 
     @Override
     public void requestInfo() {
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getApplyInfo())
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getApplyInfo())
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) mDialog.show();

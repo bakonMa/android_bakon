@@ -1,9 +1,9 @@
 package com.jht.doctor.ui.presenter;
 
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.widget.dialog.LoadingDialog;
-import com.jht.doctor.application.CustomerApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.ui.bean.ApplyInfoBean;
 import com.jht.doctor.ui.contact.JobInfoContact;
@@ -48,8 +48,8 @@ public class JobInfoPresenter implements JobInfoContact.Presenter {
         params.put("position",position);
         params.put("monthlyIncome",monthlyIncome);
         //params.put("userId",1);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().commitJobInfo(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().commitJobInfo(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(()->{if(mDialog!=null) mDialog.show();})
                 .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
@@ -69,8 +69,8 @@ public class JobInfoPresenter implements JobInfoContact.Presenter {
 
     @Override
     public void requestInfo() {
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getApplyInfo())
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getApplyInfo())
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(()->{
                     if(mDialog!=null) mDialog.show();

@@ -9,7 +9,7 @@ import android.os.Message;
 
 import com.jht.doctor.BuildConfig;
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.eventbus.Event;
@@ -78,13 +78,13 @@ public class TranslucentActivity extends BaseAppCompatActivity implements Transl
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }
 
     private void checkFirstEnter() {
-        if (CustomerApplication.getAppComponent().dataRepo().appSP().getBoolean(SPConfig.FIRST_ENTER, true)) {
+        if (DocApplication.getAppComponent().dataRepo().appSP().getBoolean(SPConfig.FIRST_ENTER, true)) {
             Intent intent = new Intent(this, SplashActivity.class);
             startActivity(intent);
             finish();
@@ -123,10 +123,10 @@ public class TranslucentActivity extends BaseAppCompatActivity implements Transl
                     .subscribe(aBoolean -> {
                         if (aBoolean) {
                             String apkDirPath;
-                            if (Environment.MEDIA_MOUNTED.equals(CustomerApplication.getAppComponent().dataRepo().storage().externalRootDirState())) {
-                                apkDirPath = CustomerApplication.getAppComponent().dataRepo().storage().externalPublicDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + getPackageName() + File.separator + "install";
+                            if (Environment.MEDIA_MOUNTED.equals(DocApplication.getAppComponent().dataRepo().storage().externalRootDirState())) {
+                                apkDirPath = DocApplication.getAppComponent().dataRepo().storage().externalPublicDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + getPackageName() + File.separator + "install";
                             } else {
-                                apkDirPath = CustomerApplication.getAppComponent().dataRepo().storage().internalCustomDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + getPackageName() + File.separator + "install";
+                                apkDirPath = DocApplication.getAppComponent().dataRepo().storage().internalCustomDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + getPackageName() + File.separator + "install";
                             }
                             File apkDir = new File(apkDirPath);
                             if (!apkDir.exists()) {
@@ -153,14 +153,14 @@ public class TranslucentActivity extends BaseAppCompatActivity implements Transl
                                 mPresenter.downloadApk(downloadUrl, apkFile.getAbsolutePath(), netMD5, force);
                             }
                         } else {
-                            CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请求权限失败");
+                            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请求权限失败");
                         }
                     });
         };
         AppUpdateDialog.CancelListener cancelListener = force -> {
             mPresenter.cancelDownload();
             if (force) {
-                CustomerApplication.getInstance().managerRepository.actMgr().finishAllActivity();
+                DocApplication.getInstance().managerRepository.actMgr().finishAllActivity();
             }else {
                 jumpToMain();
             }

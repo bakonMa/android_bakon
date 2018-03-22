@@ -9,7 +9,7 @@ import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.ui.bean.ApplyAuthorizationBean;
 import com.jht.doctor.ui.bean.IfBankOfJointBean;
 import com.jht.doctor.widget.dialog.LoadingDialog;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.ui.bean.ContributiveBean;
 import com.jht.doctor.ui.bean.ReusingBean;
@@ -63,8 +63,8 @@ public class CoborrowerHistoryPresenter implements CoborrowerHistoryContact.Pres
         params.put("oldOrderNo", oldOrderNo);
         params.put("orderNo", orderNo);
         params.put("userName", userName);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().ifResuingBankOfJoint(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().ifResuingBankOfJoint(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -90,8 +90,8 @@ public class CoborrowerHistoryPresenter implements CoborrowerHistoryContact.Pres
         Params params = new Params();
         params.put("bankCardNo", bankCardNo);
         params.put("orderNo", orderNo);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().ensureBankCard(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().ensureBankCard(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -116,8 +116,8 @@ public class CoborrowerHistoryPresenter implements CoborrowerHistoryContact.Pres
         Params params = new Params();
         params.put("bankCardNo", bankCardNo);
         params.put("orderNo", orderNo);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().deleteBankCard(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().deleteBankCard(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -144,8 +144,8 @@ public class CoborrowerHistoryPresenter implements CoborrowerHistoryContact.Pres
         params.put("mobile", mobile);
         params.put("orderNo", orderNo);
         params.put("realName", realName);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().contributiveTypeJudge(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().contributiveTypeJudge(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -179,8 +179,8 @@ public class CoborrowerHistoryPresenter implements CoborrowerHistoryContact.Pres
         params.put("otherPlatformId", otherPlatformId);
         params.put("userName", userName);
         params.put("userType", userType);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().ensureBankCardOfCunGuan(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().ensureBankCardOfCunGuan(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -206,8 +206,8 @@ public class CoborrowerHistoryPresenter implements CoborrowerHistoryContact.Pres
         params.put("idCareNo", idCareNo);
         params.put("orderNo", orderNo);
         params.put("userName", userName);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().ifBankOfJoint(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().ifBankOfJoint(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -241,8 +241,8 @@ public class CoborrowerHistoryPresenter implements CoborrowerHistoryContact.Pres
         params.put("bankCardName", bankCardName);
         params.put("idCard", idCard);
         params.put("password", password);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().applyAuthorization(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().applyAuthorization(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {

@@ -21,7 +21,7 @@ import android.widget.LinearLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.ui.bean.IfBankOfJointBean;
 import com.jht.doctor.ui.bean.WrapperBean;
 import com.jht.doctor.utils.DensityUtils;
@@ -167,7 +167,7 @@ public class SelectMultiBankJointDialog extends Dialog implements View.OnClickLi
                 if (mListener != null && pos != -1){
                     mListener.confirmClicked(mData.get(pos));
                 }else{
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请选择您要使用的银行卡");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请选择您要使用的银行卡");
                 }
                 break;
             case R.id.id_iv_close:

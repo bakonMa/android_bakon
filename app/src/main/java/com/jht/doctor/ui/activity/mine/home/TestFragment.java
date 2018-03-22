@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.injection.components.DaggerFragmentComponent;
 import com.jht.doctor.injection.modules.FragmentModule;
 import com.jht.doctor.ui.base.BaseAppCompatFragment;
@@ -31,18 +31,18 @@ public class TestFragment extends BaseAppCompatFragment implements HomeLoanConta
     protected void setupActivityComponent() {
         DaggerFragmentComponent.builder()
                 .fragmentModule(new FragmentModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build().inject(this);
 
     }
 
     @Override
-    protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected View setViewId(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.activity_my_info, null);
     }
 
     @Override
-    protected void initData(Bundle savedInstanceState) {
+    protected void initView(Bundle savedInstanceState) {
         mPresenter.getMaxAmt();
     }
 
@@ -53,7 +53,7 @@ public class TestFragment extends BaseAppCompatFragment implements HomeLoanConta
 
     @Override
     public void onSuccess(Message message) {
-        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("sssssssss");
+        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("sssssssss");
 
     }
 

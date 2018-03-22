@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,7 +19,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.listener.SimpleClickListener;
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.config.SessionMapKey;
 import com.jht.doctor.data.eventbus.Event;
@@ -139,7 +140,7 @@ public class MyAccountActivity extends BaseAppCompatActivity implements Repaymen
                             intent.putExtra(MyBankCardActivity.ORDER_KEY, orderNo);
                         } else {
                             //提现成功后使用
-                            CustomerApplication.getAppComponent().sessionMap().put(SessionMapKey.WITHDRAW_BEAN, beanList.get(position));
+                            DocApplication.getAppComponent().sessionMap().put(SessionMapKey.WITHDRAW_BEAN, beanList.get(position));
                             intent.setClass(provideContext(), WithdrawCashActivity.class);
                             intent.putExtra(MyBankCardActivity.ORDER_KEY, orderNo);
                             intent.putExtra("name", beanList.get(position).getUserName());
@@ -157,7 +158,7 @@ public class MyAccountActivity extends BaseAppCompatActivity implements Repaymen
                             intent.putExtra(MyBankCardActivity.ORDER_KEY, orderNo);
                         } else {
                             //充值成功后使用
-                            CustomerApplication.getAppComponent().sessionMap().put(SessionMapKey.RECHAGE_BEAN, beanList.get(position));
+                            DocApplication.getAppComponent().sessionMap().put(SessionMapKey.RECHAGE_BEAN, beanList.get(position));
                             intent.setClass(provideContext(), RechageActivity.class);
                             intent.putExtra(MyBankCardActivity.ORDER_KEY, orderNo);
                             intent.putExtra("name", beanList.get(position).getUserName());
@@ -186,7 +187,7 @@ public class MyAccountActivity extends BaseAppCompatActivity implements Repaymen
     }
 
     private void initToolBar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("还款")
                 .setLeft(false)
                 .setRightText("借款人管理", true, R.color.tab_selected)
@@ -212,7 +213,7 @@ public class MyAccountActivity extends BaseAppCompatActivity implements Repaymen
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }
@@ -222,7 +223,7 @@ public class MyAccountActivity extends BaseAppCompatActivity implements Repaymen
         if (idSwipe.isRefreshing()) {
             idSwipe.setRefreshing(false);
         }
-        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
 
     }
 

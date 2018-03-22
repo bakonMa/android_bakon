@@ -1,12 +1,12 @@
 package com.jht.doctor.ui.presenter;
 
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.ui.bean.LoginResponse;
 import com.jht.doctor.ui.contact.LoginContact;
 import com.jht.doctor.widget.dialog.LoadingDialog;
-import com.jht.doctor.application.CustomerApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.utils.M;
 
@@ -49,8 +49,8 @@ public class LoginPresenter implements LoginContact.Presenter {
     public void sendVerifyCode(String phone) {
         Params params = new Params();
         params.put("phone", phone);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().sendVerifyCode(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().sendVerifyCode(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mdialog != null) mdialog.show();
@@ -74,8 +74,8 @@ public class LoginPresenter implements LoginContact.Presenter {
         Params params = new Params();
         params.put("mobilePhone", phone);
         params.put("checkCode", code);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().login(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().login(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mdialog != null) mdialog.show();
@@ -84,7 +84,7 @@ public class LoginPresenter implements LoginContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<LoginResponse> loginResponseHttpResponse) {
                         //保存token
-                        CustomerApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, loginResponseHttpResponse.result.getToken());
+                        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, loginResponseHttpResponse.result.getToken());
                         mView.onSuccess(M.createMessage(loginResponseHttpResponse.result, LOGIN_SUCCESS));
                     }
 
@@ -100,8 +100,8 @@ public class LoginPresenter implements LoginContact.Presenter {
     public void bind(String phone) {
         Params params = new Params();
         params.put("invitationNo", phone);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().userBindSale(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().userBindSale(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mdialog != null) {

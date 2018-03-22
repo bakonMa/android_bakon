@@ -7,7 +7,7 @@ import android.os.Message;
 import android.view.View;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.injection.components.DaggerActivityComponent;
 import com.jht.doctor.injection.modules.ActivityModule;
 import com.jht.doctor.ui.base.BaseAppCompatActivity;
@@ -62,7 +62,7 @@ public class DemoActivity extends BaseAppCompatActivity implements DemoContact.V
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }

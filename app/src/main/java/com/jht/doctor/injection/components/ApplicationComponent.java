@@ -3,7 +3,7 @@ package com.jht.doctor.injection.components;
 import android.content.Context;
 import android.content.res.Resources;
 
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.api.http.APIModule;
 import com.jht.doctor.data.api.http.DataRepository;
 import com.jht.doctor.injection.modules.ApplicationModule;
@@ -35,7 +35,7 @@ public interface ApplicationComponent {
     @ApplicationContext
     Context appContext();
 
-    CustomerApplication application();
+    DocApplication application();
 
     Resources resources();
 
@@ -47,6 +47,6 @@ public interface ApplicationComponent {
 
     HashMap<String, Object> sessionMap();
 
-    void inject(CustomerApplication customerApplication);
+    void inject(DocApplication docApplication);
 
 }

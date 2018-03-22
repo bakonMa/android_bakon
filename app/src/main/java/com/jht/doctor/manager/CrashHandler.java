@@ -8,7 +8,7 @@ import android.os.Build;
 import android.os.Environment;
 
 import com.jht.doctor.BuildConfig;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.api.local.storage.StorageOperator;
 import com.jht.doctor.ui.activity.welcome.MainActivity;
 
@@ -37,7 +37,7 @@ import static com.jht.doctor.config.PathConfig.CRASH_DIR_NAME;
  */
 public final class CrashHandler implements Thread.UncaughtExceptionHandler {
 
-    private final CustomerApplication mApplication;
+    private final DocApplication mApplication;
     //系统默认的UncaughtException处理类
     private final Thread.UncaughtExceptionHandler mDefaultHandler;
     private final ActManager mActManager;
@@ -46,7 +46,7 @@ public final class CrashHandler implements Thread.UncaughtExceptionHandler {
     private DateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
     private final String TAG = "CrashHandler";
 
-    public CrashHandler(CustomerApplication application, ActManager actManager, StorageOperator storageOperator) {
+    public CrashHandler(DocApplication application, ActManager actManager, StorageOperator storageOperator) {
         mApplication = application;
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         mActManager = actManager;

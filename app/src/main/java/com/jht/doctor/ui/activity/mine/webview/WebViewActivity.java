@@ -3,6 +3,7 @@ package com.jht.doctor.ui.activity.mine.webview;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -13,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.injection.components.DaggerActivityComponent;
 import com.jht.doctor.injection.modules.ActivityModule;
 import com.jht.doctor.ui.base.BaseAppCompatActivity;
@@ -87,7 +88,7 @@ public class WebViewActivity extends BaseAppCompatActivity implements ProgressWe
 
     //共同头部处理
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle(TextUtils.isEmpty(titleStr) ? "" : titleStr)
                 .setLeft(false)
                 .isShowClose(true)//是否显示close
@@ -114,7 +115,7 @@ public class WebViewActivity extends BaseAppCompatActivity implements ProgressWe
     @Override
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .activityModule(new ActivityModule(this))
                 .build()
                 .inject(this);
@@ -152,7 +153,7 @@ public class WebViewActivity extends BaseAppCompatActivity implements ProgressWe
     @Override
     public void onError(String errorCode, String errorMsg) {
         if (!TextUtils.isEmpty(errorMsg)) {
-            CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
         }
         finish();
     }

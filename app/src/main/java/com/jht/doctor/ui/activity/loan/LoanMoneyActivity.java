@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -17,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.data.eventbus.EventBusUtil;
@@ -169,7 +170,7 @@ public class LoanMoneyActivity extends BaseAppCompatActivity implements LoanMone
     }
 
     private void initToolBar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setLeft(false)
                 .setLeftImage(R.drawable.icon_back_1)
                 .setStatuBar(R.color.color_main_blue)
@@ -187,7 +188,7 @@ public class LoanMoneyActivity extends BaseAppCompatActivity implements LoanMone
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }
@@ -224,9 +225,9 @@ public class LoanMoneyActivity extends BaseAppCompatActivity implements LoanMone
                 break;
             case R.id.id_btn_apply:
                 if (Integer.parseInt(idEdLoanMoney.getText().toString().trim()) < 20) {
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("借款额度必须大于20万元，请重新填写");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("借款额度必须大于20万元，请重新填写");
                 } else if (Integer.parseInt(idEdLoanMoney.getText().toString().trim()) > preMoney) {
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("借款额度超出可申请的最高额度，请重新填写");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("借款额度超出可申请的最高额度，请重新填写");
                 } else {
                     mPresenter.loanMoney(Double.parseDouble(idEdLoanMoney.getText().toString().trim()) * 10000, codeLoanUse, orderNo,
                             Integer.parseInt(periodNumber), codeRepaymentType);
@@ -249,7 +250,7 @@ public class LoanMoneyActivity extends BaseAppCompatActivity implements LoanMone
             });
             dialog.show();
         }else {
-            CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
         }
     }
 

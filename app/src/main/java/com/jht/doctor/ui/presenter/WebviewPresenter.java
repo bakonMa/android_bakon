@@ -2,7 +2,7 @@ package com.jht.doctor.ui.presenter;
 
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.ui.contact.WebViewContact;
 import com.jht.doctor.utils.M;
@@ -42,8 +42,8 @@ public class WebviewPresenter implements WebViewContact.Presenter {
     public void getCreditUrl(String orderNo) {
         Params params = new Params();
         params.put("orderNo", orderNo);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getCreditUrl(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getCreditUrl(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {

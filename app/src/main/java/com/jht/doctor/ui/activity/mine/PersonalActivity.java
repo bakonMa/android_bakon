@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.config.PathConfig;
 import com.jht.doctor.config.SPConfig;
@@ -133,7 +133,7 @@ public class PersonalActivity extends BaseAppCompatActivity implements PersonalC
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }
@@ -199,10 +199,10 @@ public class PersonalActivity extends BaseAppCompatActivity implements PersonalC
                 HaveBalanceDialog haveBalanceDialog = new HaveBalanceDialog(this, HaveBalanceDialog.LOG_OUT, new HaveBalanceDialog.ClickListener() {
                     @Override
                     public void confirm() {
-                        CustomerApplication.getAppComponent().dataRepo().appSP().remove(SPConfig.SP_STR_TOKEN);
-                        CustomerApplication.getAppComponent().dataRepo().appSP().remove(SPConfig.SP_STR_PHONE);
+                        DocApplication.getAppComponent().dataRepo().appSP().remove(SPConfig.SP_STR_TOKEN);
+                        DocApplication.getAppComponent().dataRepo().appSP().remove(SPConfig.SP_STR_PHONE);
                         startActivity(new Intent(PersonalActivity.this, HomeLoanActivity.class));
-                        CustomerApplication.getInstance().managerRepository.actMgr().finishAllActivity();
+                        DocApplication.getInstance().managerRepository.actMgr().finishAllActivity();
                     }
                 });
                 haveBalanceDialog.show();
@@ -210,7 +210,7 @@ public class PersonalActivity extends BaseAppCompatActivity implements PersonalC
             case R.id.id_rl_account:
                 //我的账户信息
                 if (myAccountInfoBean.getOrderNo() == null) {
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("你的当前订单已取消，无法查看你的账户信息");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("你的当前订单已取消，无法查看你的账户信息");
                 } else {
                     Intent intentAccount = new Intent(this, MyAccountActivity.class);
                     intentAccount.putExtra("orderNo", myAccountInfoBean.getOrderNo());
@@ -233,7 +233,7 @@ public class PersonalActivity extends BaseAppCompatActivity implements PersonalC
         if (idSwipe.isRefreshing()) {
             idSwipe.setRefreshing(false);
         }
-        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
     }
 
     @Override
@@ -328,7 +328,7 @@ public class PersonalActivity extends BaseAppCompatActivity implements PersonalC
     private void showPersonalInfo(PersonalBean personalBean) {
         if (personalBean != null) {
             //手机号存在sp中
-            CustomerApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_PHONE, personalBean.getMobilePhone());
+            DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_PHONE, personalBean.getMobilePhone());
             idTvLogin.setText(RegexUtil.hideFirstName(personalBean.getUserName()));
             name = personalBean.getUserName();
             idTvPhone.setVisibility(View.VISIBLE);

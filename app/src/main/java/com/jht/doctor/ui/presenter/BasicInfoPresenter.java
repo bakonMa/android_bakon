@@ -1,6 +1,6 @@
 package com.jht.doctor.ui.presenter;
 
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
@@ -48,8 +48,8 @@ public class BasicInfoPresenter implements BasicInfoContact.Presenter {
         params.put("certNo", certNo);
         //params.put("id", 1);
         params.put("certType", "01");
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().commitBasicInfo(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().commitBasicInfo(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) mDialog.show();
@@ -70,8 +70,8 @@ public class BasicInfoPresenter implements BasicInfoContact.Presenter {
 
     @Override
     public void requestInfo() {
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getApplyInfo())
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getApplyInfo())
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(()->{
                     if(mDialog!=null) mDialog.show();

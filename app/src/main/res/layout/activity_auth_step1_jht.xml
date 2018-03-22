@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/base_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_f6f6f6"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="68dp"
+                android:background="@color/indicator_selected_color">
+
+                <com.jht.doctor.widget.ScheduleView_jht
+                    android:id="@+id/id_step"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:step1="three" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="展示自我形象"
+                android:textColor="@color/color_c3c3c3"
+                android:textSize="10sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:text="头像"
+                    android:textColor="@color/color_424242"
+                    android:textSize="15sp" />
+
+                <View style="@style/line_gray_hor" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_img"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:background="@drawable/icon_fankui" />
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginRight="15dp"
+                        android:background="@drawable/bg_1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_icon_demo"
+                        android:textColor="@color/color_c3c3c3"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/icon_close_2"
+                    android:drawablePadding="5dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/str_jpg_png_gif"
+                    android:textColor="@color/color_c3c3c3"
+                    android:textSize="12sp" />
+
+                <com.jht.doctor.widget.EditTextlayout
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    app:leftText="姓名"
+                    app:textMainSize="16sp" />
+
+                <com.jht.doctor.widget.EditTextlayout
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    app:editTextType="number"
+                    app:leftText="手机号"
+                    app:textMainSize="16sp" />
+
+                <com.jht.doctor.widget.EditTextlayout
+                    android:id="@+id/et_sfz"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    app:leftText="身份证"
+                    app:textMainSize="16sp" />
+
+                <com.jht.doctor.widget.EditTextlayout
+                    android:id="@+id/et_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    app:leftText="地区"
+                    app:textMainSize="16sp" />
+
+                <com.jht.doctor.widget.EditTextlayout
+                    android:id="@+id/et_organization"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    app:leftText="医疗机构"
+                    app:textMainSize="16sp" />
+
+                <com.jht.doctor.widget.EditTextlayout
+                    android:id="@+id/et_lab_type"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    app:leftText="科室"
+                    app:textMainSize="16sp" />
+
+                <com.jht.doctor.widget.EditTextlayout
+                    android:id="@+id/et_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    app:leftText="科室"
+                    app:textMainSize="16sp" />
+
+                <com.jht.doctor.widget.EditTextlayout
+                    android:id="@+id/et_goodat"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    app:isShowLine="false"
+                    app:leftText="擅长"
+                    app:textMainSize="16sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_next_step"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_margin="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/selector_bg_button_login"
+                android:clickable="true"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="下一步"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

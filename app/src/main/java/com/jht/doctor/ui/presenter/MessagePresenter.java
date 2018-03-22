@@ -1,6 +1,6 @@
 package com.jht.doctor.ui.presenter;
 
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
@@ -48,8 +48,8 @@ public class MessagePresenter implements MessageContact.Presenter {
         Params params = new Params();
         params.put("pageNo", pageNo);
         params.put("pageSize", U.PAGE_SIZE);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getMessageList(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getMessageList(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null && pageNo == 1) {
@@ -74,8 +74,8 @@ public class MessagePresenter implements MessageContact.Presenter {
     public void deleteMessage(int id) {
         Params params = new Params();
         params.put("id", id);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().deleteMessage(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().deleteMessage(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {

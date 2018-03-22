@@ -1,6 +1,6 @@
 package com.jht.doctor.ui.presenter;
 
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
@@ -44,8 +44,8 @@ public class BankCardSettingPresenter implements BankCardSettingContact.Presente
     public void getBankList(String orderNo) {
         Params params = new Params();
         params.put("orderNo",orderNo);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getBankList(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getBankList(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(()->{
                     if(mDialog!=null){
@@ -70,8 +70,8 @@ public class BankCardSettingPresenter implements BankCardSettingContact.Presente
         Params params = new Params();
         params.put("bankCardNo",bankCardNo);
         params.put("orderNo",orderNo);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().deleteBankCard(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().deleteBankCard(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(()->{
                     if(mDialog!=null){

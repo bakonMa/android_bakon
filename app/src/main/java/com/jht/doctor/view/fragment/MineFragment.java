@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.config.PathConfig;
 import com.jht.doctor.config.SPConfig;
@@ -112,7 +112,7 @@ public class MineFragment extends BaseAppCompatFragment implements PersonalConta
     private MyAccountInfoBean myAccountInfoBean;//记录账单号
 
     @Override
-    protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected View setViewId(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_personal, null);
     }
 
@@ -124,7 +124,7 @@ public class MineFragment extends BaseAppCompatFragment implements PersonalConta
     }
 
     @Override
-    protected void initData(Bundle savedInstanceState) {
+    protected void initView(Bundle savedInstanceState) {
 
     }
 
@@ -132,7 +132,7 @@ public class MineFragment extends BaseAppCompatFragment implements PersonalConta
     protected void setupActivityComponent() {
         DaggerFragmentComponent.builder()
                 .fragmentModule(new FragmentModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build().inject(this);
     }
 
@@ -214,10 +214,10 @@ public class MineFragment extends BaseAppCompatFragment implements PersonalConta
                 HaveBalanceDialog haveBalanceDialog = new HaveBalanceDialog(getActivity(), HaveBalanceDialog.LOG_OUT, new HaveBalanceDialog.ClickListener() {
                     @Override
                     public void confirm() {
-                        CustomerApplication.getAppComponent().dataRepo().appSP().remove(SPConfig.SP_STR_TOKEN);
-                        CustomerApplication.getAppComponent().dataRepo().appSP().remove(SPConfig.SP_STR_PHONE);
+                        DocApplication.getAppComponent().dataRepo().appSP().remove(SPConfig.SP_STR_TOKEN);
+                        DocApplication.getAppComponent().dataRepo().appSP().remove(SPConfig.SP_STR_PHONE);
                         startActivity(new Intent(actContext(), MainActivity.class));
-                        CustomerApplication.getInstance().managerRepository.actMgr().finishAllActivity();
+                        DocApplication.getInstance().managerRepository.actMgr().finishAllActivity();
                     }
                 });
                 haveBalanceDialog.show();
@@ -225,7 +225,7 @@ public class MineFragment extends BaseAppCompatFragment implements PersonalConta
             case R.id.id_rl_account:
                 //我的账户信息
                 if (myAccountInfoBean.getOrderNo() == null) {
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("你的当前订单已取消，无法查看你的账户信息");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("你的当前订单已取消，无法查看你的账户信息");
                 } else {
                     Intent intentAccount = new Intent(actContext(), MyAccountActivity.class);
                     intentAccount.putExtra("orderNo", myAccountInfoBean.getOrderNo());
@@ -281,7 +281,7 @@ public class MineFragment extends BaseAppCompatFragment implements PersonalConta
     private void showPersonalInfo(PersonalBean personalBean) {
         if (personalBean != null) {
             //手机号存在sp中
-            CustomerApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_PHONE, personalBean.getMobilePhone());
+            DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_PHONE, personalBean.getMobilePhone());
             idTvLogin.setText(RegexUtil.hideFirstName(personalBean.getUserName()));
             name = personalBean.getUserName();
             idTvPhone.setVisibility(View.VISIBLE);
@@ -333,7 +333,7 @@ public class MineFragment extends BaseAppCompatFragment implements PersonalConta
         if (idSwipe.isRefreshing()) {
             idSwipe.setRefreshing(false);
         }
-        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
     }
 
     @Override

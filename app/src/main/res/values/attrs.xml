@@ -12,6 +12,7 @@
         <attr name="leftText" format="string"/>
         <attr name="editTextHint" format="string"/>
         <attr name="textMainSize" format="dimension"/>
+        <attr name="isShowBottomLine" format="boolean"/>
         <attr name="isShowCheckBox" format="boolean"/>
         <attr name="isBankCard" format="boolean"/>
         <attr name="editTextType">
@@ -67,9 +68,6 @@
         <attr name="pivPasswordLength" format="integer"/>
     </declare-styleable>
 
-
-
-    <!--JHT-->
     <declare-styleable name="BottomBarItem">
         <!--默认状态下的图标-->
         <attr name="iconDrawable" format="reference"/>

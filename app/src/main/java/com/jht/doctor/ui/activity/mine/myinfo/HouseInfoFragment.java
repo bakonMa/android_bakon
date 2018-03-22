@@ -58,12 +58,12 @@ public class HouseInfoFragment extends BaseAppCompatFragment {
     private MyInfoBean.UserHouseDTOBean bean;
 
     @Override
-    public View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View setViewId(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_house_info, null);
     }
 
     @Override
-    public void initData(Bundle savedInstanceState) {
+    public void initView(Bundle savedInstanceState) {
         bean = (MyInfoBean.UserHouseDTOBean) getArguments().get(PersonalActivity.KEY_INFO);
         if (bean != null) {
             //类型，面积，小区名称

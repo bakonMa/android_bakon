@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.ui.bean.ContributiveBean;
 
 import java.text.MessageFormat;
@@ -81,7 +81,7 @@ public class SelectBankCardPswDialog extends Dialog implements View.OnClickListe
                 dismiss();
                 //todo 确认使用
                 if (!checkBox.isChecked()) {
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请选中要使用的银行卡");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请选中要使用的银行卡");
                 } else {
                     if (mListener != null) {
                         mListener.confirmClicked(mData);

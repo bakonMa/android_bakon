@@ -3,7 +3,7 @@ package com.jht.doctor.ui.presenter;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
@@ -59,8 +59,8 @@ public class AddBankCardVerifyPresenter implements AddBankCardVerifyContact.Pres
         params.put("bankCardName", bankCardName);
         params.put("idCard", idCard);
         params.put("password", password);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().applyAuthorization(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().applyAuthorization(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -99,8 +99,8 @@ public class AddBankCardVerifyPresenter implements AddBankCardVerifyContact.Pres
         Params params = new Params();
         params.put("applyAuthorizationBO", applyAuthorizationDTOBean);
         params.put("userAuthorizationBO", userAuthorizationBO);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().userAuthorization(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().userAuthorization(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {

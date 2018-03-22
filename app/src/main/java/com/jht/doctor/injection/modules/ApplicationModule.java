@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 
 import com.jht.doctor.BuildConfig;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.api.http.APIModule;
 import com.jht.doctor.data.api.local.storage.StorageOperator;
 import com.jht.doctor.injection.qualifiers.ApplicationContext;
@@ -30,9 +30,9 @@ import dagger.Provides;
 @Module(includes = APIModule.class)
 public final class ApplicationModule {
 
-    private CustomerApplication mApplication;
+    private DocApplication mApplication;
 
-    public ApplicationModule(CustomerApplication application) {
+    public ApplicationModule(DocApplication application) {
         mApplication = application;
     }
 
@@ -45,7 +45,7 @@ public final class ApplicationModule {
 
     @Singleton
     @Provides
-    public CustomerApplication provideApplication() {
+    public DocApplication provideApplication() {
         return mApplication;
     }
 

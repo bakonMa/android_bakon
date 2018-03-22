@@ -1,13 +1,15 @@
 package com.jht.doctor.ui.activity.mine;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.ui.activity.mine.myinfo.ShowMyInfoActivity;
 import com.jht.doctor.ui.base.BaseAppCompatActivity;
 import com.jht.doctor.ui.bean.ConfigBean;
@@ -49,12 +51,12 @@ public class MyInfoActivity extends BaseAppCompatActivity {
 
         myInfoBean = getIntent().getParcelableExtra(PersonalActivity.KEY_INFO);
         if (myInfoBean == null) {
-            CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("数据异常，请返回重试");
+            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("数据异常，请返回重试");
         }
     }
 
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("我的资料")
                 .setLeft(false)
                 .setStatuBar(R.color.white)

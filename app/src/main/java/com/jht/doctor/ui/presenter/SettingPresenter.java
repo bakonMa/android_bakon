@@ -3,7 +3,7 @@ package com.jht.doctor.ui.presenter;
 import android.content.pm.PackageManager;
 import android.os.SystemClock;
 
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.api.http.HttpAPIWrapper;
 import com.jht.doctor.data.api.http.Params;
@@ -57,8 +57,8 @@ public class SettingPresenter implements SettingContract.Presenter {
     @Override
     public void tradePwdStatus() {
         Params params = new Params();
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().tradePwdStatus(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().tradePwdStatus(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mdialog != null) mdialog.show();
@@ -80,7 +80,7 @@ public class SettingPresenter implements SettingContract.Presenter {
     @Override
     public void checkUpdate() {
         Subscription subscription =
-                CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().appUpdateCheck(4)
+                DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().appUpdateCheck(4)
                         .compose(HttpAPIWrapper.SCHEDULERS_TRANSFORMER())
                         .compose(mView.toLifecycle())
                         .doOnSubscribe(() -> {
@@ -109,8 +109,8 @@ public class SettingPresenter implements SettingContract.Presenter {
 
                                     //检查成功，更新检查成功后得到的当前时间和是否强制更新(强制更新标示符以及最低版本)
 
-                                    CustomerApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.SP_BOOL_LASTCHECK_FORCEUPDATE_NAME, isForce);
-                                    CustomerApplication.getAppComponent().dataRepo().appSP().setLong(SPConfig.SP_LONG_LASTCHECKUPDATE_TIME_NAME, SystemClock.currentThreadTimeMillis());
+                                    DocApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.SP_BOOL_LASTCHECK_FORCEUPDATE_NAME, isForce);
+                                    DocApplication.getAppComponent().dataRepo().appSP().setLong(SPConfig.SP_LONG_LASTCHECKUPDATE_TIME_NAME, SystemClock.currentThreadTimeMillis());
 
                                     //手机中版本大于等于网络中请求到的版本
                                     if (nowVersionNum >= netVersionNum) {
@@ -142,7 +142,7 @@ public class SettingPresenter implements SettingContract.Presenter {
         //success: mView.apkDownloadSuccess(downloadedApkPath , sourceMD5)
         //fail: mView.apkDownloadFailed(throwable)
         downloadApkSubscription =
-                CustomerApplication.getAppComponent().dataRepo().http()
+                DocApplication.getAppComponent().dataRepo().http()
                         .downloadApk(downloadUrl, destLocaLPath, downloadUrl)
                         .compose(mView.toLifecycle())
                         .subscribe(

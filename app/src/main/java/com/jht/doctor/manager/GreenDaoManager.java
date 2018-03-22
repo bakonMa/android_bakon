@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.jht.doctor.BuildConfig;
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.greendao.gen.DaoMaster;
 import com.jht.doctor.greendao.gen.DaoSession;
 import com.jht.doctor.utils.FileUtil;
@@ -34,7 +34,7 @@ public class GreenDaoManager {
 
     private static final String TAG = "greenDaoManager";
     //在手机里存放数据库的位置
-    private static String dbPath = "/data/data/" + CustomerApplication.getInstance().getPackageName() + "/databases/";
+    private static String dbPath = "/data/data/" + DocApplication.getInstance().getPackageName() + "/databases/";
     private static String dbName = "city.db";
     private static String zipName = "city.zip";
     //dbManager单例(多线程中要被共享的使用volatile关键字修饰)
@@ -86,7 +86,7 @@ public class GreenDaoManager {
         if (mDaoMaster == null) {
             //http://blog.csdn.net/qq_32583189/article/details/52128620
             //DBOpenHelper.getEncryptedWritableDb("pwd"); 使用加密的db
-            DBOpenHelper dbOpenHelper = new DBOpenHelper(CustomerApplication.getInstance(), dbName, null);
+            DBOpenHelper dbOpenHelper = new DBOpenHelper(DocApplication.getInstance(), dbName, null);
             //使用加密的db
             mDaoMaster = new DaoMaster(dbOpenHelper.getEncryptedWritableDb(""));
             mDaoMaster.createAllTables(mDaoMaster.getDatabase(), true);
@@ -122,7 +122,7 @@ public class GreenDaoManager {
         }
         //第一次安装，创建数据库存储路径，并拷贝解压数据库到系统目录
         LogUtil.d("创建数据库存储路径！");
-        InputStream is = CustomerApplication.getInstance().getResources().openRawResource(R.raw.city);
+        InputStream is = DocApplication.getInstance().getResources().openRawResource(R.raw.city);
         File copyFile = FileUtil.inputStreamToFile(is, dbPath, zipName);
         if (copyFile != null && copyFile.exists()) {
             ZipUtil.unZip(copyFile.getAbsolutePath(), dbPath);
@@ -151,7 +151,7 @@ public class GreenDaoManager {
         }
         //不存在
         if (!dbFile.exists()) {
-            InputStream is = CustomerApplication.getInstance().getResources().openRawResource(R.raw.city);
+            InputStream is = DocApplication.getInstance().getResources().openRawResource(R.raw.city);
             ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is));
 
             ZipEntry entry;

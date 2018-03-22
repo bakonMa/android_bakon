@@ -5,7 +5,7 @@ import android.app.Application;
 import android.os.Build;
 import android.os.Bundle;
 
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 
 import java.lang.ref.WeakReference;
 import java.util.Map;
@@ -81,14 +81,14 @@ public final class ActManager {
     /**
      * 弱引用保存Application上下文
      */
-    private final CustomerApplication mApplication;
+    private final DocApplication mApplication;
     /**
      * ActivityHashCode => ActivityIndex
      */
     private final Map<Integer, Integer> mActivityIdMap;//<HashCode , StackIndex>
 
     @Inject
-    public ActManager(CustomerApplication application) {
+    public ActManager(DocApplication application) {
         mActivityStack = new Stack<>();
         mActivityIdMap = new ConcurrentHashMap<Integer, Integer>();
         mApplication = application;

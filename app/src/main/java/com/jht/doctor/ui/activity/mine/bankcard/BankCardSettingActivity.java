@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +18,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.data.eventbus.EventBusUtil;
@@ -163,7 +164,7 @@ public class BankCardSettingActivity extends BaseAppCompatActivity implements Ba
     }
 
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("银行卡")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
@@ -180,7 +181,7 @@ public class BankCardSettingActivity extends BaseAppCompatActivity implements Ba
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }
@@ -204,7 +205,7 @@ public class BankCardSettingActivity extends BaseAppCompatActivity implements Ba
                 haveBalanceDialog.show();
                 break;
             default:
-                CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+                DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
                 break;
         }
     }
@@ -230,7 +231,7 @@ public class BankCardSettingActivity extends BaseAppCompatActivity implements Ba
                     }
                     break;
                 case BankCardSettingPresenter.UNBIND:
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("解绑成功");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("解绑成功");
                     mPresenter.getBankList(orderNo);
                     EventBusUtil.sendEvent(new Event(EventConfig.REFRESH_BANKLIST));
                     break;

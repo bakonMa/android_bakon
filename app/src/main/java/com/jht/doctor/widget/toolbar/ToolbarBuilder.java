@@ -1,7 +1,9 @@
 package com.jht.doctor.widget.toolbar;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.os.Build;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -29,17 +31,17 @@ import java.lang.reflect.Method;
 public class ToolbarBuilder {
 
     private Toolbar toolbar;
-    private WeakReference<AppCompatActivity> context;
+    private WeakReference<FragmentActivity> context;
     TitleOnclickListener titleOnclickListener;
     private boolean isSpread = false;
     private ImageView imageView;
 
-    private ToolbarBuilder(Toolbar toolbar, WeakReference<AppCompatActivity> context) {
+    private ToolbarBuilder(Toolbar toolbar, WeakReference<FragmentActivity> context) {
         this.toolbar = toolbar;
         this.context = context;
     }
 
-    public static ToolbarBuilder builder(Toolbar toolbar, WeakReference<AppCompatActivity> context) {
+    public static ToolbarBuilder builder(Toolbar toolbar, WeakReference<FragmentActivity> context) {
         return new ToolbarBuilder(toolbar, context);
     }
 

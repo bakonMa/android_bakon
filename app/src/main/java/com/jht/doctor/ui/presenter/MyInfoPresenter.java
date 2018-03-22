@@ -2,10 +2,10 @@ package com.jht.doctor.ui.presenter;
 
 import android.os.Message;
 
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.ui.contact.MyInfoContact;
-import com.jht.doctor.application.CustomerApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.ui.bean.MyInfoBean;
 import com.jht.doctor.widget.dialog.LoadingDialog;
@@ -44,8 +44,8 @@ public class MyInfoPresenter implements MyInfoContact.Presenter {
     @Override
     public void getMyInfo() {
         Params params = new Params();
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getUserInfo(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getUserInfo(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) mDialog.show();

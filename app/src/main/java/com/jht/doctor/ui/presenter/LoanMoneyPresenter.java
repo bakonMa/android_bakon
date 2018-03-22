@@ -1,9 +1,9 @@
 package com.jht.doctor.ui.presenter;
 
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.widget.dialog.LoadingDialog;
-import com.jht.doctor.application.CustomerApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.ui.contact.LoanMoneyContact;
 import com.jht.doctor.utils.M;
@@ -46,8 +46,8 @@ public class LoanMoneyPresenter implements LoanMoneyContact.Presenter {
         params.put("orderNo",orderNo);
         params.put("periodNumber",periodNumber);
         params.put("repaymentType",repaymentType);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().loanMoney(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().loanMoney(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(()->{
                     if(mDialog!=null)

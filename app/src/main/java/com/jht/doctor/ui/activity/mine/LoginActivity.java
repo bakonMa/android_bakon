@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -19,7 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.config.PathConfig;
 import com.jht.doctor.data.eventbus.Event;
@@ -122,7 +123,7 @@ public class LoginActivity extends BaseAppCompatActivity implements LoginContact
 
     //共同头部处理
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
@@ -139,7 +140,7 @@ public class LoginActivity extends BaseAppCompatActivity implements LoginContact
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }
@@ -186,7 +187,7 @@ public class LoginActivity extends BaseAppCompatActivity implements LoginContact
             case R.id.btn_login:
                 //登录接口
                 if (!cbAgreement.isChecked()) {
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("未同意协议");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("未同意协议");
                 } else {
                     mPresenter.login(etPhone.getText().toString().trim(), etCode.getText().toString().trim());
                 }
@@ -222,7 +223,7 @@ public class LoginActivity extends BaseAppCompatActivity implements LoginContact
                     //todo 发送邀请码
                     mPresenter.bind(etCode.getText().toString());
                 } else {
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请输入邀请码");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请输入邀请码");
                 }
             }
         });
@@ -275,7 +276,7 @@ public class LoginActivity extends BaseAppCompatActivity implements LoginContact
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
     }
 
     @Override
@@ -366,6 +367,6 @@ public class LoginActivity extends BaseAppCompatActivity implements LoginContact
 
     @Override
     public void bindError(String errorMsg) {
-        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
     }
 }

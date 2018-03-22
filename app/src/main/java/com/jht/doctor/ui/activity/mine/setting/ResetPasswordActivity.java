@@ -3,6 +3,7 @@ package com.jht.doctor.ui.activity.mine.setting;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -16,7 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.injection.components.DaggerActivityComponent;
 import com.jht.doctor.injection.modules.ActivityModule;
@@ -82,7 +83,7 @@ public class ResetPasswordActivity extends BaseAppCompatActivity implements Trad
 
         //是否是重置
         isReset = getIntent().getBooleanExtra("isrest", false);
-        phone = CustomerApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_PHONE);
+        phone = DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_PHONE);
         if (!TextUtils.isEmpty(phone)) {
             tvPhone.setText("手机号 " + RegexUtil.hidePhone(phone));
         }
@@ -91,7 +92,7 @@ public class ResetPasswordActivity extends BaseAppCompatActivity implements Trad
 
     //共同头部处理
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle(isReset ? "重置交易密码" : "设置交易密码")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
@@ -127,7 +128,7 @@ public class ResetPasswordActivity extends BaseAppCompatActivity implements Trad
         switch (view.getId()) {
             case R.id.tv_sendcode:
                 if (TextUtils.isEmpty(phone)) {
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("手机号异常，请返回后重试");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("手机号异常，请返回后重试");
                 } else {
                     mPresenter.sendVerifyCode(phone);
                 }
@@ -194,7 +195,7 @@ public class ResetPasswordActivity extends BaseAppCompatActivity implements Trad
     @Override
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .activityModule(new ActivityModule(this))
                 .build()
                 .inject(this);
@@ -203,7 +204,7 @@ public class ResetPasswordActivity extends BaseAppCompatActivity implements Trad
     @Override
     public void onError(String errorCode, String errorMsg) {
         if (!TextUtils.isEmpty(errorMsg)) {
-            CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
         }
     }
 
@@ -214,13 +215,13 @@ public class ResetPasswordActivity extends BaseAppCompatActivity implements Trad
         }
         switch (message.what) {
             case TradePwdPresenter.TRADE_SEND_CODE://发送验证码
-                CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("验证码发送成功，请注意查收");
+                DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("验证码发送成功，请注意查收");
                 KeyBoardUtils.showKeyBoard(etCode,this);
                 sendTimeNumber();
                 break;
             case TradePwdPresenter.TRADE_REST_PWD://设置密码成功
             case TradePwdPresenter.TRADE_SET_PWD://重置密码成功
-                CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(isReset ? "重置交易密码成功" : "设置交易密码成功");
+                DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(isReset ? "重置交易密码成功" : "设置交易密码成功");
                 finish();
                 break;
         }

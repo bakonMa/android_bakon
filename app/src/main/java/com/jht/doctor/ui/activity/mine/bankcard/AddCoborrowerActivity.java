@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -14,7 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.data.eventbus.EventBusUtil;
@@ -131,7 +132,7 @@ public class AddCoborrowerActivity extends BaseAppCompatActivity implements AddC
     };
 
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("添加共借人")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
@@ -148,7 +149,7 @@ public class AddCoborrowerActivity extends BaseAppCompatActivity implements AddC
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }
@@ -200,7 +201,7 @@ public class AddCoborrowerActivity extends BaseAppCompatActivity implements AddC
         if (errorMsg.equals("共借人信息不能与主借人相同，请重新添加!")) {
             new HaveMoneyDialog(AddCoborrowerActivity.this, HaveMoneyDialog.NOT_SAME).show();
         } else {
-            CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
         }
     }
 
@@ -213,7 +214,7 @@ public class AddCoborrowerActivity extends BaseAppCompatActivity implements AddC
                     switch (bean.getNeedDebtorInfo()) {
                         case "02":
                             //不需要绑卡
-                            CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("添加成功");
+                            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("添加成功");
                             EventBusUtil.sendEvent(new Event(EventConfig.REFRESH_BANKLIST));
                             finish();
                             break;
@@ -298,7 +299,7 @@ public class AddCoborrowerActivity extends BaseAppCompatActivity implements AddC
 
     @Override
     public void ensureFailure(String errorMsg) {
-        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
         finish();
     }
 }

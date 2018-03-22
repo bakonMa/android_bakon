@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -13,7 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.data.eventbus.Event;
@@ -126,11 +127,11 @@ public class WithdrawCashActivity extends BaseAppCompatActivity implements Repay
             case R.id.id_btn_withdraw:
                 double money = Double.parseDouble(idEdWithdrawMoney.getText().toString().trim());
                 if (money < 5) {
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("提现金额不可小于5元，请重新输入");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("提现金额不可小于5元，请重新输入");
                     idEdWithdrawMoney.setText("");
                     return;
                 } else if (money > ownAmt) {
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("提现金额大于当前可提现金额，请重新输入");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("提现金额大于当前可提现金额，请重新输入");
                     idEdWithdrawMoney.setText("");
                     return;
                 }
@@ -141,7 +142,7 @@ public class WithdrawCashActivity extends BaseAppCompatActivity implements Repay
     }
 
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("提现")
                 .setLeft(false)
                 .setRightText("限额说明", true, R.color.tab_selected)
@@ -167,7 +168,7 @@ public class WithdrawCashActivity extends BaseAppCompatActivity implements Repay
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }
@@ -178,7 +179,7 @@ public class WithdrawCashActivity extends BaseAppCompatActivity implements Repay
             dialog.setErrorText(errorMsg);
             passwordInputView.setText("");
         } else {
-            CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
         }
 
     }

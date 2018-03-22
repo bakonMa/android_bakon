@@ -1,6 +1,6 @@
 package com.jht.doctor.ui.presenter;
 
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
@@ -62,8 +62,8 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
         params.put("orderNo", orderId);
         params.put("page", pageNum);
         Subscription subscription =
-                CustomerApplication.getAppComponent().dataRepo().http()
-                        .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getOffLineRepaymentInfo(params))
+                DocApplication.getAppComponent().dataRepo().http()
+                        .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getOffLineRepaymentInfo(params))
                         .compose(mView.toLifecycle())
                         .doOnSubscribe(() -> {
                             if (mDialog != null)
@@ -91,8 +91,8 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
         Params params = new Params();
         params.put("orderNo", orderId);
         Subscription subscription =
-                CustomerApplication.getAppComponent().dataRepo().http()
-                        .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().selectOrderAccountInfo(params))
+                DocApplication.getAppComponent().dataRepo().http()
+                        .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().selectOrderAccountInfo(params))
                         .compose(mView.toLifecycle())
                         .doOnSubscribe(() -> {
                             if (mDialog != null)
@@ -140,8 +140,8 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
         params.put("pageSize", U.PAGE_SIZE);
         params.put("pageNo", pagNum);
         Subscription subscription =
-                CustomerApplication.getAppComponent().dataRepo().http()
-                        .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().transactionDetails(params))
+                DocApplication.getAppComponent().dataRepo().http()
+                        .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().transactionDetails(params))
                         .compose(mView.toLifecycle())
                         .doOnSubscribe(() -> {
                             if (mDialog != null)
@@ -171,8 +171,8 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
     @Override
     public void pwdRecharge(Params params) {
         Subscription subscription =
-                CustomerApplication.getAppComponent().dataRepo().http()
-                        .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().pwdRecharge(params))
+                DocApplication.getAppComponent().dataRepo().http()
+                        .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().pwdRecharge(params))
                         .compose(mView.toLifecycle())
                         .doOnSubscribe(() -> {
                             if (mDialog != null) {
@@ -203,8 +203,8 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
     @Override
     public void pwdWithDraw(Params params) {
         Subscription subscription =
-                CustomerApplication.getAppComponent().dataRepo().http()
-                        .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().pwdWithDraw(params))
+                DocApplication.getAppComponent().dataRepo().http()
+                        .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().pwdWithDraw(params))
                         .compose(mView.toLifecycle())
                         .doOnSubscribe(() -> {
                             if (mDialog != null) {
@@ -236,8 +236,8 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
     public void getPayWay(String orderNo) {
         Params params = new Params();
         params.put("orderNo", orderNo);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().selectVerificationMethod(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().selectVerificationMethod(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -275,10 +275,10 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
         if (type == 0) {
             params.put("amount", amount);
         }
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(type == RepaymentPresenter.TYPE_RECHARGE ?
-                        CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getRechargeSmsVerifyCode(params)
-                        : CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getWithdrawSmsVerifyCode(params))
+                        DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getRechargeSmsVerifyCode(params)
+                        : DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getWithdrawSmsVerifyCode(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -307,8 +307,8 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
     @Override
     public void smsRecharge(Params params) {
         Subscription subscription =
-                CustomerApplication.getAppComponent().dataRepo().http()
-                        .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().smsRecharge(params))
+                DocApplication.getAppComponent().dataRepo().http()
+                        .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().smsRecharge(params))
                         .compose(mView.toLifecycle())
                         .doOnSubscribe(() -> {
                             if (mDialog != null) {
@@ -336,8 +336,8 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
      */
     @Override
     public void smsWithDraw(Params params) {
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().smsWithDraw(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().smsWithDraw(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {

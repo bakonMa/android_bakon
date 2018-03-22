@@ -5,7 +5,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
 
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,9 +20,9 @@ import java.io.FileOutputStream;
  */
 public final class StorageOperator {
 
-    private final CustomerApplication mApplication;
+    private final DocApplication mApplication;
 
-    public StorageOperator(CustomerApplication application){
+    public StorageOperator(DocApplication application){
         mApplication = application;
     }
 

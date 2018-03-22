@@ -3,6 +3,7 @@ package com.jht.doctor.ui.activity.mine;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -148,7 +149,7 @@ public class MyLoanActivity extends BaseAppCompatActivity {
     }
 
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("我的借款")
                 .setLeft(false)
                 .setStatuBar(R.color.white)

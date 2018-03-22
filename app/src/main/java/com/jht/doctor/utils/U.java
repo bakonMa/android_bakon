@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.ui.bean.ApplyInfoBean;
 import com.jht.doctor.ui.bean.ConfigBean;
@@ -70,13 +70,13 @@ public class U {
      * false： 已登录
      */
     public static boolean isNoToken() {
-        return TextUtils.isEmpty(CustomerApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN));
+        return TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN));
     }
 
 
     //获取base信息 ConfigBean
     public static ConfigBean getConfigData() {
-        String json = CustomerApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_KEY_BASE_CONFIG);
+        String json = DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_KEY_BASE_CONFIG);
         if (TextUtils.isEmpty(json)) {
             return null;
         } else {

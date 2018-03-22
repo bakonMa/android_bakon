@@ -1,10 +1,10 @@
 package com.jht.doctor.ui.presenter;
 
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.ui.contact.TradePwdContact;
 import com.jht.doctor.widget.dialog.LoadingDialog;
-import com.jht.doctor.application.CustomerApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.ui.bean.OtherBean;
 import com.jht.doctor.utils.M;
@@ -47,8 +47,8 @@ public class TradePwdPresenter implements TradePwdContact.Presenter {
     @Override
     public void tradePwdStatus() {
         Params params = new Params();
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().tradePwdStatus(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().tradePwdStatus(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mdialog != null) mdialog.show();
@@ -72,8 +72,8 @@ public class TradePwdPresenter implements TradePwdContact.Presenter {
     public void sendVerifyCode(String phone) {
         Params params = new Params();
         params.put("mobilePhone", phone);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().sendTradeCode(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().sendTradeCode(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mdialog != null) mdialog.show();
@@ -100,8 +100,8 @@ public class TradePwdPresenter implements TradePwdContact.Presenter {
         params.put("code", code);
         params.put("mobilePhone", mobilePhone);
         params.put("pwd", pwd);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().setTradePwd(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().setTradePwd(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mdialog != null) mdialog.show();
@@ -127,8 +127,8 @@ public class TradePwdPresenter implements TradePwdContact.Presenter {
         params.put("mobilePhone", mobilePhone);
         params.put("code", code);
         params.put("pwd", pwd);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().resetTradePwd(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().resetTradePwd(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mdialog != null) mdialog.show();

@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.config.OrderStatue;
 import com.jht.doctor.config.SPConfig;
@@ -73,7 +73,7 @@ public class OrderFragment extends BaseAppCompatFragment implements MyLoanContac
     private List<MyLoanBean> mData = new ArrayList<>();
 
     @Override
-    protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected View setViewId(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_my_loan, null);
     }
 
@@ -246,13 +246,13 @@ public class OrderFragment extends BaseAppCompatFragment implements MyLoanContac
         });
         idRecycle.setAdapter(mAdapter);
         idRecycle.setLayoutManager(new LinearLayoutManager(actContext()));
-        if (!StringUtils.isEmpty(CustomerApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
+        if (!StringUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
             mPresenter.getLoanList();
         }
         idSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (!StringUtils.isEmpty(CustomerApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
+                if (!StringUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
                     mPresenter.getLoanList();
                 } else {
                     idSwipe.setRefreshing(false);
@@ -272,7 +272,7 @@ public class OrderFragment extends BaseAppCompatFragment implements MyLoanContac
     }
 
     @Override
-    protected void initData(Bundle savedInstanceState) {
+    protected void initView(Bundle savedInstanceState) {
 
     }
 
@@ -292,7 +292,7 @@ public class OrderFragment extends BaseAppCompatFragment implements MyLoanContac
     protected void setupActivityComponent() {
         DaggerFragmentComponent.builder()
                 .fragmentModule(new FragmentModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }
@@ -300,7 +300,7 @@ public class OrderFragment extends BaseAppCompatFragment implements MyLoanContac
     @Override
     public void onError(String errorCode, String errorMsg) {
         idSwipe.setRefreshing(false);
-        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
     }
 
     @Override

@@ -9,11 +9,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
 import com.jht.doctor.utils.DensityUtils;
 import com.jht.doctor.utils.LogUtil;
 
@@ -73,11 +71,13 @@ public class ScheduleView_jht extends View {
         mContext = context;
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.ScheduleView_jht);
         currentIndex = ta.getInt(R.styleable.ScheduleView_jht_step1, 1);
+        LogUtil.d("currentIndex  ====" + currentIndex);
         ta.recycle();
         init();
     }
 
     private void init() {
+        LogUtil.d("init currentIndex  ====" + currentIndex);
         //文字画笔
         textPaint = new Paint();
         textPaint.setTextSize(DensityUtils.sp2px(mContext, textSize));
@@ -122,7 +122,7 @@ public class ScheduleView_jht extends View {
         Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();//获取文字的高度
         mWidth = defalutRadius * 8 + lineWidth * 3 + (getTextWith(texts[0]) - defalutRadius * 2);
         mHeight = defalutRadius * 2 + marginY + (int) (fontMetrics.bottom - fontMetrics.top);
-        Log.e("measure", mWidth + "-" + mHeight);
+//        Log.e("measure", mWidth + "-" + mHeight);
         baseTextY = (int) (mHeight - fontMetrics.leading - fontMetrics.descent);
 
         setMeasuredDimension(mWidth, mHeight);
@@ -137,11 +137,15 @@ public class ScheduleView_jht extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+//        LogUtil.d("onDraw  start");
         super.onDraw(canvas);
+        //onDraw重绘 初始化一下状态
+        roundPaint.setColor(mContext.getResources().getColor(R.color.white));
+        textPaint.setColor(mContext.getResources().getColor(R.color.white));
+
         drawTextPointLine(canvas);
         drawBitmap(canvas);
     }
-
 
     private void drawPointLine(Canvas canvas, int start, boolean isWhite) {
         linePointPaint.setColor(mContext.getResources().getColor(isWhite ? R.color.white : R.color.color_999));
@@ -165,10 +169,8 @@ public class ScheduleView_jht extends View {
                 roundPaint.setColor(mContext.getResources().getColor(R.color.color_999));
                 canvas.drawCircle(baseX + defalutRadius * 3 + lineWidth, baseY, defalutRadius, roundPaint);
                 drawPointLine(canvas, baseX + defalutRadius * 4 + lineWidth, false);
-
                 canvas.drawCircle(baseX + defalutRadius * 5 + lineWidth * 2, baseY, defalutRadius, roundPaint);
                 drawPointLine(canvas, baseX + defalutRadius * 6 + lineWidth * 2, false);
-
                 canvas.drawCircle(baseX + defalutRadius * 7 + lineWidth * 3, baseY, defalutRadius, roundPaint);
                 break;
             case 2:

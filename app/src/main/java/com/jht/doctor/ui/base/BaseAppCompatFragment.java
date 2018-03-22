@@ -32,22 +32,22 @@ public abstract class BaseAppCompatFragment extends RxFragment implements BasicP
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = initView(inflater, container, savedInstanceState);
+        rootView = setViewId(inflater, container, savedInstanceState);
         Log.e("111","111");
         if (useEventBus() && !EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
         mUnbinder = ButterKnife.bind(this, rootView);
         setupActivityComponent();
-        initData(savedInstanceState);
+        initView(savedInstanceState);
         return rootView;
     }
 
     protected abstract void setupActivityComponent();
 
-    protected abstract View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
+    protected abstract View setViewId(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
 
-    protected abstract void initData(Bundle savedInstanceState);
+    protected abstract void initView(Bundle savedInstanceState);
 
     @Override
     public Context actContext() {

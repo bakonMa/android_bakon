@@ -37,10 +37,13 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
     private CheckBox mCheckbox; //睁眼闭眼
 
     private TextView showText;  //不可编辑的文字
+    private View line;  //底部的线
 
     private boolean isShowCheckBox;
 
     private boolean isBankCard;
+
+    private boolean isShowLine;
 
     private float mTextMainSize;
 
@@ -64,6 +67,7 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EditTextlayout, defStyleAttr, 0);
         mTextMainSize = ta.getDimension(R.styleable.EditTextlayout_textMainSize, 14);
         isShowCheckBox = ta.getBoolean(R.styleable.EditTextlayout_isShowCheckBox, false);
+        isShowLine = ta.getBoolean(R.styleable.EditTextlayout_isShowBottomLine, true);
         leftTextStr = ta.getString(R.styleable.EditTextlayout_leftText);
         editTextHint = ta.getString(R.styleable.EditTextlayout_editTextHint);
         isBankCard = ta.getBoolean(R.styleable.EditTextlayout_isBankCard, false);
@@ -80,6 +84,7 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
         deleteImage = (ImageView) findViewById(R.id.id_btn_clear);
         mCheckbox = (CheckBox) findViewById(R.id.id_checkbox);
         showText = (TextView) findViewById(R.id.id_tv_show_text);
+        line = findViewById(R.id.id_line);
     }
 
     private void initEvent() {
@@ -88,6 +93,7 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
         mEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextMainSize);
         mEditText.setHint(editTextHint);
         showText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextMainSize);
+        line.setVisibility(isShowLine ? VISIBLE : GONE);
         switch (editTextType) {
             case 1:
                 break;

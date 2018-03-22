@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.jht.doctor.BuildConfig;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.HttpConfig;
 import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.response.HttpResponse;
@@ -77,7 +77,7 @@ public final class HttpAPIWrapper {
                         (Observable.OnSubscribe<T>) subscriber -> {
                             //hitao system code
                             if (BuildConfig.DEBUG) {
-                                Log.d("token", CustomerApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""));
+                                Log.d("token", DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""));
                             }
                             if (baseResponse == null) {
                                 subscriber.onCompleted();
@@ -86,13 +86,13 @@ public final class HttpAPIWrapper {
                             else {
                                 if (baseResponse.errorCode != null && HttpConfig.HttpErrorCode.OVERDUE.getCode().equals(baseResponse.errorCode)) {
                                     //清空token
-                                    CustomerApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, "");
-                                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(baseResponse.errorMsg);
+                                    DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, "");
+                                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(baseResponse.errorMsg);
                                     //表示Token失效--重新登录--成功跳HOME
-                                    Intent intent = new Intent(CustomerApplication.getInstance(), LoginActivity.class);
+                                    Intent intent = new Intent(DocApplication.getInstance(), LoginActivity.class);
                                     intent.putExtra(LoginActivity.FROM_KEY, LoginActivity.TOKEN_OVERDUE);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    CustomerApplication.getInstance().startActivity(intent);
+                                    DocApplication.getInstance().startActivity(intent);
                                 } else {
                                     subscriber.onNext(baseResponse);
                                 }

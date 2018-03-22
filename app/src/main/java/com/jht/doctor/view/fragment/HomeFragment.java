@@ -5,13 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.eventbus.Event;
@@ -19,16 +20,21 @@ import com.jht.doctor.injection.components.DaggerFragmentComponent;
 import com.jht.doctor.injection.modules.FragmentModule;
 import com.jht.doctor.ui.activity.loan.BasicInfoActivity;
 import com.jht.doctor.ui.activity.mine.LoginActivity;
+import com.jht.doctor.ui.activity.mine.bankcard.SupportBankActivity;
 import com.jht.doctor.ui.base.BaseAppCompatFragment;
 import com.jht.doctor.ui.bean.MaxAmtBean;
 import com.jht.doctor.ui.contact.HomeLoanContact;
 import com.jht.doctor.ui.presenter.HomeLoanPresenter;
 import com.jht.doctor.utils.RegexUtil;
 import com.jht.doctor.utils.StringUtils;
+import com.jht.doctor.widget.toolbar.TitleOnclickListener;
+import com.jht.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.lang.ref.WeakReference;
 
 import javax.inject.Inject;
 
@@ -50,12 +56,12 @@ public class HomeFragment extends BaseAppCompatFragment implements HomeLoanConta
     HomeLoanPresenter mPresenter;
 
     @Override
-    protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected View setViewId(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home_loan, null);
     }
 
     @Override
-    protected void initData(Bundle savedInstanceState) {
+    protected void initView(Bundle savedInstanceState) {
 
     }
 
@@ -66,7 +72,7 @@ public class HomeFragment extends BaseAppCompatFragment implements HomeLoanConta
     }
 
     private void requestMaxAmt() {
-        if (!StringUtils.isEmpty(CustomerApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
+        if (!StringUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
             mPresenter.getMaxAmt();
         }
     }
@@ -75,7 +81,7 @@ public class HomeFragment extends BaseAppCompatFragment implements HomeLoanConta
     protected void setupActivityComponent() {
         DaggerFragmentComponent.builder()
                 .fragmentModule(new FragmentModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build().inject(this);
     }
 
@@ -95,9 +101,10 @@ public class HomeFragment extends BaseAppCompatFragment implements HomeLoanConta
         }
     }
 
+
     @Override
     public void onError(String errorCode, String errorMsg) {
-        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
     }
 
     @Override
@@ -132,7 +139,7 @@ public class HomeFragment extends BaseAppCompatFragment implements HomeLoanConta
 
     @OnClick(R.id.id_tv_apply)
     public void onViewClicked() {
-        if (StringUtils.isEmpty(CustomerApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
+        if (StringUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
             Intent intent = new Intent(actContext(), LoginActivity.class);
             intent.putExtra(LoginActivity.FROM_KEY, LoginActivity.HOMELOAN_ACTIVITY);
             startActivity(intent);

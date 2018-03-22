@@ -70,8 +70,6 @@
     </style>
 
 
-
-
     <!--JHT-->
     <style name="home_botton_text">
         <item name="android:layout_width">0dp</item>
@@ -80,13 +78,16 @@
         <item name="android:textSize">12sp</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <!--android:background=”?android:attr/selectableItemBackground”-->
+
     </style>
 
     <!-- 横线 灰色-->
     <style name="line_gray_hor">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>
-        <item name="android:background">@color/statueBar_color</item>
+        <item name="android:background">@color/color_dddddd</item>
     </style>
 
 </resources>

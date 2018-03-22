@@ -2,12 +2,13 @@ package com.jht.doctor.ui.activity.repayment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.SessionMapKey;
 import com.jht.doctor.ui.base.BaseAppCompatActivity;
 import com.jht.doctor.ui.bean.MyAccountInfoBean;
@@ -42,7 +43,7 @@ public class WithdrawSuccessActivity extends BaseAppCompatActivity {
     }
 
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .blank()
                 .setStatuBar(R.color.white)
                 .bind();
@@ -55,7 +56,7 @@ public class WithdrawSuccessActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.id_btn_comfirm)
     public void onViewClicked() {
-        MyAccountInfoBean.UserAccountInfoDTOBean bean = (MyAccountInfoBean.UserAccountInfoDTOBean) CustomerApplication.getAppComponent().sessionMap().get(SessionMapKey.WITHDRAW_BEAN);
+        MyAccountInfoBean.UserAccountInfoDTOBean bean = (MyAccountInfoBean.UserAccountInfoDTOBean) DocApplication.getAppComponent().sessionMap().get(SessionMapKey.WITHDRAW_BEAN);
         if (bean == null) {
             finish();
         } else {

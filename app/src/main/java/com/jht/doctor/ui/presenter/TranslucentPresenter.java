@@ -4,7 +4,7 @@ import android.content.pm.PackageManager;
 import android.os.SystemClock;
 
 import com.google.gson.Gson;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.api.http.HttpAPIWrapper;
 import com.jht.doctor.data.api.http.Params;
@@ -57,8 +57,8 @@ public class TranslucentPresenter implements TranslucentContact.Presenter {
     @Override
     public void subscribe() {
         long systemClock = SystemClock.currentThreadTimeMillis();
-        boolean initIsForceUpdate = CustomerApplication.getAppComponent().dataRepo().appSP().getBoolean(SPConfig.SP_BOOL_LASTCHECK_FORCEUPDATE_NAME , false);
-        long lastCheckUpdateTime = CustomerApplication.getAppComponent().dataRepo().appSP().getLong(SPConfig.SP_LONG_LASTCHECKUPDATE_TIME_NAME , systemClock);
+        boolean initIsForceUpdate = DocApplication.getAppComponent().dataRepo().appSP().getBoolean(SPConfig.SP_BOOL_LASTCHECK_FORCEUPDATE_NAME , false);
+        long lastCheckUpdateTime = DocApplication.getAppComponent().dataRepo().appSP().getLong(SPConfig.SP_LONG_LASTCHECKUPDATE_TIME_NAME , systemClock);
 
         Subscription subscription;
 
@@ -66,7 +66,7 @@ public class TranslucentPresenter implements TranslucentContact.Presenter {
             subscription =
                     Observable.zip(
                             Observable.timer(1, TimeUnit.SECONDS),//启动动画 1秒
-                            CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().appUpdateCheck(4),
+                            DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().appUpdateCheck(4),
                             (aLong, httpResponse) -> httpResponse
                     )
                     .compose(HttpAPIWrapper.SCHEDULERS_TRANSFORMER())
@@ -92,8 +92,8 @@ public class TranslucentPresenter implements TranslucentContact.Presenter {
 
                                     //检查成功，更新检查成功后得到的当前时间和是否强制更新(强制更新标示符以及最低版本)
 
-                                    CustomerApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.SP_BOOL_LASTCHECK_FORCEUPDATE_NAME, isForce);
-                                    CustomerApplication.getAppComponent().dataRepo().appSP().setLong(SPConfig.SP_LONG_LASTCHECKUPDATE_TIME_NAME, SystemClock.currentThreadTimeMillis());
+                                    DocApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.SP_BOOL_LASTCHECK_FORCEUPDATE_NAME, isForce);
+                                    DocApplication.getAppComponent().dataRepo().appSP().setLong(SPConfig.SP_LONG_LASTCHECKUPDATE_TIME_NAME, SystemClock.currentThreadTimeMillis());
 
                                     //手机中版本大于等于网络中请求到的版本
                                     if (nowVersionNum >= netVersionNum) {
@@ -141,7 +141,7 @@ public class TranslucentPresenter implements TranslucentContact.Presenter {
                                     aLong -> mView.jumpToMain(),
                                     throwable -> {
                                         throwable.printStackTrace();
-                                        CustomerApplication.getInstance().managerRepository.actMgr().finishAllActivity();
+                                        DocApplication.getInstance().managerRepository.actMgr().finishAllActivity();
                                     }
                             );
         }
@@ -157,7 +157,7 @@ public class TranslucentPresenter implements TranslucentContact.Presenter {
         //success: mView.apkDownloadSuccess(downloadedApkPath , sourceMD5)
         //fail: mView.apkDownloadFailed(throwable)
         downloadApkSubscription =
-                CustomerApplication.getAppComponent().dataRepo().http()
+                DocApplication.getAppComponent().dataRepo().http()
                         .downloadApk(downloadUrl, destLocaLPath, downloadUrl)
                         .compose(mView.toLifecycle())
                         .subscribe(
@@ -179,8 +179,8 @@ public class TranslucentPresenter implements TranslucentContact.Presenter {
     @Override
     public void getRepayment() {
         Subscription subscription = Observable.zip(Observable.timer(1000, TimeUnit.MILLISECONDS)
-                , CustomerApplication.getAppComponent().dataRepo().http()
-                        .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getHomeRepayment())
+                , DocApplication.getAppComponent().dataRepo().http()
+                        .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getHomeRepayment())
                         .compose(mView.toLifecycle())
                 , new Func2<Long, HttpResponse<RepaymentHomeBean>, MergeBean<Long, HttpResponse<RepaymentHomeBean>>>() {
                     @Override
@@ -212,15 +212,15 @@ public class TranslucentPresenter implements TranslucentContact.Presenter {
     @Override
     public void getBaseCinfig() {
         Params params = new Params();
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getConfig(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getConfig(params))
                 .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<ConfigBean>>(null) {
                     @Override
                     public void onSuccess(HttpResponse<ConfigBean> resultResponse) {
                         //保存基础数据json
                         if (resultResponse.result != null) {
-                            CustomerApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_KEY_BASE_CONFIG, new Gson().toJson(resultResponse.result));
+                            DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_KEY_BASE_CONFIG, new Gson().toJson(resultResponse.result));
                         }
                     }
 

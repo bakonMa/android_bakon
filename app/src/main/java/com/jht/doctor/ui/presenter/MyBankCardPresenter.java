@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
@@ -63,8 +63,8 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
     public void getBankList(String orderNo) {
         Params params = new Params();
         params.put("orderNo", orderNo);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getBankList(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getBankList(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -91,8 +91,8 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
         params.put("mobile", mobile);
         params.put("orderNo", orderNo);
         params.put("realName", realName);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().contributiveTypeJudge(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().contributiveTypeJudge(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -129,8 +129,8 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
         params.put("otherPlatformId", otherPlatformId);
         params.put("userName", userName);
         params.put("userType", userType);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().ensureBankCardOfCunGuan(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().ensureBankCardOfCunGuan(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -155,8 +155,8 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
         Params params = new Params();
         params.put("orderNo", orderNo);
         params.put("userType", userType);//0 为主借人 1 共借人
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().ifTileBank(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().ifTileBank(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -184,8 +184,8 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
     public void unbind(String bankCardNo,String orderNo) {
         Params params = new Params();
         params.put("bankCardNo", bankCardNo);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().deleteBankCard(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().deleteBankCard(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -210,8 +210,8 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
         Params params = new Params();
         params.put("orderNo", orderNo);
         params.put("bankCardNo", bankCardNo);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().ensureBankCard(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().ensureBankCard(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -237,8 +237,8 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
         params.put("idCareNo", idCareNo);
         params.put("orderNo", orderNo);
         params.put("userName", userName);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().ifBankOfJoint(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().ifBankOfJoint(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -265,8 +265,8 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
         params.put("orderNo", orderNo);
         params.put("otherPlatformId", otherPlatformId);
         params.put("pwd", pwd);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().bindCardSetTradePwd(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().bindCardSetTradePwd(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -299,8 +299,8 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
         params.put("bankCardName", bankCardName);
         params.put("idCard", idCard);
         params.put("password", password);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().applyAuthorization(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().applyAuthorization(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {

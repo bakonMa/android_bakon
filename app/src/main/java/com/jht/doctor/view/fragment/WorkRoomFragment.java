@@ -4,56 +4,40 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
-import com.jht.doctor.config.PathConfig;
-import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.injection.components.DaggerFragmentComponent;
 import com.jht.doctor.injection.modules.FragmentModule;
-import com.jht.doctor.ui.activity.loan.BasicInfoActivity;
-import com.jht.doctor.ui.activity.mine.FeedbackActivity;
 import com.jht.doctor.ui.activity.mine.LoginActivity;
-import com.jht.doctor.ui.activity.mine.MyInfoActivity;
-import com.jht.doctor.ui.activity.mine.myinfo.MyImageInfoActivity;
-import com.jht.doctor.ui.activity.mine.setting.SettingActivity;
-import com.jht.doctor.ui.activity.mine.webview.WebViewActivity;
-import com.jht.doctor.ui.activity.repayment.MessageActivity;
-import com.jht.doctor.ui.activity.repayment.MyAccountActivity;
-import com.jht.doctor.ui.activity.welcome.MainActivity;
+import com.jht.doctor.ui.activity.mine.bankcard.SupportBankActivity;
 import com.jht.doctor.ui.base.BaseAppCompatFragment;
-import com.jht.doctor.ui.bean.MessageCountBean;
-import com.jht.doctor.ui.bean.MyAccountInfoBean;
-import com.jht.doctor.ui.bean.MyInfoBean;
 import com.jht.doctor.ui.bean.PersonalBean;
 import com.jht.doctor.ui.contact.PersonalContact;
-import com.jht.doctor.ui.presenter.PersonalPresenter;
-import com.jht.doctor.utils.DensityUtils;
-import com.jht.doctor.utils.RegexUtil;
 import com.jht.doctor.utils.U;
-import com.jht.doctor.widget.RelativeWithImage;
-import com.jht.doctor.widget.dialog.CommonDialog;
-import com.jht.doctor.widget.dialog.HaveBalanceDialog;
+import com.jht.doctor.view.activity.AuthStep1Activity;
+import com.jht.doctor.widget.toolbar.TitleOnclickListener;
+import com.jht.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import javax.inject.Inject;
+import java.lang.ref.WeakReference;
 
 import butterknife.BindView;
-import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by table on 2018/1/8.
@@ -62,45 +46,60 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class WorkRoomFragment extends BaseAppCompatFragment implements PersonalContact.View {
 
+    @BindView(R.id.viewflipper)
+    ViewFlipper viewflipper;
+    @BindView(R.id.id_toolbar)
+    Toolbar idToolbar;
+
+    private String[] strings = {"fragment_workroom1", "fragment_workroom2", "fragment_workroom3"};
+
     @Override
-    protected View initView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected View setViewId(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_workroom, null);
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        initView();
+    protected void initView(Bundle savedInstanceState) {
+        initToolbar();
+        for (int i = 0; i < 3; i++) {
+            View view = LayoutInflater.from(getContext()).inflate(R.layout.item_main, null);
+            ((TextView) view.findViewById(R.id.tv_num)).setText(strings[i]);
+            viewflipper.addView(view);
+        }
         requestData();
-    }
-
-    @Override
-    protected void initData(Bundle savedInstanceState) {
-
     }
 
     @Override
     protected void setupActivityComponent() {
         DaggerFragmentComponent.builder()
                 .fragmentModule(new FragmentModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build().inject(this);
     }
 
-    private void initView() {
-    }
 
     private void requestData() {
-        //有token，请求个人资料
-        if (!U.isNoToken()) {
-        }
+
     }
 
-    /**
-     * 是否跳转用户资料
-     */
-    private void gotoMyinfo() {
+    private void initToolbar() {
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(getActivity()))
+                .setTitle("工作室")
+                .setStatuBar(R.color.white)
+                .setLeft(false)
+                .setRightText("认证", true, R.color.color_popup_btn)
+                .setListener(new TitleOnclickListener() {
+                    @Override
+                    public void leftClick() {
+                        super.leftClick();
+                    }
 
+                    @Override
+                    public void rightClick() {
+                        super.rightClick();
+                        startActivity(new Intent(getContext(), AuthStep1Activity.class));
+                    }
+                }).bind();
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
@@ -165,4 +164,5 @@ public class WorkRoomFragment extends BaseAppCompatFragment implements PersonalC
     public LifecycleTransformer toLifecycle() {
         return bindToLifecycle();
     }
+
 }

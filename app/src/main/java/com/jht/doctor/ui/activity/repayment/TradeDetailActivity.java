@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +20,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.PathConfig;
 import com.jht.doctor.injection.components.DaggerActivityComponent;
 import com.jht.doctor.injection.modules.ActivityModule;
@@ -135,7 +136,7 @@ public class TradeDetailActivity extends BaseAppCompatActivity implements PopupW
     }
 
     private void initToolbar() {
-        toolbarBuilder = ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        toolbarBuilder = ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setClickTitle("交易明细")
                 .setStatuBar(R.color.white)
                 .setLeft(false)
@@ -203,7 +204,7 @@ public class TradeDetailActivity extends BaseAppCompatActivity implements PopupW
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }
@@ -221,7 +222,7 @@ public class TradeDetailActivity extends BaseAppCompatActivity implements PopupW
             --pageNum;
             adapter.loadMoreFail();
         }
-        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
     }
 
     @Override

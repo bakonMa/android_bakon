@@ -1,20 +1,24 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/id_toolbar"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         app:contentInsetStart="0dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <View
                 android:id="@+id/id_view_statu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"/>
+                android:visibility="gone" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp">
@@ -39,11 +43,11 @@
                         android:id="@+id/id_left_close_image"
                         android:layout_width="15dp"
                         android:layout_height="15dp"
-                        android:layout_toRightOf="@+id/id_left_image"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15dp"
+                        android:layout_toRightOf="@+id/id_left_image"
                         android:src="@drawable/icon_close"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                     <TextView
                         android:id="@+id/id_tv_left"
@@ -56,12 +60,14 @@
                         android:textSize="14sp"
                         android:visibility="gone" />
                 </RelativeLayout>
+
                 <LinearLayout
                     android:id="@+id/id_ll_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerInParent="true"
                     android:gravity="center_vertical">
+
                     <TextView
                         android:id="@+id/id_tv_title"
                         android:layout_width="wrap_content"
@@ -69,14 +75,15 @@
                         android:layout_centerInParent="true"
                         android:text=""
                         android:textColor="@color/toolbar_title"
-                        android:textSize="17sp"/>
+                        android:textSize="17sp" />
+
                     <ImageView
                         android:id="@+id/id_iv_triangle"
                         android:layout_width="9dp"
                         android:layout_height="6dp"
-                        android:src="@drawable/icon_sj_2"
                         android:layout_marginLeft="6dp"
-                        android:visibility="gone"/>
+                        android:src="@drawable/icon_sj_2"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <ImageView
@@ -84,23 +91,20 @@
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="15dp"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp" />
 
                 <TextView
                     android:id="@+id/id_tv_right"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="15dp"
-                    android:layout_alignParentRight="true"
-                    android:textSize="14sp"
+                    android:text=""
                     android:textColor="@color/toolbar_title"
-                    android:text=""/>
+                    android:textSize="14sp" />
             </RelativeLayout>
         </LinearLayout>
-
-
-
     </android.support.v7.widget.Toolbar>
 </merge>

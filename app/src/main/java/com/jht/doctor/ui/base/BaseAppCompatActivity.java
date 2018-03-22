@@ -31,7 +31,6 @@ public abstract class BaseAppCompatActivity extends RxAppCompatActivity implemen
             EventBusUtil.register(this);
         }
 
-
     }
 
     private void initStatusBar() {

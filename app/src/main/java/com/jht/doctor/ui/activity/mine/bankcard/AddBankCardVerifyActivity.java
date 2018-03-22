@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -15,7 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.config.PathConfig;
 import com.jht.doctor.data.eventbus.Event;
@@ -116,7 +117,7 @@ public class AddBankCardVerifyActivity extends BaseAppCompatActivity implements 
     };
 
     private void initToolBar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("验证码")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
@@ -132,7 +133,7 @@ public class AddBankCardVerifyActivity extends BaseAppCompatActivity implements 
     @Override
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .activityModule(new ActivityModule(this))
                 .build()
                 .inject(this);
@@ -153,7 +154,7 @@ public class AddBankCardVerifyActivity extends BaseAppCompatActivity implements 
                 break;
             case R.id.btn_comfirm:
                 if (!cbAgreement.isChecked()) {
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请先同意《借款人服务协议》");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请先同意《借款人服务协议》");
                 } else {
                     UserAuthorizationBO userAuthorizationBO = new UserAuthorizationBO();
                     userAuthorizationBO.platformUserNo = applyAuthorizationBean.getLainlianDTO().getModel().getPlatformUserNo();
@@ -220,7 +221,7 @@ public class AddBankCardVerifyActivity extends BaseAppCompatActivity implements 
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
     }
 
     @Override

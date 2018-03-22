@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.injection.components.DaggerActivityComponent;
@@ -125,7 +126,7 @@ public class MyBankCardActivity extends BaseAppCompatActivity implements MyBankC
                 dialog.show();
             } else if (bankCardBean.getOwner().getIsBank() != null && "01".equals(bankCardBean.getOwner().getIsBank())) {
                 //不需要添加共借人
-                CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("您无需添加共借人");
+                DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("您无需添加共借人");
             } else {
                 mPresenter.judgeIsTiedCard(orderNo, "1");//判断是否有历史共借人
             }
@@ -143,7 +144,7 @@ public class MyBankCardActivity extends BaseAppCompatActivity implements MyBankC
     };
 
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("银行卡管理")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
@@ -169,7 +170,7 @@ public class MyBankCardActivity extends BaseAppCompatActivity implements MyBankC
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }
@@ -193,7 +194,7 @@ public class MyBankCardActivity extends BaseAppCompatActivity implements MyBankC
                 haveBalanceDialog.show();
                 break;
             default:
-                CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+                DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
                 break;
         }
     }
@@ -325,7 +326,7 @@ public class MyBankCardActivity extends BaseAppCompatActivity implements MyBankC
                     break;
                 case MyBankCardPresenter.UNBIND:
                     //解绑历史主借人银行卡成功
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("解绑成功");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("解绑成功");
                     jumpToBind();
                     break;
                 case MyBankCardPresenter.ENSURE_CARD:

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 
 /**
  * @author: ZhaoYun
@@ -21,11 +21,11 @@ import com.jht.doctor.application.CustomerApplication;
 public final class ToastManager {
 
     private Toast mToast;
-    private final CustomerApplication mApplication;
+    private final DocApplication mApplication;
     private Runnable mRunnable;
     private static Handler sHandler = new Handler(Looper.getMainLooper());
 
-    public ToastManager(CustomerApplication application) {
+    public ToastManager(DocApplication application) {
         mApplication = application;
     }
 

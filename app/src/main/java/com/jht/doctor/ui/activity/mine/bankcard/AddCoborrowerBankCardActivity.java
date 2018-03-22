@@ -2,6 +2,7 @@ package com.jht.doctor.ui.activity.mine.bankcard;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -66,7 +67,7 @@ public class AddCoborrowerBankCardActivity extends BaseAppCompatActivity {
     };
 
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("添加共借人银行卡")
                 .setLeft(false)
                 .setStatuBar(R.color.white)

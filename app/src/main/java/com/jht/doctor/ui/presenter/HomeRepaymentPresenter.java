@@ -1,8 +1,8 @@
 package com.jht.doctor.ui.presenter;
 
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
-import com.jht.doctor.application.CustomerApplication;
 import com.jht.doctor.ui.bean.RepaymentHomeBean;
 import com.jht.doctor.ui.contact.HomeRepaymentContact;
 import com.jht.doctor.utils.M;
@@ -41,8 +41,8 @@ public class HomeRepaymentPresenter implements HomeRepaymentContact.Presenter {
 
     @Override
     public void getHomeRepayment() {
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getHomeRepayment())
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getHomeRepayment())
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null)

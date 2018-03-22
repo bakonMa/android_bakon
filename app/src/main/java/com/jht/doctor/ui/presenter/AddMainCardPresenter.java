@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
-import com.jht.doctor.application.CustomerApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.ui.bean.ApplyAuthorizationBean;
 import com.jht.doctor.ui.bean.BankBean;
@@ -53,8 +53,8 @@ public class AddMainCardPresenter implements AddMainCardContact.Presenter {
     public void getBankName(String cardNo) {
         Params params = new Params();
         params.put("cardBin", cardNo);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getBankName(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getBankName(params))
                 .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<BankBean>>(null) {
                     @Override
@@ -75,8 +75,8 @@ public class AddMainCardPresenter implements AddMainCardContact.Presenter {
     @Override
     public void tradePwdStatus() {
         Params params = new Params();
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().tradePwdStatus(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().tradePwdStatus(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) mDialog.show();
@@ -100,8 +100,8 @@ public class AddMainCardPresenter implements AddMainCardContact.Presenter {
         Params params = new Params();
         params.put("orderNo",orderNo);
         params.put("otherPlatformId",otherPlatformId);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().bindCardTradePwdStatus(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().bindCardTradePwdStatus(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(()->{
                     if(mDialog!=null){
@@ -134,8 +134,8 @@ public class AddMainCardPresenter implements AddMainCardContact.Presenter {
         params.put("bankCardName", bankCardName);
         params.put("idCard", idCard);
         params.put("password", password);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().applyAuthorization(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().applyAuthorization(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {
@@ -182,8 +182,8 @@ public class AddMainCardPresenter implements AddMainCardContact.Presenter {
         params.put("orderNo", orderNo);
         params.put("otherPlatformId", otherPlatformId);
         params.put("pwd", pwd);
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().bindCardSetTradePwd(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().bindCardSetTradePwd(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) {

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -14,7 +15,7 @@ import android.view.View;
 
 import com.jht.doctor.BuildConfig;
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.data.eventbus.EventBusUtil;
@@ -99,7 +100,7 @@ public class SettingActivity extends BaseAppCompatActivity implements SettingCon
 
     //共同头部处理
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("设置")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
@@ -118,7 +119,7 @@ public class SettingActivity extends BaseAppCompatActivity implements SettingCon
         switch (view.getId()) {
             case R.id.tv_reset_password:
                 if (otherBean == null) {
-                    CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("数据异常，请退出后重试");
+                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("数据异常，请退出后重试");
                     return;
                 }
                 Intent intent = new Intent(this, ResetPasswordActivity.class);
@@ -139,7 +140,7 @@ public class SettingActivity extends BaseAppCompatActivity implements SettingCon
     @Override
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .activityModule(new ActivityModule(this))
                 .build()
                 .inject(this);
@@ -148,7 +149,7 @@ public class SettingActivity extends BaseAppCompatActivity implements SettingCon
     @Override
     public void onError(String errorCode, String errorMsg) {
         if (!TextUtils.isEmpty(errorMsg)) {
-            CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
         }
     }
 
@@ -195,10 +196,10 @@ public class SettingActivity extends BaseAppCompatActivity implements SettingCon
                     .subscribe(aBoolean -> {
                         if (aBoolean) {
                             String apkDirPath;
-                            if (Environment.MEDIA_MOUNTED.equals(CustomerApplication.getAppComponent().dataRepo().storage().externalRootDirState())) {
-                                apkDirPath = CustomerApplication.getAppComponent().dataRepo().storage().externalPublicDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + getPackageName() + File.separator + "install";
+                            if (Environment.MEDIA_MOUNTED.equals(DocApplication.getAppComponent().dataRepo().storage().externalRootDirState())) {
+                                apkDirPath = DocApplication.getAppComponent().dataRepo().storage().externalPublicDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + getPackageName() + File.separator + "install";
                             } else {
-                                apkDirPath = CustomerApplication.getAppComponent().dataRepo().storage().internalCustomDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + getPackageName() + File.separator + "install";
+                                apkDirPath = DocApplication.getAppComponent().dataRepo().storage().internalCustomDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + getPackageName() + File.separator + "install";
                             }
                             File apkDir = new File(apkDirPath);
                             if (!apkDir.exists()) {
@@ -225,14 +226,14 @@ public class SettingActivity extends BaseAppCompatActivity implements SettingCon
                                 mPresenter.downloadApk(downloadUrl, apkFile.getAbsolutePath(), netMD5, force);
                             }
                         } else {
-                            CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请求权限失败");
+                            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请求权限失败");
                         }
                     });
         };
         AppUpdateDialog.CancelListener cancelListener = force -> {
             mPresenter.cancelDownload();
             if (force){
-                CustomerApplication.getInstance().managerRepository.actMgr().finishAllActivity();
+                DocApplication.getInstance().managerRepository.actMgr().finishAllActivity();
             }
         };
         appUpdateDialog = new AppUpdateDialog(this , R.style.UpdateDialogTheme , appUpdateBean , startDownloadingListener , cancelListener);

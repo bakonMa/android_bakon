@@ -3,7 +3,6 @@ package com.jht.doctor.utils;
 import android.util.Log;
 
 import com.jht.doctor.BuildConfig;
-import com.jht.doctor.application.CustomerApplication;
 
 public class LogUtil {
 

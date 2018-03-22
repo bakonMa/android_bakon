@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.eventbus.Event;
@@ -62,7 +62,7 @@ public class HomeLoanActivity extends BaseAppCompatActivity implements HomeLoanC
     }
 
     private void requestMaxAmt() {
-        if (!StringUtils.isEmpty(CustomerApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
+        if (!StringUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
             mPresenter.getMaxAmt();
         }
     }
@@ -78,7 +78,7 @@ public class HomeLoanActivity extends BaseAppCompatActivity implements HomeLoanC
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }
@@ -91,7 +91,7 @@ public class HomeLoanActivity extends BaseAppCompatActivity implements HomeLoanC
                 startActivity(new Intent(this, PersonalActivity.class));
                 break;
             case R.id.id_tv_apply:
-                if (StringUtils.isEmpty(CustomerApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
+                if (StringUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
                     Intent intent = new Intent(this, LoginActivity.class);
                     intent.putExtra(LoginActivity.FROM_KEY, LoginActivity.HOMELOAN_ACTIVITY);
                     startActivity(intent);
@@ -144,7 +144,7 @@ public class HomeLoanActivity extends BaseAppCompatActivity implements HomeLoanC
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
     }
 
     @Override

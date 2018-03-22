@@ -1,6 +1,6 @@
 package com.jht.doctor.ui.presenter;
 
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
@@ -42,8 +42,8 @@ public class DemoPresenter implements DemoContact.Presenter {
         Params params = new Params();
         params.put("mobilePhone", "13276386385");
         params.put("checkCode", "123456");
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().login(params))
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().login(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) mDialog.show();
@@ -56,7 +56,7 @@ public class DemoPresenter implements DemoContact.Presenter {
 
                     @Override
                     public void onError(String errorCode, String errorMsg) {
-                        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+                        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
                     }
                 });
         mSubscription.add(subscription);

@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.f2prateek.rx.preferences.Preference;
 import com.f2prateek.rx.preferences.RxSharedPreferences;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.SPConfig;
 
 import java.util.Set;
@@ -22,13 +22,13 @@ import rx.functions.Action1;
  */
 public final class SharePreferencesWrapper {
 
-    private final CustomerApplication mApplication;
+    private final DocApplication mApplication;
 
     private final SharedPreferences mSharedPreferences;
     private final SharedPreferences.Editor mEditor;
     private final RxSharedPreferences mRXPreferences;
 
-    public SharePreferencesWrapper(CustomerApplication application , String spName) {
+    public SharePreferencesWrapper(DocApplication application , String spName) {
         mApplication = application;
         mSharedPreferences = mApplication.getSharedPreferences(spName , SPConfig.GENERAL_SP_MODE);
         mEditor = mSharedPreferences.edit();

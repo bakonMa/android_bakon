@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -13,7 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.data.api.http.Params;
 import com.jht.doctor.data.eventbus.Event;
@@ -79,7 +80,7 @@ public class RepaymentVerifyCodeActivity extends BaseAppCompatActivity implement
 
         //*必须传*
         if (!getIntent().hasExtra("type")) {
-            CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast("数据异常，请稍后重试");
+            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("数据异常，请稍后重试");
             finish();
         } else {
             type = getIntent().getIntExtra("type", RepaymentPresenter.TYPE_RECHARGE);//0：充值 1：提现
@@ -97,7 +98,7 @@ public class RepaymentVerifyCodeActivity extends BaseAppCompatActivity implement
     }
 
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<AppCompatActivity>(this))
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("验证码")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
@@ -177,7 +178,7 @@ public class RepaymentVerifyCodeActivity extends BaseAppCompatActivity implement
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .applicationComponent(CustomerApplication.getAppComponent())
+                .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
     }
@@ -192,7 +193,7 @@ public class RepaymentVerifyCodeActivity extends BaseAppCompatActivity implement
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
     }
 
     @Override

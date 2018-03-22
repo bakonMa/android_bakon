@@ -1,9 +1,9 @@
 package com.jht.doctor.ui.presenter;
 
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.ui.contact.MyLoanContact;
-import com.jht.doctor.application.CustomerApplication;
 import com.jht.doctor.ui.bean.MyLoanBean;
 import com.jht.doctor.utils.M;
 import com.jht.doctor.widget.dialog.LoadingDialog;
@@ -42,8 +42,8 @@ public class MyLoanPresenter implements MyLoanContact.Presenter {
 
     @Override
     public void getLoanList() {
-        Subscription subscription = CustomerApplication.getAppComponent().dataRepo().http()
-                .wrapper(CustomerApplication.getAppComponent().dataRepo().http().provideHttpAPI().getMyLoan())
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getMyLoan())
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(()->{
                     if(mDialog!=null){

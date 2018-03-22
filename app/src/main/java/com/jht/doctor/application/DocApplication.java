@@ -21,11 +21,11 @@ import javax.inject.Inject;
  * @project: customer-android-2th
  * @detail:
  */
-public class CustomerApplication extends Application {
+public class DocApplication extends Application {
 
     private static ApplicationComponent mApplicationComponent;
 
-    private static CustomerApplication mAppInstance;
+    private static DocApplication mAppInstance;
 
     @Inject
     public ManagerRepository managerRepository;
@@ -43,12 +43,13 @@ public class CustomerApplication extends Application {
 
         //db 初始化
         GreenDaoManager.getInstance();
-        if (TextUtils.isEmpty(CustomerApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_KEY_BASE_CONFIG, ""))) {
+        //基础数据
+        if (TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_KEY_BASE_CONFIG, ""))) {
             mApplicationComponent.dataRepo().appSP().setString(SPConfig.SP_KEY_BASE_CONFIG, SPConfig.BASE_CONFIG);
         }
     }
 
-    public static CustomerApplication getInstance() {
+    public static DocApplication getInstance() {
         return mAppInstance;
     }
 

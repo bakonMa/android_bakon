@@ -10,7 +10,7 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.application.CustomerApplication;
+import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.eventbus.Event;
@@ -82,7 +82,7 @@ public class MainActivity extends BaseAppCompatActivity {
             public void onTabChanged(String tabId) {
                 if (tabId.equals("订单")) {
                     previousTag = currentTag;
-                    if (StringUtils.isEmpty(CustomerApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
+                    if (StringUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
                         idTabHost.setCurrentTabByTag(previousTag);
                         Intent intent = new Intent(actContext(), LoginActivity.class);
                         intent.putExtra(LoginActivity.FROM_KEY, LoginActivity.ORDER_ACTIVITY);
