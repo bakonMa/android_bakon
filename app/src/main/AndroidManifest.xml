@@ -38,13 +38,11 @@
             android:theme="@style/TranslucentAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-        <activity android:name=".view.activity.AuthStep1Activity" />
+        <activity android:name=".view.activity.AuthStep1Activity"
+            android:windowSoftInputMode="adjustPan"/>
 
 
         <activity
@@ -64,7 +62,7 @@
         <activity android:name=".ui.activity.repayment.MessageActivity" />
         <activity
             android:name=".ui.activity.loan.JobInfoActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".ui.activity.loan.HouseInfoActivity"
             android:windowSoftInputMode="adjustPan" />

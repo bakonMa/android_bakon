@@ -20,7 +20,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="68dp"
+                android:layout_height="70dp"
                 android:background="@color/indicator_selected_color">
 
                 <com.jht.doctor.widget.ScheduleView_jht
@@ -119,12 +119,13 @@
                     app:leftText="身份证"
                     app:textMainSize="16sp" />
 
-                <com.jht.doctor.widget.EditTextlayout
-                    android:id="@+id/et_address"
+                <com.jht.doctor.widget.EditableLayout
+                    android:id="@+id/id_ed_company_nature"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
-                    app:leftText="地区"
-                    app:textMainSize="16sp" />
+                    app:edit_leftText="地区"
+                    app:edit_mode="select"
+                    app:edit_textMainSize="16sp" />
 
                 <com.jht.doctor.widget.EditTextlayout
                     android:id="@+id/et_organization"
@@ -133,27 +134,30 @@
                     app:leftText="医疗机构"
                     app:textMainSize="16sp" />
 
-                <com.jht.doctor.widget.EditTextlayout
+                <com.jht.doctor.widget.EditableLayout
                     android:id="@+id/et_lab_type"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
-                    app:leftText="科室"
-                    app:textMainSize="16sp" />
+                    app:edit_leftText="科室"
+                    app:edit_mode="select"
+                    app:edit_textMainSize="16sp" />
 
-                <com.jht.doctor.widget.EditTextlayout
+                <com.jht.doctor.widget.EditableLayout
                     android:id="@+id/et_title"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
-                    app:leftText="科室"
-                    app:textMainSize="16sp" />
+                    app:edit_leftText="职称"
+                    app:edit_mode="select"
+                    app:edit_textMainSize="16sp" />
 
-                <com.jht.doctor.widget.EditTextlayout
+                <com.jht.doctor.widget.EditableLayout
                     android:id="@+id/et_goodat"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
-                    app:isShowLine="false"
-                    app:leftText="擅长"
-                    app:textMainSize="16sp" />
+                    app:edit_leftText="擅长"
+                    app:edit_mode="select"
+                    app:isShowLineBottom="false"
+                    app:edit_textMainSize="16sp" />
 
             </LinearLayout>
 

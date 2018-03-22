@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -95,7 +94,7 @@ public class JobInfoActivity extends BaseAppCompatActivity implements JobInfoCon
     }
 
     private void requestData() {
-        mPresenter.requestInfo();
+//        mPresenter.requestInfo();
         companytypeBeanList = U.getConfigData().COMPANY_TYPE;
         industryBeanList = U.getConfigData().INDUSTRY;
         positionlevelBeanList = U.getConfigData().POSITION_LEVEL;
@@ -223,11 +222,12 @@ public class JobInfoActivity extends BaseAppCompatActivity implements JobInfoCon
                 ScreenUtils.lightOff(this);
                 break;
             case R.id.id_btn_next_step:
-                mPresenter.commitJobInfo(idEdCompanyName.getText().trim()
-                        , codeCompanyType
-                        , codeIndustry
-                        , codePosition
-                        , Double.parseDouble(idEdMonthIncome.getText().trim()));
+                startActivity(new Intent(actContext(), HouseInfoActivity.class));
+//                mPresenter.commitJobInfo(idEdCompanyName.getText().trim()
+//                        , codeCompanyType
+//                        , codeIndustry
+//                        , codePosition
+//                        , Double.parseDouble(idEdMonthIncome.getText().trim()));
                 break;
         }
     }

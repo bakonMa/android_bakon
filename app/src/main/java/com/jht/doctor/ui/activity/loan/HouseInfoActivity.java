@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -127,7 +126,7 @@ public class HouseInfoActivity extends BaseAppCompatActivity implements HouseInf
     }
 
     private void requestData() {
-        mPresenter.requestInfo();
+//        mPresenter.requestInfo();
         houseTypeList = U.getConfigData().HOUSE_TYPE;
     }
 

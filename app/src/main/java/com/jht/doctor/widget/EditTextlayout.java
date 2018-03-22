@@ -41,8 +41,6 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
 
     private boolean isShowCheckBox;
 
-    private boolean isBankCard;
-
     private boolean isShowLine;
 
     private float mTextMainSize;
@@ -70,7 +68,6 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
         isShowLine = ta.getBoolean(R.styleable.EditTextlayout_isShowBottomLine, true);
         leftTextStr = ta.getString(R.styleable.EditTextlayout_leftText);
         editTextHint = ta.getString(R.styleable.EditTextlayout_editTextHint);
-        isBankCard = ta.getBoolean(R.styleable.EditTextlayout_isBankCard, false);
         editTextType = ta.getInt(R.styleable.EditTextlayout_editTextType, 1);
         ta.recycle();
         initView();
@@ -79,11 +76,11 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
 
     private void initView() {
         LayoutInflater.from(mContext).inflate(R.layout.edittext_layout, this);
-        leftTextView = (TextView) findViewById(R.id.id_tv_left);
-        mEditText = (EditText) findViewById(R.id.id_layout_edittext);
-        deleteImage = (ImageView) findViewById(R.id.id_btn_clear);
-        mCheckbox = (CheckBox) findViewById(R.id.id_checkbox);
-        showText = (TextView) findViewById(R.id.id_tv_show_text);
+        leftTextView = findViewById(R.id.id_tv_left);
+        mEditText = findViewById(R.id.id_layout_edittext);
+        deleteImage = findViewById(R.id.id_btn_clear);
+        mCheckbox = findViewById(R.id.id_checkbox);
+        showText = findViewById(R.id.id_tv_show_text);
         line = findViewById(R.id.id_line);
     }
 
@@ -94,6 +91,7 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
         mEditText.setHint(editTextHint);
         showText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextMainSize);
         line.setVisibility(isShowLine ? VISIBLE : GONE);
+
         switch (editTextType) {
             case 1:
                 break;
@@ -111,10 +109,7 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
 
             mCheckbox.setOnClickListener(this);
         }
-        if (isBankCard) {
-            //todo 如果是银行卡
 
-        }
         //设置焦点变化的监听
         mEditText.setOnFocusChangeListener(new FocusChangeListenerImpl());
         //设置EditText文字变化的监听

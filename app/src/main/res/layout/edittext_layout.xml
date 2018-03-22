@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:minWidth="50dp"
+        android:minWidth="80dp"
         android:textColor="@color/color_333"
         android:textSize="16sp"
         tools:text="姓名" />

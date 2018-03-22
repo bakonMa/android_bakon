@@ -7,6 +7,7 @@ import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,18 +23,20 @@ import com.jht.doctor.R;
 
 public class EditableLayout extends RelativeLayout {
     private Context mContext;
-
     private float mTextMainSize;
 
     private String leftTextStr;
 
     private String editTextHint;
 
+    private boolean isShowLine;//是否显示线
+
     private int editTextType;
 
     private int mode;
 
     private TextView tv_left, tv_show, tv_select, tv_yuan;
+    private View line;
 
     private EditText ed_editable;
 
@@ -58,6 +61,7 @@ public class EditableLayout extends RelativeLayout {
         editTextHint = ta.getString(R.styleable.EditableLayout_edit_editTextHint);
         editTextType = ta.getInt(R.styleable.EditableLayout_edit_editTextType, 1);
         mode = ta.getInt(R.styleable.EditableLayout_edit_mode, 1);
+        isShowLine = ta.getBoolean(R.styleable.EditableLayout_isShowLineBottom, true);
         ta.recycle();
         initView();
         initEvent();
@@ -72,6 +76,7 @@ public class EditableLayout extends RelativeLayout {
         ll_select = (LinearLayout) findViewById(R.id.id_ll_select);
         iv_arrow = findViewById(R.id.id_iv_arrow);
         tv_yuan = findViewById(R.id.id_yuan);
+        line = findViewById(R.id.id_line);
     }
 
     private void initEvent() {
@@ -81,7 +86,7 @@ public class EditableLayout extends RelativeLayout {
         ed_editable.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextMainSize);
         ed_editable.setHint(editTextHint);
         tv_show.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextMainSize);
-
+        line.setVisibility(isShowLine ? VISIBLE : GONE);
         switch (editTextType) {
             case 1:
                 break;

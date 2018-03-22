@@ -26,6 +26,7 @@
         <attr name="edit_leftText" format="string"/>
         <attr name="edit_editTextHint" format="string"/>
         <attr name="edit_textMainSize" format="dimension"/>
+        <attr name="isShowLineBottom" format="boolean"/>
         <attr name="edit_editTextType">
             <enum name="normal" value="1"/>
             <enum name="number" value="2"/>

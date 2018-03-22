@@ -108,7 +108,7 @@
         android:layout_marginTop="50dp"
         android:background="@drawable/selector_bg_button_login"
         android:clickable="true"
-        android:enabled="false"
+        android:enabled="true"
         android:gravity="center"
         android:text="下一步"
         android:textColor="@color/white"
