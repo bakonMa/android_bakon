@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
 public class ScreenUtils {
     public static void lightOff(Activity activity){
         WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
-        lp.alpha = 0.3f;
+        lp.alpha = 0.4f;
         activity.getWindow().setAttributes(lp);
     }
 

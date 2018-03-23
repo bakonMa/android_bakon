@@ -41,9 +41,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.AuthStep1Activity"
-            android:windowSoftInputMode="adjustPan"/>
-
+        <activity
+            android:name=".view.activity.AuthStep1Activity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.AuthStep2Activity"/>
 
         <activity
             android:name=".ui.activity.welcome.SplashActivity"

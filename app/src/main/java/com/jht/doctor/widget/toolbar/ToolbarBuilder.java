@@ -1,7 +1,6 @@
 package com.jht.doctor.widget.toolbar;
 
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
@@ -17,8 +16,8 @@ import android.widget.TextView;
 
 import com.jht.doctor.R;
 import com.jht.doctor.utils.DensityUtils;
+import com.jht.doctor.utils.LogUtil;
 import com.jht.doctor.utils.OsUtil;
-import com.jht.doctor.utils.ScreenUtils;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -49,7 +48,8 @@ public class ToolbarBuilder {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             if (colorRes == R.color.white) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M || OsUtil.isMIUI() || OsUtil.isFlyme()) {
-                    ScreenUtils.setStatusBarFontIconDark(context.get(), true);
+//                    ScreenUtils.setStatusBarFontIconDark(context.get(), true);
+                    setStatusBarFontIconDark(true);
                 } else {
                     colorRes = R.color.statueBar_color;
                 }
@@ -66,6 +66,7 @@ public class ToolbarBuilder {
 
     /**
      * 设置Android状态栏的字体颜色，状态栏为亮色的时候字体和图标是黑色，状态栏为暗色的时候字体和图标为白色
+     * 目前可以是MIUI6+,Flyme4+，Android6.0+支持切换状态栏的文字颜色为暗色。
      *
      * @param dark 状态栏字体是否为深色
      */
@@ -84,7 +85,8 @@ public class ToolbarBuilder {
                 extraFlagField.invoke(window, 0, darkModeFlag);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            LogUtil.d("Exception 小米MIUI setStatusBarFontIconDark");
         }
 
         // 魅族FlymeUI
@@ -105,8 +107,10 @@ public class ToolbarBuilder {
             meizuFlags.setInt(lp, value);
             window.setAttributes(lp);
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            LogUtil.d("Exception 魅族FlymeUI setStatusBarFontIconDark");
         }
+
         // android6.0+系统
         // 这个设置和在xml的style文件中用这个<item name="android:windowLightStatusBar">true</item>属性是一样的
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -115,6 +119,7 @@ public class ToolbarBuilder {
                         View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                                 | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             }
+            return;
         }
     }
 

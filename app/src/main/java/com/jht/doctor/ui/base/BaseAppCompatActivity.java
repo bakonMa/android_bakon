@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.view.WindowManager;
 
 import com.jht.doctor.data.eventbus.EventBusUtil;
-import com.jht.doctor.utils.StatusBarUtil;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -25,8 +24,7 @@ public abstract class BaseAppCompatActivity extends RxAppCompatActivity implemen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActivityComponent();
-//        initStatusBar();
-        StatusBarUtil.setWindowFlag(getWindow());
+        initStatusBar();
         if (isUseEventBus() && !EventBus.getDefault().isRegistered(this)) {
             EventBusUtil.register(this);
         }

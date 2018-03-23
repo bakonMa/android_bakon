@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_bg_main"
@@ -53,6 +52,50 @@
         app:editTextHint="请输入您的身份证号"
         app:leftText="身份证号"
         app:textMainSize="14sp"></com.jht.doctor.widget.EditTextlayout>
+
+    <com.jht.doctor.widget.EditTextlayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:editTextHint="请输入您的身份证号"
+        app:leftText="身份证号"
+        app:textMainSize="14sp"/>
+<com.jht.doctor.widget.EditTextlayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:editTextHint="请输入您的身份证号"
+        app:leftText="身份证号"
+        app:textMainSize="14sp"/>
+<com.jht.doctor.widget.EditTextlayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:editTextHint="请输入您的身份证号"
+        app:leftText="身份证号"
+        app:textMainSize="14sp"/>
+<com.jht.doctor.widget.EditTextlayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:editTextHint="请输入您的身份证号"
+        app:leftText="身份证号"
+        app:textMainSize="14sp"/>
+<com.jht.doctor.widget.EditTextlayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:editTextHint="请输入您的身份证号"
+        app:leftText="身份证号"
+        app:textMainSize="14sp"/>
+<com.jht.doctor.widget.EditTextlayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:editTextHint="请输入您的身份证号"
+        app:leftText="身份证号"
+        app:textMainSize="14sp"/>
+
+    <com.jht.doctor.widget.EditTextlayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:editTextHint="请输入您的身份证号"
+        app:leftText="身份证号"
+        app:textMainSize="14sp" />
 
     <TextView
         android:id="@+id/id_btn_next_step"

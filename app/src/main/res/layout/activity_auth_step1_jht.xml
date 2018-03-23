@@ -8,14 +8,13 @@
     <include layout="@layout/base_toolbar" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_f6f6f6"
-        android:scrollbars="none">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -70,14 +69,16 @@
                         android:id="@+id/iv_img"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:background="@drawable/icon_fankui" />
+                        android:background="@drawable/bg_image_add"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_image_tobeadd" />
 
                     <ImageView
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_marginLeft="32dp"
                         android:layout_marginRight="15dp"
-                        android:background="@drawable/bg_1" />
+                        android:background="@mipmap/logo" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -120,7 +121,7 @@
                     app:textMainSize="16sp" />
 
                 <com.jht.doctor.widget.EditableLayout
-                    android:id="@+id/id_ed_company_nature"
+                    android:id="@+id/et_address"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     app:edit_leftText="地区"
@@ -156,8 +157,8 @@
                     android:layout_height="44dp"
                     app:edit_leftText="擅长"
                     app:edit_mode="select"
-                    app:isShowLineBottom="false"
-                    app:edit_textMainSize="16sp" />
+                    app:edit_textMainSize="16sp"
+                    app:isShowLineBottom="false" />
 
             </LinearLayout>
 
@@ -177,6 +178,5 @@
         </LinearLayout>
 
     </ScrollView>
-
 
 </LinearLayout>

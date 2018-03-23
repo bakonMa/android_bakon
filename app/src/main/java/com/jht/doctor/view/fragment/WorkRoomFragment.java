@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,12 +19,12 @@ import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.injection.components.DaggerFragmentComponent;
 import com.jht.doctor.injection.modules.FragmentModule;
 import com.jht.doctor.ui.activity.mine.LoginActivity;
-import com.jht.doctor.ui.activity.mine.bankcard.SupportBankActivity;
 import com.jht.doctor.ui.base.BaseAppCompatFragment;
 import com.jht.doctor.ui.bean.PersonalBean;
 import com.jht.doctor.ui.contact.PersonalContact;
 import com.jht.doctor.utils.U;
 import com.jht.doctor.view.activity.AuthStep1Activity;
+import com.jht.doctor.view.activity.AuthStep2Activity;
 import com.jht.doctor.widget.toolbar.TitleOnclickListener;
 import com.jht.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
@@ -36,8 +35,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.lang.ref.WeakReference;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Created by table on 2018/1/8.
@@ -92,6 +89,7 @@ public class WorkRoomFragment extends BaseAppCompatFragment implements PersonalC
                     @Override
                     public void leftClick() {
                         super.leftClick();
+                        startActivity(new Intent(getContext(), AuthStep2Activity.class));
                     }
 
                     @Override

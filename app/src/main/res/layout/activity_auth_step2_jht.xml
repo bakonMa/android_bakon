@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include layout="@layout/base_toolbar" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="@string/myinfo_dialog_title" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:fitsSystemWindows="true"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/icon_close_2"
+                android:drawablePadding="5dp"
+                android:paddingBottom="10dp"
+                android:text="@string/str_jpg_png_gif"
+                android:textColor="@color/color_c3c3c3"
+                android:textSize="12sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="姓名"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:editTextType="number"
+                app:leftText="手机号"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:id="@+id/et_sfz"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="身份证"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditableLayout
+                android:id="@+id/id_ed_company_nature"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:edit_leftText="地区"
+                app:edit_mode="select"
+                app:edit_textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:id="@+id/et_organization"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditableLayout
+                android:id="@+id/et_lab_type"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:edit_leftText="科室"
+                app:edit_mode="select"
+                app:edit_textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditableLayout
+                android:id="@+id/et_title"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:edit_leftText="职称"
+                app:edit_mode="select"
+                app:edit_textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditableLayout
+                android:id="@+id/et_goodat"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:edit_leftText="擅长"
+                app:edit_mode="select"
+                app:edit_textMainSize="16sp"
+                app:isShowLineBottom="false" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+            <com.jht.doctor.widget.EditTextlayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:leftText="医疗机构"
+                app:textMainSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/tv_next_step"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_margin="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/selector_bg_button_login"
+                android:clickable="true"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="下一步"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
