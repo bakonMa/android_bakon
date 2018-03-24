@@ -73,7 +73,7 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
                                 new BaseObserver<HttpResponse<RepaymentOffLineBean>>(mDialog) {
                                     @Override
                                     public void onSuccess(HttpResponse<RepaymentOffLineBean> httpResponse) {
-                                        mView.onSuccess(M.createMessage(httpResponse.result, REPAYMENT_OFFLINE));
+                                        mView.onSuccess(M.createMessage(httpResponse.data, REPAYMENT_OFFLINE));
                                     }
 
                                     @Override
@@ -102,7 +102,7 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
                                 new BaseObserver<HttpResponse<MyAccountInfoBean>>(mDialog) {
                                     @Override
                                     public void onSuccess(HttpResponse<MyAccountInfoBean> httpResponse) {
-                                        mView.onSuccess(M.createMessage(httpResponse.result, REPAYMENT_MYACCOUNT));
+                                        mView.onSuccess(M.createMessage(httpResponse.data, REPAYMENT_MYACCOUNT));
                                     }
 
                                     @Override
@@ -151,7 +151,7 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
                                 new BaseObserver<HttpResponse<DealInfoBean>>(mDialog) {
                                     @Override
                                     public void onSuccess(HttpResponse<DealInfoBean> httpResponse) {
-                                        mView.onSuccess(M.createMessage(httpResponse.result, REPAYMENT_DETAIL));
+                                        mView.onSuccess(M.createMessage(httpResponse.data, REPAYMENT_DETAIL));
                                     }
 
                                     @Override
@@ -183,7 +183,7 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
                                 new BaseObserver<HttpResponse<RechargeBean>>(mDialog) {
                                     @Override
                                     public void onSuccess(HttpResponse<RechargeBean> httpResponse) {
-                                        mView.onSuccess(M.createMessage(httpResponse.result, REPAYMENT_RECHARGE));
+                                        mView.onSuccess(M.createMessage(httpResponse.data, REPAYMENT_RECHARGE));
                                     }
 
                                     @Override
@@ -215,7 +215,7 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
                                 new BaseObserver<HttpResponse<String>>(mDialog) {
                                     @Override
                                     public void onSuccess(HttpResponse<String> httpResponse) {
-                                        mView.onSuccess(M.createMessage(httpResponse.result, REPAYMENT_WITHDRAW));
+                                        mView.onSuccess(M.createMessage(httpResponse.data, REPAYMENT_WITHDRAW));
                                     }
 
                                     @Override
@@ -246,7 +246,7 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<OtherBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<OtherBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, REPAYMENT_PAYWAY));
+                        mView.onSuccess(M.createMessage(httpResponse.data, REPAYMENT_PAYWAY));
                     }
 
                     @Override
@@ -288,7 +288,7 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, form == 0 ? REPAYMENT_SMS_CODE : REPAYMENT_SMS_CODE_AGAIN));
+                        mView.onSuccess(M.createMessage(httpResponse.data, form == 0 ? REPAYMENT_SMS_CODE : REPAYMENT_SMS_CODE_AGAIN));
                     }
 
                     @Override
@@ -318,7 +318,7 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
                         .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                             @Override
                             public void onSuccess(HttpResponse<String> httpResponse) {
-                                mView.onSuccess(M.createMessage(httpResponse.result, REPAYMENT_SMS_RECHARGE));
+                                mView.onSuccess(M.createMessage(httpResponse.data, REPAYMENT_SMS_RECHARGE));
                             }
 
                             @Override
@@ -347,7 +347,7 @@ public class RepaymentPresenter implements RepaymentContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, REPAYMENT_SMS_WITHDRAW));
+                        mView.onSuccess(M.createMessage(httpResponse.data, REPAYMENT_SMS_WITHDRAW));
                     }
 
                     @Override

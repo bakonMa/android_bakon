@@ -56,7 +56,7 @@ public class SupportBankPresenter implements SupportBankContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<List<SupportBankBean>>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<List<SupportBankBean>> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result,SUPPORT_BANKLIST));
+                        mView.onSuccess(M.createMessage(httpResponse.data,SUPPORT_BANKLIST));
                     }
 
                     @Override

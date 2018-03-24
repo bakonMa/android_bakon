@@ -55,7 +55,7 @@ public class LoanMoneyPresenter implements LoanMoneyContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> response) {
-                        mView.onSuccess(M.createMessage(response.result,LOAN_MONEY));
+                        mView.onSuccess(M.createMessage(response.data,LOAN_MONEY));
                     }
 
                     @Override

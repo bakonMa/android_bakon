@@ -53,7 +53,7 @@ public class LoanApplyPresenter implements LoanApplyContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> response) {
-                        mView.onSuccess(M.createMessage(response.result, GET_CREDIT_STATUS));
+                        mView.onSuccess(M.createMessage(response.data, GET_CREDIT_STATUS));
                     }
 
                     @Override

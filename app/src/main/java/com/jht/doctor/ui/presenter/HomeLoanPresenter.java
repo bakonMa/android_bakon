@@ -54,7 +54,7 @@ public class HomeLoanPresenter implements HomeLoanContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<HomeLoanBean>>(mDialog) {
             @Override
             public void onSuccess(HttpResponse<HomeLoanBean> homeLoanBeanHttpResponse) {
-                mView.onSuccess(M.createMessage(homeLoanBeanHttpResponse.result,APPLY_SUCCESS));
+                mView.onSuccess(M.createMessage(homeLoanBeanHttpResponse.data,APPLY_SUCCESS));
             }
 
             @Override
@@ -76,7 +76,7 @@ public class HomeLoanPresenter implements HomeLoanContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<MaxAmtBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<MaxAmtBean> maxAmtBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(maxAmtBeanHttpResponse.result,MAX_AMT));
+                        mView.onSuccess(M.createMessage(maxAmtBeanHttpResponse.data,MAX_AMT));
                     }
 
                     @Override

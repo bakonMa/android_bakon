@@ -59,12 +59,12 @@ public class AddMainCardPresenter implements AddMainCardContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<BankBean>>(null) {
                     @Override
                     public void onSuccess(HttpResponse<BankBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, GET_BANK_NAME));
+                        mView.onSuccess(M.createMessage(httpResponse.data, GET_BANK_NAME));
                     }
 
                     @Override
                     public void onError(String errorCode, String errorMsg) {
-                        //mView.onError(errorCode,errorMsg);
+                        //mView.onError(code,msg);
                     }
 
                 });
@@ -84,7 +84,7 @@ public class AddMainCardPresenter implements AddMainCardContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<OtherBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<OtherBean> resultResponse) {
-                        mView.onSuccess(M.createMessage(resultResponse.result, TRADE_PWD_STATUS));
+                        mView.onSuccess(M.createMessage(resultResponse.data, TRADE_PWD_STATUS));
                     }
 
                     @Override
@@ -110,7 +110,7 @@ public class AddMainCardPresenter implements AddMainCardContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<OtherBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<OtherBean> resultResponse) {
-                        mView.onSuccess(M.createMessage(resultResponse.result, TRADE_PWD_STATUS));
+                        mView.onSuccess(M.createMessage(resultResponse.data, TRADE_PWD_STATUS));
                     }
 
                     @Override
@@ -144,7 +144,7 @@ public class AddMainCardPresenter implements AddMainCardContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse httpResponse) {
-                        String result = httpResponse.result.toString().replaceAll("=,","=null,");
+                        String result = httpResponse.data.toString().replaceAll("=,","=null,");
                         try {
                             Gson gson = new Gson();
                             ApplyAuthorizationBean applyAuthorizationBean = gson.fromJson(result, new TypeToken<ApplyAuthorizationBean>() {}.getType());
@@ -192,7 +192,7 @@ public class AddMainCardPresenter implements AddMainCardContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result,SETPASSWORD));
+                        mView.onSuccess(M.createMessage(httpResponse.data,SETPASSWORD));
                     }
 
                     @Override

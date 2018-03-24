@@ -50,14 +50,12 @@ greendao {
 }
 
 def devAddress() {
-    //"\"http://116.62.244.195:8777/\""  //开发环境(1期测试环境)
-    //"\"http://10.255.233.220:8777/\""  //开发环境(2期存管内网环境)
-    "\"http://house-uat.sd-bao.cn:10000/app/\""  //开发环境(2期存管阿里云环境)
+//    "\"http://dev.dr.jhtcm.com/\""  //测试环境
+    "\"http://wdev.dr.jhtcm.com:7996/\""  //测试环境
 }
 
 def onLineAddress() {
-//    "\"http://118.31.211.237/app/\""  //线上环境
-    "\"http://front.sd-bao.com/app/\""  //正式线上环境
+    "\"http://dr.jhtcm.com/\""  //正式线上环境
 }
 
 dependencies {

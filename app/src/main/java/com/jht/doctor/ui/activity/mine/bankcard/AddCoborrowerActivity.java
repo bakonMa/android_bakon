@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -162,11 +161,11 @@ public class AddCoborrowerActivity extends BaseAppCompatActivity implements AddC
                 KeyBoardUtils.hideKeyBoard(view, this);
                 mAddressPopupView = new AddressPopupView(this, new AddressPopupView.ClickedListener() {
                     @Override
-                    public void completeClicked(String addressInfo, String provinceCode, String cityCode, String districtCode) {
-                        idEditAddress.setText(addressInfo);
-                        mProvinceCode = provinceCode;
-                        mCityCode = cityCode;
-                        mDistrictCode = districtCode;
+                    public void completeClicked(String... info) {
+                        idEditAddress.setText(info[0] + "-" + info[2] + "-" + info[4]);
+                        mProvinceCode = info[1];
+                        mCityCode = info[3];
+                        mDistrictCode = info[5];
                     }
                 });
                 mAddressPopupView.showAtLocation(this.findViewById(R.id.id_activity_add_coborrower), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);

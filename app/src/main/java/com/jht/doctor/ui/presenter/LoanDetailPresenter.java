@@ -53,7 +53,7 @@ public class LoanDetailPresenter implements LoanDetailContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<LoanDetailBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<LoanDetailBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, LOAN_DETAIL));
+                        mView.onSuccess(M.createMessage(httpResponse.data, LOAN_DETAIL));
                     }
 
                     @Override

@@ -75,7 +75,7 @@ public final class HttpAPIWrapper {
         return resourceObservable
                 .flatMap((T baseResponse) -> Observable.create(
                         (Observable.OnSubscribe<T>) subscriber -> {
-                            //hitao system code
+                            //system code
                             if (BuildConfig.DEBUG) {
                                 Log.d("token", DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""));
                             }
@@ -84,10 +84,12 @@ public final class HttpAPIWrapper {
                             }
                             //success
                             else {
-                                if (baseResponse.errorCode != null && HttpConfig.HttpErrorCode.OVERDUE.getCode().equals(baseResponse.errorCode)) {
+                                if (baseResponse.code != null
+                                        && HttpConfig.NOLOGIN_CODE.equals(baseResponse.code)//未登录
+                                        && HttpConfig.SIGN_ERROR_CODE.equals(baseResponse.code)) {//sign错误
                                     //清空token
                                     DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, "");
-                                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(baseResponse.errorMsg);
+                                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(baseResponse.msg);
                                     //表示Token失效--重新登录--成功跳HOME
                                     Intent intent = new Intent(DocApplication.getInstance(), LoginActivity.class);
                                     intent.putExtra(LoginActivity.FROM_KEY, LoginActivity.TOKEN_OVERDUE);

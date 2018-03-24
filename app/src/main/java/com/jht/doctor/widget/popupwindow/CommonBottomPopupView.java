@@ -3,10 +3,10 @@ package com.jht.doctor.widget.popupwindow;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +27,7 @@ import java.util.List;
  * Created by Tang on 2017/11/15.
  */
 
-public class CommonBottomPopupView extends PopupWindow {
+public class CommonBottomPopupView extends PopupWindow implements PopupWindow.OnDismissListener {
     private Context mContext;
     private CommOnClickListener mListener;
 
@@ -86,21 +86,21 @@ public class CommonBottomPopupView extends PopupWindow {
                 }
             }
         });
-
-        setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                ScreenUtils.lightOn((Activity) mContext);
-            }
-        });
-
         this.setContentView(view);
     }
 
+    public void show(View parent) {
+        showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+    }
     @Override
     public void showAtLocation(View parent, int gravity, int x, int y) {
         ScreenUtils.lightOff(((Activity) mContext));
         super.showAtLocation(parent, gravity, x, y);
+    }
+
+    @Override
+    public void onDismiss() {
+        ScreenUtils.lightOn((Activity) mContext);
     }
 
 

@@ -256,12 +256,13 @@ public class HouseInfoActivity extends BaseAppCompatActivity implements HouseInf
                 mAddressPopupView = new AddressPopupView(this, new AddressPopupView.ClickedListener() {
 
                     @Override
-                    public void completeClicked(String addressInfo, String provinceCode, String cityCode, String districtCode) {
-                        idEdHouseAddress.setText(addressInfo);
-                        mProvinceCode = provinceCode;
-                        mCityCode = cityCode;
-                        mDistrictCode = districtCode;
+                    public void completeClicked(String... info) {
+                        idEdHouseAddress.setText(info[0] + "-" + info[2] + "-" + info[4]);
+                        mProvinceCode = info[1];
+                        mCityCode = info[3];
+                        mDistrictCode = info[5];
                     }
+
                 });
                 mAddressPopupView.showAtLocation(this.findViewById(R.id.id_activity_house_info), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
                 ScreenUtils.lightOff(this);

@@ -70,7 +70,7 @@ public class HouseInfoPresenter implements HouseInfoContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<HouseInfoResponse>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<HouseInfoResponse> houseInfoResponseHttpResponse) {
-                        mView.onSuccess(M.createMessage(houseInfoResponseHttpResponse.result, COMMIT_HOUSE_INFO));
+                        mView.onSuccess(M.createMessage(houseInfoResponseHttpResponse.data, COMMIT_HOUSE_INFO));
                     }
 
                     @Override
@@ -93,7 +93,7 @@ public class HouseInfoPresenter implements HouseInfoContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<ApplyInfoBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<ApplyInfoBean> applyInfoBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(applyInfoBeanHttpResponse.result, APPLY_INFO));
+                        mView.onSuccess(M.createMessage(applyInfoBeanHttpResponse.data, APPLY_INFO));
                     }
 
                     @Override

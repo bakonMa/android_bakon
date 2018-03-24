@@ -6,14 +6,19 @@ import com.jht.doctor.injection.modules.ActivityModule;
 import com.jht.doctor.injection.qualifiers.ActivityContext;
 import com.jht.doctor.injection.scopes.PerActivity;
 import com.jht.doctor.ui.activity.loan.BasicInfoActivity;
+import com.jht.doctor.ui.activity.loan.DemoActivity;
 import com.jht.doctor.ui.activity.loan.HomeLoanActivity;
 import com.jht.doctor.ui.activity.loan.HouseInfoActivity;
 import com.jht.doctor.ui.activity.loan.JobInfoActivity;
 import com.jht.doctor.ui.activity.loan.LoanApplyStateActivity;
+import com.jht.doctor.ui.activity.loan.LoanMoneyActivity;
 import com.jht.doctor.ui.activity.mine.FeedbackActivity;
 import com.jht.doctor.ui.activity.mine.LoanDetailActivity;
+import com.jht.doctor.ui.activity.mine.LoginActivity;
+import com.jht.doctor.ui.activity.mine.MyInfoActivity;
 import com.jht.doctor.ui.activity.mine.MyLoanListActivity;
 import com.jht.doctor.ui.activity.mine.PersonalActivity;
+import com.jht.doctor.ui.activity.mine.bankcard.AddBankCardVerifyActivity;
 import com.jht.doctor.ui.activity.mine.bankcard.AddCoborrowerActivity;
 import com.jht.doctor.ui.activity.mine.bankcard.AddMainCardActivity;
 import com.jht.doctor.ui.activity.mine.bankcard.BankCardSettingActivity;
@@ -27,16 +32,12 @@ import com.jht.doctor.ui.activity.repayment.HomeRepaymentActivity;
 import com.jht.doctor.ui.activity.repayment.MessageActivity;
 import com.jht.doctor.ui.activity.repayment.MyAccountActivity;
 import com.jht.doctor.ui.activity.repayment.OfflineRepaymentActivity;
+import com.jht.doctor.ui.activity.repayment.RechageActivity;
 import com.jht.doctor.ui.activity.repayment.RepaymentVerifyCodeActivity;
+import com.jht.doctor.ui.activity.repayment.TradeDetailActivity;
 import com.jht.doctor.ui.activity.repayment.WithdrawCashActivity;
 import com.jht.doctor.ui.activity.welcome.TranslucentActivity;
-import com.jht.doctor.ui.activity.loan.DemoActivity;
-import com.jht.doctor.ui.activity.loan.LoanMoneyActivity;
-import com.jht.doctor.ui.activity.mine.LoginActivity;
-import com.jht.doctor.ui.activity.mine.MyInfoActivity;
-import com.jht.doctor.ui.activity.mine.bankcard.AddBankCardVerifyActivity;
-import com.jht.doctor.ui.activity.repayment.RechageActivity;
-import com.jht.doctor.ui.activity.repayment.TradeDetailActivity;
+import com.jht.doctor.view.activity.AuthStep1Activity;
 import com.jht.doctor.view.fragment.HomeFragment;
 
 import dagger.Component;
@@ -53,9 +54,13 @@ import dagger.Component;
         modules = {ActivityModule.class}
 )
 public interface ActivityComponent extends ApplicationComponent{
-
+    /**********************JHT Start ***********************/
     @ActivityContext
     Context actContext();
+    void inject(AuthStep1Activity authStep1Activity);
+
+    /**********************JHT end ***********************/
+
 
     void inject(DemoActivity demoActivity);
     void inject(LoginActivity loginActivity);

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,7 +26,7 @@ import com.jht.doctor.ui.bean.DownloadProgressBean;
 import com.jht.doctor.ui.bean.OtherBean;
 import com.jht.doctor.ui.contact.SettingContract;
 import com.jht.doctor.ui.presenter.SettingPresenter;
-import com.jht.doctor.utils.IntentUtil;
+import com.jht.doctor.utils.ActivityUtil;
 import com.jht.doctor.utils.MD5Util;
 import com.jht.doctor.widget.RelativeWithText;
 import com.jht.doctor.widget.dialog.AppUpdateDialog;
@@ -209,7 +208,7 @@ public class SettingActivity extends BaseAppCompatActivity implements SettingCon
                             if (apkFile.exists()) {
                                 String localMD5 = MD5Util.md5(apkFile);
                                 if (localMD5.equals(netMD5)) {
-                                    IntentUtil.installApk(SettingActivity.this, apkFile, getPackageName() + ".fileprovider");
+                                    ActivityUtil.installApk(SettingActivity.this, apkFile, getPackageName() + ".fileprovider");
                                 } else {
                                     apkFile.delete();
                                     if (appUpdateDialog != null){
@@ -245,7 +244,7 @@ public class SettingActivity extends BaseAppCompatActivity implements SettingCon
         String localMD5 = MD5Util.md5(new File(localApkPath));
         if (localMD5.equals(sourceMD5)) {
             if (appUpdateDialog != null && appUpdateDialog.isShowing()) {
-                IntentUtil.installApk(this, new File(localApkPath), getPackageName() + ".fileprovider");
+                ActivityUtil.installApk(this, new File(localApkPath), getPackageName() + ".fileprovider");
                 appUpdateDialog.switchViewState(false);
                 appUpdateDialog.setProgress(0);
             }

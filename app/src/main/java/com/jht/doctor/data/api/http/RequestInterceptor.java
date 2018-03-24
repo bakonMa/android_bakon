@@ -1,8 +1,9 @@
 package com.jht.doctor.data.api.http;
 
-import com.jht.doctor.application.DocApplication;
+import android.os.Build;
+
+import com.jht.doctor.BuildConfig;
 import com.jht.doctor.config.HttpConfig;
-import com.jht.doctor.config.SPConfig;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -25,8 +26,13 @@ public class RequestInterceptor implements Interceptor {
         } else {
             request = chain.request()
                     .newBuilder()
-                    .header(HttpConfig.HTTP_HEADER_CONTENTTYPE_KEY, HttpConfig.HTTP_HEADER_CONTENTTYPE_VALUE)
-                    .header(HttpConfig.HTTP_HEADER_TOKEN_KEY, DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))
+                    .header("OS", HttpConfig.HTTP_HEADER_OS)
+                    .header("APPVERSION", BuildConfig.VERSION_NAME)
+                    .header("APPVERSION_CODE", BuildConfig.VERSION_CODE + "")
+                    .header("MODEL", Build.MODEL)//手机型号
+                    .header("RELEASE", Build.VERSION.RELEASE)//系统版本号
+//                    .header(HttpConfig.HTTP_HEADER_CONTENTTYPE_KEY, HttpConfig.HTTP_HEADER_CONTENTTYPE_VALUE)
+//                    .header(HttpConfig.HTTP_HEADER_TOKEN_KEY, DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))
                     .build();
         }
         return chain.proceed(request);

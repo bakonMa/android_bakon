@@ -56,7 +56,7 @@ public class JobInfoPresenter implements JobInfoContact.Presenter {
 
                     @Override
                     public void onSuccess(HttpResponse<String> response) {
-                        mView.onSuccess(M.createMessage(response.result,COMMIT_JOB_INFO));
+                        mView.onSuccess(M.createMessage(response.data,COMMIT_JOB_INFO));
                     }
 
                     @Override
@@ -78,7 +78,7 @@ public class JobInfoPresenter implements JobInfoContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<ApplyInfoBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<ApplyInfoBean> applyInfoBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(applyInfoBeanHttpResponse.result,APPLY_INFO));
+                        mView.onSuccess(M.createMessage(applyInfoBeanHttpResponse.data,APPLY_INFO));
                     }
                     @Override
                     public void onError(String errorCode, String errorMsg) {

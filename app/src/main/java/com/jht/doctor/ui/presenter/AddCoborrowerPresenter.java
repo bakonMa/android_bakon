@@ -68,7 +68,7 @@ public class AddCoborrowerPresenter implements AddCoborrowerContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<AddCoborrowerBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<AddCoborrowerBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, ADD_COBORROWER));
+                        mView.onSuccess(M.createMessage(httpResponse.data, ADD_COBORROWER));
                     }
 
                     @Override
@@ -96,7 +96,7 @@ public class AddCoborrowerPresenter implements AddCoborrowerContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<ContributiveBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<ContributiveBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, CONTRIBUTIVE));
+                        mView.onSuccess(M.createMessage(httpResponse.data, CONTRIBUTIVE));
                     }
 
                     @Override
@@ -130,7 +130,7 @@ public class AddCoborrowerPresenter implements AddCoborrowerContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, ENSURE_CONTRIBUTION));
+                        mView.onSuccess(M.createMessage(httpResponse.data, ENSURE_CONTRIBUTION));
                     }
 
                     @Override

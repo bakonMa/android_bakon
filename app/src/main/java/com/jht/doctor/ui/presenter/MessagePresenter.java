@@ -59,7 +59,7 @@ public class MessagePresenter implements MessageContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<MessageBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<MessageBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, MESSAGE_LIST));
+                        mView.onSuccess(M.createMessage(httpResponse.data, MESSAGE_LIST));
                     }
 
                     @Override
@@ -85,7 +85,7 @@ public class MessagePresenter implements MessageContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, MESSAGE_DELETE));
+                        mView.onSuccess(M.createMessage(httpResponse.data, MESSAGE_DELETE));
                     }
 
                     @Override

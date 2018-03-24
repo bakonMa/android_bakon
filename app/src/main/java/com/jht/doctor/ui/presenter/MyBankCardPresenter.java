@@ -73,7 +73,7 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<BankCardBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<BankCardBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, GET_BANK_LIST));
+                        mView.onSuccess(M.createMessage(httpResponse.data, GET_BANK_LIST));
                     }
 
                     @Override
@@ -102,9 +102,9 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<ContributiveBean> httpResponse) {
                         if("0".equals(type)){
-                            mView.onSuccess(M.createMessage(httpResponse.result, CONTRIBUTIVE));
+                            mView.onSuccess(M.createMessage(httpResponse.data, CONTRIBUTIVE));
                         }else if("1".equals(type)){
-                            mView.onSuccess(M.createMessage(httpResponse.result, CONTRIBUTIVE_JOINT));
+                            mView.onSuccess(M.createMessage(httpResponse.data, CONTRIBUTIVE_JOINT));
                         }
                     }
 
@@ -139,7 +139,7 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, ENSURE_CONTRIBUTION));
+                        mView.onSuccess(M.createMessage(httpResponse.data, ENSURE_CONTRIBUTION));
                     }
 
                     @Override
@@ -166,9 +166,9 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<JudgeIfTiedBean> httpResponse) {
                         if ("0".equals(userType)) {
-                            mView.onSuccess(M.createMessage(httpResponse.result, JUDGE_IS_TIED_MAIN));
+                            mView.onSuccess(M.createMessage(httpResponse.data, JUDGE_IS_TIED_MAIN));
                         } else {
-                            mView.onSuccess(M.createMessage(httpResponse.result, JUDGE_IS_TIED_JOINT));
+                            mView.onSuccess(M.createMessage(httpResponse.data, JUDGE_IS_TIED_JOINT));
                         }
                     }
 
@@ -194,7 +194,7 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, UNBIND));
+                        mView.onSuccess(M.createMessage(httpResponse.data, UNBIND));
                     }
 
                     @Override
@@ -220,7 +220,7 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, ENSURE_CARD));
+                        mView.onSuccess(M.createMessage(httpResponse.data, ENSURE_CARD));
                     }
 
                     @Override
@@ -247,7 +247,7 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<IfBankOfJointBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<IfBankOfJointBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, IF_BANK_JOINT));
+                        mView.onSuccess(M.createMessage(httpResponse.data, IF_BANK_JOINT));
                     }
 
                     @Override
@@ -275,7 +275,7 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result,SETPASSWORD));
+                        mView.onSuccess(M.createMessage(httpResponse.data,SETPASSWORD));
                     }
 
                     @Override
@@ -309,7 +309,7 @@ public class MyBankCardPresenter implements MyBankCardContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse httpResponse) {
-                        String result = httpResponse.result.toString().replaceAll("=,","=null,");
+                        String result = httpResponse.data.toString().replaceAll("=,","=null,");
                         try {
                             Gson gson = new Gson();
                             ApplyAuthorizationBean applyAuthorizationBean = gson.fromJson(result, new TypeToken<ApplyAuthorizationBean>() {}.getType());

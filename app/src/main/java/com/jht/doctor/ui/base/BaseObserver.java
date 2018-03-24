@@ -57,7 +57,7 @@ public abstract class BaseObserver<T extends HttpResponse> implements Observer<T
         if (t.success) {
             onSuccess(t);
         } else {
-            onError(t.errorCode, t.errorMsg);
+            onError(t.code, t.msg);
         }
 
 

@@ -24,7 +24,7 @@ import com.jht.doctor.ui.bean.DownloadProgressBean;
 import com.jht.doctor.ui.bean.RepaymentHomeBean;
 import com.jht.doctor.ui.contact.TranslucentContact;
 import com.jht.doctor.ui.presenter.TranslucentPresenter;
-import com.jht.doctor.utils.IntentUtil;
+import com.jht.doctor.utils.ActivityUtil;
 import com.jht.doctor.utils.MD5Util;
 import com.jht.doctor.widget.dialog.AppUpdateDialog;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -136,7 +136,7 @@ public class TranslucentActivity extends BaseAppCompatActivity implements Transl
                             if (apkFile.exists()) {
                                 String localMD5 = MD5Util.md5(apkFile);
                                 if (localMD5.equals(netMD5)) {
-                                    IntentUtil.installApk(TranslucentActivity.this, apkFile, getPackageName() + ".fileprovider");
+                                    ActivityUtil.installApk(TranslucentActivity.this, apkFile, getPackageName() + ".fileprovider");
                                 } else {
                                     apkFile.delete();
                                     if (appUpdateDialog != null) {
@@ -174,7 +174,7 @@ public class TranslucentActivity extends BaseAppCompatActivity implements Transl
         String localMD5 = MD5Util.md5(new File(localApkPath));
         if (localMD5.equals(sourceMD5)) {
             if (appUpdateDialog != null && appUpdateDialog.isShowing()) {
-                IntentUtil.installApk(this, new File(localApkPath), getPackageName() + ".fileprovider");
+                ActivityUtil.installApk(this, new File(localApkPath), getPackageName() + ".fileprovider");
                 appUpdateDialog.switchViewState(false);
                 appUpdateDialog.setProgress(0);
             }

@@ -1,12 +1,15 @@
-package com.jht.doctor.ui.presenter;
+package com.jht.doctor.ui.presenter.present_jht;
 
-import com.jht.doctor.data.response.HttpResponse;
-import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.api.http.Params;
-import com.jht.doctor.ui.contact.WebViewContact;
+import com.jht.doctor.data.response.HttpResponse;
+import com.jht.doctor.ui.base.BaseObserver;
+import com.jht.doctor.ui.bean_jht.BankBean;
+import com.jht.doctor.ui.contact.contact_jht.AuthContact;
 import com.jht.doctor.utils.M;
 import com.jht.doctor.widget.dialog.LoadingDialog;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -14,18 +17,18 @@ import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * @author: mayakun
- * @date: 2017/12/8
+ * AuthPresenter
+ * Create at 2018/3/24 下午7:37 by mayakun
  */
-public class WebviewPresenter implements WebViewContact.Presenter {
+public class AuthPresenter implements AuthContact.Presenter {
 
-    public static final int GET_CREDIT_URL = 0x110;
-    private WebViewContact.View mView;
+    public static final int GETBANK_OK = 0x110;
+    private final AuthContact.View mView;
     private CompositeSubscription mSubscription;
     private LoadingDialog mDialog;
 
     @Inject
-    public WebviewPresenter(WebViewContact.View view) {
+    public AuthPresenter(AuthContact.View view) {
         this.mView = view;
         mSubscription = new CompositeSubscription();
         mDialog = new LoadingDialog(mView.provideContext());
@@ -39,28 +42,26 @@ public class WebviewPresenter implements WebViewContact.Presenter {
     }
 
     @Override
-    public void getCreditUrl(String orderNo) {
+    public void getBanks() {
         Params params = new Params();
-        params.put("orderNo", orderNo);
         Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
-                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getCreditUrl(params))
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getBank(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
-                    if (mDialog != null) {
-                        mDialog.show();
-                    }
+                    if (mDialog != null) mDialog.show();
                 })
-                .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                .subscribe(new BaseObserver<HttpResponse<List<BankBean>>>(mDialog) {
                     @Override
-                    public void onSuccess(HttpResponse<String> response) {
-                        mView.onSuccess(M.createMessage(response.data, GET_CREDIT_URL));
+                    public void onSuccess(HttpResponse<List<BankBean>> response) {
+                        mView.onSuccess(M.createMessage(response.data, GETBANK_OK));
                     }
 
                     @Override
                     public void onError(String errorCode, String errorMsg) {
-                        mView.onError(errorCode, errorMsg);
+                        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
                     }
                 });
         mSubscription.add(subscription);
     }
+
 }

@@ -33,6 +33,7 @@ import com.jht.doctor.ui.contact.SupportBankContact;
 import com.jht.doctor.ui.contact.TradePwdContact;
 import com.jht.doctor.ui.contact.TranslucentContact;
 import com.jht.doctor.ui.contact.WebViewContact;
+import com.jht.doctor.ui.contact.contact_jht.AuthContact;
 import com.jht.doctor.ui.presenter.AddBankCardVerifyPresenter;
 import com.jht.doctor.ui.presenter.AddCoborrowerPresenter;
 import com.jht.doctor.ui.presenter.AddMainCardPresenter;
@@ -60,15 +61,14 @@ import com.jht.doctor.ui.presenter.SupportBankPresenter;
 import com.jht.doctor.ui.presenter.TradePwdPresenter;
 import com.jht.doctor.ui.presenter.TranslucentPresenter;
 import com.jht.doctor.ui.presenter.WebviewPresenter;
+import com.jht.doctor.ui.presenter.present_jht.AuthPresenter;
 
 import dagger.Module;
 import dagger.Provides;
 
 /**
- * @author: ZhaoYun
- * @date: 2017/11/1
- * @project: customer-android-2th
- * @detail:
+ * ActivityModule
+ * Create at 2018/3/24 下午7:37 by mayakun
  */
 @Module
 public final class ActivityModule {
@@ -84,6 +84,30 @@ public final class ActivityModule {
     public DemoPresenter provideDemoActivityPresenter() {
         return new DemoPresenter((DemoContact.View) mView);
     }
+
+    /**********************JHT Start ***********************/
+    @PerActivity
+    @Provides
+    public AuthPresenter provideAuthPresenter() {
+        return new AuthPresenter((AuthContact.View) mView);
+    }
+
+
+    /**********************JHT end ***********************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @PerActivity
     @Provides
@@ -136,7 +160,7 @@ public final class ActivityModule {
 
     @PerActivity
     @Provides
-    public SettingPresenter provideSettingPresenter(){
+    public SettingPresenter provideSettingPresenter() {
         return new SettingPresenter((SettingContract.View) mView);
     }
 

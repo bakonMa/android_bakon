@@ -54,14 +54,14 @@ public class MyInfoPresenter implements MyInfoContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<MyInfoBean> loginResponseHttpResponse) {
                         Message message = Message.obtain();
-                        message.obj = loginResponseHttpResponse.result;
+                        message.obj = loginResponseHttpResponse.data;
                         mView.onSuccess(message);
                     }
 
                     @Override
                     public void onError(String errorCode, String errorMsg) {
                         mView.onError(errorCode, errorMsg);
-//                        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+//                        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(msg);
                     }
                 });
         mSubscription.add(subscription);

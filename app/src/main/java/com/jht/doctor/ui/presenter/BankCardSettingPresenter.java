@@ -54,7 +54,7 @@ public class BankCardSettingPresenter implements BankCardSettingContact.Presente
                 }).subscribe(new BaseObserver<HttpResponse<BankCardBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<BankCardBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result,GET_BANK_LIST));
+                        mView.onSuccess(M.createMessage(httpResponse.data,GET_BANK_LIST));
                     }
 
                     @Override
@@ -80,7 +80,7 @@ public class BankCardSettingPresenter implements BankCardSettingContact.Presente
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result,UNBIND));
+                        mView.onSuccess(M.createMessage(httpResponse.data,UNBIND));
                     }
 
                     @Override

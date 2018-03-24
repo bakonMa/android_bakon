@@ -54,7 +54,7 @@ public class FeedBackPresenter implements FeedBackContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> response) {
-                        mView.onSuccess(M.createMessage(response.result, COMMIT_MESSAGE));
+                        mView.onSuccess(M.createMessage(response.data, COMMIT_MESSAGE));
                     }
 
                     @Override

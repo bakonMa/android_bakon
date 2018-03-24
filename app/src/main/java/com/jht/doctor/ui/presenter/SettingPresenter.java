@@ -66,7 +66,7 @@ public class SettingPresenter implements SettingContract.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<OtherBean>>(mdialog) {
                     @Override
                     public void onSuccess(HttpResponse<OtherBean> resultResponse) {
-                        mView.onSuccess(M.createMessage(resultResponse.result, SETTING_PWD_STATUS));
+                        mView.onSuccess(M.createMessage(resultResponse.data, SETTING_PWD_STATUS));
                     }
 
                     @Override
@@ -90,9 +90,9 @@ public class SettingPresenter implements SettingContract.Presenter {
                             @Override
                             public void onSuccess(HttpResponse<AppUpdateBean> resultResponse) {
                                 //请求成功，有结果
-                                if (resultResponse.result != null) {
-                                    String netVersion = resultResponse.result.version;
-                                    String netMinVersion = resultResponse.result.minVersion;
+                                if (resultResponse.data != null) {
+                                    String netVersion = resultResponse.data.version;
+                                    String netMinVersion = resultResponse.data.minVersion;
                                     String nowVersion;
                                     try {
                                         nowVersion = mView.provideContext().getPackageManager().getPackageInfo(mView.provideContext().getPackageName(), PackageManager.GET_ACTIVITIES).versionName;
@@ -105,7 +105,7 @@ public class SettingPresenter implements SettingContract.Presenter {
                                     int minVersionNum = Integer.parseInt(netMinVersion.replaceAll("\\.", ""));
                                     int nowVersionNum = Integer.parseInt(nowVersion.replaceAll("\\.", ""));
 
-                                    boolean isForce = resultResponse.result.forceUpdate == 1 || nowVersionNum < minVersionNum;
+                                    boolean isForce = resultResponse.data.forceUpdate == 1 || nowVersionNum < minVersionNum;
 
                                     //检查成功，更新检查成功后得到的当前时间和是否强制更新(强制更新标示符以及最低版本)
 
@@ -118,8 +118,8 @@ public class SettingPresenter implements SettingContract.Presenter {
                                         mView.onError("", "已是最新版本");
                                     } else {
                                         //开启对话框
-                                        resultResponse.result.forceUpdate = isForce ? 1 : 0;
-                                        mView.onSuccess(M.createMessage(resultResponse.result, SETTING_CHECK_UPDATE_STATUS));
+                                        resultResponse.data.forceUpdate = isForce ? 1 : 0;
+                                        mView.onSuccess(M.createMessage(resultResponse.data, SETTING_CHECK_UPDATE_STATUS));
                                     }
                                 }
                             }

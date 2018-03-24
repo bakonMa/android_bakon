@@ -69,7 +69,7 @@ public class AddBankCardVerifyPresenter implements AddBankCardVerifyContact.Pres
                 }).subscribe(new BaseObserver<HttpResponse>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse httpResponse) {
-                        String result = httpResponse.result.toString().replaceAll("=,","=null,");
+                        String result = httpResponse.data.toString().replaceAll("=,","=null,");
                         try {
                             ApplyAuthorizationBean applyAuthorizationBean = new Gson().fromJson(result, ApplyAuthorizationBean.class);
                             if ("200".equals(applyAuthorizationBean.getLainlianDTO().getCode())) {
@@ -109,7 +109,7 @@ public class AddBankCardVerifyPresenter implements AddBankCardVerifyContact.Pres
                 }).subscribe(new BaseObserver<HttpResponse<ApplyUserBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<ApplyUserBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result,APPLY_USER));
+                        mView.onSuccess(M.createMessage(httpResponse.data,APPLY_USER));
                     }
 
                     @Override

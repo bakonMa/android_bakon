@@ -58,7 +58,7 @@ public class LoginPresenter implements LoginContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> stringHttpResponse) {
-                        mView.onSuccess(M.createMessage(stringHttpResponse.result, SENDVERIFY_CODE));
+                        mView.onSuccess(M.createMessage(stringHttpResponse.data, SENDVERIFY_CODE));
                     }
 
                     @Override
@@ -84,8 +84,8 @@ public class LoginPresenter implements LoginContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<LoginResponse> loginResponseHttpResponse) {
                         //保存token
-                        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, loginResponseHttpResponse.result.getToken());
-                        mView.onSuccess(M.createMessage(loginResponseHttpResponse.result, LOGIN_SUCCESS));
+                        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, loginResponseHttpResponse.data.getToken());
+                        mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, LOGIN_SUCCESS));
                     }
 
                     @Override
@@ -110,7 +110,7 @@ public class LoginPresenter implements LoginContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, BIND));
+                        mView.onSuccess(M.createMessage(httpResponse.data, BIND));
                     }
 
                     @Override

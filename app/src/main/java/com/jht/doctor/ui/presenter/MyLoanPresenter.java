@@ -52,7 +52,7 @@ public class MyLoanPresenter implements MyLoanContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<List<MyLoanBean>>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<List<MyLoanBean>> listHttpResponse) {
-                        mView.onSuccess(M.createMessage(listHttpResponse.result,MY_LOAN_LIST));
+                        mView.onSuccess(M.createMessage(listHttpResponse.data,MY_LOAN_LIST));
                     }
 
                     @Override

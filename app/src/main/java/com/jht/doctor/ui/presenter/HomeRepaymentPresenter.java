@@ -50,7 +50,7 @@ public class HomeRepaymentPresenter implements HomeRepaymentContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<RepaymentHomeBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<RepaymentHomeBean> repaymentHomeBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(repaymentHomeBeanHttpResponse.result, REPAYMENT));
+                        mView.onSuccess(M.createMessage(repaymentHomeBeanHttpResponse.data, REPAYMENT));
                     }
 
                     @Override
@@ -74,12 +74,12 @@ public class HomeRepaymentPresenter implements HomeRepaymentContact.Presenter {
 //                }).subscribe(new BaseObserver<HttpResponse<MessageCountBean>>(mDialog) {
 //                    @Override
 //                    public void onSuccess(HttpResponse<MessageCountBean> httpResponse) {
-//                        mView.onSuccess(M.createMessage(httpResponse.result,MESSAGE_COUNT));
+//                        mView.onSuccess(M.createMessage(httpResponse.data,MESSAGE_COUNT));
 //                    }
 //
 //                    @Override
-//                    public void onError(String errorCode, String errorMsg) {
-//                        mView.onError(errorCode,errorMsg);
+//                    public void onError(String code, String msg) {
+//                        mView.onError(code,msg);
 //                    }
 //                });
 //        compositeSubscription.add(subscription);

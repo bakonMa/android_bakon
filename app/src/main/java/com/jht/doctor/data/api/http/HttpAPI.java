@@ -50,6 +50,13 @@ import rx.Observable;
  * description:
  */
 public interface HttpAPI {
+    //银行列表
+    @GET("getBank")
+    Observable<HttpResponse<List<com.jht.doctor.ui.bean_jht.BankBean>>> getBank(@QueryMap Params params);
+
+
+
+
     //登录
     @POST("customerApp/userLogin/login")
     Observable<HttpResponse<LoginResponse>> login(@Body Params params);

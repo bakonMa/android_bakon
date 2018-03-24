@@ -73,7 +73,7 @@ public class CoborrowerHistoryPresenter implements CoborrowerHistoryContact.Pres
                 }).subscribe(new BaseObserver<HttpResponse<ReusingBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<ReusingBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, REUSING_BANK));
+                        mView.onSuccess(M.createMessage(httpResponse.data, REUSING_BANK));
                     }
 
                     @Override
@@ -100,7 +100,7 @@ public class CoborrowerHistoryPresenter implements CoborrowerHistoryContact.Pres
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, ENSURE_CARD));
+                        mView.onSuccess(M.createMessage(httpResponse.data, ENSURE_CARD));
                     }
 
                     @Override
@@ -126,7 +126,7 @@ public class CoborrowerHistoryPresenter implements CoborrowerHistoryContact.Pres
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, UNBIND));
+                        mView.onSuccess(M.createMessage(httpResponse.data, UNBIND));
                     }
 
                     @Override
@@ -154,7 +154,7 @@ public class CoborrowerHistoryPresenter implements CoborrowerHistoryContact.Pres
                 }).subscribe(new BaseObserver<HttpResponse<ContributiveBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<ContributiveBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, CONTRIBUTIVE));
+                        mView.onSuccess(M.createMessage(httpResponse.data, CONTRIBUTIVE));
                     }
 
                     @Override
@@ -189,7 +189,7 @@ public class CoborrowerHistoryPresenter implements CoborrowerHistoryContact.Pres
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, ENSURE_CONTRIBUTION));
+                        mView.onSuccess(M.createMessage(httpResponse.data, ENSURE_CONTRIBUTION));
                     }
 
                     @Override
@@ -216,7 +216,7 @@ public class CoborrowerHistoryPresenter implements CoborrowerHistoryContact.Pres
                 }).subscribe(new BaseObserver<HttpResponse<IfBankOfJointBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<IfBankOfJointBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, IF_BANK_JOINT));
+                        mView.onSuccess(M.createMessage(httpResponse.data, IF_BANK_JOINT));
                     }
 
                     @Override
@@ -251,7 +251,7 @@ public class CoborrowerHistoryPresenter implements CoborrowerHistoryContact.Pres
                 }).subscribe(new BaseObserver<HttpResponse>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse httpResponse) {
-                        String result = httpResponse.result.toString().replaceAll("=,","=null,");
+                        String result = httpResponse.data.toString().replaceAll("=,","=null,");
                         try {
                             Gson gson = new Gson();
                             ApplyAuthorizationBean applyAuthorizationBean = gson.fromJson(result, new TypeToken<ApplyAuthorizationBean>() {}.getType());

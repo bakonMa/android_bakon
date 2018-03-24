@@ -57,7 +57,7 @@ public class BasicInfoPresenter implements BasicInfoContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> response) {
-                        mView.onSuccess(M.createMessage(response.result, COMMIT_BASICINFO));
+                        mView.onSuccess(M.createMessage(response.data, COMMIT_BASICINFO));
                     }
 
                     @Override
@@ -79,7 +79,7 @@ public class BasicInfoPresenter implements BasicInfoContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<ApplyInfoBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<ApplyInfoBean> applyInfoBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(applyInfoBeanHttpResponse.result,APPLY_INFO));
+                        mView.onSuccess(M.createMessage(applyInfoBeanHttpResponse.data,APPLY_INFO));
                     }
                     @Override
                     public void onError(String errorCode, String errorMsg) {

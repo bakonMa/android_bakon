@@ -44,7 +44,7 @@ public final class APIModule {
 
     @Singleton
     @Provides
-    public StorageOperator provideStorageOperator(){
+    public StorageOperator provideStorageOperator() {
         return new StorageOperator(mApplication);
     }
 
@@ -54,13 +54,15 @@ public final class APIModule {
         return new HttpAPIWrapper(httpAPI);
     }
 
-    @Provides @Singleton
-    public RequestInterceptor provideRequestInterceptor(){
+    @Provides
+    @Singleton
+    public RequestInterceptor provideRequestInterceptor() {
         return new RequestInterceptor();
     }
 
-    @Provides @Singleton
-    public ResponseInterceptor provideResponseInterceptor(){
+    @Provides
+    @Singleton
+    public ResponseInterceptor provideResponseInterceptor() {
         return new ResponseInterceptor();
     }
 
@@ -73,9 +75,8 @@ public final class APIModule {
             logging.setLevel(HttpLoggingInterceptor.Level.BODY);
             builder.addInterceptor(logging);
         }
-        builder
-                .connectTimeout(HttpConfig.CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
-                .writeTimeout(HttpConfig.IO_WRITE_TIMEOUT,TimeUnit.MILLISECONDS)
+        builder.connectTimeout(HttpConfig.CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
+                .writeTimeout(HttpConfig.IO_WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(HttpConfig.IO_READ_TIMEOUT, TimeUnit.MILLISECONDS)
                 .addInterceptor(requestInterceptor)
                 .addNetworkInterceptor(responseInterceptor)

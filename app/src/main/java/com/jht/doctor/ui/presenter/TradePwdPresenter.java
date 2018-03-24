@@ -56,7 +56,7 @@ public class TradePwdPresenter implements TradePwdContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<OtherBean>>(mdialog) {
                     @Override
                     public void onSuccess(HttpResponse<OtherBean> resultResponse) {
-                        mView.onSuccess(M.createMessage(resultResponse.result, TRADE_PWD_STATUS));
+                        mView.onSuccess(M.createMessage(resultResponse.data, TRADE_PWD_STATUS));
                     }
 
                     @Override
@@ -81,7 +81,7 @@ public class TradePwdPresenter implements TradePwdContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> stringHttpResponse) {
-                        mView.onSuccess(M.createMessage(stringHttpResponse.result, TRADE_SEND_CODE));
+                        mView.onSuccess(M.createMessage(stringHttpResponse.data, TRADE_SEND_CODE));
                     }
 
                     @Override
@@ -109,7 +109,7 @@ public class TradePwdPresenter implements TradePwdContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> resultResponse) {
-                        mView.onSuccess(M.createMessage(resultResponse.result, TRADE_SET_PWD));
+                        mView.onSuccess(M.createMessage(resultResponse.data, TRADE_SET_PWD));
                     }
 
                     @Override
@@ -136,7 +136,7 @@ public class TradePwdPresenter implements TradePwdContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> response) {
-                        mView.onSuccess(M.createMessage(response.result, TRADE_REST_PWD));
+                        mView.onSuccess(M.createMessage(response.data, TRADE_REST_PWD));
                     }
 
                     @Override

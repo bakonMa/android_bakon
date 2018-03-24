@@ -56,7 +56,7 @@ public class PersonalPresenter implements PersonalContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<PersonalBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<PersonalBean> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.result, GET_PERSONAL_INFO));
+                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_PERSONAL_INFO));
                     }
 
                     @Override
@@ -79,7 +79,7 @@ public class PersonalPresenter implements PersonalContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<MyInfoBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<MyInfoBean> resultResponse) {
-                        mView.onSuccess(M.createMessage(resultResponse.result, GET_USER_INFO));
+                        mView.onSuccess(M.createMessage(resultResponse.data, GET_USER_INFO));
                     }
 
                     @Override
@@ -102,7 +102,7 @@ public class PersonalPresenter implements PersonalContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<MyAccountInfoBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<MyAccountInfoBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result, ACCOUNT_INFO));
+                        mView.onSuccess(M.createMessage(httpResponse.data, ACCOUNT_INFO));
                     }
 
                     @Override
@@ -125,7 +125,7 @@ public class PersonalPresenter implements PersonalContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<MessageCountBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<MessageCountBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.result,MESSAGE_COUNT));
+                        mView.onSuccess(M.createMessage(httpResponse.data,MESSAGE_COUNT));
                     }
 
                     @Override

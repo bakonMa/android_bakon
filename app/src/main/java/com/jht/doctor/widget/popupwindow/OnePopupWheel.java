@@ -1,7 +1,9 @@
 package com.jht.doctor.widget.popupwindow;
 
 import android.app.Activity;
-import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.BitmapDrawable;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
+import com.jht.doctor.utils.ScreenUtils;
 import com.jht.doctor.widget.PickerView;
 
 import java.util.List;
@@ -19,7 +22,7 @@ import java.util.List;
  */
 
 public class OnePopupWheel extends PopupWindow implements PopupWindow.OnDismissListener, View.OnClickListener {
-    private TextView btn_cancel, btn_Comfirm;
+    private TextView btn_cancel, titleView, btn_Comfirm;
 
     private PickerView pickerView;
 
@@ -27,13 +30,16 @@ public class OnePopupWheel extends PopupWindow implements PopupWindow.OnDismissL
 
     private List<String> mData;
 
+    private String titel;
+
     private Listener mListener;
 
-    public OnePopupWheel(Activity activity, List<String> datas, Listener listener) {
+    public OnePopupWheel(Activity activity, List<String> datas, String title, Listener listener) {
         super(activity);
         this.mActivity = activity;
         this.mData = datas;
         this.mListener = listener;
+        this.titel = title;
         initView();
         // 设置SelectPicPopupWindow弹出窗体可点击
         this.setFocusable(true);
@@ -41,10 +47,13 @@ public class OnePopupWheel extends PopupWindow implements PopupWindow.OnDismissL
         this.setOutsideTouchable(true);
         // 设置SelectPicPopupWindow弹出窗体动画效果
         this.setAnimationStyle(R.style.dir_popupwindow_anim);
-        // 实例化一个ColorDrawable颜色为半透明
-        ColorDrawable dw = new ColorDrawable(0xb0000000);
-        this.setBackgroundDrawable(dw);
+        setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        setBackgroundDrawable(new BitmapDrawable());
         this.setOnDismissListener(this);
+    }
+
+    public OnePopupWheel(Activity activity, List<String> datas, Listener listener) {
+        this(activity, datas, "", listener);
     }
 
     private void initView() {
@@ -52,19 +61,29 @@ public class OnePopupWheel extends PopupWindow implements PopupWindow.OnDismissL
         this.setContentView(view);
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        btn_cancel = (TextView) view.findViewById(R.id.id_btn_cancel);
+        btn_cancel = view.findViewById(R.id.id_btn_cancel);
+        titleView = view.findViewById(R.id.id_title);
         btn_cancel.setOnClickListener(this);
-        btn_Comfirm = (TextView) view.findViewById(R.id.id_btn_comfirm);
+        btn_Comfirm = view.findViewById(R.id.id_btn_comfirm);
         btn_Comfirm.setOnClickListener(this);
-        pickerView = (PickerView) view.findViewById(R.id.id_wheel);
+        pickerView = view.findViewById(R.id.id_wheel);
         pickerView.setData(mData);
+        titleView.setText(TextUtils.isEmpty(titel) ? "" : titel);
+    }
+
+    public void show(View parent) {
+        showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+    }
+
+    @Override
+    public void showAtLocation(View parent, int gravity, int x, int y) {
+        ScreenUtils.lightOff(mActivity);
+        super.showAtLocation(parent, gravity, x, y);
     }
 
     @Override
     public void onDismiss() {
-        WindowManager.LayoutParams lp = mActivity.getWindow().getAttributes();
-        lp.alpha = 1.0f;
-        mActivity.getWindow().setAttributes(lp);
+        ScreenUtils.lightOn(mActivity);
     }
 
     @Override

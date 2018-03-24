@@ -73,9 +73,9 @@ public class TranslucentPresenter implements TranslucentContact.Presenter {
                     .compose(mView.toLifecycle())
                     .subscribe(
                             httpResponse -> {
-                                if (httpResponse.success && httpResponse.result != null) {
-                                    String netVersion = httpResponse.result.version;
-                                    String netMinVersion = httpResponse.result.minVersion;
+                                if (httpResponse.success && httpResponse.data != null) {
+                                    String netVersion = httpResponse.data.version;
+                                    String netMinVersion = httpResponse.data.minVersion;
                                     String nowVersion;
                                     try {
                                         nowVersion = mView.provideContext().getPackageManager().getPackageInfo(mView.provideContext().getPackageName(), PackageManager.GET_ACTIVITIES).versionName;
@@ -88,7 +88,7 @@ public class TranslucentPresenter implements TranslucentContact.Presenter {
                                     int minVersionNum = Integer.parseInt(netMinVersion.replaceAll("\\.", ""));
                                     int nowVersionNum = Integer.parseInt(nowVersion.replaceAll("\\.", ""));
 
-                                    boolean isForce = httpResponse.result.forceUpdate == 1 || nowVersionNum < minVersionNum;
+                                    boolean isForce = httpResponse.data.forceUpdate == 1 || nowVersionNum < minVersionNum;
 
                                     //检查成功，更新检查成功后得到的当前时间和是否强制更新(强制更新标示符以及最低版本)
 
@@ -100,8 +100,8 @@ public class TranslucentPresenter implements TranslucentContact.Presenter {
                                         mView.jumpToMain();
                                     } else {
                                         //开启对话框
-                                        httpResponse.result.forceUpdate = isForce ? 1 : 0;
-                                        mView.onSuccess(M.createMessage(httpResponse.result, CHECK_UPDATE));
+                                        httpResponse.data.forceUpdate = isForce ? 1 : 0;
+                                        mView.onSuccess(M.createMessage(httpResponse.data, CHECK_UPDATE));
                                     }
                                 }
                                 //请求失败，无结果
@@ -200,7 +200,7 @@ public class TranslucentPresenter implements TranslucentContact.Presenter {
 
             @Override
             public void onNext(MergeBean<Long, HttpResponse<RepaymentHomeBean>> mergeBean) {
-                mView.onSuccess(M.createMessage(mergeBean.getT2().result, REPAYMENT));
+                mView.onSuccess(M.createMessage(mergeBean.getT2().data, REPAYMENT));
             }
         });
         compositeSubscription.add(subscription);
@@ -219,14 +219,14 @@ public class TranslucentPresenter implements TranslucentContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<ConfigBean> resultResponse) {
                         //保存基础数据json
-                        if (resultResponse.result != null) {
-                            DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_KEY_BASE_CONFIG, new Gson().toJson(resultResponse.result));
+                        if (resultResponse.data != null) {
+                            DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_KEY_BASE_CONFIG, new Gson().toJson(resultResponse.data));
                         }
                     }
 
                     @Override
                     public void onError(String errorCode, String errorMsg) {
-                        //mView.onError(errorCode, errorMsg);
+                        //mView.onError(code, msg);
                     }
                 });
         compositeSubscription.add(subscription);
