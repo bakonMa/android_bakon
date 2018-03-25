@@ -8,7 +8,7 @@ import android.view.View;
 import com.jht.doctor.R;
 import com.jht.doctor.ui.base.BaseAppCompatActivity;
 import com.jht.doctor.view.fragment.HomeFragment;
-import com.jht.doctor.view.fragment.MineFragment;
+import com.jht.doctor.view.fragment.MineFragment_jht;
 import com.jht.doctor.view.fragment.OrderFragment;
 import com.jht.doctor.view.fragment.WorkRoomFragment;
 import com.jht.doctor.widget.BottomBarItem;
@@ -91,7 +91,7 @@ public class MainActivity_JHT extends BaseAppCompatActivity {
                 break;
             case R.id.tab_me:
                 if (mFragmentMap.get(3) == null) {
-                    mFragmentMap.put(3, new MineFragment());
+                    mFragmentMap.put(3, new MineFragment_jht());
                 }
                 transaction.replace(R.id.id_content, mFragmentMap.get(3));
                 break;

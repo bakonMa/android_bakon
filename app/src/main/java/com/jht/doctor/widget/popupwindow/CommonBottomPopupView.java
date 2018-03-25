@@ -47,7 +47,9 @@ public class CommonBottomPopupView extends PopupWindow implements PopupWindow.On
         this.setOutsideTouchable(true);
         // 设置SelectPicPopupWindow弹出窗体动画效果
         this.setAnimationStyle(R.style.dir_popupwindow_anim);
+        setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setBackgroundDrawable(new BitmapDrawable());
+        this.setOnDismissListener(this);
     }
 
     private void initView() {

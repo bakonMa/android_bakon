@@ -27,7 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    app:step1="three" />
+                    app:step1="one" />
             </RelativeLayout>
 
             <TextView
@@ -91,7 +91,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/icon_close_2"
+                    android:drawableLeft="@drawable/attention"
                     android:drawablePadding="5dp"
                     android:paddingBottom="10dp"
                     android:text="@string/str_jpg_png_gif"
@@ -117,7 +117,7 @@
                     android:id="@+id/et_sfz"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
-                    app:leftText="身份证"
+                    app:leftText="身份证号"
                     app:textMainSize="16sp" />
 
                 <com.jht.doctor.widget.EditableLayout
@@ -170,7 +170,7 @@
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/selector_bg_button_login"
                 android:clickable="true"
-                android:enabled="false"
+                android:enabled="true"
                 android:gravity="center"
                 android:text="下一步"
                 android:textColor="@color/white"

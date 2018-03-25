@@ -126,7 +126,8 @@ public class AuthStep1Activity extends BaseAppCompatActivity implements AuthCont
     }
 
 
-    @OnClick({R.id.iv_img, R.id.et_address, R.id.et_lab_type, R.id.et_title, R.id.et_goodat})
+    @OnClick({R.id.iv_img, R.id.et_address, R.id.et_lab_type,
+            R.id.et_title, R.id.et_goodat, R.id.tv_next_step})
     public void tabOnClick(View view) {
         switch (view.getId()) {
             case R.id.iv_img:
@@ -182,6 +183,9 @@ public class AuthStep1Activity extends BaseAppCompatActivity implements AuthCont
                 });
                 mPopupWheel.show(scrollView);
                 break;
+            case R.id.tv_next_step:
+                startActivity(new Intent(this, AuthStep2Activity.class));
+                break;
 
         }
     }
@@ -208,7 +212,7 @@ public class AuthStep1Activity extends BaseAppCompatActivity implements AuthCont
                                 dir.mkdirs();
                             }
                             cameraPath = new File(dir, UriUtil.headerFileName(actContext()));
-                            ActivityUtil.useCamera(AuthStep1Activity.this, cameraPath, REQUEST_CAMERA_CODE);
+                            ActivityUtil.openCamera(AuthStep1Activity.this, cameraPath, REQUEST_CAMERA_CODE);
                         } else {
                             DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请求权限失败");
                         }

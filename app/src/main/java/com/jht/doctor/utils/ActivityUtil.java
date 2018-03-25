@@ -76,7 +76,7 @@ public class ActivityUtil {
     }
 
     //打开照相机
-    public static boolean useCamera(Activity receiver, File file, int requestCode) {
+    public static boolean openCamera(Activity receiver, File file, int requestCode) {
         try {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -93,6 +93,27 @@ public class ActivityUtil {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static boolean openAlbum(Activity receiver, String mimeType, int requestCode) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            // 如果限制上传到服务器的图片类型时可以直接写如："image/jpeg 、 image/png等的类型"
+            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, mimeType);
+            receiver.startActivityForResult(intent, requestCode);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean openAlbum(Fragment receiver, String mimeType, int requestCode) {
+        return openAlbum(receiver.getActivity(), mimeType, requestCode);
+    }
+
+    public static boolean openAlbum(android.support.v4.app.Fragment receiver, String mimeType, int requestCode) {
+        return openAlbum(receiver.getActivity(), mimeType, requestCode);
     }
 
 }

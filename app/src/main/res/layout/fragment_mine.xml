@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/base_toolbar" />
+
+    <View style="@style/line_gray_hor" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/id_swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="88dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/id_iv_head"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="20dp"
+                        android:src="@mipmap/logo" />
+
+                    <LinearLayout
+                        android:id="@+id/id_check_status"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="3"
+                            android:gravity="bottom|center_horizontal"
+                            android:text="审核中…"
+                            android:textSize="28sp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:gravity="center_horizontal"
+                            android:text="请耐心等待"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/icon_xuanze" />
+
+                </LinearLayout>
+
+
+                <com.jht.doctor.widget.RelativeWithImage
+                    android:id="@+id/id_collect"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    app:leftIamge="@drawable/icon_ziliao"
+                    app:title="收藏" />
+
+                <com.jht.doctor.widget.RelativeWithImage
+                    android:id="@+id/id_wallet"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    app:leftIamge="@drawable/icon_ziliao"
+                    app:title="钱包" />
+
+                <com.jht.doctor.widget.RelativeWithImage
+                    android:id="@+id/id_set_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    app:isShowLine="false"
+                    app:leftIamge="@drawable/icon_wenti"
+                    app:title="资费设置" />
+
+                <com.jht.doctor.widget.RelativeWithImage
+                    android:id="@+id/id_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    app:isShowLine="false"
+                    app:leftIamge="@drawable/icon_wenti"
+                    app:title="设置" />
+
+                <com.jht.doctor.widget.RelativeWithImage
+                    android:id="@+id/id_recommend"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    app:leftIamge="@drawable/icon_fankui"
+                    app:title="推荐同行" />
+
+                <com.jht.doctor.widget.RelativeWithImage
+                    android:id="@+id/id_about"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    app:isShowLine="false"
+                    app:leftIamge="@drawable/icon_guanyuwomen"
+                    app:title="关于" />
+
+                <TextView
+                    android:id="@+id/id_btn_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/selector_bg_button"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="安全退出"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+
+        </ScrollView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>

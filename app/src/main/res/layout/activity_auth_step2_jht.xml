@@ -2,196 +2,243 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <include layout="@layout/base_toolbar" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:text="@string/myinfo_dialog_title" />
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:fitsSystemWindows="true"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/icon_close_2"
-                android:drawablePadding="5dp"
-                android:paddingBottom="10dp"
-                android:text="@string/str_jpg_png_gif"
-                android:textColor="@color/color_c3c3c3"
-                android:textSize="12sp" />
-
-            <com.jht.doctor.widget.EditTextlayout
-                android:id="@+id/et_name"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="姓名"
-                app:textMainSize="16sp" />
+                android:layout_height="70dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/indicator_selected_color">
 
-            <com.jht.doctor.widget.EditTextlayout
-                android:id="@+id/et_phone"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:editTextType="number"
-                app:leftText="手机号"
-                app:textMainSize="16sp" />
+                <com.jht.doctor.widget.ScheduleView_jht
+                    android:id="@+id/id_step"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:step1="two" />
+            </RelativeLayout>
 
             <com.jht.doctor.widget.EditTextlayout
                 android:id="@+id/et_sfz"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
-                app:leftText="身份证"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                app:editTextHint="请输入身份证号"
+                app:isShowBottomLine="false"
+                app:leftText="身份证号"
                 app:textMainSize="16sp" />
 
-            <com.jht.doctor.widget.EditableLayout
-                android:id="@+id/id_ed_company_nature"
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:edit_leftText="地区"
-                app:edit_mode="select"
-                app:edit_textMainSize="16sp" />
+                android:layout_height="20dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="清晰度高，身份证文字，数字不模糊，面部无遮挡"
+                android:textColor="@color/color_c3c3c3"
+                android:textSize="10sp" />
 
-            <com.jht.doctor.widget.EditTextlayout
-                android:id="@+id/et_organization"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
 
-            <com.jht.doctor.widget.EditableLayout
-                android:id="@+id/et_lab_type"
+                <TextView
+                    android:id="@+id/title1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:text="请上传手持身份证照片"
+                    android:textColor="@color/color_424242"
+                    android:textSize="15sp" />
+
+                <View
+                    android:id="@+id/line1"
+                    style="@style/line_gray_hor"
+                    android:layout_below="@+id/title1"
+                    android:layout_marginBottom="10dp" />
+
+                <ImageView
+                    android:id="@+id/iv_img"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_below="@+id/line1"
+                    android:background="@drawable/bg_image_add"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_image_tobeadd" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_below="@+id/line1"
+                    android:layout_marginLeft="30dp"
+                    android:layout_toRightOf="@+id/iv_img"
+                    android:background="@mipmap/logo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/imageView"
+                    android:layout_alignLeft="@+id/imageView"
+                    android:layout_alignRight="@+id/imageView"
+                    android:background="@color/color_c3c3c3"
+                    android:gravity="center"
+                    android:text="手持身份证示例"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv_img"
+                    android:drawableLeft="@drawable/attention"
+                    android:drawablePadding="5dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/str_jpg_png_gif"
+                    android:textColor="@color/color_c3c3c3"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:edit_leftText="科室"
-                app:edit_mode="select"
-                app:edit_textMainSize="16sp" />
+                android:layout_height="20dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="证件姓名，性别，身份证号，证书编号，发证机构要清晰"
+                android:textColor="@color/color_c3c3c3"
+                android:textSize="10sp" />
 
-            <com.jht.doctor.widget.EditableLayout
-                android:id="@+id/et_title"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:edit_leftText="职称"
-                app:edit_mode="select"
-                app:edit_textMainSize="16sp" />
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
 
-            <com.jht.doctor.widget.EditableLayout
-                android:id="@+id/et_goodat"
+                <TextView
+                    android:id="@+id/title2"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:text="请上传医生资格证照片"
+                    android:textColor="@color/color_424242"
+                    android:textSize="15sp" />
+
+                <View
+                    android:id="@+id/line2"
+                    style="@style/line_gray_hor"
+                    android:layout_below="@+id/title2"
+                    android:layout_marginBottom="10dp" />
+
+                <ImageView
+                    android:id="@+id/iv_img2"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_below="@+id/line2"
+                    android:background="@drawable/bg_image_add"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_image_tobeadd" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_below="@+id/line2"
+                    android:layout_marginLeft="30dp"
+                    android:layout_toRightOf="@+id/iv_img2"
+                    android:background="@mipmap/logo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv_img2"
+                    android:drawableLeft="@drawable/attention"
+                    android:drawablePadding="5dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/str_jpg_png_gif"
+                    android:textColor="@color/color_c3c3c3"
+                    android:textSize="12sp" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:edit_leftText="擅长"
-                app:edit_mode="select"
-                app:edit_textMainSize="16sp"
-                app:isShowLineBottom="false" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
 
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
+                <TextView
+                    android:id="@+id/title3"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:text="请上传医师执业证照片"
+                    android:textColor="@color/color_424242"
+                    android:textSize="15sp" />
 
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
+                <View
+                    android:id="@+id/line3"
+                    style="@style/line_gray_hor"
+                    android:layout_below="@+id/title3"
+                    android:layout_marginBottom="10dp" />
 
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
+                <ImageView
+                    android:id="@+id/iv_img3"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_below="@+id/line3"
+                    android:background="@drawable/bg_image_add"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_image_tobeadd" />
 
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_below="@+id/line3"
+                    android:layout_marginLeft="30dp"
+                    android:layout_toRightOf="@+id/iv_img3"
+                    android:background="@mipmap/logo" />
 
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv_img3"
+                    android:drawableLeft="@drawable/attention"
+                    android:drawablePadding="5dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="@string/str_jpg_png_gif"
+                    android:textColor="@color/color_c3c3c3"
+                    android:textSize="12sp" />
 
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
 
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
-
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
-
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
-
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
-
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
-
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
-
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
-
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
-
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
-
-            <com.jht.doctor.widget.EditTextlayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                app:leftText="医疗机构"
-                app:textMainSize="16sp" />
-
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_next_step"
@@ -200,10 +247,8 @@
                 android:layout_margin="20dp"
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/selector_bg_button_login"
-                android:clickable="true"
-                android:enabled="false"
                 android:gravity="center"
-                android:text="下一步"
+                android:text="完成提交审核"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
         </LinearLayout>
