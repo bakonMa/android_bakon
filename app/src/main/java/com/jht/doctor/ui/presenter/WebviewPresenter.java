@@ -3,7 +3,7 @@ package com.jht.doctor.ui.presenter;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.application.DocApplication;
-import com.jht.doctor.data.api.http.Params;
+import com.jht.doctor.data.http.Params;
 import com.jht.doctor.ui.contact.WebViewContact;
 import com.jht.doctor.utils.M;
 import com.jht.doctor.widget.dialog.LoadingDialog;

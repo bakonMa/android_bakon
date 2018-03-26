@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jht.doctor.R;
-import com.jht.doctor.ui.base.BaseAppCompatActivity;
+import com.jht.doctor.ui.base.BaseActivity;
 import com.jht.doctor.widget.SplashGuideView;
 import com.jht.doctor.widget.SplashIndicator;
 
@@ -22,7 +22,7 @@ import butterknife.Unbinder;
  * Created by Tang
  */
 
-public class SplashActivity extends BaseAppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     @BindView(R.id.viewPager)
     ViewPager viewPager;
@@ -32,15 +32,6 @@ public class SplashActivity extends BaseAppCompatActivity {
     GuideAdapter guideAdapter;
     Unbinder bind;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        bind = ButterKnife.bind(this);
-        initStatusBar();
-        initView();
-    }
-
     private void initStatusBar() {
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -48,11 +39,19 @@ public class SplashActivity extends BaseAppCompatActivity {
     }
 
     @Override
+    protected int provideRootLayout() {
+        return R.layout.activity_splash;
+    }
+
+
+    @Override
     protected void setupActivityComponent() {
 
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
+        initStatusBar();
         SplashGuideView guideView1 = new SplashGuideView(this, R.drawable.bg_1, "轻松", "借款", "一键借款申请，专属顾问服务", false);
         SplashGuideView guideView2 = new SplashGuideView(this, R.drawable.bg_2, "优质", "产品", "产品丰富，二次抵押评估不受限", false);
         SplashGuideView guideView3 = new SplashGuideView(this, R.drawable.bg_3, "便捷", "快速", "材料简单，手续便捷，放款快速", false);

@@ -16,9 +16,8 @@ import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.data.eventbus.EventBusUtil;
 import com.jht.doctor.injection.components.DaggerActivityComponent;
 import com.jht.doctor.injection.modules.ActivityModule;
-import com.jht.doctor.ui.activity.loan.HomeLoanActivity;
-import com.jht.doctor.ui.activity.repayment.HomeRepaymentActivity;
-import com.jht.doctor.ui.base.BaseAppCompatActivity;
+import com.jht.doctor.ui.activity.home.MainActivity;
+import com.jht.doctor.ui.base.BaseActivity;
 import com.jht.doctor.ui.bean.AppUpdateBean;
 import com.jht.doctor.ui.bean.DownloadProgressBean;
 import com.jht.doctor.ui.bean.RepaymentHomeBean;
@@ -40,7 +39,7 @@ import javax.inject.Inject;
 /**
  * @author Tang
  */
-public class TranslucentActivity extends BaseAppCompatActivity implements TranslucentContact.View {
+public class TranslucentActivity extends BaseActivity implements TranslucentContact.View {
 
     @Inject
     TranslucentPresenter mPresenter;
@@ -48,10 +47,14 @@ public class TranslucentActivity extends BaseAppCompatActivity implements Transl
     private AppUpdateDialog appUpdateDialog;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EventBusUtil.register(this);
+    protected int provideRootLayout() {
+        return 0;
+    }
+
+    @Override
+    protected void initView() {
         checkFirstEnter();
+
     }
 
     @Override
@@ -161,7 +164,7 @@ public class TranslucentActivity extends BaseAppCompatActivity implements Transl
             mPresenter.cancelDownload();
             if (force) {
                 DocApplication.getInstance().managerRepository.actMgr().finishAllActivity();
-            }else {
+            } else {
                 jumpToMain();
             }
         };
@@ -198,7 +201,7 @@ public class TranslucentActivity extends BaseAppCompatActivity implements Transl
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-        startActivity(new Intent(TranslucentActivity.this, HomeLoanActivity.class));
+//        startActivity(new Intent(TranslucentActivity.this, HomeLoanActivity.class));
         finish();
     }
 
@@ -208,14 +211,14 @@ public class TranslucentActivity extends BaseAppCompatActivity implements Transl
             case TranslucentPresenter.REPAYMENT:
                 RepaymentHomeBean repaymentHomeBean = (RepaymentHomeBean) message.obj;
                 if (repaymentHomeBean == null) {
-                    startActivity(new Intent(this, HomeLoanActivity.class));
+//                    startActivity(new Intent(this, HomeLoanActivity.class));
                     finish();
                     return;
                 }
                 if (repaymentHomeBean.isRepaymentStatus()) {
-                    startActivity(new Intent(this, HomeRepaymentActivity.class));
+//                    startActivity(new Intent(this, HomeRepaymentActivity.class));
                 } else {
-                    startActivity(new Intent(this, HomeLoanActivity.class));
+//                    startActivity(new Intent(this, HomeLoanActivity.class));
                 }
                 finish();
                 break;

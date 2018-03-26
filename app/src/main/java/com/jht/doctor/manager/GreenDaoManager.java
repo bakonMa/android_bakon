@@ -85,10 +85,12 @@ public class GreenDaoManager {
     public DaoMaster getDaoMaster() {
         if (mDaoMaster == null) {
             //http://blog.csdn.net/qq_32583189/article/details/52128620
+            //implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
             //DBOpenHelper.getEncryptedWritableDb("pwd"); 使用加密的db
             DBOpenHelper dbOpenHelper = new DBOpenHelper(DocApplication.getInstance(), dbName, null);
             //使用加密的db
-            mDaoMaster = new DaoMaster(dbOpenHelper.getEncryptedWritableDb(""));
+//            mDaoMaster = new DaoMaster(dbOpenHelper.getEncryptedWritableDb(""));
+            mDaoMaster = new DaoMaster(dbOpenHelper.getWritableDatabase());
             mDaoMaster.createAllTables(mDaoMaster.getDatabase(), true);
             //不加密
 //            mDaoMaster = new DaoMaster(dbOpenHelper.getWritableDatabase());

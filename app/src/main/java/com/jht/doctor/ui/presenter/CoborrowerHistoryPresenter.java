@@ -10,7 +10,7 @@ import com.jht.doctor.ui.bean.ApplyAuthorizationBean;
 import com.jht.doctor.ui.bean.IfBankOfJointBean;
 import com.jht.doctor.widget.dialog.LoadingDialog;
 import com.jht.doctor.application.DocApplication;
-import com.jht.doctor.data.api.http.Params;
+import com.jht.doctor.data.http.Params;
 import com.jht.doctor.ui.bean.ContributiveBean;
 import com.jht.doctor.ui.bean.ReusingBean;
 import com.jht.doctor.ui.contact.CoborrowerHistoryContact;

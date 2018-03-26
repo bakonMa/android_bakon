@@ -1,6 +1,6 @@
 package com.jht.doctor.ui.contact;
 
-import com.jht.doctor.data.api.http.Params;
+import com.jht.doctor.data.http.Params;
 import com.jht.doctor.ui.base.BasePresenter;
 import com.jht.doctor.ui.base.BaseView;
 

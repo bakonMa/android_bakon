@@ -9,8 +9,8 @@ import android.os.Environment;
 
 import com.jht.doctor.BuildConfig;
 import com.jht.doctor.application.DocApplication;
-import com.jht.doctor.data.api.local.storage.StorageOperator;
-import com.jht.doctor.ui.activity.welcome.MainActivity;
+import com.jht.doctor.data.localdata.StorageOperator;
+import com.jht.doctor.ui.activity.home.MainActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;

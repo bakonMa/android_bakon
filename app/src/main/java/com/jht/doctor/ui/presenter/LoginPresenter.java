@@ -7,7 +7,7 @@ import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.ui.bean.LoginResponse;
 import com.jht.doctor.ui.contact.LoginContact;
 import com.jht.doctor.widget.dialog.LoadingDialog;
-import com.jht.doctor.data.api.http.Params;
+import com.jht.doctor.data.http.Params;
 import com.jht.doctor.utils.M;
 
 import javax.inject.Inject;

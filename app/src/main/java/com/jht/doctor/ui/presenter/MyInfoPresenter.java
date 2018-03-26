@@ -6,7 +6,7 @@ import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.ui.contact.MyInfoContact;
-import com.jht.doctor.data.api.http.Params;
+import com.jht.doctor.data.http.Params;
 import com.jht.doctor.ui.bean.MyInfoBean;
 import com.jht.doctor.widget.dialog.LoadingDialog;
 

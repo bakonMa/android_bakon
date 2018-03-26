@@ -105,19 +105,6 @@ dependencies {
     // If you want to use Navi for providers
     implementation "com.trello:rxlifecycle-navi:$rxlifecycle_version"
 
-//    //RxBinding
-//    implementation "com.jakewharton.rxbinding:rxbinding:$rxbinding_version"
-//    //'support-v4' library bindings:
-//    implementation "com.jakewharton.rxbinding:rxbinding-support-v4:$rxbinding_version"
-//    //'appcompat-v7' library bindings:
-//    implementation "com.jakewharton.rxbinding:rxbinding-appcompat-v7:$rxbinding_version"
-//    //'design' library bindings:
-//    implementation "com.jakewharton.rxbinding:rxbinding-design:$rxbinding_version"
-//    //'recyclerview-v7' library bindings:
-//    implementation "com.jakewharton.rxbinding:rxbinding-recyclerview-v7:$rxbinding_version"
-//    //    'leanback-v17' library bindings:
-//    //    compile 'com.jakewharton.rxbinding:rxbinding-leanback-v17:0.4.0'
-
     //RxPermissions
     implementation "com.tbruyelle.rxpermissions:rxpermissions:$rxpermissions_version@aar"
 
@@ -132,7 +119,7 @@ dependencies {
     //内存泄漏监控
     debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
-    testCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+//    testCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
 
     //方法数超过65k
     implementation "com.android.support:multidex:$multidex_version"
@@ -146,7 +133,8 @@ dependencies {
     implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$brvah_version"
     //greendao
     implementation "org.greenrobot:greendao:$greendao_version"
-    implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
+    //数据库加密 ***保留***
+//    implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

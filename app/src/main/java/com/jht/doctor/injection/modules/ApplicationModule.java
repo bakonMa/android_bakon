@@ -5,8 +5,8 @@ import android.content.res.Resources;
 
 import com.jht.doctor.BuildConfig;
 import com.jht.doctor.application.DocApplication;
-import com.jht.doctor.data.api.http.APIModule;
-import com.jht.doctor.data.api.local.storage.StorageOperator;
+import com.jht.doctor.data.http.APIModule;
+import com.jht.doctor.data.localdata.StorageOperator;
 import com.jht.doctor.injection.qualifiers.ApplicationContext;
 import com.jht.doctor.manager.ActManager;
 import com.jht.doctor.manager.CrashHandler;

@@ -13,7 +13,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.jht.doctor.R;
-import com.jht.doctor.ui.activity.mine.bankcard.SupportBankActivity;
 
 
 /**
@@ -61,9 +60,9 @@ public class NoSupportDialog extends Dialog implements View.OnClickListener{
         switch (view.getId()) {
             case R.id.btn_no:
                 dismiss();
-                Intent intent = new Intent(mContext, SupportBankActivity.class);
-                intent.putExtra("orderNo",orderNo);
-                mContext.startActivity(intent);
+//                Intent intent = new Intent(mContext, SupportBankActivity.class);
+//                intent.putExtra("orderNo",orderNo);
+//                mContext.startActivity(intent);
                 break;
             case R.id.btn_ok:
                 dismiss();

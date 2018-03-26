@@ -5,11 +5,10 @@ import android.content.Context;
 import com.jht.doctor.injection.modules.FragmentModule;
 import com.jht.doctor.injection.qualifiers.FragmentContext;
 import com.jht.doctor.injection.scopes.PerFragment;
-import com.jht.doctor.ui.activity.mine.home.TestFragment;
-import com.jht.doctor.view.fragment.HomeFragment;
-import com.jht.doctor.view.fragment.MineFragment;
-import com.jht.doctor.view.fragment.OrderFragment;
-import com.jht.doctor.view.fragment.WorkRoomFragment;
+import com.jht.doctor.ui.activity.fragment.HomeFragment;
+import com.jht.doctor.ui.activity.fragment.MineFragment;
+import com.jht.doctor.ui.activity.fragment.OrderFragment;
+import com.jht.doctor.ui.activity.fragment.WorkRoomFragment;
 
 import dagger.Component;
 
@@ -30,7 +29,6 @@ public interface FragmentComponent extends ApplicationComponent {
     Context actContext();
 
     void inject(WorkRoomFragment workRoomFragment);
-    void inject(TestFragment testFragment );
 
     void inject(HomeFragment homeFragment);
 

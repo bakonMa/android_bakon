@@ -9,9 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.ui.activity.repayment.RechageActivity;
-import com.jht.doctor.ui.activity.repayment.TradeDetailActivity;
-import com.jht.doctor.ui.activity.repayment.WithdrawCashActivity;
 import com.jht.doctor.widget.recycle_view.FooterState;
 
 import java.util.ArrayList;
@@ -115,15 +112,15 @@ public class AccountAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         @Override
         public void onClick(View view) {
             switch (view.getId()){
-                case R.id.id_btn_detail:
-                    mContext.startActivity(new Intent(mContext, TradeDetailActivity.class));
-                    break;
-                case R.id.id_btn_recharge:
-                    mContext.startActivity(new Intent(mContext, RechageActivity.class));
-                    break;
-                case R.id.id_btn_get_money:
-                    mContext.startActivity(new Intent(mContext, WithdrawCashActivity.class));
-                    break;
+//                case R.id.id_btn_detail:
+//                    mContext.startActivity(new Intent(mContext, TradeDetailActivity.class));
+//                    break;
+//                case R.id.id_btn_recharge:
+//                    mContext.startActivity(new Intent(mContext, RechageActivity.class));
+//                    break;
+//                case R.id.id_btn_get_money:
+//                    mContext.startActivity(new Intent(mContext, WithdrawCashActivity.class));
+//                    break;
             }
         }
     }

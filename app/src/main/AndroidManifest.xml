@@ -42,7 +42,7 @@
         </provider>
 
         <activity
-            android:name=".view.activity.MainActivity_JHT"
+            android:name=".ui.activity.home.MainActivity"
             android:theme="@style/TranslucentAppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,67 +50,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activity.AuthStep1Activity"
+            android:name=".ui.activity.home.AuthStep1Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".view.activity.AuthStep2Activity"
+            android:name=".ui.activity.home.AuthStep2Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".view.activity.AuthStep3Activity"
+            android:name=".ui.activity.home.AuthStep3Activity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.activity.welcome.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/SplashAppTheme" />
-        <activity android:name=".ui.activity.loan.DemoActivity" />
-        <activity
-            android:name=".ui.activity.mine.LoginActivity"
+            android:name=".ui.activity.LoginActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.activity.mine.setting.SettingActivity" />
-        <activity android:name=".ui.activity.mine.setting.ResetPasswordActivity" />
-        <activity android:name=".ui.activity.loan.HomeLoanActivity" />
-        <activity android:name=".ui.activity.mine.PersonalActivity" />
-        <activity android:name=".ui.activity.loan.BasicInfoActivity" />
-        <activity android:name=".ui.activity.mine.webview.WebViewActivity" />
-        <activity android:name=".ui.activity.repayment.MessageActivity" />
-        <activity
-            android:name=".ui.activity.loan.JobInfoActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity
-            android:name=".ui.activity.loan.HouseInfoActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".ui.activity.loan.LoanMoneyActivity" />
-        <activity android:name=".ui.activity.loan.LoanApplyStateActivity" />
-        <activity android:name=".ui.activity.repayment.HomeRepaymentActivity" />
-        <activity android:name=".ui.activity.mine.MyLoanActivity" />
-        <activity android:name=".ui.activity.mine.LoanDetailActivity" />
-        <activity android:name=".ui.activity.mine.FeedbackActivity" />
-        <activity android:name=".ui.activity.mine.MyInfoActivity" />
-        <activity android:name=".ui.activity.mine.myinfo.ShowMyInfoActivity" />
-        <activity
-            android:name=".ui.activity.repayment.MyAccountActivity"
-            android:launchMode="singleTask" />
-        <activity android:name=".ui.activity.repayment.TradeDetailActivity" />
-        <activity android:name=".ui.activity.repayment.OfflineRepaymentActivity" />
-        <activity android:name=".ui.activity.repayment.RechageActivity" />
-        <activity android:name=".ui.activity.repayment.RepaymentVerifyCodeActivity" />
-        <activity android:name=".ui.activity.repayment.RechargeSuccessActivity" />
-        <activity android:name=".ui.activity.repayment.WithdrawCashActivity" />
-        <activity android:name=".ui.activity.repayment.WithdrawSuccessActivity" />
-        <activity android:name=".ui.activity.mine.bankcard.MyBankCardActivity" />
-        <activity android:name=".ui.activity.mine.bankcard.BankCardSettingActivity" />
-        <activity android:name=".ui.activity.mine.bankcard.AddMainCardActivity" />
-        <activity android:name=".ui.activity.mine.bankcard.AddBankCardVerifyActivity" />
-        <activity android:name=".ui.activity.mine.bankcard.AddCoborrowerActivity" />
-        <activity android:name=".ui.activity.mine.bankcard.AddCoborrowerBankCardActivity" />
-        <activity android:name=".ui.activity.mine.myinfo.MyImageInfoActivity" />
-        <activity android:name=".ui.activity.mine.MyLoanListActivity" />
-        <activity android:name=".ui.activity.mine.bankcard.CoborrowerHistoryActivity" />
-        <activity android:name=".ui.activity.mine.bankcard.SupportBankActivity" />
-        <activity android:name=".ui.activity.welcome.MainActivity"></activity>
+        <activity android:name=".ui.activity.mine.SettingActivity" />
+        <activity android:name=".ui.activity.mine.ResetPasswordActivity" />
+        <activity android:name=".ui.activity.WebViewActivity" />
     </application>
 
 </manifest>

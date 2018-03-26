@@ -14,8 +14,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.ui.activity.mine.MyLoanListActivity;
-import com.jht.doctor.ui.activity.repayment.HomeRepaymentActivity;
 
 
 /**
@@ -87,10 +85,10 @@ public class OngoingDialog extends Dialog implements View.OnClickListener {
             case R.id.id_btn_continue:
                 switch (mTag){
                     case ONGOING:
-                        mContext.startActivity(new Intent(mContext, MyLoanListActivity.class));
+//                        mContext.startActivity(new Intent(mContext, MyLoanListActivity.class));
                         break;
                     case REPAYMENT:
-                        mContext.startActivity(new Intent(mContext, HomeRepaymentActivity.class));
+//                        mContext.startActivity(new Intent(mContext, HomeRepaymentActivity.class));
                         break;
                 }
                 dismiss();
