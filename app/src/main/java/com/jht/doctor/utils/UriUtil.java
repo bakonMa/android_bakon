@@ -20,14 +20,13 @@ public class UriUtil {
      * 根据系统版本获取不同的uri
      *
      * @param context
-     * @param authority
      * @param file
      * @return Uri
      */
-    public static Uri getUri(Context context, String authority, File file) {
+    public static Uri getUri(Context context, File file) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             // 7.0 以上需要 authorities 属性值
-            return FileProvider.getUriForFile(context, authority, file);
+            return FileProvider.getUriForFile(context, UriUtil.getFileProviderAuth(context), file);
         } else {
             // > 7.0
             return Uri.fromFile(file);

@@ -134,7 +134,7 @@ dependencies {
     //greendao
     implementation "org.greenrobot:greendao:$greendao_version"
     //数据库加密 ***保留***
-//    implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
+    implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

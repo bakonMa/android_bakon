@@ -30,15 +30,20 @@ import com.jht.doctor.ui.bean.OtherBean;
 import com.jht.doctor.ui.bean.RepaymentOffLineBean;
 import com.jht.doctor.ui.bean.ReusingBean;
 import com.jht.doctor.ui.bean.SupportBankBean;
+import com.jht.doctor.ui.bean_jht.UploadImgBean;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Streaming;
@@ -54,8 +59,11 @@ public interface HttpAPI {
     @GET("getBank")
     Observable<HttpResponse<List<com.jht.doctor.ui.bean_jht.BankBean>>> getBank(@QueryMap Params params);
 
-
-
+    //上传单个文件
+    //key multipartFiles
+    @Multipart
+    @POST("uploadImage")
+    Observable<HttpResponse<UploadImgBean>> uploadSingleFile(@Part MultipartBody.Part upFileInfo, @Part MultipartBody.Part type);
 
     //登录
     @POST("customerApp/userLogin/login")

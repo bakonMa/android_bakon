@@ -11,9 +11,11 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.jht.doctor.BuildConfig;
 import com.jht.doctor.R;
 import com.jht.doctor.application.DocApplication;
@@ -24,6 +26,7 @@ import com.jht.doctor.ui.bean_jht.BankBean;
 import com.jht.doctor.ui.contact.contact_jht.AuthContact;
 import com.jht.doctor.ui.presenter.present_jht.AuthPresenter;
 import com.jht.doctor.utils.ActivityUtil;
+import com.jht.doctor.utils.FileUtil;
 import com.jht.doctor.utils.LogUtil;
 import com.jht.doctor.utils.SoftHideKeyBoardUtil;
 import com.jht.doctor.utils.UriUtil;
@@ -46,7 +49,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import rx.Observer;
 
 public class AuthStep1Activity extends BaseActivity implements AuthContact.View {
@@ -57,9 +64,6 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     Toolbar idToolbar;
     @BindView(R.id.scrollView)
     ScrollView scrollView;
-
-    @Inject
-    AuthPresenter mPresenter;
     @BindView(R.id.et_name)
     EditTextlayout etName;
     @BindView(R.id.et_phone)
@@ -78,6 +82,11 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     EditableLayout etGoodat;
     @BindView(R.id.tv_next_step)
     TextView tvNextStep;
+    @BindView(R.id.iv_img)
+    ImageView ivImg;
+
+    @Inject
+    AuthPresenter mPresenter;
 
     private String provinceId, cityId;
     private CommonBottomPopupView popupView;
@@ -94,7 +103,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     protected void initView() {
         SoftHideKeyBoardUtil.assistActivity(this);
         initToolbar();
-//        mPresenter.getBanks();
+        mPresenter.getBanks();
         // todo 测试数据
         typeList.clear();
         typeList.add("测试科室1");
@@ -108,7 +117,6 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     //获取当前界面可用高度
     private void initToolbar() {
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
-
                 .setTitle("认证")
                 .setStatuBar(R.color.white)
                 .setLeft(false)
@@ -136,9 +144,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                         if (o == null) {
                             return;
                         }
-                        if (o.toString().equals("拍照")) {
-                            openCamera();
-                        }
+                        openCameraOrPhoto(o.toString().equals("拍照"));
                     }
                 });
                 popupView.show(scrollView);
@@ -190,29 +196,35 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
 
     private File cameraPath;
 
-    private void openCamera() {
+    //1:打开相机拍照 2:打开相册
+    private void openCameraOrPhoto(boolean isCamera) {
         //根据路径拍照并存储照片
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions.setLogging(BuildConfig.DEBUG);
         rxPermissions
-                .request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                .request(isCamera ? new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA} : new String[]{Manifest.permission.READ_EXTERNAL_STORAGE})
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onNext(Boolean aBoolean) {
                         if (aBoolean) {
-                            File dir;
-                            if (Environment.MEDIA_MOUNTED.equals(DocApplication.getAppComponent().dataRepo().storage().externalRootDirState())) {
-                                dir = DocApplication.getAppComponent().dataRepo().storage().externalPublicDir(Environment.DIRECTORY_PICTURES);
-                            } else {
-                                dir = DocApplication.getAppComponent().dataRepo().storage().internalCustomDir(Environment.DIRECTORY_PICTURES);
+                            if (isCamera) {//打开照相机
+                                File dir;
+                                if (Environment.MEDIA_MOUNTED.equals(DocApplication.getAppComponent().dataRepo().storage().externalRootDirState())) {
+                                    dir = DocApplication.getAppComponent().dataRepo().storage().externalPublicDir(Environment.DIRECTORY_PICTURES);
+                                } else {
+                                    dir = DocApplication.getAppComponent().dataRepo().storage().internalCustomDir(Environment.DIRECTORY_PICTURES);
+                                }
+                                if (!dir.exists()) {
+                                    dir.mkdirs();
+                                }
+                                cameraPath = new File(dir, UriUtil.headerFileName(actContext()));
+                                ActivityUtil.openCamera(AuthStep1Activity.this, cameraPath, REQUEST_CAMERA_CODE);
+                            } else {//打开相册
+                                ActivityUtil.openAlbum(AuthStep1Activity.this, "image/*", REQUEST_ALBUM_CODE);
                             }
-                            if (!dir.exists()) {
-                                dir.mkdirs();
-                            }
-                            cameraPath = new File(dir, UriUtil.headerFileName(actContext()));
-                            ActivityUtil.openCamera(AuthStep1Activity.this, cameraPath, REQUEST_CAMERA_CODE);
+
                         } else {
-                            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请求权限失败");
+                            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(isCamera ? "请求照相机权限失败" : "请求相册权限失败");
                         }
                     }
 
@@ -235,20 +247,25 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
             switch (requestCode) {
                 //拍照
                 case REQUEST_CAMERA_CODE:
+                    LogUtil.d("cameraPath=" + cameraPath);
                     if (cameraPath.exists()) {
-                        headerImageUpload(cameraPath);
+                        ivImg.setImageURI(UriUtil.getUri(this, cameraPath));
+                        headerImageUpload(cameraPath.getAbsolutePath());
                     }
                     break;
-
                 //相册
                 case REQUEST_ALBUM_CODE:
                     Uri uri = data.getData();
                     String headerPath;
                     if (uri != null && !TextUtils.isEmpty(headerPath = UriUtil.getRealFilePath(this, uri))) {
-                        headerImageUpload(new File(headerPath));
+                        LogUtil.d("headerPath=" + headerPath);
+//                        ivImg.setImageURI(uri);
+                        Glide.with(this)
+                                .load(UriUtil.getRealFilePath(this, uri))
+                                .into(ivImg);
+                        headerImageUpload(headerPath);
                     }
                     break;
-
 
                 default:
                     break;
@@ -258,12 +275,17 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     }
 
 
-    private void headerImageUpload(File jpgImage) {
+    private void headerImageUpload(String path) {
+        LogUtil.d("imgpath=" + path);
+        mPresenter.uploadImg(path);
+
+
 //        FileUtil
 //                .zipImage(jpgImage, 1 * 1024 * 1024)
 //                .concatMap(bytes -> HttpClient
 //                        .getClient()
-//                        .uploadSingleFile(MultipartBody.Part.createFormData("multipartFiles", jpgImage.getName(), RequestBody.create(MediaType.parse(FileUtil.mimeType(jpgImage)), bytes)))
+//                        .uploadSingleFile(MultipartBody.Part.createFormData("multipartFiles", jpgImage.getName(),
+//                                RequestBody.create(MediaType.parse(FileUtil.mimeType(jpgImage)), bytes)))
 //                )
 //                .compose(HttpProvider.compatResult(this))
 //                .compose(HttpProvider.bindLiefAndSchedulers(this))
@@ -326,5 +348,12 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     @Override
     public <R> LifecycleTransformer<R> toLifecycle() {
         return bindToLifecycle();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

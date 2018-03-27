@@ -80,7 +80,7 @@ public class ActivityUtil {
         try {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Uri uri = UriUtil.getUri(receiver, UriUtil.getFileProviderAuth(receiver), file);
+                Uri uri = UriUtil.getUri(receiver, file);
                 //添加权限
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
@@ -95,6 +95,7 @@ public class ActivityUtil {
         }
     }
 
+    //打开相册
     public static boolean openAlbum(Activity receiver, String mimeType, int requestCode) {
         try {
             Intent intent = new Intent(Intent.ACTION_PICK);
@@ -106,14 +107,6 @@ public class ActivityUtil {
             e.printStackTrace();
             return false;
         }
-    }
-
-    public static boolean openAlbum(Fragment receiver, String mimeType, int requestCode) {
-        return openAlbum(receiver.getActivity(), mimeType, requestCode);
-    }
-
-    public static boolean openAlbum(android.support.v4.app.Fragment receiver, String mimeType, int requestCode) {
-        return openAlbum(receiver.getActivity(), mimeType, requestCode);
     }
 
 }

@@ -15,6 +15,7 @@ public interface AuthContact {
 
     interface Presenter extends BasePresenter{
         void getBanks();
+        void uploadImg(String path);
     }
 
 }

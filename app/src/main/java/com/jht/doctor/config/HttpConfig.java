@@ -11,6 +11,9 @@ import com.jht.doctor.BuildConfig;
  */
 public interface HttpConfig {
 
+    //todo 确认SECRET
+    String SECRET_VALUE = "secret_value";
+    String SIGN_KEY = "sign";
     String BASE_URL = BuildConfig.BASE_URL;
     String NOLOGIN_CODE = "1001";//1001	未登录
     String SIGN_ERROR_CODE = "1002";//1002	签名错误

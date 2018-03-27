@@ -1,10 +1,56 @@
 package com.jht.doctor.utils;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
+import rx.Observable;
+
 public class FileUtil {
+
+
+    private static final long MAX_UPLOAD_SIZE = 1 * 1024 * 1024;
+
+    /**
+     * 压缩文件到指定大小以下
+     *
+     * @param file
+     * @param specifiedSize
+     * @return Observable<byte[]>
+     */
+    public static Observable<byte[]> zipImage(File file, long specifiedSize) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        return Observable
+                .just(out)
+                .map(byteArrayOutputStream -> {
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = false;
+                    options.inSampleSize = 2;
+                    Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+                    int quality = 100;
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
+                    while (out.toByteArray().length > specifiedSize) {
+                        out.reset();
+                        quality -= 10;
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
+                    }
+                    bitmap.recycle();
+                    byte[] bytes = byteArrayOutputStream.toByteArray();
+                    try {
+                        byteArrayOutputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return bytes;
+                });
+    }
+
+
 
     /**
      * 复制文件到指定目录
