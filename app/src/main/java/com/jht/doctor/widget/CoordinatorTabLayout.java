@@ -19,7 +19,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.utils.DensityUtils;
+import com.jht.doctor.utils.StatusBarUtil;
 
 
 /**
@@ -44,7 +44,7 @@ public class CoordinatorTabLayout extends CoordinatorLayout {
         mContext = context;
         if (!isInEditMode()) {
             initView(context);
-}
+        }
     }
 
     public CoordinatorTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -193,7 +193,7 @@ public class CoordinatorTabLayout extends CoordinatorLayout {
             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) mToolbar.getLayoutParams();
             layoutParams.setMargins(
                     layoutParams.leftMargin,
-                    layoutParams.topMargin + DensityUtils.getStatusBarHeight(activity),
+                    layoutParams.topMargin + StatusBarUtil.getStatusBarHeight(activity),
                     layoutParams.rightMargin,
                     layoutParams.bottomMargin);
         }
@@ -211,7 +211,7 @@ public class CoordinatorTabLayout extends CoordinatorLayout {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return this;
         } else {
-            mToolbar.setPadding(0, DensityUtils.getStatusBarHeight(activity) >> 1, 0, 0);
+            mToolbar.setPadding(0, StatusBarUtil.getStatusBarHeight(activity) >> 1, 0, 0);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);

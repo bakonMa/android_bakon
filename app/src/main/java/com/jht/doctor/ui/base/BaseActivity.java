@@ -1,14 +1,11 @@
 package com.jht.doctor.ui.base;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.view.WindowManager;
 
 import com.jht.doctor.data.eventbus.EventBusUtil;
+import com.jht.doctor.utils.StatusBarUtil;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -25,7 +22,8 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BasicP
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActivityComponent();
-        initStatusBar();
+        //沉浸式状态栏
+        StatusBarUtil.initStatusBar(this);
         setContentView(provideRootLayout());
         if (useButterKnife()) {
             ButterKnife.bind(this);
@@ -34,17 +32,6 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BasicP
             EventBusUtil.register(this);
         }
         initView();
-    }
-
-    private void initStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {       //5.0以上(包含)
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_OVERSCAN);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
-        } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {    //4.3以上(不包含)
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
     }
 
     //设置layoutid

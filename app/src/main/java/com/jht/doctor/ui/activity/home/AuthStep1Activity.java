@@ -94,7 +94,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     protected void initView() {
         SoftHideKeyBoardUtil.assistActivity(this);
         initToolbar();
-        mPresenter.getBanks();
+//        mPresenter.getBanks();
         // todo 测试数据
         typeList.clear();
         typeList.add("测试科室1");

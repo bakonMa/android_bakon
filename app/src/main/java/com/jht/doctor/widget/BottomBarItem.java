@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.utils.DensityUtils;
+import com.jht.doctor.utils.UIUtils;
 
 import java.util.Locale;
 
@@ -67,7 +67,7 @@ public class BottomBarItem extends LinearLayout {
         //icon，text，testsize
         mIconDrawable = ta.getDrawable(R.styleable.BottomBarItem_iconDrawable);
         mText = ta.getString(R.styleable.BottomBarItem_itemText);
-        mTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemTextSize, DensityUtils.sp2px(mContext, mTextSize));
+        mTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemTextSize, UIUtils.sp2px(mContext, mTextSize));
         mTextColorNormal = ta.getColor(R.styleable.BottomBarItem_textColorNormal, mTextColorNormal);
         mTextColorSelected = ta.getColor(R.styleable.BottomBarItem_textColorSelected, mTextColorSelected);
         //icon 大小
@@ -75,9 +75,9 @@ public class BottomBarItem extends LinearLayout {
         mIconHeight = ta.getDimensionPixelSize(R.styleable.BottomBarItem_iconHeight, 0);
         mItemPadding = ta.getDimensionPixelSize(R.styleable.BottomBarItem_itemPadding, 0);
         //设置未读数字体大小
-        mUnreadTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_unreadTextSize, DensityUtils.sp2px(mContext, mUnreadTextSize));
+        mUnreadTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_unreadTextSize, UIUtils.sp2px(mContext, mUnreadTextSize));
         //设置提示消息字体大小
-        mMsgTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_msgTextSize, DensityUtils.sp2px(mContext, mMsgTextSize));
+        mMsgTextSize = ta.getDimensionPixelSize(R.styleable.BottomBarItem_msgTextSize, UIUtils.sp2px(mContext, mMsgTextSize));
         //设置未读数组阈值 大于阈值的数字将显示为 n+ n为设置的阈值
         unreadNumThreshold = ta.getInteger(R.styleable.BottomBarItem_unreadThreshold, 99);
 

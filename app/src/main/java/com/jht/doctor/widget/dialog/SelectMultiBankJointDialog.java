@@ -24,7 +24,7 @@ import com.jht.doctor.R;
 import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.ui.bean.IfBankOfJointBean;
 import com.jht.doctor.ui.bean.WrapperBean;
-import com.jht.doctor.utils.DensityUtils;
+import com.jht.doctor.utils.UIUtils;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -142,7 +142,7 @@ public class SelectMultiBankJointDialog extends Dialog implements View.OnClickLi
     private void setHeight() {
         LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) recyclerView.getLayoutParams();
         if (mData.size() > 5) {
-            lp.height = DensityUtils.dp2Px(mContext, 5 * 40);
+            lp.height = UIUtils.dp2px(mContext, 5 * 40);
             recyclerView.setLayoutParams(lp);
         } else {
             lp.height = LinearLayout.LayoutParams.WRAP_CONTENT;

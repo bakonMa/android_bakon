@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,7 +22,6 @@ import com.jht.doctor.ui.bean.MaxAmtBean;
 import com.jht.doctor.ui.contact.HomeLoanContact;
 import com.jht.doctor.ui.presenter.HomeLoanPresenter;
 import com.jht.doctor.utils.RegexUtil;
-import com.jht.doctor.utils.StringUtils;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -54,7 +54,7 @@ public class HomeFragment extends BaseFragment implements HomeLoanContact.View {
     }
 
     private void requestMaxAmt() {
-        if (!StringUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
+        if (!TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
             mPresenter.getMaxAmt();
         }
     }
@@ -131,7 +131,7 @@ public class HomeFragment extends BaseFragment implements HomeLoanContact.View {
 
     @OnClick(R.id.id_tv_apply)
     public void onViewClicked() {
-        if (StringUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
+        if (TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
             Intent intent = new Intent(actContext(), LoginActivity.class);
             intent.putExtra(LoginActivity.FROM_KEY, LoginActivity.HOMELOAN_ACTIVITY);
             startActivity(intent);

@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.jht.doctor.R;
-import com.jht.doctor.utils.DensityUtils;
+import com.jht.doctor.utils.UIUtils;
 import com.jht.doctor.utils.LogUtil;
 
 /**
@@ -80,7 +80,7 @@ public class ScheduleView_jht extends View {
         LogUtil.d("init currentIndex  ====" + currentIndex);
         //文字画笔
         textPaint = new Paint();
-        textPaint.setTextSize(DensityUtils.sp2px(mContext, textSize));
+        textPaint.setTextSize(UIUtils.sp2px(mContext, textSize));
         textPaint.setStrokeWidth(3);
         textPaint.setAntiAlias(true);
         //文字选中颜色
@@ -92,7 +92,7 @@ public class ScheduleView_jht extends View {
         linePointPaint.setColor(getContext().getResources().getColor(R.color.white));
         //线画笔
         linePaint = new Paint();
-        linePaint.setStrokeWidth(DensityUtils.dp2Px(getContext(), lineHeight));
+        linePaint.setStrokeWidth(UIUtils.dp2px(getContext(), lineHeight));
         linePaint.setColor(getContext().getResources().getColor(R.color.white));
 
         roundPaint = new Paint();
@@ -100,14 +100,14 @@ public class ScheduleView_jht extends View {
         roundPaint.setStyle(Paint.Style.FILL);
         roundPaint.setColor(getContext().getResources().getColor(R.color.white));
 
-        defalutRadius = DensityUtils.dp2Px(mContext, 13);
-        lineWidth = DensityUtils.dp2Px(mContext, 64);
-        marginY = DensityUtils.dp2Px(mContext, 9);
+        defalutRadius = UIUtils.dp2px(mContext, 13);
+        lineWidth = UIUtils.dp2px(mContext, 64);
+        marginY = UIUtils.dp2px(mContext, 9);
 
-        pointSpace = DensityUtils.dp2Px(mContext, 10);
-        pointRadiusLittle = DensityUtils.dp2Px(mContext, 3);
-        pointRadiusMiddle = DensityUtils.dp2Px(mContext, 4);
-        pointRadiusBig = DensityUtils.dp2Px(mContext, 5);
+        pointSpace = UIUtils.dp2px(mContext, 10);
+        pointRadiusLittle = UIUtils.dp2px(mContext, 3);
+        pointRadiusMiddle = UIUtils.dp2px(mContext, 4);
+        pointRadiusBig = UIUtils.dp2px(mContext, 5);
 
         bitmap_current = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon_jxz);
         bitmap_compeled = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon_ywc);

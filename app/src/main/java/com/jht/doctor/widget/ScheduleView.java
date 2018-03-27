@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.jht.doctor.R;
-import com.jht.doctor.utils.DensityUtils;
+import com.jht.doctor.utils.UIUtils;
 
 /**
  * Created by Tang on 2017/11/8.
@@ -76,12 +76,12 @@ public class ScheduleView extends View {
 
     private void init() {
         textPaint = new Paint();
-        textPaint.setTextSize(DensityUtils.sp2px(mContext, textSize));
+        textPaint.setTextSize(UIUtils.sp2px(mContext, textSize));
         textPaint.setStrokeWidth(3);
         textPaint.setAntiAlias(true);
 
         linePaint = new Paint();
-        linePaint.setStrokeWidth(DensityUtils.dp2Px(getContext(), lineHeight));
+        linePaint.setStrokeWidth(UIUtils.dp2px(getContext(), lineHeight));
         linePaint.setColor(getContext().getResources().getColor(R.color.color_f0f0f0));
 
         roundPaint = new Paint();
@@ -89,10 +89,10 @@ public class ScheduleView extends View {
         roundPaint.setStyle(Paint.Style.FILL);
         roundPaint.setColor(getContext().getResources().getColor(R.color.color_e8e8e8));
 
-        defalutRadius = DensityUtils.dp2Px(mContext, 9);
-        selectedRadius = DensityUtils.dp2Px(mContext, 13);
-        lineWidth = DensityUtils.dp2Px(mContext, 110);
-        marginY = DensityUtils.dp2Px(mContext, 9);
+        defalutRadius = UIUtils.dp2px(mContext, 9);
+        selectedRadius = UIUtils.dp2px(mContext, 13);
+        lineWidth = UIUtils.dp2px(mContext, 110);
+        marginY = UIUtils.dp2px(mContext, 9);
 
         bitmap_current = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon_jxz);
         bitmap_compeled = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon_ywc);

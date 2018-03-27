@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
 
-import com.jht.doctor.R;
-import com.jht.doctor.utils.ScreenUtils;
+import com.jht.doctor.utils.UIUtils;
 
 import java.lang.ref.WeakReference;
 
@@ -35,7 +33,7 @@ public class SharePopupWindow extends PopupWindow {
 
     @Override
     public void showAtLocation(View parent, int gravity, int x, int y) {
-        ScreenUtils.lightOff(((Activity) context.get()));
+        UIUtils.lightOff(((Activity) context.get()));
         super.showAtLocation(parent, gravity, x, y);
     }
 

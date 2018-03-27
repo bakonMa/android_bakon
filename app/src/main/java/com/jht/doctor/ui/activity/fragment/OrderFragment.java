@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -19,14 +20,12 @@ import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.injection.components.DaggerFragmentComponent;
 import com.jht.doctor.injection.modules.FragmentModule;
-import com.jht.doctor.ui.activity.WebViewActivity;
 import com.jht.doctor.ui.base.BaseFragment;
 import com.jht.doctor.ui.bean.MyLoanBean;
 import com.jht.doctor.ui.contact.MyLoanContact;
 import com.jht.doctor.ui.presenter.MyLoanPresenter;
-import com.jht.doctor.utils.DensityUtils;
 import com.jht.doctor.utils.RegexUtil;
-import com.jht.doctor.utils.StringUtils;
+import com.jht.doctor.utils.StatusBarUtil;
 import com.jht.doctor.widget.recycle_view.RecycleWithEmpty;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
@@ -74,7 +73,7 @@ public class OrderFragment extends BaseFragment implements MyLoanContact.View {
 
     @Override
     protected void initView() {
-        idLlTop.setPadding(0, DensityUtils.getStatusBarHeight(actContext()), 0, 0);
+        idLlTop.setPadding(0, StatusBarUtil.getStatusBarHeight(actContext()), 0, 0);
         initEvent();
     }
 
@@ -248,13 +247,13 @@ public class OrderFragment extends BaseFragment implements MyLoanContact.View {
         });
         idRecycle.setAdapter(mAdapter);
         idRecycle.setLayoutManager(new LinearLayoutManager(actContext()));
-        if (!StringUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
+        if (!TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
             mPresenter.getLoanList();
         }
         idSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (!StringUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
+                if (!TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
                     mPresenter.getLoanList();
                 } else {
                     idSwipe.setRefreshing(false);

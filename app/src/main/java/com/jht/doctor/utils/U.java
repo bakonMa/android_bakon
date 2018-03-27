@@ -49,21 +49,6 @@ public class U {
     }
 
 
-    public static int checkStep(ApplyInfoBean applyInfoBean) {
-        if (applyInfoBean == null) {
-            return 1;
-        }
-        if (applyInfoBean.getUserDTO().getUserName() == null) {
-            return 1;
-        } else if (applyInfoBean.getUserJobDTO() == null) {
-            return 2;
-        } else if (applyInfoBean.getUserHouseDTO() == null) {
-            return 3;
-        } else {
-            return 4;
-        }
-    }
-
     /**
      * token是否为空，是否登录
      * true : 未登录

@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.jht.doctor.R;
 import com.jht.doctor.ui.bean.AppUpdateBean;
-import com.jht.doctor.utils.DensityUtils;
+import com.jht.doctor.utils.UIUtils;
 
 import static android.view.KeyEvent.KEYCODE_BACK;
 import static android.view.View.GONE;
@@ -72,7 +72,7 @@ public class AppUpdateDialog extends Dialog implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         Window window = getWindow();
         WindowManager.LayoutParams layoutParams = window.getAttributes();
-        layoutParams.width = DensityUtils.dp2Px(getContext(), 300);
+        layoutParams.width = UIUtils.dp2px(getContext(), 300);
         layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
         window.setAttributes(layoutParams);
 

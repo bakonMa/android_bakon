@@ -7,21 +7,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.utils.DensityUtils;
-import com.jht.doctor.utils.LogUtil;
 import com.jht.doctor.utils.OsUtil;
+import com.jht.doctor.utils.StatusBarUtil;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 /**
  * author:Tang
@@ -44,85 +39,26 @@ public class ToolbarBuilder {
         return new ToolbarBuilder(toolbar, context);
     }
 
+    //设置状态栏颜色
     public ToolbarBuilder setStatuBar(int colorRes) {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             if (colorRes == R.color.white) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M || OsUtil.isMIUI() || OsUtil.isFlyme()) {
-//                    ScreenUtils.setStatusBarFontIconDark(context.get(), true);
-                    setStatusBarFontIconDark(true);
+                    StatusBarUtil.setStatusBarDarkFont(context.get(), true);
                 } else {
                     colorRes = R.color.statueBar_color;
                 }
             }
+            //添加一个状态栏的高度的高度
             View view = toolbar.findViewById(R.id.id_view_statu);
             view.setBackgroundResource(colorRes);
             ViewGroup.LayoutParams lp = view.getLayoutParams();
-            lp.height = DensityUtils.getStatusBarHeight(context.get());
+            lp.height = StatusBarUtil.getStatusBarHeight(context.get());
             view.setLayoutParams(lp);
             view.setVisibility(View.VISIBLE);
         }
         return this;
     }
-
-    /**
-     * 设置Android状态栏的字体颜色，状态栏为亮色的时候字体和图标是黑色，状态栏为暗色的时候字体和图标为白色
-     * 目前可以是MIUI6+,Flyme4+，Android6.0+支持切换状态栏的文字颜色为暗色。
-     *
-     * @param dark 状态栏字体是否为深色
-     */
-    private void setStatusBarFontIconDark(boolean dark) {
-        // 小米MIUI
-        try {
-            Window window = context.get().getWindow();
-            Class clazz = context.get().getWindow().getClass();
-            Class layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
-            Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
-            int darkModeFlag = field.getInt(layoutParams);
-            Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
-            if (dark) {    //状态栏亮色且黑色字体
-                extraFlagField.invoke(window, darkModeFlag, darkModeFlag);
-            } else {       //清除黑色字体
-                extraFlagField.invoke(window, 0, darkModeFlag);
-            }
-        } catch (Exception e) {
-//            e.printStackTrace();
-            LogUtil.d("Exception 小米MIUI setStatusBarFontIconDark");
-        }
-
-        // 魅族FlymeUI
-        try {
-            Window window = context.get().getWindow();
-            WindowManager.LayoutParams lp = window.getAttributes();
-            Field darkFlag = WindowManager.LayoutParams.class.getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
-            Field meizuFlags = WindowManager.LayoutParams.class.getDeclaredField("meizuFlags");
-            darkFlag.setAccessible(true);
-            meizuFlags.setAccessible(true);
-            int bit = darkFlag.getInt(null);
-            int value = meizuFlags.getInt(lp);
-            if (dark) {
-                value |= bit;
-            } else {
-                value &= ~bit;
-            }
-            meizuFlags.setInt(lp, value);
-            window.setAttributes(lp);
-        } catch (Exception e) {
-//            e.printStackTrace();
-            LogUtil.d("Exception 魅族FlymeUI setStatusBarFontIconDark");
-        }
-
-        // android6.0+系统
-        // 这个设置和在xml的style文件中用这个<item name="android:windowLightStatusBar">true</item>属性是一样的
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (dark) {
-                context.get().getWindow().getDecorView().setSystemUiVisibility(
-                        View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            }
-            return;
-        }
-    }
-
 
     public ToolbarBuilder setTitle(String title) {
         TextView tvTitle = (TextView) toolbar.findViewById(R.id.id_tv_title);

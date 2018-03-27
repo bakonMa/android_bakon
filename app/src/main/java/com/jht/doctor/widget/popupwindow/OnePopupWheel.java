@@ -12,7 +12,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.utils.ScreenUtils;
+import com.jht.doctor.utils.UIUtils;
 import com.jht.doctor.widget.PickerView;
 
 import java.util.List;
@@ -77,13 +77,13 @@ public class OnePopupWheel extends PopupWindow implements PopupWindow.OnDismissL
 
     @Override
     public void showAtLocation(View parent, int gravity, int x, int y) {
-        ScreenUtils.lightOff(mActivity);
+        UIUtils.lightOff(mActivity);
         super.showAtLocation(parent, gravity, x, y);
     }
 
     @Override
     public void onDismiss() {
-        ScreenUtils.lightOn(mActivity);
+        UIUtils.lightOn(mActivity);
     }
 
     @Override

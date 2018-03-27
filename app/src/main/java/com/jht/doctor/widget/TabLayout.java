@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
-import com.jht.doctor.utils.DensityUtils;
+import com.jht.doctor.utils.UIUtils;
 
 /**
  * Created by Tang on 2017/11/14.
@@ -57,7 +57,7 @@ public class TabLayout extends RelativeLayout implements View.OnClickListener {
         //tv2.setOnClickListener(this);
         //.setOnClickListener(this);
         mIndex = 0;
-        tv_width = DensityUtils.getDeviceWidth(getContext()) / 3;
+        tv_width = UIUtils.getScreenWidth(getContext()) / 3;
     }
 
     @Override
@@ -90,7 +90,9 @@ public class TabLayout extends RelativeLayout implements View.OnClickListener {
 
         }
     }
+
     float x = 0;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -108,7 +110,7 @@ public class TabLayout extends RelativeLayout implements View.OnClickListener {
                     if (mListener != null) {
                         mListener.itemClicked(0);
                     }
-                } else if (x >tv_width && x <= tv_width*2) {
+                } else if (x > tv_width && x <= tv_width * 2) {
                     if (mIndex != 1) {
                         startAnimation(transX2);
                         mCurrentTransX = transX2;
@@ -117,7 +119,7 @@ public class TabLayout extends RelativeLayout implements View.OnClickListener {
                     if (mListener != null) {
                         mListener.itemClicked(1);
                     }
-                } else{
+                } else {
                     if (mIndex != 2) {
                         startAnimation(transX3);
                         mCurrentTransX = transX3;
@@ -146,7 +148,7 @@ public class TabLayout extends RelativeLayout implements View.OnClickListener {
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                switch (mIndex){
+                switch (mIndex) {
                     case 0:
                         tv1.setTextColor(getContext().getResources().getColor(R.color.color_main));
                         tv2.setTextColor(getContext().getResources().getColor(R.color.toolbar_title));

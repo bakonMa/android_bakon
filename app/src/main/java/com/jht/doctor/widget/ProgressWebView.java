@@ -21,7 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.jht.doctor.R;
-import com.jht.doctor.utils.DensityUtils;
+import com.jht.doctor.utils.UIUtils;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -56,7 +56,7 @@ public class ProgressWebView extends WebView implements OnKeyListener {
         this.context = context;
         //加载进度条
         mProgressbar = new ProgressBar(context, null, android.R.attr.progressBarStyleHorizontal);
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, DensityUtils.dp2Px(context, 2));
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, UIUtils.dp2px(context, 2));
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 //        mProgressbar.setLayoutParams(layoutParams);
 

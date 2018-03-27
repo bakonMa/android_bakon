@@ -1,2 +1,0 @@
-android git
-commite test

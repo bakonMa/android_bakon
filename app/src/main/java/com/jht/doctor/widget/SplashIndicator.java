@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.jht.doctor.R;
-import com.jht.doctor.utils.DensityUtils;
+import com.jht.doctor.utils.UIUtils;
 
 /**
  * Created by Tang on 2017/11/7.
@@ -91,8 +91,8 @@ public class SplashIndicator extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawRoundRect(new RectF(mIndex * itemWidth + mOffsetX, 0, (mIndex + 1) * itemWidth + mOffsetX, mHeight)
-                , DensityUtils.dp2Px(getContext(),1.0f)
-                , DensityUtils.dp2Px(getContext(),1.0f)
+                , UIUtils.dp2px(getContext(),1.0f)
+                , UIUtils.dp2px(getContext(),1.0f)
                 , itemPaint);
     }
 

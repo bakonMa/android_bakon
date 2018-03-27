@@ -17,8 +17,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * @author: mayakun
- * @date: 2017/11/16
+ * BaseFragment
+ * Create by mayakun at 2018/3/27 上午9:26
  */
 public abstract class BaseFragment extends RxFragment implements BasicProvider {
 
@@ -33,11 +33,13 @@ public abstract class BaseFragment extends RxFragment implements BasicProvider {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(provideRootLayout(), container, false);
-        mUnbinder = ButterKnife.bind(this, v);
+        View view = inflater.inflate(provideRootLayout(), container, false);
+        if (useButterKnife()) {
+            mUnbinder = ButterKnife.bind(this, view);
+        }
         initView();
         setupActivityComponent();
-        return v;//return view的时候开始绘制
+        return view;//return view的时候开始绘制
     }
 
     // onViewCreated是在onCreateView后被触发的事件
@@ -50,14 +52,14 @@ public abstract class BaseFragment extends RxFragment implements BasicProvider {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    //设置ActivityComponent
-    protected abstract void setupActivityComponent();
-
     //设置layoutid
     protected abstract int provideRootLayout();
 
     //initview
     protected abstract void initView();
+
+    //设置ActivityComponent
+    protected abstract void setupActivityComponent();
 
     @Override
     public Context actContext() {
@@ -71,6 +73,15 @@ public abstract class BaseFragment extends RxFragment implements BasicProvider {
      */
     public boolean useEventBus() {
         return false;
+    }
+
+    /**
+     * 是否使用ButterKnife，默认为使用(true)
+     *
+     * @return
+     */
+    protected boolean useButterKnife() {
+        return true;
     }
 
     @Override

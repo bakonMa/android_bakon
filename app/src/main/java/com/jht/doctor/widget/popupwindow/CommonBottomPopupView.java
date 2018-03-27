@@ -18,7 +18,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.jht.doctor.R;
-import com.jht.doctor.utils.ScreenUtils;
+import com.jht.doctor.utils.UIUtils;
 
 import java.util.List;
 
@@ -96,13 +96,13 @@ public class CommonBottomPopupView extends PopupWindow implements PopupWindow.On
     }
     @Override
     public void showAtLocation(View parent, int gravity, int x, int y) {
-        ScreenUtils.lightOff(((Activity) mContext));
+        UIUtils.lightOff(((Activity) mContext));
         super.showAtLocation(parent, gravity, x, y);
     }
 
     @Override
     public void onDismiss() {
-        ScreenUtils.lightOn((Activity) mContext);
+        UIUtils.lightOn((Activity) mContext);
     }
 
 
