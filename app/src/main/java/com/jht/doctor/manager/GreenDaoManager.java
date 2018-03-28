@@ -89,11 +89,9 @@ public class GreenDaoManager {
             //DBOpenHelper.getEncryptedWritableDb("pwd"); 使用加密的db
             DBOpenHelper dbOpenHelper = new DBOpenHelper(DocApplication.getInstance(), dbName, null);
             //使用加密的db
-            mDaoMaster = new DaoMaster(dbOpenHelper.getEncryptedWritableDb(""));
-//            mDaoMaster = new DaoMaster(dbOpenHelper.getWritableDatabase());
+//            mDaoMaster = new DaoMaster(dbOpenHelper.getEncryptedWritableDb(""));
+            mDaoMaster = new DaoMaster(dbOpenHelper.getWritableDb());
             mDaoMaster.createAllTables(mDaoMaster.getDatabase(), true);
-            //不加密
-//            mDaoMaster = new DaoMaster(dbOpenHelper.getWritableDatabase());
         }
         return mDaoMaster;
     }

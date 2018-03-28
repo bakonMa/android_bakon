@@ -28,7 +28,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BasicP
         if (useButterKnife()) {
             ButterKnife.bind(this);
         }
-        if (useEventBus() && !EventBus.getDefault().isRegistered(this)) {
+        if (useEventBus()) {
             EventBusUtil.register(this);
         }
         initView();

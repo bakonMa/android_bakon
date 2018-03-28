@@ -76,18 +76,18 @@ public class ActivityUtil {
     }
 
     //打开照相机
-    public static boolean openCamera(Activity receiver, File file, int requestCode) {
+    public static boolean openCamera(Activity activity, File file, int requestCode) {
         try {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Uri uri = UriUtil.getUri(receiver, file);
+                Uri uri = UriUtil.getUri(activity, file);
                 //添加权限
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
             } else {
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
             }
-            receiver.startActivityForResult(intent, requestCode);
+            activity.startActivityForResult(intent, requestCode);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

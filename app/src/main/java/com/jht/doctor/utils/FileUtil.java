@@ -13,8 +13,7 @@ import rx.Observable;
 
 public class FileUtil {
 
-
-    private static final long MAX_UPLOAD_SIZE = 1 * 1024 * 1024;
+    public static long MAX_UPLOAD_SIZE = 1 * 1024 * 1024;
 
     /**
      * 压缩文件到指定大小以下
@@ -50,6 +49,35 @@ public class FileUtil {
                 });
     }
 
+    /**
+     * 压缩文件到指定大小以下
+     *
+     * @param file
+     * @param maxSize
+     * @return byte[]
+     */
+    public static byte[] zipImageToSize(File file, long maxSize) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = 2;
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
+        int quality = 100;
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
+        while (out.toByteArray().length > maxSize) {
+            out.reset();
+            quality -= 10;
+            bitmap.compress(Bitmap.CompressFormat.JPEG, quality, out);
+        }
+        bitmap.recycle();
+        byte[] bytes = out.toByteArray();
+        try {
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bytes;
+    }
 
 
     /**

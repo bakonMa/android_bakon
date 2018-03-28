@@ -29,6 +29,23 @@ import java.lang.reflect.Method;
  */
 
 public class UIUtils {
+
+    /**
+     * 判断连续多次点击时间（600ms）
+     *
+     * @return 多次连续点击返回 true 否则返回 false
+     */
+    private static long lastClickTime = 0;
+    public static boolean isDoubleClick() {
+        if (System.currentTimeMillis() - lastClickTime < 600) {
+            lastClickTime = System.currentTimeMillis();
+            return true;
+        } else {
+            lastClickTime = System.currentTimeMillis();
+            return false;
+        }
+    }
+
     /**
      * popularwindow时改变背景透明度
      */

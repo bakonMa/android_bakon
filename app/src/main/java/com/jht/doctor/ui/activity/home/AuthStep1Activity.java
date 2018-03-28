@@ -27,6 +27,7 @@ import com.jht.doctor.ui.contact.contact_jht.AuthContact;
 import com.jht.doctor.ui.presenter.present_jht.AuthPresenter;
 import com.jht.doctor.utils.ActivityUtil;
 import com.jht.doctor.utils.FileUtil;
+import com.jht.doctor.utils.ImageUtil;
 import com.jht.doctor.utils.LogUtil;
 import com.jht.doctor.utils.SoftHideKeyBoardUtil;
 import com.jht.doctor.utils.UriUtil;
@@ -60,6 +61,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
 
     private final int REQUEST_CAMERA_CODE = 101;//拍照
     private final int REQUEST_ALBUM_CODE = 102;//相册
+    private final int REQUEST_CROP_CODE = 103;//裁剪
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
     @BindView(R.id.scrollView)
@@ -245,12 +247,15 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
+                //裁剪
+//                case REQUEST_CROP_CODE:
+//                break;
                 //拍照
                 case REQUEST_CAMERA_CODE:
-                    LogUtil.d("cameraPath=" + cameraPath);
+                    LogUtil.d("cameraPath=" + cameraPath.getAbsolutePath());
                     if (cameraPath.exists()) {
-                        ivImg.setImageURI(UriUtil.getUri(this, cameraPath));
-                        headerImageUpload(cameraPath.getAbsolutePath());
+                        ImageUtil.showImage(cameraPath.getAbsolutePath(), ivImg);
+                        mPresenter.uploadImg(cameraPath.getAbsolutePath());
                     }
                     break;
                 //相册
@@ -259,11 +264,8 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                     String headerPath;
                     if (uri != null && !TextUtils.isEmpty(headerPath = UriUtil.getRealFilePath(this, uri))) {
                         LogUtil.d("headerPath=" + headerPath);
-//                        ivImg.setImageURI(uri);
-                        Glide.with(this)
-                                .load(UriUtil.getRealFilePath(this, uri))
-                                .into(ivImg);
-                        headerImageUpload(headerPath);
+                        ImageUtil.showImage(headerPath, ivImg);
+                        mPresenter.uploadImg(headerPath);
                     }
                     break;
 
@@ -274,40 +276,6 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-
-    private void headerImageUpload(String path) {
-        LogUtil.d("imgpath=" + path);
-        mPresenter.uploadImg(path);
-
-
-//        FileUtil
-//                .zipImage(jpgImage, 1 * 1024 * 1024)
-//                .concatMap(bytes -> HttpClient
-//                        .getClient()
-//                        .uploadSingleFile(MultipartBody.Part.createFormData("multipartFiles", jpgImage.getName(),
-//                                RequestBody.create(MediaType.parse(FileUtil.mimeType(jpgImage)), bytes)))
-//                )
-//                .compose(HttpProvider.compatResult(this))
-//                .compose(HttpProvider.bindLiefAndSchedulers(this))
-//                .subscribe(new ProgressDialogSubscriber<String>(this , 0) {
-//
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//                        super.onSubscribe(d);
-//                        headerUploadDisposable = d;
-//                    }
-//
-//                    @Override
-//                    protected void _onNext(String s) {
-//                        if (!TextUtils.isEmpty(s)){
-//                            settingHeaderUrl(s);
-//                            cardViewPagerAdapter.headerUrlChanged(s);
-//                        }else {
-//                            ToastUtil.showT(EditCardActivity.this , "未知错误");
-//                        }
-//                    }
-//                });
-    }
 
     @Override
     protected void setupActivityComponent() {
@@ -340,20 +308,13 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
         return this;
     }
 
-    @Override
-    protected boolean useEventBus() {
-        return false;
-    }
+//    @Override
+//    protected boolean useEventBus() {
+//        return true;
+//    }
 
     @Override
     public <R> LifecycleTransformer<R> toLifecycle() {
         return bindToLifecycle();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }

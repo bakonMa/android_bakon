@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -16,12 +17,13 @@ import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.injection.components.DaggerFragmentComponent;
 import com.jht.doctor.injection.modules.FragmentModule;
+import com.jht.doctor.ui.activity.LoginActivity;
 import com.jht.doctor.ui.activity.home.AuthStep1Activity;
 import com.jht.doctor.ui.activity.home.AuthStep2Activity;
-import com.jht.doctor.ui.activity.LoginActivity;
 import com.jht.doctor.ui.base.BaseFragment;
 import com.jht.doctor.ui.bean.PersonalBean;
 import com.jht.doctor.ui.contact.PersonalContact;
+import com.jht.doctor.utils.ImageUtil;
 import com.jht.doctor.utils.U;
 import com.jht.doctor.widget.toolbar.TitleOnclickListener;
 import com.jht.doctor.widget.toolbar.ToolbarBuilder;
@@ -45,6 +47,12 @@ public class WorkRoomFragment extends BaseFragment implements PersonalContact.Vi
     ViewFlipper viewflipper;
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
+    @BindView(R.id.img1)
+    ImageView img1;
+    @BindView(R.id.img2)
+    ImageView img2;
+    @BindView(R.id.img3)
+    ImageView img3;
 
     private String[] strings = {"fragment_workroom1", "fragment_workroom2", "fragment_workroom3"};
 
@@ -74,6 +82,10 @@ public class WorkRoomFragment extends BaseFragment implements PersonalContact.Vi
 
 
     private void requestData() {
+        String url = "http://img1.3lian.com/2015/a1/105/d/40.jpg";
+        ImageUtil.showCircleImage(url, img1);
+        ImageUtil.showRoundImage(url, 50, img2);
+        ImageUtil.showImage(url, img3);
 
     }
 

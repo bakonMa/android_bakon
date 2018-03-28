@@ -9,9 +9,9 @@ import com.bumptech.glide.annotation.GlideExtension;
  * @detail:
  */
 @GlideExtension
-public final class CustomerAppGlideExtension {
+public final class DocAppGlideExtension {
 
-    private CustomerAppGlideExtension(){
+    private DocAppGlideExtension(){
     }
 
 //    @GlideOption

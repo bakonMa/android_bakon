@@ -59,7 +59,6 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
 
     @Override
     protected void onDestroy() {
-        EventBusUtil.unregister(this);
         mPresenter.unsubscribe();
         if (appUpdateDialog != null) {
             appUpdateDialog.dismiss();
@@ -105,7 +104,7 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
 //            } else {
 //                mPresenter.getRepayment();
 //            }
-
+            //检测是否更新
             mPresenter.subscribe();
         }
     }

@@ -63,7 +63,7 @@ public interface HttpAPI {
     //key multipartFiles
     @Multipart
     @POST("uploadImage")
-    Observable<HttpResponse<UploadImgBean>> uploadSingleFile(@Part MultipartBody.Part upFileInfo, @Part MultipartBody.Part type);
+    Observable<HttpResponse<UploadImgBean>> uploadSingleFile(@Part MultipartBody.Part type, @Part MultipartBody.Part upFileInfo);
 
     //登录
     @POST("customerApp/userLogin/login")
