@@ -31,24 +31,11 @@
     </RelativeLayout>
 
     <com.jht.doctor.widget.EditTextlayout
-        android:id="@+id/id_edit_name"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        app:editTextHint="请输入您的姓名"
-        app:leftText="借款人姓名"
-        app:textMainSize="14sp"></com.jht.doctor.widget.EditTextlayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="15dp"
-        android:background="@color/color_line" />
-
-    <com.jht.doctor.widget.EditTextlayout
         android:id="@+id/id_edit_idcard"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
         app:editTextHint="请输入您的身份证号"
         app:leftText="身份证号"
         app:textMainSize="14sp"></com.jht.doctor.widget.EditTextlayout>
@@ -59,41 +46,20 @@
         android:layout_height="wrap_content"
         android:background="@color/color_c3c3c3"
         android:padding="15dp">
+
         <ImageView
             android:id="@+id/img1"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="@color/color_main_gray"/>
+            android:background="@color/color_main_gray" />
 
         <ImageView
             android:id="@+id/img2"
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:layout_alignParentRight="true"
-            android:background="@color/colorPrimaryDark"/>
+            android:background="@color/colorPrimaryDark" />
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/img3"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:layout_alignParentRight="true"
-        android:background="@color/colorPrimaryDark"/>
-
-    <TextView
-        android:id="@+id/id_btn_next_step"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@drawable/selector_bg_button_login"
-        android:clickable="true"
-        android:enabled="true"
-        android:gravity="center"
-        android:text="下一步"
-        android:textColor="@color/white"
-        android:textSize="16sp" />
-
     <!--垂直跑马灯-->
     <LinearLayout
         android:layout_width="match_parent"
@@ -115,6 +81,25 @@
             android:inAnimation="@anim/push_up_in"
             android:outAnimation="@anim/push_up_out" />
     </LinearLayout>
+
+    <net.lucode.hackware.magicindicator.MagicIndicator
+        android:id="@+id/magic_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/pagertabstrip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@color/white" />
+    </android.support.v4.view.ViewPager>
 
 
 </LinearLayout>

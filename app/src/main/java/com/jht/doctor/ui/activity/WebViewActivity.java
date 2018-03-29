@@ -19,6 +19,7 @@ import com.jht.doctor.ui.base.BaseActivity;
 import com.jht.doctor.ui.contact.WebViewContact;
 import com.jht.doctor.ui.presenter.WebviewPresenter;
 import com.jht.doctor.utils.LogUtil;
+import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.widget.ProgressWebView;
 import com.jht.doctor.widget.toolbar.TitleOnclickListener;
 import com.jht.doctor.widget.toolbar.ToolbarBuilder;
@@ -151,7 +152,7 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
     @Override
     public void onError(String errorCode, String errorMsg) {
         if (!TextUtils.isEmpty(errorMsg)) {
-            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+            ToastUtil.show(errorMsg);
         }
         finish();
     }

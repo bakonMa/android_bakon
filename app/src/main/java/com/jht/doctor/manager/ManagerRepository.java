@@ -12,20 +12,15 @@ import javax.inject.Singleton;
 @Singleton
 public final class ManagerRepository {
 
-    private final ToastManager mToastManager;
     private final ActManager mActManager;
     private final CrashHandler mCrashHandler;
 
     @Inject
-    public ManagerRepository(ToastManager toastManager , ActManager actManager , CrashHandler crashHandler){
-        mToastManager = toastManager;
+    public ManagerRepository( ActManager actManager , CrashHandler crashHandler){
         mActManager = actManager;
         mCrashHandler = crashHandler;
     }
 
-    public ToastManager toastMgr(){
-        return mToastManager;
-    }
 
     public ActManager actMgr(){
         return mActManager;

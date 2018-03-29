@@ -10,6 +10,7 @@ import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.activity.LoginActivity;
 import com.jht.doctor.ui.bean.DownloadRespBean;
+import com.jht.doctor.utils.ToastUtil;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -81,15 +82,13 @@ public final class HttpAPIWrapper {
                             }
                             if (baseResponse == null) {
                                 subscriber.onCompleted();
-                            }
-                            //success
-                            else {
+                            } else {//success
                                 if (baseResponse.code != null
-                                        && HttpConfig.NOLOGIN_CODE.equals(baseResponse.code)//未登录
-                                        && HttpConfig.SIGN_ERROR_CODE.equals(baseResponse.code)) {//sign错误
-                                    //清空token
+                                        && HttpConfig.NOLOGIN_CODE.equals(baseResponse.code)//未登录 1001
+                                        && HttpConfig.SIGN_ERROR_CODE.equals(baseResponse.code)) {//sign错误 1002
+                                    //TODO 清空token
                                     DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, "");
-                                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(baseResponse.msg);
+                                    ToastUtil.show(baseResponse.msg);
                                     //表示Token失效--重新登录--成功跳HOME
                                     Intent intent = new Intent(DocApplication.getInstance(), LoginActivity.class);
                                     intent.putExtra(LoginActivity.FROM_KEY, LoginActivity.TOKEN_OVERDUE);

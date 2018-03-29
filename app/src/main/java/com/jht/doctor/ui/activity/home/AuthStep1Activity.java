@@ -30,6 +30,7 @@ import com.jht.doctor.utils.FileUtil;
 import com.jht.doctor.utils.ImageUtil;
 import com.jht.doctor.utils.LogUtil;
 import com.jht.doctor.utils.SoftHideKeyBoardUtil;
+import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.utils.UriUtil;
 import com.jht.doctor.widget.EditTextlayout;
 import com.jht.doctor.widget.EditableLayout;
@@ -226,7 +227,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                             }
 
                         } else {
-                            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(isCamera ? "请求照相机权限失败" : "请求相册权限失败");
+                            ToastUtil.show(isCamera ? "请求照相机权限失败" : "请求相册权限失败");
                         }
                     }
 
@@ -289,7 +290,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        ToastUtil.show(errorMsg);
     }
 
     @Override
@@ -298,7 +299,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
             case AuthPresenter.GETBANK_OK:
                 List<BankBean> bankBeans = (List<BankBean>) message.obj;
                 LogUtil.d("bankBeans = " + bankBeans.size());
-                DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(bankBeans.size() + "");
+                ToastUtil.show(bankBeans.size() + "");
                 break;
         }
     }

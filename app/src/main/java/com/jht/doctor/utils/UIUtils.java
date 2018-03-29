@@ -36,6 +36,7 @@ public class UIUtils {
      * @return 多次连续点击返回 true 否则返回 false
      */
     private static long lastClickTime = 0;
+
     public static boolean isDoubleClick() {
         if (System.currentTimeMillis() - lastClickTime < 600) {
             lastClickTime = System.currentTimeMillis();
@@ -98,10 +99,17 @@ public class UIUtils {
     }
 
     /**
-     * 获取view的文字
+     * 获取color
      */
     public static int getColor(int res) {
         return ContextCompat.getColor(DocApplication.getInstance(), res);
+    }
+
+    /**
+     * 获取资源文件
+     */
+    public static Drawable getDrawable(int res) {
+        return ContextCompat.getDrawable(DocApplication.getInstance(), res);
     }
 
     /**

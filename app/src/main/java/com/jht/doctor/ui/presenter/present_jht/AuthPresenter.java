@@ -12,6 +12,7 @@ import com.jht.doctor.ui.contact.contact_jht.AuthContact;
 import com.jht.doctor.utils.FileUtil;
 import com.jht.doctor.utils.LogUtil;
 import com.jht.doctor.utils.M;
+import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.widget.dialog.LoadingDialog;
 
 import java.io.File;
@@ -72,7 +73,7 @@ public class AuthPresenter implements AuthContact.Presenter {
 
                     @Override
                     public void onError(String errorCode, String errorMsg) {
-                        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+                        ToastUtil.show(errorMsg);
                     }
                 });
         mSubscription.add(subscription);
@@ -104,7 +105,7 @@ public class AuthPresenter implements AuthContact.Presenter {
                     @Override
                     public void onError(String errorCode, String errorMsg) {
                         mView.onSuccess(M.createMessage(errorMsg, UPLOADIMF_ERROR));
-                        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+                        ToastUtil.show(errorMsg);
                     }
                 });
         mSubscription.add(subscription);

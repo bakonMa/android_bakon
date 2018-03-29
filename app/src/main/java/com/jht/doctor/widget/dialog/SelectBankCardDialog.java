@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.jht.doctor.R;
 import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.ui.bean.JudgeIfTiedBean;
+import com.jht.doctor.utils.ToastUtil;
 
 import java.text.MessageFormat;
 
@@ -83,7 +84,7 @@ public class SelectBankCardDialog extends Dialog implements View.OnClickListener
                 dismiss();
                 //todo 去解绑
                 if (!checkBox.isChecked()) {
-                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请选中要解绑的银行卡");
+                    ToastUtil.show("请选中要解绑的银行卡");
                 } else {
                     if (mListener != null) {
                         mListener.unbindClicked(mData.getBankCardNo());
@@ -94,7 +95,7 @@ public class SelectBankCardDialog extends Dialog implements View.OnClickListener
                 dismiss();
                 //todo 确认使用
                 if (!checkBox.isChecked()) {
-                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请选中要使用的银行卡");
+                    ToastUtil.show("请选中要使用的银行卡");
                 } else {
                     if (mListener != null) {
                         mListener.confirmClicked(mData.getBankCardNo());

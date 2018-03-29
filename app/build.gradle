@@ -19,10 +19,15 @@ android {
 //        SHA256: 21:2D:F5:67:27:75:80:96:81:01:78:63:52:D1:4C:42:B1:A6:60:53:F0:F5:22:E3:97:8A:FE:42:CC:FC:E0:13
 
         release {
-            storeFile file("./src/jht_doc.keystore")
-            storePassword "jht2018"//key pwd
-            keyAlias "jht_doc"//key alias
-            keyPassword "jht2018"//key alias pwd
+//            storeFile file("./src/jht_doc.keystore")
+//            storePassword "jht2018"//key pwd
+//            keyAlias "jht_doc"//key alias
+//            keyPassword "jht2018"//key alias pwd
+
+            storeFile file("$keystore_path")
+            storePassword "$keystore_password"//key pwd
+            keyAlias "$keyalias_name"//key alias
+            keyPassword "$key_password"//key alias pwd
         }
     }
 
@@ -30,9 +35,10 @@ android {
         debug {
             buildConfigField "String", "BASE_URL", devAddress()
             buildConfigField "boolean", "LOG_DEBUG", "true"
-//            signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable true
         }
         release {
             buildConfigField "String", "BASE_URL", onLineAddress()
@@ -68,7 +74,8 @@ def onLineAddress() {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
     //Android
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation "com.android.support.constraint:constraint-layout:$constraintlayout_version"
@@ -86,6 +93,7 @@ dependencies {
 
     //Eventbus
     implementation "org.greenrobot:eventbus:$eventbus_version"
+
     //annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
 
     //Retrofit
@@ -105,12 +113,16 @@ dependencies {
 
     //RxAndroid
     implementation "io.reactivex:rxandroid:$rxandroid_version"
+
     //RxLifecycle
     implementation "com.trello:rxlifecycle:$rxlifecycle_version"
+
     // If you want to bind to Android-specific lifecycles
     implementation "com.trello:rxlifecycle-android:$rxlifecycle_version"
+
     // If you want pre-written Activities and Fragments you can subclass as providers
     implementation "com.trello:rxlifecycle-components:$rxlifecycle_version"
+
     // If you want to use Navi for providers
     implementation "com.trello:rxlifecycle-navi:$rxlifecycle_version"
 
@@ -126,9 +138,10 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
     //内存泄漏监控
-    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
-//    testCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
+
+    //    testCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
 
     //方法数超过65k
     implementation "com.android.support:multidex:$multidex_version"
@@ -136,15 +149,21 @@ dependencies {
     //circleimageView
     implementation "de.hdodenhof:circleimageview:$circleImage_version"
 
+    //viewpage吗指示器
+    implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
+
     //refreshView
     implementation "com.zt.maven.widget:refreshview:$refreshview_version"
+
     //BaseRecyclerViewAdapterHelper
     implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$brvah_version"
+
     //greendao
     implementation "org.greenrobot:greendao:$greendao_version"
-    //数据库加密 ***保留***
-//    implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
 
+    //数据库加密 ***保留***
+
+    //    implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

@@ -22,6 +22,7 @@ import com.jht.doctor.ui.bean.MaxAmtBean;
 import com.jht.doctor.ui.contact.HomeLoanContact;
 import com.jht.doctor.ui.presenter.HomeLoanPresenter;
 import com.jht.doctor.utils.RegexUtil;
+import com.jht.doctor.utils.ToastUtil;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -96,7 +97,7 @@ public class HomeFragment extends BaseFragment implements HomeLoanContact.View {
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        ToastUtil.show(errorMsg);
     }
 
     @Override

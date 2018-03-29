@@ -15,6 +15,7 @@ import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.ui.activity.home.AuthStep1Activity;
 import com.jht.doctor.ui.base.BaseFragment;
 import com.jht.doctor.ui.contact.PersonalContact;
+import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
@@ -116,7 +117,7 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
     @Override
     public void onError(String errorCode, String errorMsg) {
 
-        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        ToastUtil.show(errorMsg);
     }
 
     @Override

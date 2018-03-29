@@ -16,6 +16,7 @@ import com.jht.doctor.R;
 import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.ui.base.BaseActivity;
 import com.jht.doctor.utils.ActivityUtil;
+import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.utils.UriUtil;
 import com.jht.doctor.widget.popupwindow.CommonBottomPopupView;
 import com.jht.doctor.widget.toolbar.TitleOnclickListener;
@@ -122,7 +123,7 @@ public class AuthStep2Activity extends BaseActivity {
                             cameraPath1 = new File(dir, UriUtil.headerFileName(actContext()));
                             ActivityUtil.openCamera(AuthStep2Activity.this, cameraPath1, REQUEST_CAMERA_CODE);
                         } else {
-                            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请求权限失败");
+                            ToastUtil.show("请求权限失败");
                         }
                     }
 
@@ -151,7 +152,7 @@ public class AuthStep2Activity extends BaseActivity {
                         if (aBoolean) {
                             ActivityUtil.openAlbum(AuthStep2Activity.this, "image/jpeg", REQUEST_ALBUM_CODE);
                         } else {
-                            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请求权限失败");
+                            ToastUtil.show("请求权限失败");
                         }
                     }
 

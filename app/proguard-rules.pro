@@ -140,9 +140,21 @@
 
 # -----------------------------------END---------------------------------
 
+
+# Gson
+# Gson specific classes
+-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.** { *; }
+
+#不要混淆注解类型，添加混淆配置：
+-keep class * extends java.lang.annotation.Annotation { *; }
+
 #---------------------------------实体类---------------------------------
 -keep class com.jht.doctor.ui.bean_jht.** {*;}
 -keep class com.jht.doctor.ui.bean.** {*;}
+-keep class com.jht.doctor.data.response.** {*;}
+-keep class com.jht.doctor.greendao.gen.** {*;}
+
 # -----------------------------------END---------------------------------
 
 
@@ -198,9 +210,6 @@
 -keep interface okhttp3.** { *; }
 -dontwarn com.squareup.okhttp.**
 
-# Gson
-# Gson specific classes
--keep class sun.misc.Unsafe { *; }
 
 # Eventbus
 -keepclassmembers class ** {

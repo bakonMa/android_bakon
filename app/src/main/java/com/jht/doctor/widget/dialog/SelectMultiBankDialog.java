@@ -24,6 +24,7 @@ import com.jht.doctor.R;
 import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.ui.bean.JudgeIfTiedBean;
 import com.jht.doctor.ui.bean.WrapperBean;
+import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.utils.UIUtils;
 
 import java.text.MessageFormat;
@@ -167,7 +168,7 @@ public class SelectMultiBankDialog extends Dialog implements View.OnClickListene
                 if (mListener != null && pos != -1){
                     mListener.confirmClicked(mData.get(pos));
                 }else{
-                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请选择您要使用的银行卡");
+                    ToastUtil.show("请选择您要使用的银行卡");
                 }
                 break;
             case R.id.id_iv_close:

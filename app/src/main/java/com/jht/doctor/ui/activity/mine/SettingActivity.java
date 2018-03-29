@@ -28,6 +28,7 @@ import com.jht.doctor.ui.contact.SettingContract;
 import com.jht.doctor.ui.presenter.SettingPresenter;
 import com.jht.doctor.utils.ActivityUtil;
 import com.jht.doctor.utils.MD5Util;
+import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.widget.RelativeWithText;
 import com.jht.doctor.widget.dialog.AppUpdateDialog;
 import com.jht.doctor.widget.toolbar.TitleOnclickListener;
@@ -118,7 +119,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
         switch (view.getId()) {
             case R.id.tv_reset_password:
                 if (otherBean == null) {
-                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("数据异常，请退出后重试");
+                    ToastUtil.show("数据异常，请退出后重试");
                     return;
                 }
                 Intent intent = new Intent(this, ResetPasswordActivity.class);
@@ -148,7 +149,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
     @Override
     public void onError(String errorCode, String errorMsg) {
         if (!TextUtils.isEmpty(errorMsg)) {
-            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+            ToastUtil.show(errorMsg);
         }
     }
 
@@ -230,7 +231,7 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                                 mPresenter.downloadApk(downloadUrl, apkFile.getAbsolutePath(), netMD5, force);
                             }
                         } else {
-                            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请求权限失败");
+                            ToastUtil.show("请求权限失败");
                         }
                     });
         };

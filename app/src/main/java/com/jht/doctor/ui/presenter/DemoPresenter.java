@@ -6,6 +6,7 @@ import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.ui.bean.LoginResponse;
 import com.jht.doctor.ui.contact.DemoContact;
+import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.widget.dialog.LoadingDialog;
 
 import javax.inject.Inject;
@@ -56,7 +57,7 @@ public class DemoPresenter implements DemoContact.Presenter {
 
                     @Override
                     public void onError(String errorCode, String errorMsg) {
-                        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+                        ToastUtil.show(errorMsg);
                     }
                 });
         mSubscription.add(subscription);

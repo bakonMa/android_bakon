@@ -25,6 +25,7 @@ import com.jht.doctor.ui.contact.TranslucentContact;
 import com.jht.doctor.ui.presenter.TranslucentPresenter;
 import com.jht.doctor.utils.ActivityUtil;
 import com.jht.doctor.utils.MD5Util;
+import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.widget.dialog.AppUpdateDialog;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
@@ -155,7 +156,7 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
                                 mPresenter.downloadApk(downloadUrl, apkFile.getAbsolutePath(), netMD5, force);
                             }
                         } else {
-                            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请求权限失败");
+                            ToastUtil.show("请求权限失败");
                         }
                     });
         };

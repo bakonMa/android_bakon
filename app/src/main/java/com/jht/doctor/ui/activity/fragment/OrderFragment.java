@@ -26,6 +26,7 @@ import com.jht.doctor.ui.contact.MyLoanContact;
 import com.jht.doctor.ui.presenter.MyLoanPresenter;
 import com.jht.doctor.utils.RegexUtil;
 import com.jht.doctor.utils.StatusBarUtil;
+import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.widget.recycle_view.RecycleWithEmpty;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
@@ -284,7 +285,7 @@ public class OrderFragment extends BaseFragment implements MyLoanContact.View {
     @Override
     public void onError(String errorCode, String errorMsg) {
         idSwipe.setRefreshing(false);
-        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        ToastUtil.show(errorMsg);
     }
 
     @Override

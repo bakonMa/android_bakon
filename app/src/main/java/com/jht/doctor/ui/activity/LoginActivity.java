@@ -31,6 +31,7 @@ import com.jht.doctor.ui.bean.LoginResponse;
 import com.jht.doctor.ui.contact.LoginContact;
 import com.jht.doctor.ui.presenter.LoginPresenter;
 import com.jht.doctor.utils.KeyBoardUtils;
+import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.widget.toolbar.TitleOnclickListener;
 import com.jht.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
@@ -184,7 +185,7 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
             case R.id.btn_login:
                 //登录接口
                 if (!cbAgreement.isChecked()) {
-                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("未同意协议");
+                    ToastUtil.show("未同意协议");
                 } else {
                     mPresenter.login(etPhone.getText().toString().trim(), etCode.getText().toString().trim());
                 }
@@ -220,7 +221,7 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
                     //todo 发送邀请码
                     mPresenter.bind(etCode.getText().toString());
                 } else {
-                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("请输入邀请码");
+                    ToastUtil.show("请输入邀请码");
                 }
             }
         });
@@ -273,7 +274,7 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        ToastUtil.show(errorMsg);
     }
 
     @Override
@@ -364,6 +365,6 @@ public class LoginActivity extends BaseActivity implements LoginContact.View {
 
     @Override
     public void bindError(String errorMsg) {
-        DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+        ToastUtil.show(errorMsg);
     }
 }

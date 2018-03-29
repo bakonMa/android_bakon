@@ -10,7 +10,6 @@ import com.jht.doctor.data.localdata.StorageOperator;
 import com.jht.doctor.injection.qualifiers.ApplicationContext;
 import com.jht.doctor.manager.ActManager;
 import com.jht.doctor.manager.CrashHandler;
-import com.jht.doctor.manager.ToastManager;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -71,12 +70,6 @@ public final class ApplicationModule {
     @Provides
     public ActManager provideActManager() {
         return new ActManager(mApplication);
-    }
-
-    @Singleton
-    @Provides
-    public ToastManager provideToastManager() {
-        return new ToastManager(mApplication);
     }
 
     @Singleton

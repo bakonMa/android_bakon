@@ -25,6 +25,7 @@ import com.jht.doctor.ui.presenter.TradePwdPresenter;
 import com.jht.doctor.utils.KeyBoardUtils;
 import com.jht.doctor.utils.LogUtil;
 import com.jht.doctor.utils.RegexUtil;
+import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.widget.toolbar.TitleOnclickListener;
 import com.jht.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
@@ -127,7 +128,7 @@ public class ResetPasswordActivity extends BaseActivity implements TradePwdConta
         switch (view.getId()) {
             case R.id.tv_sendcode:
                 if (TextUtils.isEmpty(phone)) {
-                    DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("手机号异常，请返回后重试");
+                    ToastUtil.show("手机号异常，请返回后重试");
                 } else {
                     mPresenter.sendVerifyCode(phone);
                 }
@@ -203,7 +204,7 @@ public class ResetPasswordActivity extends BaseActivity implements TradePwdConta
     @Override
     public void onError(String errorCode, String errorMsg) {
         if (!TextUtils.isEmpty(errorMsg)) {
-            DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(errorMsg);
+            ToastUtil.show(errorMsg);
         }
     }
 
@@ -214,13 +215,13 @@ public class ResetPasswordActivity extends BaseActivity implements TradePwdConta
         }
         switch (message.what) {
             case TradePwdPresenter.TRADE_SEND_CODE://发送验证码
-                DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("验证码发送成功，请注意查收");
+                ToastUtil.show("验证码发送成功，请注意查收");
                 KeyBoardUtils.showKeyBoard(etCode, this);
                 sendTimeNumber();
                 break;
             case TradePwdPresenter.TRADE_REST_PWD://设置密码成功
             case TradePwdPresenter.TRADE_SET_PWD://重置密码成功
-                DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast(isReset ? "重置交易密码成功" : "设置交易密码成功");
+                ToastUtil.show(isReset ? "重置交易密码成功" : "设置交易密码成功");
                 finish();
                 break;
         }

@@ -5,6 +5,7 @@ import android.util.Log;
 import com.bumptech.glide.load.HttpException;
 import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.data.response.HttpResponse;
+import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.widget.dialog.LoadingDialog;
 
 import java.net.ConnectException;
@@ -35,13 +36,13 @@ public abstract class BaseObserver<T extends HttpResponse> implements Observer<T
         if (mDialog != null) {
             if (throwable instanceof ConnectException) {
                 mDialog.dismiss();
-                DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("网络错误，请检查网络");
+                ToastUtil.show("网络错误，请检查网络");
             } else if (throwable instanceof HttpException) {
                 mDialog.dismiss();
-                DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("网络异常,请求失败");
+                ToastUtil.show("网络异常,请求失败");
             } else if (throwable instanceof TimeoutException || throwable instanceof SocketTimeoutException) {
                 mDialog.dismiss();
-                DocApplication.getAppComponent().mgrRepo().toastMgr().shortToast("连接超时,请稍后重试");
+                ToastUtil.show("连接超时,请稍后重试");
             } else {
                 mDialog.error("系统异常");
             }
@@ -54,7 +55,7 @@ public abstract class BaseObserver<T extends HttpResponse> implements Observer<T
     public void onNext(T t) {
         if (mDialog != null)
             mDialog.dismiss();
-        if (t.success) {
+        if (t.code.equals("1")) {//todo  网络是否成功
             onSuccess(t);
         } else {
             onError(t.code, t.msg);
