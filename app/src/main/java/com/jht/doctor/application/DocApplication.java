@@ -12,6 +12,7 @@ import com.jht.doctor.injection.components.DaggerApplicationComponent;
 import com.jht.doctor.injection.modules.ApplicationModule;
 import com.jht.doctor.manager.GreenDaoManager;
 import com.jht.doctor.manager.ManagerRepository;
+import com.jht.doctor.nim.NimManager;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -42,8 +43,8 @@ public class DocApplication extends Application {
                 .applicationModule(new ApplicationModule(this))
                 .build();
         mApplicationComponent.inject(this);
-        //如果要对本地属性进行注入，则还调用一下inject(this);
-
+        //网易云IM 初始化
+         NimManager.getInstance(this);
         //内存泄漏检测
         refWatcher = setupLeakCanary();
         //db 初始化
@@ -76,6 +77,5 @@ public class DocApplication extends Application {
         }
         return LeakCanary.install(this);
     }
-
 
 }

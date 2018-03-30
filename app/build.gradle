@@ -10,6 +10,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            //设置支持的SO库架构 一般而言，取你所有的库支持的构架的`交集`
+            //abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
+            abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+        }
     }
 
     signingConfigs {
@@ -54,6 +60,11 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 greendao {
@@ -163,7 +174,31 @@ dependencies {
 
     //数据库加密 ***保留***
 
-    //    implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
+    //implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
+
+    //网易云IM 添加依赖。注意，版本号必须一致。
+
+    // 基础功能 (必需)
+    implementation 'com.netease.nimlib:basesdk:5.0.0'
+
+    // 音视频和互动白板服务需要
+    implementation 'com.netease.nimlib:nrtc:5.0.0'
+
+    // 音视频需要
+    implementation 'com.netease.nimlib:avchat:5.0.0'
+
+    //    // 聊天室需要
+
+    //    compile 'com.netease.nimlib:chatroom:5.0.0'
+
+    //    // 互动白板服务需要
+
+    //    compile 'com.netease.nimlib:rts:5.0.0'
+    implementation project(':uikit')
+
+    //    // 全文检索服务需要
+
+    //    compile 'com.netease.nimlib:lucene:5.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

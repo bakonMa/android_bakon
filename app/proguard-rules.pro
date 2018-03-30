@@ -285,4 +285,11 @@ public static java.lang.String TABLENAME;
 -keep class com.alipay.mobilesecuritysdk.*
 -keep class com.ut.*
 
+#网易云IM
+-dontwarn com.netease.**
+-keep class com.netease.** {*;}
+#如果你使用全文检索插件，需要加入
+-dontwarn org.apache.lucene.**
+-keep class org.apache.lucene.** {*;}
+
 

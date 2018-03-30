@@ -14,11 +14,25 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by table on 2017/11/29.
- * description: 状态判断
+ * Create by mayakun at 2018/3/30 下午3:01
  */
 
 public class U {
+
+    //获取sp中本系统token
+    public static String getToken() {
+        return DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, "");
+    }
+    /**
+     * token是否为空，是否登录
+     * true : 未登录
+     * false： 已登录
+     */
+    public static boolean isNoToken() {
+        return TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN));
+    }
+
+
     //每页的size
     public static final int PAGE_SIZE = 15;
 
@@ -49,14 +63,7 @@ public class U {
     }
 
 
-    /**
-     * token是否为空，是否登录
-     * true : 未登录
-     * false： 已登录
-     */
-    public static boolean isNoToken() {
-        return TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN));
-    }
+
 
 
     //获取base信息 ConfigBean
