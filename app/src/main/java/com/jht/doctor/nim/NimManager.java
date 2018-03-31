@@ -26,6 +26,7 @@ public class NimManager {
         if (nimManager == null) {
             synchronized (NimManager.class) {
                 if (nimManager == null) {
+                    DocCache.setContext(context);
                     nimManager = new NimManager(context);
                 }
             }
@@ -36,13 +37,13 @@ public class NimManager {
     public NimManager(Context context) {
         this.context = context;
         // SDK初始化（启动后台服务，若已经存在用户登录信息， SDK 将完成自动登录）
+//        NIMClient.init(context, null, NimSDKOptionConfig.getSDKOptions(context));
         NIMClient.init(context, getLoginInfo(), NimSDKOptionConfig.getSDKOptions(context));
         // ... your codes
         if (NIMUtil.isMainProcess(context)) {
             // 注意：以下操作必须在主进程中进行
             // 1、UI相关初始化操作
             // 2、相关Service调用
-
             initUiKit();
         }
     }
@@ -78,6 +79,10 @@ public class NimManager {
 
     // 如果已经存在用户登录信息，返回LoginInfo，否则返回null即可
     private LoginInfo getLoginInfo() {
+        //TODO 测试
+        NimU.setNimAccount("1234567890");
+        NimU.setNimToken("1234567890");
+
         String account = NimU.getNimAccount();
         String token = NimU.getNimToken();
 

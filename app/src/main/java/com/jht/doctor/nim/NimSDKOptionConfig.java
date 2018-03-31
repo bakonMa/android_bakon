@@ -6,7 +6,10 @@ import android.os.Environment;
 import android.text.TextUtils;
 
 import com.jht.doctor.R;
+import com.jht.doctor.ui.activity.home.MainActivity;
 import com.jht.doctor.utils.UIUtils;
+import com.netease.nim.uikit.api.wrapper.MessageRevokeTip;
+import com.netease.nim.uikit.api.wrapper.NimUserInfoProvider;
 import com.netease.nimlib.sdk.SDKOptions;
 import com.netease.nimlib.sdk.ServerAddresses;
 import com.netease.nimlib.sdk.StatusBarNotificationConfig;
@@ -31,7 +34,7 @@ class NimSDKOptionConfig {
         initStatusBarNotificationConfig(options);
 
         // 配置 APP 保存图片/语音/文件/log等数据的目录
-        options.sdkStorageRootPath = getAppCacheDir(context) + "/nim"; // 可以不设置，那么将采用默认路径
+//        options.sdkStorageRootPath = getAppCacheDir(context) + "/nim"; // 可以不设置，那么将采用默认路径
 
         // 配置数据库加密秘钥
         options.databaseEncryptKey = "NETEASE";
@@ -43,7 +46,7 @@ class NimSDKOptionConfig {
         options.thumbnailSize = getImageMaxEdge(context);
 
         // 通知栏显示用户昵称和头像
-        options.userInfoProvider = new NimUserInfoProvider(DemoCache.getContext());
+        options.userInfoProvider = new NimUserInfoProvider(DocCache.getContext());
 
         // 定制通知栏提醒文案（可选，如果不定制将采用SDK默认文案）
         options.messageNotifierCustomization = messageNotifierCustomization;
@@ -92,7 +95,7 @@ class NimSDKOptionConfig {
         }
         if (TextUtils.isEmpty(storageRootPath)) {
             // SD卡应用公共存储区(APP卸载后，该目录不会被清除，下载安装APP后，缓存数据依然可以被加载。SDK默认使用此目录)，该存储区域需要写权限!
-            storageRootPath = Environment.getExternalStorageDirectory() + "/" + DemoCache.getContext().getPackageName();
+            storageRootPath = Environment.getExternalStorageDirectory() + "/" + DocCache.getContext().getPackageName();
         }
 
         return storageRootPath;
@@ -136,12 +139,13 @@ class NimSDKOptionConfig {
     private static StatusBarNotificationConfig loadStatusBarNotificationConfig() {
         StatusBarNotificationConfig config = new StatusBarNotificationConfig();
         // 点击通知需要跳转到的界面
-        config.notificationEntrance = WelcomeActivity.class;
-        config.notificationSmallIconId = R.drawable.ic_stat_notify_msg;
-        config.notificationColor = DemoCache.getContext().getResources().getColor(R.color.color_blue_3a9efb);
+        //todo 注意修改
+        config.notificationEntrance = MainActivity.class;
+        config.notificationSmallIconId = R.mipmap.logo;
+        config.notificationColor = DocCache.getContext().getResources().getColor(R.color.white);
         // 通知铃声的uri字符串
-        config.notificationSound = "android.resource://com.netease.nim.demo/raw/msg";
-        config.notificationFolded = true;
+//        config.notificationSound = "android.resource://com.netease.nim.demo/raw/msg";
+//        config.notificationFolded = true;
         // 呼吸灯配置
         config.ledARGB = Color.GREEN;
         config.ledOnMs = 1000;
@@ -150,7 +154,7 @@ class NimSDKOptionConfig {
         config.showBadge = true;
 
         // save cache，留做切换账号备用
-        DemoCache.setNotificationConfig(config);
+        DocCache.setNotificationConfig(config);
         return config;
     }
 
@@ -171,6 +175,7 @@ class NimSDKOptionConfig {
         }
     };
 
+    //推送 todo 修改配置
     private static MixPushConfig buildMixPushConfig() {
 
         // 第三方推送配置
@@ -194,7 +199,6 @@ class NimSDKOptionConfig {
 
         return config;
     }
-
 
 
     //附件缩略图的尺寸大小

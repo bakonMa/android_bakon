@@ -2,15 +2,7 @@ package com.jht.doctor.nim;
 
 import android.text.TextUtils;
 
-import com.google.gson.Gson;
-import com.jht.doctor.R;
 import com.jht.doctor.application.DocApplication;
-import com.jht.doctor.config.SPConfig;
-import com.jht.doctor.ui.bean.ConfigBean;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * 网易云im 业务工具
@@ -28,6 +20,17 @@ public class NimU {
     public static String getNimAccount() {
         return DocApplication.getAppComponent().dataRepo().appSP().getString(KEY_NIM_ACCOUNT, "");
     }
+
+    //set sp中account
+    public static void setNimAccount(String account) {
+         DocApplication.getAppComponent().dataRepo().appSP().setString(KEY_NIM_ACCOUNT, account);
+    }
+
+    //set sp中account
+    public static void setNimToken(String token) {
+        DocApplication.getAppComponent().dataRepo().appSP().setString(KEY_NIM_TOKEN, token);
+    }
+
 
     /**
      * account是否为空，是否登录

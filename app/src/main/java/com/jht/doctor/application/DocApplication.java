@@ -44,7 +44,7 @@ public class DocApplication extends Application {
                 .build();
         mApplicationComponent.inject(this);
         //网易云IM 初始化
-         NimManager.getInstance(this);
+        NimManager.getInstance(this);
         //内存泄漏检测
         refWatcher = setupLeakCanary();
         //db 初始化
