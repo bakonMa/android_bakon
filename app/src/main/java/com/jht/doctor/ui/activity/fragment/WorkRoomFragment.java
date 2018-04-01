@@ -28,9 +28,18 @@ import com.jht.doctor.ui.adapter.ExamplePagerAdapter;
 import com.jht.doctor.ui.base.BaseFragment;
 import com.jht.doctor.ui.contact.PersonalContact;
 import com.jht.doctor.utils.ImageUtil;
+import com.jht.doctor.utils.LogUtil;
+import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.utils.UIUtils;
 import com.jht.doctor.widget.toolbar.TitleOnclickListener;
 import com.jht.doctor.widget.toolbar.ToolbarBuilder;
+import com.netease.nim.uikit.api.NimUIKit;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.auth.AuthServiceObserver;
+import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.netease.nimlib.sdk.auth.constant.LoginSyncStatus;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
@@ -53,7 +62,7 @@ import butterknife.BindView;
 
 /**
  * WorkRoomFragment
- * Create at 2018/3/31 上午9:27 by mayakun 
+ * Create at 2018/3/31 上午9:27 by mayakun
  */
 
 public class WorkRoomFragment extends BaseFragment implements PersonalContact.View {
@@ -105,7 +114,39 @@ public class WorkRoomFragment extends BaseFragment implements PersonalContact.Vi
         initMagicInd();
         initPagerTab();
 
+
+//        NIMClient.getService(AuthServiceObserver.class).observeLoginSyncDataStatus(loginSyncStatusObserver, register);
+        NimUIKit.login(new LoginInfo("123456", "123456"), new RequestCallback<LoginInfo>() {
+            @Override
+            public void onSuccess(LoginInfo loginInfo) {
+                ToastUtil.show("Accont=" + loginInfo.getAccount());
+                NIMClient.getService(AuthServiceObserver.class).observeLoginSyncDataStatus(loginSyncStatusObserver, true);
+            }
+
+            @Override
+            public void onFailed(int i) {
+                ToastUtil.show("onFailed=" + i);
+
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                LogUtil.d(throwable.getMessage());
+
+            }
+        });
+
     }
+
+    boolean isSyncComplete;
+    private Observer<LoginSyncStatus> loginSyncStatusObserver = new Observer<LoginSyncStatus>() {
+        @Override
+        public void onEvent(LoginSyncStatus loginSyncStatus) {
+            isSyncComplete = (loginSyncStatus == LoginSyncStatus.SYNC_COMPLETED ||
+                    loginSyncStatus == LoginSyncStatus.NO_BEGIN);
+            ToastUtil.show("isSyncComplete=" + isSyncComplete);
+        }
+    };
 
     private static final String[] CHANNELS = new String[]{"CUPCAKE", "DONUT", "HONEYCOMB"};
     private List<String> mDataList = Arrays.asList(CHANNELS);

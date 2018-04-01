@@ -10,13 +10,20 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        multiDexEnabled true //dex分包
 //        ndk {
 //            //设置支持的SO库架构 一般而言，取你所有的库支持的构架的`交集`
 //            //abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
 //            abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
 //        }
+
+        aaptOptions {//检查是否修改过文件后缀
+            cruncherEnabled = false
+            useNewCruncher = false
+        }
     }
+
+
 
     signingConfigs {
 //        keytool -list -v -keystore /Users/mayakun/Downloads/mayakun-file/jht/jht_doc.keystore
@@ -41,14 +48,16 @@ android {
         debug {
             buildConfigField "String", "BASE_URL", devAddress()
             buildConfigField "boolean", "LOG_DEBUG", "true"
-            signingConfig signingConfigs.release
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+            shrinkResources false
+//            signingConfig signingConfigs.release
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             buildConfigField "String", "BASE_URL", onLineAddress()
             buildConfigField "boolean", "LOG_DEBUG", "false"
             minifyEnabled true
+            shrinkResources true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

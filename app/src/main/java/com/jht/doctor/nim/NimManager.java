@@ -80,8 +80,8 @@ public class NimManager {
     // 如果已经存在用户登录信息，返回LoginInfo，否则返回null即可
     private LoginInfo getLoginInfo() {
         //TODO 测试
-        NimU.setNimAccount("1234567890");
-        NimU.setNimToken("1234567890");
+        NimU.setNimAccount("123456");
+        NimU.setNimToken("123456");
 
         String account = NimU.getNimAccount();
         String token = NimU.getNimToken();
