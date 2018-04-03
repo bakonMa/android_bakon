@@ -1,6 +1,5 @@
 package com.jht.doctor.ui.activity.home;
 
-import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -13,9 +12,12 @@ import com.jht.doctor.widget.toolbar.ToolbarBuilder;
 import java.lang.ref.WeakReference;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-
+/**
+ * 认证审核中
+ * AuthStep3Activity
+ * Create at 2018/4/3 下午3:58 by mayakun
+ */
 public class AuthStep3Activity extends BaseActivity {
 
     @BindView(R.id.id_toolbar)

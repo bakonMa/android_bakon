@@ -38,11 +38,17 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        switchFrgment(currTag);
         tabHome.setUnreadNum(100);
         tabPatient.setUnreadNum(10);
         tabFind.showNotify();
         tabMe.showNotify();
+
+        mFragmentMap.put(0, new WorkRoomFragment());
+        mFragmentMap.put(1, new HomeFragment());
+        mFragmentMap.put(2, new OrderFragment());
+        mFragmentMap.put(3, new MineFragment());
+
+        switchFrgment(currTag);
     }
 
 
@@ -60,9 +66,9 @@ public class MainActivity extends BaseActivity {
 
     //切换fragment
     private void switchFrgment(int viewId) {
-        if (!mFragmentMap.isEmpty() && currTag == viewId) {
-            return;
-        }
+//        if (!mFragmentMap.isEmpty() && currTag == viewId) {
+//            return;
+//        }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (viewId) {

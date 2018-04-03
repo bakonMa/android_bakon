@@ -7,7 +7,6 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="black_70">#B3000000</color>
-    <color name="color_main">#C2A370</color>
     <color name="color_main_55">#8CC2A370</color>
     <color name="statueBar_color">#ffcccccc</color>
     <color name="color_main_gray">#9d845a</color>
@@ -60,6 +59,9 @@
     <color name="color_e7d5b8">#E7D5B8</color>
     <color name="color_4f9ef3">#4F9EF3</color>
     <color name="color_c2a370">#C2A370</color>
+    <color name="color_aa9c8b">#aa9c8b</color>
+    <color name="color_94887c">#94887C</color>
+    <color name="color_main">#998b78</color>
 
 
 

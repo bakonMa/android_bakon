@@ -16,7 +16,7 @@ import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.injection.components.DaggerFragmentComponent;
 import com.jht.doctor.injection.modules.FragmentModule;
-import com.jht.doctor.ui.activity.LoginActivity;
+import com.jht.doctor.ui.activity.login.LoginActivity;
 import com.jht.doctor.ui.base.BaseFragment;
 import com.jht.doctor.ui.bean.MaxAmtBean;
 import com.jht.doctor.ui.contact.HomeLoanContact;
@@ -134,7 +134,6 @@ public class HomeFragment extends BaseFragment implements HomeLoanContact.View {
     public void onViewClicked() {
         if (TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
             Intent intent = new Intent(actContext(), LoginActivity.class);
-            intent.putExtra(LoginActivity.FROM_KEY, LoginActivity.HOMELOAN_ACTIVITY);
             startActivity(intent);
         } else {
 //            startActivity(new Intent(actContext(), BasicInfoActivity.class));

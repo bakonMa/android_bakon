@@ -9,13 +9,15 @@ import android.os.Environment;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.jht.doctor.BuildConfig;
 import com.jht.doctor.R;
 import com.jht.doctor.application.DocApplication;
@@ -26,7 +28,6 @@ import com.jht.doctor.ui.bean_jht.BankBean;
 import com.jht.doctor.ui.contact.contact_jht.AuthContact;
 import com.jht.doctor.ui.presenter.present_jht.AuthPresenter;
 import com.jht.doctor.utils.ActivityUtil;
-import com.jht.doctor.utils.FileUtil;
 import com.jht.doctor.utils.ImageUtil;
 import com.jht.doctor.utils.LogUtil;
 import com.jht.doctor.utils.SoftHideKeyBoardUtil;
@@ -53,11 +54,13 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import rx.Observer;
 
+/**
+ * 认证第一步
+ * AuthStep1Activity
+ * Create at 2018/4/3 下午3:58 by mayakun
+ */
 public class AuthStep1Activity extends BaseActivity implements AuthContact.View {
 
     private final int REQUEST_CAMERA_CODE = 101;//拍照
@@ -69,10 +72,6 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     ScrollView scrollView;
     @BindView(R.id.et_name)
     EditTextlayout etName;
-    @BindView(R.id.et_phone)
-    EditTextlayout etPhone;
-    @BindView(R.id.et_sfz)
-    EditTextlayout etSfz;
     @BindView(R.id.et_address)
     EditableLayout etAddress;
     @BindView(R.id.et_organization)
@@ -87,6 +86,14 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     TextView tvNextStep;
     @BindView(R.id.iv_img)
     ImageView ivImg;
+    @BindView(R.id.tv_mustwrite)
+    TextView tvMustwrite;
+    @BindView(R.id.rb_nan)
+    RadioButton rbNan;
+    @BindView(R.id.rb_nv)
+    RadioButton rbNv;
+    @BindView(R.id.rg_sex)
+    RadioGroup rgSex;
 
     @Inject
     AuthPresenter mPresenter;
@@ -96,6 +103,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     private OnePopupWheel mPopupWheel;
     private AddressPopupView mAddressPopupView;
     private List<String> typeList = new ArrayList<>();
+    private int sexType = 0;
 
     @Override
     protected int provideRootLayout() {
@@ -105,8 +113,9 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     @Override
     protected void initView() {
         SoftHideKeyBoardUtil.assistActivity(this);
+        tvMustwrite.setText(Html.fromHtml("以下均为<font color='#FF0000'>必填项</font>"));
         initToolbar();
-        mPresenter.getBanks();
+//        mPresenter.getBanks();
         // todo 测试数据
         typeList.clear();
         typeList.add("测试科室1");
@@ -115,6 +124,13 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
         typeList.add("测试科室4");
         typeList.add("测试科室5");
         typeList.add("测试科室6");
+
+        rgSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                sexType = (i == R.id.rb_nan ? 0 : 1);
+            }
+        });
     }
 
     //获取当前界面可用高度
@@ -133,6 +149,8 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
 
                 }).bind();
     }
+
+
 
 
     @OnClick({R.id.iv_img, R.id.et_address, R.id.et_lab_type,
@@ -317,5 +335,12 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     @Override
     public <R> LifecycleTransformer<R> toLifecycle() {
         return bindToLifecycle();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

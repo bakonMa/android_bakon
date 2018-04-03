@@ -33,7 +33,7 @@ public class MD5Util {
      * @return
      */
     public static String md5(String source) {
-        return md5(source, false);
+        return md5(source, true);
     }
 
     /**

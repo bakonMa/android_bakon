@@ -1,18 +1,10 @@
 package com.jht.doctor.ui.presenter;
 
-import android.os.Message;
-
-import com.jht.doctor.application.DocApplication;
-import com.jht.doctor.data.response.HttpResponse;
-import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.ui.contact.MyInfoContact;
-import com.jht.doctor.data.http.Params;
-import com.jht.doctor.ui.bean.MyInfoBean;
 import com.jht.doctor.widget.dialog.LoadingDialog;
 
 import javax.inject.Inject;
 
-import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -43,28 +35,28 @@ public class MyInfoPresenter implements MyInfoContact.Presenter {
 
     @Override
     public void getMyInfo() {
-        Params params = new Params();
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
-                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getUserInfo(params))
-                .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mDialog != null) mDialog.show();
-                })
-                .subscribe(new BaseObserver<HttpResponse<MyInfoBean>>(mDialog) {
-                    @Override
-                    public void onSuccess(HttpResponse<MyInfoBean> loginResponseHttpResponse) {
-                        Message message = Message.obtain();
-                        message.obj = loginResponseHttpResponse.data;
-                        mView.onSuccess(message);
-                    }
-
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-                        mView.onError(errorCode, errorMsg);
-//                        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(msg);
-                    }
-                });
-        mSubscription.add(subscription);
+//        Params params = new Params();
+//        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+//                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getUserInfo(params))
+//                .compose(mView.toLifecycle())
+//                .doOnSubscribe(() -> {
+//                    if (mDialog != null) mDialog.show();
+//                })
+//                .subscribe(new BaseObserver<HttpResponse<MyInfoBean>>(mDialog) {
+//                    @Override
+//                    public void onSuccess(HttpResponse<MyInfoBean> loginResponseHttpResponse) {
+//                        Message message = Message.obtain();
+//                        message.obj = loginResponseHttpResponse.data;
+//                        mView.onSuccess(message);
+//                    }
+//
+//                    @Override
+//                    public void onError(String errorCode, String errorMsg) {
+//                        mView.onError(errorCode, errorMsg);
+////                        CustomerApplication.getAppComponent().mgrRepo().toastMgr().shortToast(msg);
+//                    }
+//                });
+//        mSubscription.add(subscription);
     }
 
 }

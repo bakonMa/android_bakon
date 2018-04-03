@@ -3,7 +3,6 @@ package com.jht.doctor.ui.activity.welcome;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Message;
 
@@ -13,10 +12,10 @@ import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.eventbus.Event;
-import com.jht.doctor.data.eventbus.EventBusUtil;
 import com.jht.doctor.injection.components.DaggerActivityComponent;
 import com.jht.doctor.injection.modules.ActivityModule;
 import com.jht.doctor.ui.activity.home.MainActivity;
+import com.jht.doctor.ui.activity.login.LoginActivity;
 import com.jht.doctor.ui.base.BaseActivity;
 import com.jht.doctor.ui.bean.AppUpdateBean;
 import com.jht.doctor.ui.bean.DownloadProgressBean;
@@ -26,6 +25,7 @@ import com.jht.doctor.ui.presenter.TranslucentPresenter;
 import com.jht.doctor.utils.ActivityUtil;
 import com.jht.doctor.utils.MD5Util;
 import com.jht.doctor.utils.ToastUtil;
+import com.jht.doctor.utils.U;
 import com.jht.doctor.widget.dialog.AppUpdateDialog;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
@@ -38,7 +38,9 @@ import java.io.File;
 import javax.inject.Inject;
 
 /**
- * @author Tang
+ * 第一个页面
+ * TranslucentActivity
+ * Create at 2018/4/3 下午4:04 by mayakun
  */
 public class TranslucentActivity extends BaseActivity implements TranslucentContact.View {
 
@@ -54,8 +56,12 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
 
     @Override
     protected void initView() {
-        checkFirstEnter();
-
+//        checkFirstEnter();
+        if (U.isNoToken()) {
+            startActivity(new Intent(this, LoginActivity.class));
+        } else {
+            startActivity(new Intent(this, MainActivity.class));
+        }
     }
 
     @Override
@@ -230,6 +236,11 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
             default:
                 break;
         }
+    }
+
+    @Override
+    protected boolean useButterKnife() {
+        return false;
     }
 
     @Override

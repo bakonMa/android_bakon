@@ -8,8 +8,6 @@ import com.jht.doctor.data.eventbus.EventBusUtil;
 import com.jht.doctor.utils.StatusBarUtil;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
-import org.greenrobot.eventbus.EventBus;
-
 import butterknife.ButterKnife;
 
 /**
@@ -24,7 +22,10 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BasicP
         setupActivityComponent();
         //沉浸式状态栏
         StatusBarUtil.initStatusBar(this);
-        setContentView(provideRootLayout());
+        //处理启动页，id=0
+        if (provideRootLayout() != 0) {
+            setContentView(provideRootLayout());
+        }
         if (useButterKnife()) {
             ButterKnife.bind(this);
         }

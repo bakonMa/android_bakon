@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 import com.jht.doctor.R;
 import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.SPConfig;
-import com.jht.doctor.ui.bean.ApplyInfoBean;
 import com.jht.doctor.ui.bean.ConfigBean;
 
 import java.util.ArrayList;
@@ -22,6 +21,14 @@ public class U {
     //获取sp中本系统token
     public static String getToken() {
         return DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, "");
+    }
+    //获取sp中认证状态
+    public static int getAuthStatus() {
+        return DocApplication.getAppComponent().dataRepo().appSP().getInteger(SPConfig.SP_INT_SUTH_STATUS, 0);
+    }
+    //获取sp中认证状态 认证状态 0：未认证 1：审核中；2：审核通过 3：审核失败
+    public static void setAuthStatus(int status) {
+        DocApplication.getAppComponent().dataRepo().appSP().setInteger(SPConfig.SP_INT_SUTH_STATUS, status);
     }
     /**
      * token是否为空，是否登录

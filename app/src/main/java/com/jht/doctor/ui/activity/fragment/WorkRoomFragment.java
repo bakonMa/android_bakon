@@ -23,22 +23,16 @@ import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.injection.components.DaggerFragmentComponent;
 import com.jht.doctor.injection.modules.FragmentModule;
 import com.jht.doctor.ui.activity.home.AuthStep1Activity;
-import com.jht.doctor.ui.activity.home.AuthStep2Activity;
+import com.jht.doctor.ui.activity.login.LoginActivity;
 import com.jht.doctor.ui.adapter.ExamplePagerAdapter;
 import com.jht.doctor.ui.base.BaseFragment;
 import com.jht.doctor.ui.contact.PersonalContact;
 import com.jht.doctor.utils.ImageUtil;
-import com.jht.doctor.utils.LogUtil;
 import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.utils.UIUtils;
 import com.jht.doctor.widget.toolbar.TitleOnclickListener;
 import com.jht.doctor.widget.toolbar.ToolbarBuilder;
-import com.netease.nim.uikit.api.NimUIKit;
-import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
-import com.netease.nimlib.sdk.RequestCallback;
-import com.netease.nimlib.sdk.auth.AuthServiceObserver;
-import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.auth.constant.LoginSyncStatus;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
@@ -114,27 +108,25 @@ public class WorkRoomFragment extends BaseFragment implements PersonalContact.Vi
         initMagicInd();
         initPagerTab();
 
-
-//        NIMClient.getService(AuthServiceObserver.class).observeLoginSyncDataStatus(loginSyncStatusObserver, register);
-        NimUIKit.login(new LoginInfo("123456", "123456"), new RequestCallback<LoginInfo>() {
-            @Override
-            public void onSuccess(LoginInfo loginInfo) {
-                ToastUtil.show("Accont=" + loginInfo.getAccount());
-                NIMClient.getService(AuthServiceObserver.class).observeLoginSyncDataStatus(loginSyncStatusObserver, true);
-            }
-
-            @Override
-            public void onFailed(int i) {
-                ToastUtil.show("onFailed=" + i);
-
-            }
-
-            @Override
-            public void onException(Throwable throwable) {
-                LogUtil.d(throwable.getMessage());
-
-            }
-        });
+//        NimUIKit.login(new LoginInfo("123456", "123456"), new RequestCallback<LoginInfo>() {
+//            @Override
+//            public void onSuccess(LoginInfo loginInfo) {
+//                ToastUtil.show("Accont=" + loginInfo.getAccount());
+//                NIMClient.getService(AuthServiceObserver.class).observeLoginSyncDataStatus(loginSyncStatusObserver, true);
+//            }
+//
+//            @Override
+//            public void onFailed(int i) {
+//                ToastUtil.show("onFailed=" + i);
+//
+//            }
+//
+//            @Override
+//            public void onException(Throwable throwable) {
+//                LogUtil.d(throwable.getMessage());
+//
+//            }
+//        });
 
     }
 
@@ -209,7 +201,7 @@ public class WorkRoomFragment extends BaseFragment implements PersonalContact.Vi
                     @Override
                     public void leftClick() {
                         super.leftClick();
-                        startActivity(new Intent(getContext(), AuthStep2Activity.class));
+                        startActivity(new Intent(getContext(), LoginActivity.class));
                     }
 
                     @Override

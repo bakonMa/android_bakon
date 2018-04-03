@@ -9,6 +9,7 @@ import com.jht.doctor.ui.activity.fragment.HomeFragment;
 import com.jht.doctor.ui.activity.fragment.MineFragment;
 import com.jht.doctor.ui.activity.fragment.OrderFragment;
 import com.jht.doctor.ui.activity.fragment.WorkRoomFragment;
+import com.jht.doctor.ui.activity.login.LoginFragment;
 
 import dagger.Component;
 
@@ -29,6 +30,8 @@ public interface FragmentComponent extends ApplicationComponent {
     Context actContext();
 
     void inject(WorkRoomFragment workRoomFragment);
+
+    void inject(LoginFragment loginFragment);
 
     void inject(HomeFragment homeFragment);
 

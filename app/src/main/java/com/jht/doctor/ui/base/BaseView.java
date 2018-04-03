@@ -13,9 +13,9 @@ import com.trello.rxlifecycle.LifecycleTransformer;
  */
 public interface BaseView<T> {
 
-    void onError(String errorCode, String errorMsg);
-    
     void onSuccess(Message message);
+
+    void onError(String errorCode, String errorMsg);
 
     Activity provideContext();
 

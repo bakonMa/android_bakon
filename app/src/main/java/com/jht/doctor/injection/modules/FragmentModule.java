@@ -2,7 +2,9 @@ package com.jht.doctor.injection.modules;
 
 import android.content.Context;
 
+import com.jht.doctor.ui.contact.LoginContact;
 import com.jht.doctor.ui.presenter.HomeLoanPresenter;
+import com.jht.doctor.ui.presenter.LoginPresenter;
 import com.jht.doctor.ui.presenter.RepaymentPresenter;
 import com.jht.doctor.injection.qualifiers.FragmentContext;
 import com.jht.doctor.injection.scopes.PerFragment;
@@ -44,6 +46,29 @@ public final class FragmentModule{
         return null;
     }
 
+
+    @PerFragment
+    @Provides
+    public LoginPresenter provideLoginPresenter() {
+        return new LoginPresenter((LoginContact.View) mView);
+    }
+
+     @PerFragment
+    @Provides
+    public PersonalPresenter providePersonalPresenter() {
+        return new PersonalPresenter((PersonalContact.View) mView);
+    }
+
+
+
+
+
+
+
+
+
+
+
     @PerFragment
     @Provides
     public RepaymentPresenter provideRepaymentPresenter() {
@@ -56,11 +81,6 @@ public final class FragmentModule{
         return new HomeLoanPresenter((HomeLoanContact.View) mView);
     }
 
-    @PerFragment
-    @Provides
-    public PersonalPresenter providePersonalPresenter() {
-        return new PersonalPresenter((PersonalContact.View) mView);
-    }
 
     @PerFragment
     @Provides

@@ -35,7 +35,12 @@
     <string name="client_ios">iOS</string>
     <string name="on_line_busy">忙碌</string>
     <string name="off_line">离线</string>
-
+    <string name="str_auth_0">未认证</string>
+    <string name="str_auth_msg_0">认证后可以获得更多权限</string>
+    <string name="str_auth_1">审核中...</string>
+    <string name="str_auth_msg_1">请耐心等待</string>
+    <string name="str_auth_3">认证失败</string>
+    <string name="str_auth_msg_3">请重新认证</string>
 
 
 </resources>

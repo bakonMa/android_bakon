@@ -2,31 +2,30 @@ package com.jht.doctor.data.http;
 
 import com.jht.doctor.config.HttpConfig;
 import com.jht.doctor.data.response.HttpResponse;
+import com.jht.doctor.ui.bean.AddCoborrowerBean;
 import com.jht.doctor.ui.bean.AppUpdateBean;
+import com.jht.doctor.ui.bean.ApplyInfoBean;
+import com.jht.doctor.ui.bean.ApplyUserBean;
 import com.jht.doctor.ui.bean.BankBean;
 import com.jht.doctor.ui.bean.BankCardBean;
+import com.jht.doctor.ui.bean.ConfigBean;
 import com.jht.doctor.ui.bean.ContributiveBean;
 import com.jht.doctor.ui.bean.DealInfoBean;
+import com.jht.doctor.ui.bean.HomeLoanBean;
 import com.jht.doctor.ui.bean.HouseInfoResponse;
 import com.jht.doctor.ui.bean.IfBankOfJointBean;
+import com.jht.doctor.ui.bean.JudgeIfTiedBean;
 import com.jht.doctor.ui.bean.LoanDetailBean;
+import com.jht.doctor.ui.bean.LoginResponse;
+import com.jht.doctor.ui.bean.MaxAmtBean;
 import com.jht.doctor.ui.bean.MessageBean;
 import com.jht.doctor.ui.bean.MessageCountBean;
+import com.jht.doctor.ui.bean.MyAccountInfoBean;
+import com.jht.doctor.ui.bean.MyLoanBean;
+import com.jht.doctor.ui.bean.OtherBean;
 import com.jht.doctor.ui.bean.PersonalBean;
 import com.jht.doctor.ui.bean.RechargeBean;
 import com.jht.doctor.ui.bean.RepaymentHomeBean;
-import com.jht.doctor.ui.bean.AddCoborrowerBean;
-import com.jht.doctor.ui.bean.ApplyInfoBean;
-import com.jht.doctor.ui.bean.ApplyUserBean;
-import com.jht.doctor.ui.bean.ConfigBean;
-import com.jht.doctor.ui.bean.HomeLoanBean;
-import com.jht.doctor.ui.bean.JudgeIfTiedBean;
-import com.jht.doctor.ui.bean.LoginResponse;
-import com.jht.doctor.ui.bean.MaxAmtBean;
-import com.jht.doctor.ui.bean.MyAccountInfoBean;
-import com.jht.doctor.ui.bean.MyInfoBean;
-import com.jht.doctor.ui.bean.MyLoanBean;
-import com.jht.doctor.ui.bean.OtherBean;
 import com.jht.doctor.ui.bean.RepaymentOffLineBean;
 import com.jht.doctor.ui.bean.ReusingBean;
 import com.jht.doctor.ui.bean.SupportBankBean;
@@ -43,7 +42,6 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Streaming;
@@ -65,21 +63,30 @@ public interface HttpAPI {
     @POST("uploadImage")
     Observable<HttpResponse<UploadImgBean>> uploadSingleFile(@Part MultipartBody.Part type, @Part MultipartBody.Part upFileInfo);
 
+    //发送验证码
+    @POST("sendcode")
+    Observable<HttpResponse<String>> sendCode(@QueryMap Params params);
+
     //登录
-    @POST("customerApp/userLogin/login")
+    @POST("login")
     Observable<HttpResponse<LoginResponse>> login(@Body Params params);
 
-    //发送验证码
-    @POST("customerApp/userLogin/sendCheckCode")
-    Observable<HttpResponse<String>> sendVerifyCode(@QueryMap Params params);
+    //注册
+    @POST("register")
+    Observable<HttpResponse<LoginResponse>> register(@Body Params params);
+
+    //获取认证状态
+    @POST("getUserIdentifyStatus")
+    Observable<HttpResponse<OtherBean>> getUserIdentifyStatus(@QueryMap Params params);
+
+    //获取个人中心资料，认证时的资料
+    @GET("getUserIdentify")
+    Observable<HttpResponse<PersonalBean>> getPersonalInfo();
+
 
     //发送修改验证码
     @POST("customerApp/userCenter/sendTradeCode")
     Observable<HttpResponse<String>> sendTradeCode(@Body Params params);
-
-    //获取基本资料
-    @GET("customerApp/userCenter/userInfo")
-    Observable<HttpResponse<MyInfoBean>> getUserInfo(@QueryMap Params params);
 
     //获取基本资料
     @GET("customerApp/loanApply/dataDic/getConfig")
@@ -120,10 +127,6 @@ public interface HttpAPI {
     //获取是否有未完成订单
     @GET("customerApp/loanApply/applyJudge")
     Observable<HttpResponse<HomeLoanBean>> applyStatus();
-
-    //获取个人中心姓名、手机号
-    @GET("customerApp/userCenter/userBaseInfo")
-    Observable<HttpResponse<PersonalBean>> getPersonalInfo();
 
     //获取客户申请三步骤资料
     @GET("customerApp/userCenter/userInfo")

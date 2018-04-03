@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
@@ -22,6 +23,8 @@ import com.jht.doctor.R;
 public class CommonDialog extends Dialog implements View.OnClickListener {
     private Activity mContext;
     private int layout;
+
+    private int type;//0：只有确定 1：确定和取消
     private String titleStr;
 
     private View layoutView;
@@ -34,12 +37,17 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
         this.listener = listener;
     }
 
-    public CommonDialog(@NonNull Activity context, int layout, String titleStr, View.OnClickListener listener) {
+    public CommonDialog(@NonNull Activity context, int type, String titleStr, View.OnClickListener listener) {
         super(context, R.style.common_dialog);
         this.mContext = context;
-        this.layout = layout;
+        this.type = type;
+        this.layout = R.layout.dialog_common;
         this.titleStr = titleStr;
         this.listener = listener;
+    }
+
+    public CommonDialog(@NonNull Activity context, String titleStr) {
+        this(context, 0, titleStr, null);
     }
 
     @Override
@@ -50,6 +58,21 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
 
     private void init() {
         switch (layout) {
+            case R.layout.dialog_common://普通 确定，取消
+                layoutView = LayoutInflater.from(mContext).inflate(R.layout.dialog_common, null);
+                Button buttonNo = layoutView.findViewById(R.id.btn_no);
+                Button buttonOK = layoutView.findViewById(R.id.btn_ok);
+                buttonNo.setOnClickListener(this);
+                buttonOK.setOnClickListener(this);
+                if (type == 0) {//只有确认
+                    buttonNo.setVisibility(View.GONE);
+                }
+                if (!TextUtils.isEmpty(titleStr)) {
+                    ((TextView) layoutView.findViewById(R.id.dialog_title)).setText(titleStr);
+                }
+                break;
+
+
             case R.layout.dialog_my_info://普通 确定，取消
                 layoutView = LayoutInflater.from(mContext).inflate(R.layout.dialog_my_info, null);
                 layoutView.findViewById(R.id.btn_no).setOnClickListener(this);
@@ -71,7 +94,9 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        listener.onClick(view);
+        if (listener != null) {
+            listener.onClick(view);
+        }
         dismiss();
     }
 

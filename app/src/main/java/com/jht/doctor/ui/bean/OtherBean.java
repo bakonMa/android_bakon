@@ -6,12 +6,14 @@ package com.jht.doctor.ui.bean;
  */
 
 public class OtherBean {
+    //认证状态 0：未认证 1：审核中；2：审核通过 3：审核失败
+    public int status;
+
+
+
+
+
     //是否有交易密码
     public boolean tradePwdStatus;
-
-    //充值验证 01:短信 02：交易密码
-    public String rechargeValidate;
-    //提现验证 01:短信 02：交易密码
-    public String withdrawValidate;
 
 }

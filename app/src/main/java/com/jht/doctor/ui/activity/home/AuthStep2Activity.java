@@ -3,7 +3,6 @@ package com.jht.doctor.ui.activity.home;
 import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,9 +27,14 @@ import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
+
+/**
+ * 认证 上传图片
+ * AuthStep2Activity
+ * Create at 2018/4/3 下午3:59 by mayakun
+ */
 
 public class AuthStep2Activity extends BaseActivity {
 

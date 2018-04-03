@@ -4,8 +4,8 @@ import com.jht.doctor.ui.base.BasePresenter;
 import com.jht.doctor.ui.base.BaseView;
 
 /**
- * Created by table on 2017/11/28.
- * description:
+ * PersonalContact 个人中心
+ * Create at 2018/4/3 上午10:28 by mayakun 
  */
 
 public interface PersonalContact {
@@ -15,9 +15,6 @@ public interface PersonalContact {
 
     interface Presenter extends BasePresenter{
         void getPersonalInfo();
-        void getUserInfo();
-        void getAccount();
-        void getMessageCount();
-
+        void getUserIdentifyStatus();
     }
 }

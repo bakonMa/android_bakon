@@ -9,6 +9,7 @@
     </declare-styleable>
 
     <declare-styleable name="EditTextlayout">
+        <attr name="maxLength" format="integer"/>
         <attr name="leftText" format="string"/>
         <attr name="editTextHint" format="string"/>
         <attr name="textMainSize" format="dimension"/>

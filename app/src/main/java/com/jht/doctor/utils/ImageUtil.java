@@ -1,29 +1,10 @@
 package com.jht.doctor.utils;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.bumptech.glide.load.resource.bitmap.CenterInside;
-import com.bumptech.glide.load.resource.bitmap.CircleCrop;
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.load.resource.bitmap.TransformationUtils;
-import com.bumptech.glide.request.RequestOptions;
 import com.jht.doctor.R;
 import com.jht.doctor.utils.glide_transformation.RoundedCornersTransformation;
 import com.jht.doctor.utils.imageloader.GlideApp;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import rx.Observable;
 
 /**
  * ImageUtil

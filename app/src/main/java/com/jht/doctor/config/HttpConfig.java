@@ -11,12 +11,10 @@ import com.jht.doctor.BuildConfig;
  */
 public interface HttpConfig {
 
-    //todo 确认SECRET
-    String SECRET_VALUE = "secret_value";
+    //私盐
+    String SECRET_VALUE = "jht2018app";
     String SIGN_KEY = "sign";
     String BASE_URL = BuildConfig.BASE_URL;
-    String NOLOGIN_CODE = "1001";//1001	未登录
-    String SIGN_ERROR_CODE = "1002";//1002	签名错误
 
     long CONNECT_TIMEOUT = 30 * 1000;//超时30s
     long IO_READ_TIMEOUT = 60 * 1000;

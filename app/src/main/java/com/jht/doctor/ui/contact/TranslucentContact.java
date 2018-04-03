@@ -23,6 +23,7 @@ public interface TranslucentContact {
         void downloadApk(String downloadUrl , String destLocaLPath , String sourceMD5 , boolean force);
         void cancelDownload();
         void getRepayment();
+
         void getBaseCinfig();
     }
 }

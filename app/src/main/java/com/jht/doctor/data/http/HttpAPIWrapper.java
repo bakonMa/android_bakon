@@ -5,12 +5,10 @@ import android.util.Log;
 
 import com.jht.doctor.BuildConfig;
 import com.jht.doctor.application.DocApplication;
-import com.jht.doctor.config.HttpConfig;
 import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.response.HttpResponse;
-import com.jht.doctor.ui.activity.LoginActivity;
+import com.jht.doctor.ui.activity.login.LoginActivity;
 import com.jht.doctor.ui.bean.DownloadRespBean;
-import com.jht.doctor.utils.ToastUtil;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -83,15 +81,16 @@ public final class HttpAPIWrapper {
                             if (baseResponse == null) {
                                 subscriber.onCompleted();
                             } else {//success
-                                if (baseResponse.code != null
-                                        && HttpConfig.NOLOGIN_CODE.equals(baseResponse.code)//未登录 1001
-                                        && HttpConfig.SIGN_ERROR_CODE.equals(baseResponse.code)) {//sign错误 1002
+                                if (baseResponse.code == null
+                                        || ApiException.ERROR_API_1001.equals(baseResponse.code)//未登录 1001
+                                        || ApiException.ERROR_API_1002.equals(baseResponse.code)) {//sign错误 1002
+                                    //显示异常msg
+                                    subscriber.onError(new ApiException(baseResponse.code, baseResponse.msg));
                                     //TODO 清空token
                                     DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, "");
-                                    ToastUtil.show(baseResponse.msg);
                                     //表示Token失效--重新登录--成功跳HOME
                                     Intent intent = new Intent(DocApplication.getInstance(), LoginActivity.class);
-                                    intent.putExtra(LoginActivity.FROM_KEY, LoginActivity.TOKEN_OVERDUE);
+                                    intent.putExtra("msg", baseResponse.msg);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     DocApplication.getInstance().startActivity(intent);
                                 } else {

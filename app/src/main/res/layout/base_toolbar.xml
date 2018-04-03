@@ -105,6 +105,8 @@
                     android:textColor="@color/toolbar_title"
                     android:textSize="14sp" />
             </RelativeLayout>
+
+            <View style="@style/line_gray_hor" />
         </LinearLayout>
     </android.support.v7.widget.Toolbar>
 </merge>

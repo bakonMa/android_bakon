@@ -9,16 +9,13 @@ import com.jht.doctor.ui.base.BaseView;
  */
 public interface LoginContact {
 
-    interface View extends BaseView<Presenter>{
-        void bindError(String errorMsg);
+    interface View extends BaseView<Presenter> {
     }
 
-    interface Presenter extends BasePresenter{
-        void sendVerifyCode(String phone);
+    interface Presenter extends BasePresenter {
+        void sendMsgCode(String phone, int type);
 
-        void login(String phone,String code);
-
-        void bind(String phone);
+        void login(String phone, String code, int type);
     }
 
 }

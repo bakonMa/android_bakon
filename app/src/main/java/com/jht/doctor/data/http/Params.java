@@ -1,7 +1,6 @@
 package com.jht.doctor.data.http;
 
 import com.jht.doctor.config.HttpConfig;
-import com.jht.doctor.utils.LogUtil;
 import com.jht.doctor.utils.MD5Util;
 
 import java.util.Comparator;
@@ -17,7 +16,6 @@ import java.util.TreeMap;
 public class Params extends HashMap<String, Object> {
     //todo 公共请求参数
     public Params() {
-
         put("timestamp", System.currentTimeMillis());
     }
 

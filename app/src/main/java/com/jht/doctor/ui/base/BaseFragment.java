@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,8 +36,8 @@ public abstract class BaseFragment extends RxFragment implements BasicProvider {
         if (useButterKnife()) {
             mUnbinder = ButterKnife.bind(this, view);
         }
-        initView();
         setupActivityComponent();
+        initView();
         return view;//return view的时候开始绘制
     }
 

@@ -50,6 +50,7 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
     private String editTextHint;
 
     private int editTextType;
+    private int maxLength;
 
     public EditTextlayout(Context context) {
         this(context, null);
@@ -69,6 +70,7 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
         leftTextStr = ta.getString(R.styleable.EditTextlayout_leftText);
         editTextHint = ta.getString(R.styleable.EditTextlayout_editTextHint);
         editTextType = ta.getInt(R.styleable.EditTextlayout_editTextType, 1);
+        maxLength = ta.getInt(R.styleable.EditTextlayout_maxLength, 0);
         ta.recycle();
         initView();
         initEvent();
@@ -89,6 +91,10 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
         leftTextView.setText(leftTextStr);
         mEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextMainSize);
         mEditText.setHint(editTextHint);
+        //最大长度
+        if(maxLength > 0){
+            mEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
+        }
         showText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextMainSize);
         line.setVisibility(isShowLine ? VISIBLE : GONE);
 

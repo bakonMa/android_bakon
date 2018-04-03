@@ -3,7 +3,7 @@ package com.jht.doctor.ui.base;
 import android.util.Log;
 
 import com.bumptech.glide.load.HttpException;
-import com.jht.doctor.application.DocApplication;
+import com.jht.doctor.data.http.ApiException;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.widget.dialog.LoadingDialog;
@@ -27,8 +27,8 @@ public abstract class BaseObserver<T extends HttpResponse> implements Observer<T
 
     @Override
     public void onCompleted() {
-//        if (mDialog != null)
-//            mDialog.dismiss();
+        if (mDialog != null)
+            mDialog.dismiss();
     }
 
     @Override
@@ -43,6 +43,12 @@ public abstract class BaseObserver<T extends HttpResponse> implements Observer<T
             } else if (throwable instanceof TimeoutException || throwable instanceof SocketTimeoutException) {
                 mDialog.dismiss();
                 ToastUtil.show("连接超时,请稍后重试");
+            } else if (throwable instanceof ApiException) {
+                mDialog.dismiss();
+                if (((ApiException) throwable).getCode().equals(ApiException.ERROR_API_1001)
+                        || ((ApiException) throwable).getCode().equals(ApiException.ERROR_API_1002)) {
+                    ToastUtil.show(throwable.getMessage());
+                }
             } else {
                 mDialog.error("系统异常");
             }
