@@ -102,7 +102,7 @@ public class StatusBarUtil {
         }
 
         // android6.0+系统
-        // 这个设置和在xml的style文件中用这个<item name="android:windowLightStatusBar">true</item>属性是一样的
+        // 这个设置和在xml的style文件中用这个<item category="android:windowLightStatusBar">true</item>属性是一样的
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (dark) {
                 activity.getWindow().getDecorView().setSystemUiVisibility(

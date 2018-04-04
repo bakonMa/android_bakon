@@ -47,8 +47,10 @@ public class PersonalPresenter implements PersonalContact.Presenter {
 
     @Override
     public void getPersonalInfo() {
+        Params params = new Params();
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
         Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
-                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getPersonalInfo())
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getPersonalInfo(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null)

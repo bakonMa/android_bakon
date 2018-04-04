@@ -86,7 +86,7 @@ class NimSDKOptionConfig {
         String storageRootPath = null;
         try {
             // SD卡应用扩展存储区(APP卸载后，该目录下被清除，用户也可以在设置界面中手动清除)，请根据APP对数据缓存的重要性及生命周期来决定是否采用此缓存目录.
-            // 该存储区在API 19以上不需要写权限，即可配置 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18"/>
+            // 该存储区在API 19以上不需要写权限，即可配置 <uses-permission android:category="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18"/>
             if (context.getExternalCacheDir() != null) {
                 storageRootPath = context.getExternalCacheDir().getCanonicalPath();
             }

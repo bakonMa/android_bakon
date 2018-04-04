@@ -59,8 +59,10 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
 //        checkFirstEnter();
         if (U.isNoToken()) {
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         } else {
             startActivity(new Intent(this, MainActivity.class));
+            finish();
         }
     }
 

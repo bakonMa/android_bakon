@@ -33,7 +33,7 @@ import com.jht.doctor.ui.contact.SupportBankContact;
 import com.jht.doctor.ui.contact.TradePwdContact;
 import com.jht.doctor.ui.contact.TranslucentContact;
 import com.jht.doctor.ui.contact.WebViewContact;
-import com.jht.doctor.ui.contact.contact_jht.AuthContact;
+import com.jht.doctor.ui.contact.AuthContact;
 import com.jht.doctor.ui.presenter.AddBankCardVerifyPresenter;
 import com.jht.doctor.ui.presenter.AddCoborrowerPresenter;
 import com.jht.doctor.ui.presenter.AddMainCardPresenter;

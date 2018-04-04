@@ -1,4 +1,4 @@
-package com.jht.doctor.ui.activity.home;
+package com.jht.doctor.ui.activity.mine;
 
 import android.Manifest;
 import android.content.Intent;

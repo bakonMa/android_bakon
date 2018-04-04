@@ -1,4 +1,4 @@
-package com.jht.doctor.ui.activity.home;
+package com.jht.doctor.ui.activity.mine;
 
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;

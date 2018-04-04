@@ -22,7 +22,7 @@ import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.injection.components.DaggerFragmentComponent;
 import com.jht.doctor.injection.modules.FragmentModule;
-import com.jht.doctor.ui.activity.home.AuthStep1Activity;
+import com.jht.doctor.ui.activity.mine.AuthStep1Activity;
 import com.jht.doctor.ui.activity.login.LoginActivity;
 import com.jht.doctor.ui.adapter.ExamplePagerAdapter;
 import com.jht.doctor.ui.base.BaseFragment;

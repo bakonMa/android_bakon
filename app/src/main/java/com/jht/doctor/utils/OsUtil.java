@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 public class OsUtil {
 
     public static boolean isMIUI() {
-        return !TextUtils.isEmpty(getSystemProperty("ro.miui.ui.version.name"));
+        return !TextUtils.isEmpty(getSystemProperty("ro.miui.ui.version.category"));
     }
 
     public static boolean isFlyme() {

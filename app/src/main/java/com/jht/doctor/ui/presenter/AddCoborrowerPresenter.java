@@ -54,7 +54,7 @@ public class AddCoborrowerPresenter implements AddCoborrowerContact.Presenter {
         params.put("certNo", certNo);
         params.put("certType", "01");
         params.put("mobilePhone", mobilePhone);
-        params.put("name", name);
+        params.put("category", name);
         params.put("orderNo", orderNo);
         params.put("personType", "01");
         params.put("relation", relation);

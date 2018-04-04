@@ -16,8 +16,8 @@ import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.injection.components.DaggerFragmentComponent;
 import com.jht.doctor.injection.modules.FragmentModule;
-import com.jht.doctor.ui.activity.home.AuthStep1Activity;
-import com.jht.doctor.ui.activity.home.AuthStep3Activity;
+import com.jht.doctor.ui.activity.mine.AuthStep1Activity;
+import com.jht.doctor.ui.activity.mine.AuthStep3Activity;
 import com.jht.doctor.ui.base.BaseFragment;
 import com.jht.doctor.ui.bean.OtherBean;
 import com.jht.doctor.ui.contact.PersonalContact;
@@ -31,6 +31,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -65,6 +67,9 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
 
     @Inject
     PersonalPresenter mPresenter;
+
+    private List<String> carTagBeans = new LinkedList<>();//全部选择的标签
+
 
     @Override
     protected void setupActivityComponent() {

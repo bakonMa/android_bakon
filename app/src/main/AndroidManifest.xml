@@ -117,6 +117,7 @@
         <activity
             android:name=".ui.activity.welcome.TranslucentActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/TranslucentAppTheme"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -129,22 +130,24 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.home.MainActivity"
-            android:theme="@style/TranslucentAppTheme"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleTask" />
         <activity
             android:name=".ui.activity.login.RegisteActivity"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".ui.activity.home.AuthStep1Activity"
+            android:name=".ui.activity.mine.AuthStep1Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ui.activity.home.AuthStep2Activity"
+            android:name=".ui.activity.mine.AuthStep2Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".ui.activity.home.AuthStep3Activity"
+            android:name=".ui.activity.mine.AuthStep3Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.mine.ChooseGoodAtActivity"
             android:screenOrientation="portrait" />
 
 

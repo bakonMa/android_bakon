@@ -1,10 +1,9 @@
-package com.jht.doctor.ui.activity.home;
+package com.jht.doctor.ui.activity.mine;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
@@ -21,11 +20,14 @@ import android.widget.TextView;
 import com.jht.doctor.BuildConfig;
 import com.jht.doctor.R;
 import com.jht.doctor.application.DocApplication;
+import com.jht.doctor.data.http.Params;
 import com.jht.doctor.injection.components.DaggerActivityComponent;
 import com.jht.doctor.injection.modules.ActivityModule;
 import com.jht.doctor.ui.base.BaseActivity;
-import com.jht.doctor.ui.bean_jht.BankBean;
-import com.jht.doctor.ui.contact.contact_jht.AuthContact;
+import com.jht.doctor.ui.bean_jht.BaseConfigBean;
+import com.jht.doctor.ui.bean_jht.HospitalBean;
+import com.jht.doctor.ui.bean_jht.UploadImgBean;
+import com.jht.doctor.ui.contact.AuthContact;
 import com.jht.doctor.ui.presenter.present_jht.AuthPresenter;
 import com.jht.doctor.utils.ActivityUtil;
 import com.jht.doctor.utils.ImageUtil;
@@ -52,7 +54,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
 
@@ -66,6 +67,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     private final int REQUEST_CAMERA_CODE = 101;//拍照
     private final int REQUEST_ALBUM_CODE = 102;//相册
     private final int REQUEST_CROP_CODE = 103;//裁剪
+    private final int REQUEST_CHOOSE_GOODAT = 104;//选择擅长
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
     @BindView(R.id.scrollView)
@@ -75,7 +77,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     @BindView(R.id.et_address)
     EditableLayout etAddress;
     @BindView(R.id.et_organization)
-    EditTextlayout etOrganization;
+    EditableLayout etOrganization;
     @BindView(R.id.et_lab_type)
     EditableLayout etLabType;
     @BindView(R.id.et_title)
@@ -98,12 +100,18 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     @Inject
     AuthPresenter mPresenter;
 
-    private String provinceId, cityId;
+    private String headImgURL, provinceStr, cityStr;
     private CommonBottomPopupView popupView;
     private OnePopupWheel mPopupWheel;
     private AddressPopupView mAddressPopupView;
-    private List<String> typeList = new ArrayList<>();
+    private int labId;//科室
+
     private int sexType = 0;
+    private BaseConfigBean baseConfigBean;
+    private List<HospitalBean> hospitalBeans = new ArrayList<>();
+    private List<String> hospitalStr = new ArrayList<>();//医院
+    private List<String> titleList = new ArrayList<>();//职称
+    private List<String> departmentStrList = new ArrayList<>();//科室
 
     @Override
     protected int provideRootLayout() {
@@ -115,15 +123,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
         SoftHideKeyBoardUtil.assistActivity(this);
         tvMustwrite.setText(Html.fromHtml("以下均为<font color='#FF0000'>必填项</font>"));
         initToolbar();
-//        mPresenter.getBanks();
-        // todo 测试数据
-        typeList.clear();
-        typeList.add("测试科室1");
-        typeList.add("测试科室2");
-        typeList.add("测试科室3");
-        typeList.add("测试科室4");
-        typeList.add("测试科室5");
-        typeList.add("测试科室6");
+        mPresenter.getDpAndTitles();
 
         rgSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -131,6 +131,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                 sexType = (i == R.id.rb_nan ? 0 : 1);
             }
         });
+
     }
 
     //获取当前界面可用高度
@@ -151,9 +152,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     }
 
 
-
-
-    @OnClick({R.id.iv_img, R.id.et_address, R.id.et_lab_type,
+    @OnClick({R.id.iv_img, R.id.et_address, R.id.et_lab_type, R.id.et_organization,
             R.id.et_title, R.id.et_goodat, R.id.tv_next_step})
     public void tabOnClick(View view) {
         switch (view.getId()) {
@@ -175,45 +174,95 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                     @Override
                     public void completeClicked(String... info) {
                         etAddress.setText(info[0] + "-" + info[2]);
-                        provinceId = info[1];
-                        cityId = info[3];
+                        provinceStr = info[0];
+                        cityStr = info[2];
                     }
                 });
                 mAddressPopupView.show(scrollView);
                 break;
+            case R.id.et_organization:
+                if (TextUtils.isEmpty(provinceStr) || TextUtils.isEmpty(cityStr)) {
+                    ToastUtil.showShort("请先选择地区");
+                    return;
+                }
+                mPresenter.getHospital(provinceStr, cityStr);
+                break;
             case R.id.et_lab_type:
-                mPopupWheel = new OnePopupWheel(this, typeList, "请选择科室", new OnePopupWheel.Listener() {
+                mPopupWheel = new OnePopupWheel(this, departmentStrList, "请选择科室", new OnePopupWheel.Listener() {
                     @Override
                     public void completed(int position) {
-                        etLabType.setText(typeList.get(position));
+                        labId = baseConfigBean.department.get(position).id;
+                        etLabType.setText(departmentStrList.get(position));
                     }
                 });
                 mPopupWheel.show(scrollView);
                 break;
             case R.id.et_title:
-                mPopupWheel = new OnePopupWheel(this, typeList, "请选择职称", new OnePopupWheel.Listener() {
+                mPopupWheel = new OnePopupWheel(this, titleList, "请选择职称", new OnePopupWheel.Listener() {
                     @Override
                     public void completed(int position) {
-                        etTitle.setText(typeList.get(position));
+                        etTitle.setText(titleList.get(position));
                     }
                 });
                 mPopupWheel.show(scrollView);
+
                 break;
             case R.id.et_goodat:
-                mPopupWheel = new OnePopupWheel(this, typeList, new OnePopupWheel.Listener() {
-                    @Override
-                    public void completed(int position) {
-                        etGoodat.setText(typeList.get(position));
-                    }
-                });
-                mPopupWheel.show(scrollView);
+                Intent intent = new Intent(this, ChooseGoodAtActivity.class);
+                intent.putParcelableArrayListExtra("skills", baseConfigBean.skills);
+                startActivityForResult(intent, REQUEST_CHOOSE_GOODAT);
                 break;
             case R.id.tv_next_step:
-                startActivity(new Intent(this, AuthStep2Activity.class));
+                checkData();
                 break;
 
         }
     }
+
+    //数据检测
+    private void checkData() {
+        if (TextUtils.isEmpty(headImgURL)) {
+            ToastUtil.show("请选择头像");
+            return;
+        }
+        if (TextUtils.isEmpty(etName.getEditText().getText())) {
+            ToastUtil.show("请填写姓名");
+            return;
+        }
+        if (TextUtils.isEmpty(etAddress.getEditText().getText())) {
+            ToastUtil.show("请选择地址");
+            return;
+        }
+        if (TextUtils.isEmpty(etOrganization.getEditText().getText())) {
+            ToastUtil.show("请填写医疗机构信息");
+            return;
+        }
+        if (TextUtils.isEmpty(etLabType.getEditText().getText())) {
+            ToastUtil.show("请选择科室");
+            return;
+        }
+        if (TextUtils.isEmpty(etTitle.getEditText().getText())) {
+            ToastUtil.show("请选择职称");
+            return;
+        }
+        if (TextUtils.isEmpty(etGoodat.getEditText().getText())) {
+            ToastUtil.show("请选择擅长疾病");
+            return;
+        }
+
+        Params params = new Params();
+        params.put("header", headImgURL);
+        params.put("name", etName.getEditText().getText());
+        params.put("sex", sexType);
+        params.put("prov", provinceStr);
+        params.put("city", cityStr);
+        params.put("hospital", etOrganization.getEditText().getText());
+        params.put("department", labId);
+        params.put("title", etTitle.getEditText().getText());
+        params.put("skills", etGoodat.getEditText().getText());
+        mPresenter.userIdentify(params);
+    }
+
 
     private File cameraPath;
 
@@ -287,7 +336,17 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                         mPresenter.uploadImg(headerPath);
                     }
                     break;
-
+                case REQUEST_CHOOSE_GOODAT://擅长疾病
+                    List<BaseConfigBean.Skill> selectSekills = data.getParcelableArrayListExtra("skills");
+                    StringBuffer stringBuffer = new StringBuffer();
+                    for (int i = 0; i < selectSekills.size(); i++) {
+                        stringBuffer.append(selectSekills.get(i).name);
+                        if (i != selectSekills.size() - 1) {
+                            stringBuffer.append(",");
+                        }
+                    }
+                    etGoodat.setText(stringBuffer.toString());
+                    break;
                 default:
                     break;
             }
@@ -305,7 +364,6 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                 .inject(this);
     }
 
-
     @Override
     public void onError(String errorCode, String errorMsg) {
         ToastUtil.show(errorMsg);
@@ -314,10 +372,40 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     @Override
     public void onSuccess(Message message) {
         switch (message.what) {
-            case AuthPresenter.GETBANK_OK:
-                List<BankBean> bankBeans = (List<BankBean>) message.obj;
-                LogUtil.d("bankBeans = " + bankBeans.size());
-                ToastUtil.show(bankBeans.size() + "");
+            case AuthPresenter.GET_BASECONFIG://基础数据
+                baseConfigBean = (BaseConfigBean) message.obj;
+                //职称
+                titleList.addAll(baseConfigBean.title);
+                //科室
+                for (BaseConfigBean.DepartmentBean bean : baseConfigBean.department) {
+                    departmentStrList.add(bean.name);
+                }
+                break;
+            case AuthPresenter.UPLOADIMF_OK://上传成功
+                UploadImgBean uploadImgBean = (UploadImgBean) message.obj;
+                headImgURL = uploadImgBean.url;
+                ToastUtil.show("上传成功");
+                break;
+            case AuthPresenter.UPLOADIMF_ERROR://上传失败
+                headImgURL = "";
+                ToastUtil.show("上传失败，请重新选择");
+                break;
+            case AuthPresenter.USERIDENTIFY_OK://认证信息提交
+                startActivity(new Intent(this, AuthStep2Activity.class));
+                finish();
+                break;
+            case AuthPresenter.GETHOSPITAL_OK://获取医院列表
+                hospitalBeans = (List<HospitalBean>) message.obj;
+                for (HospitalBean hospitalBean : hospitalBeans) {
+                    hospitalStr.add(hospitalBean.name);
+                }
+                mPopupWheel = new OnePopupWheel(this, hospitalStr, "请选择医院", new OnePopupWheel.Listener() {
+                    @Override
+                    public void completed(int position) {
+                        etOrganization.setText(hospitalStr.get(position));
+                    }
+                });
+                mPopupWheel.show(scrollView);
                 break;
         }
     }
@@ -327,20 +415,9 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
         return this;
     }
 
-//    @Override
-//    protected boolean useEventBus() {
-//        return true;
-//    }
-
     @Override
     public <R> LifecycleTransformer<R> toLifecycle() {
         return bindToLifecycle();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

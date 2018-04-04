@@ -29,6 +29,8 @@ import com.jht.doctor.ui.bean.RepaymentHomeBean;
 import com.jht.doctor.ui.bean.RepaymentOffLineBean;
 import com.jht.doctor.ui.bean.ReusingBean;
 import com.jht.doctor.ui.bean.SupportBankBean;
+import com.jht.doctor.ui.bean_jht.BaseConfigBean;
+import com.jht.doctor.ui.bean_jht.HospitalBean;
 import com.jht.doctor.ui.bean_jht.UploadImgBean;
 
 import java.util.List;
@@ -81,7 +83,25 @@ public interface HttpAPI {
 
     //获取个人中心资料，认证时的资料
     @GET("getUserIdentify")
-    Observable<HttpResponse<PersonalBean>> getPersonalInfo();
+    Observable<HttpResponse<PersonalBean>> getPersonalInfo(@QueryMap Params params);
+
+    //获取科室、职称、擅长等信息
+    @GET("getDpAndTitles")
+    Observable<HttpResponse<BaseConfigBean>> getDpAndTitles(@QueryMap Params params);
+
+    //获取省市 医院列表
+    @POST("getHospital")
+    Observable<HttpResponse<List<HospitalBean>>> getHospital(@QueryMap Params params);
+
+    //认证信息提交1
+    @GET("userIdentify")
+    Observable<HttpResponse<String>> userIdentify(@QueryMap Params params);
+
+
+
+
+
+
 
 
     //发送修改验证码
