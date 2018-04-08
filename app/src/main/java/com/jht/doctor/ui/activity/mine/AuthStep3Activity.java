@@ -25,7 +25,7 @@ public class AuthStep3Activity extends BaseActivity {
 
     @Override
     protected int provideRootLayout() {
-        return R.layout.activity_auth_step3_jht;
+        return R.layout.activity_auth_step3;
     }
 
     @Override

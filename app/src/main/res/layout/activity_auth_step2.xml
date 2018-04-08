@@ -11,6 +11,7 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:overScrollMode="never"
         android:scrollbars="none">
 
         <LinearLayout
@@ -22,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_marginBottom="10dp"
-                android:background="@color/indicator_selected_color">
+                android:background="@color/color_main">
 
                 <com.jht.doctor.widget.ScheduleView_jht
                     android:id="@+id/id_step"
@@ -42,6 +43,7 @@
                 app:editTextHint="请输入身份证号"
                 app:isShowBottomLine="false"
                 app:leftText="身份证号"
+                app:maxLength="18"
                 app:textMainSize="16sp" />
 
             <TextView
@@ -78,13 +80,12 @@
                     android:layout_marginBottom="10dp" />
 
                 <ImageView
-                    android:id="@+id/iv_img"
+                    android:id="@+id/iv_img1"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_below="@+id/line1"
-                    android:background="@drawable/bg_image_add"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_image_tobeadd" />
+                    android:background="@drawable/img_default_1"
+                    android:scaleType="centerCrop" />
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -92,8 +93,8 @@
                     android:layout_height="80dp"
                     android:layout_below="@+id/line1"
                     android:layout_marginLeft="30dp"
-                    android:layout_toRightOf="@+id/iv_img"
-                    android:background="@mipmap/logo" />
+                    android:layout_toRightOf="@+id/iv_img1"
+                    android:src="@drawable/sample_idcard" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -110,7 +111,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/iv_img"
+                    android:layout_below="@+id/iv_img1"
                     android:drawableLeft="@drawable/attention"
                     android:drawablePadding="5dp"
                     android:paddingBottom="10dp"
@@ -153,21 +154,21 @@
 
                 <ImageView
                     android:id="@+id/iv_img2"
-                    android:layout_width="80dp"
+                    android:layout_width="108dp"
                     android:layout_height="80dp"
                     android:layout_below="@+id/line2"
-                    android:background="@drawable/bg_image_add"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_image_tobeadd" />
+                    android:background="@drawable/img_default_1"
+                    android:scaleType="centerCrop" />
 
                 <ImageView
                     android:id="@+id/imageView2"
-                    android:layout_width="80dp"
+                    android:layout_width="108dp"
                     android:layout_height="80dp"
                     android:layout_below="@+id/line2"
                     android:layout_marginLeft="30dp"
                     android:layout_toRightOf="@+id/iv_img2"
-                    android:background="@mipmap/logo" />
+                    android:scaleType="centerInside"
+                    android:src="@drawable/sample_credential1" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -209,21 +210,21 @@
 
                 <ImageView
                     android:id="@+id/iv_img3"
-                    android:layout_width="80dp"
+                    android:layout_width="108dp"
                     android:layout_height="80dp"
                     android:layout_below="@+id/line3"
-                    android:background="@drawable/bg_image_add"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_image_tobeadd" />
+                    android:background="@drawable/img_default_1"
+                    android:scaleType="centerCrop" />
 
                 <ImageView
                     android:id="@+id/imageView3"
-                    android:layout_width="80dp"
+                    android:layout_width="108dp"
                     android:layout_height="80dp"
                     android:layout_below="@+id/line3"
                     android:layout_marginLeft="30dp"
                     android:layout_toRightOf="@+id/iv_img3"
-                    android:background="@mipmap/logo" />
+                    android:scaleType="centerInside"
+                    android:src="@drawable/sample_credential2" />
 
                 <TextView
                     android:layout_width="wrap_content"

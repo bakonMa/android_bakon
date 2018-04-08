@@ -37,9 +37,11 @@ import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.utils.UriUtil;
 import com.jht.doctor.widget.EditTextlayout;
 import com.jht.doctor.widget.EditableLayout;
-import com.jht.doctor.widget.popupwindow.AddressPopupView;
+import com.jht.doctor.widget.dialog.CommonDialog;
+import com.jht.doctor.widget.popupwindow.CameraPopupView;
 import com.jht.doctor.widget.popupwindow.CommonBottomPopupView;
 import com.jht.doctor.widget.popupwindow.OnePopupWheel;
+import com.jht.doctor.widget.popupwindow.ProvCityPopupView;
 import com.jht.doctor.widget.toolbar.TitleOnclickListener;
 import com.jht.doctor.widget.toolbar.ToolbarBuilder;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -48,7 +50,6 @@ import com.trello.rxlifecycle.LifecycleTransformer;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -86,7 +87,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     EditableLayout etGoodat;
     @BindView(R.id.tv_next_step)
     TextView tvNextStep;
-    @BindView(R.id.iv_img)
+    @BindView(R.id.iv_img1)
     ImageView ivImg;
     @BindView(R.id.tv_mustwrite)
     TextView tvMustwrite;
@@ -103,7 +104,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     private String headImgURL, provinceStr, cityStr;
     private CommonBottomPopupView popupView;
     private OnePopupWheel mPopupWheel;
-    private AddressPopupView mAddressPopupView;
+    private ProvCityPopupView mProvCityPopupView;
     private int labId;//科室
 
     private int sexType = 0;
@@ -115,7 +116,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
 
     @Override
     protected int provideRootLayout() {
-        return R.layout.activity_auth_step1_jht;
+        return R.layout.activity_auth_step1;
     }
 
     @Override
@@ -152,33 +153,30 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     }
 
 
-    @OnClick({R.id.iv_img, R.id.et_address, R.id.et_lab_type, R.id.et_organization,
+    @OnClick({R.id.iv_img1, R.id.et_address, R.id.et_lab_type, R.id.et_organization,
             R.id.et_title, R.id.et_goodat, R.id.tv_next_step})
     public void tabOnClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_img:
-                popupView = new CommonBottomPopupView(this,
-                        Arrays.asList(new String[]{"拍照", "从手机相册选择"}), new CommonBottomPopupView.CommOnClickListener() {
+            case R.id.iv_img1:
+                CameraPopupView cameraPopupView = new CameraPopupView(this, new View.OnClickListener() {
                     @Override
-                    public void OnItemOnClick(Object o) {
-                        if (o == null) {
-                            return;
-                        }
-                        openCameraOrPhoto(o.toString().equals("拍照"));
+                    public void onClick(View view) {
+                        openCameraOrPhoto(view.getId() == R.id.llt_camera);
                     }
                 });
-                popupView.show(scrollView);
+                cameraPopupView.show(scrollView);
+
                 break;
             case R.id.et_address:
-                mAddressPopupView = new AddressPopupView(this, 2, new AddressPopupView.ClickedListener() {
+                mProvCityPopupView = new ProvCityPopupView(this, new ProvCityPopupView.ClickedListener() {
                     @Override
-                    public void completeClicked(String... info) {
-                        etAddress.setText(info[0] + "-" + info[2]);
-                        provinceStr = info[0];
-                        cityStr = info[2];
+                    public void completeClicked(String prov, String city) {
+                        provinceStr = prov;
+                        cityStr = city;
+                        etAddress.setText(prov + "-" + city);
                     }
                 });
-                mAddressPopupView.show(scrollView);
+                mProvCityPopupView.show(scrollView);
                 break;
             case R.id.et_organization:
                 if (TextUtils.isEmpty(provinceStr) || TextUtils.isEmpty(cityStr)) {
@@ -217,36 +215,37 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                 break;
 
         }
+
     }
 
     //数据检测
     private void checkData() {
         if (TextUtils.isEmpty(headImgURL)) {
-            ToastUtil.show("请选择头像");
+            ToastUtil.showShort("请选择头像");
             return;
         }
         if (TextUtils.isEmpty(etName.getEditText().getText())) {
-            ToastUtil.show("请填写姓名");
+            ToastUtil.showShort("请填写姓名");
             return;
         }
-        if (TextUtils.isEmpty(etAddress.getEditText().getText())) {
-            ToastUtil.show("请选择地址");
+        if (TextUtils.isEmpty(provinceStr) || TextUtils.isEmpty(cityStr)) {
+            ToastUtil.showShort("请选择地区");
             return;
         }
-        if (TextUtils.isEmpty(etOrganization.getEditText().getText())) {
-            ToastUtil.show("请填写医疗机构信息");
+        if (TextUtils.isEmpty(etOrganization.getText())) {
+            ToastUtil.showShort("请选择医疗机构");
             return;
         }
-        if (TextUtils.isEmpty(etLabType.getEditText().getText())) {
-            ToastUtil.show("请选择科室");
+        if (TextUtils.isEmpty(etLabType.getText())) {
+            ToastUtil.showShort("请选择科室");
             return;
         }
-        if (TextUtils.isEmpty(etTitle.getEditText().getText())) {
-            ToastUtil.show("请选择职称");
+        if (TextUtils.isEmpty(etTitle.getText())) {
+            ToastUtil.showShort("请选择职称");
             return;
         }
-        if (TextUtils.isEmpty(etGoodat.getEditText().getText())) {
-            ToastUtil.show("请选择擅长疾病");
+        if (TextUtils.isEmpty(etGoodat.getText())) {
+            ToastUtil.showShort("请选择擅长疾病");
             return;
         }
 
@@ -256,10 +255,10 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
         params.put("sex", sexType);
         params.put("prov", provinceStr);
         params.put("city", cityStr);
-        params.put("hospital", etOrganization.getEditText().getText());
+        params.put("hospital", etOrganization.getText());
         params.put("department", labId);
-        params.put("title", etTitle.getEditText().getText());
-        params.put("skills", etGoodat.getEditText().getText());
+        params.put("title", etTitle.getText());
+        params.put("skills", etGoodat.getText());
         mPresenter.userIdentify(params);
     }
 
@@ -369,6 +368,9 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
         ToastUtil.show(errorMsg);
     }
 
+
+    private CommonDialog commonDialog;
+
     @Override
     public void onSuccess(Message message) {
         switch (message.what) {
@@ -384,11 +386,11 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
             case AuthPresenter.UPLOADIMF_OK://上传成功
                 UploadImgBean uploadImgBean = (UploadImgBean) message.obj;
                 headImgURL = uploadImgBean.url;
-                ToastUtil.show("上传成功");
+                ToastUtil.showShort("上传成功");
                 break;
             case AuthPresenter.UPLOADIMF_ERROR://上传失败
                 headImgURL = "";
-                ToastUtil.show("上传失败，请重新选择");
+                ToastUtil.showShort("上传失败，请重新选择");
                 break;
             case AuthPresenter.USERIDENTIFY_OK://认证信息提交
                 startActivity(new Intent(this, AuthStep2Activity.class));
@@ -396,13 +398,33 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                 break;
             case AuthPresenter.GETHOSPITAL_OK://获取医院列表
                 hospitalBeans = (List<HospitalBean>) message.obj;
+                hospitalStr.clear();
                 for (HospitalBean hospitalBean : hospitalBeans) {
                     hospitalStr.add(hospitalBean.name);
                 }
+                hospitalStr.add("其他");//最后追加
                 mPopupWheel = new OnePopupWheel(this, hospitalStr, "请选择医院", new OnePopupWheel.Listener() {
                     @Override
                     public void completed(int position) {
                         etOrganization.setText(hospitalStr.get(position));
+                        //选择其他后，弹出dialog填写
+                        if (position == hospitalStr.size() - 1) {
+                            commonDialog = new CommonDialog(AuthStep1Activity.this, R.layout.dialog_edite_common,
+                                    new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            if (view.getId() == R.id.btn_ok) {
+                                                if (!TextUtils.isEmpty(commonDialog.getCommonEditText())) {
+                                                    etOrganization.setText(commonDialog.getCommonEditText());
+                                                }
+                                            }
+                                        }
+                                    });
+                            commonDialog.show();
+                        }
+//                        else {
+//                            etOrganization.setText(hospitalStr.get(position));
+//                        }
                     }
                 });
                 mPopupWheel.show(scrollView);

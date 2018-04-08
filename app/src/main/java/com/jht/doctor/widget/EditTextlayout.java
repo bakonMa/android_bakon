@@ -92,7 +92,7 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
         mEditText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextMainSize);
         mEditText.setHint(editTextHint);
         //最大长度
-        if(maxLength > 0){
+        if (maxLength > 0) {
             mEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
         }
         showText.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextMainSize);

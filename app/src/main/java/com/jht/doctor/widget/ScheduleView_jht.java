@@ -55,7 +55,7 @@ public class ScheduleView_jht extends View {
     private int pointSpace;
     private int currentIndex;
 
-    private Bitmap bitmap_current, bitmap_compeled;
+    private Bitmap bitmap_step1, bitmap_step2, bitmap_step3, bitmap_step4;
 
 
     public ScheduleView_jht(Context context) {
@@ -109,8 +109,10 @@ public class ScheduleView_jht extends View {
         pointRadiusMiddle = UIUtils.dp2px(mContext, 4);
         pointRadiusBig = UIUtils.dp2px(mContext, 5);
 
-        bitmap_current = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon_jxz);
-        bitmap_compeled = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon_ywc);
+        bitmap_step1 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon_step1);
+        bitmap_step2 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon_step2);
+        bitmap_step3 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon_step3);
+        bitmap_step4 = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.icon_step4);
     }
 
     @Override
@@ -148,7 +150,7 @@ public class ScheduleView_jht extends View {
     }
 
     private void drawPointLine(Canvas canvas, int start, boolean isWhite) {
-        linePointPaint.setColor(mContext.getResources().getColor(isWhite ? R.color.white : R.color.color_999));
+        linePointPaint.setColor(mContext.getResources().getColor(isWhite ? R.color.white : R.color.color_ada293));
         canvas.drawCircle(start + pointSpace + pointRadiusLittle, baseY, pointRadiusLittle, linePointPaint);
         canvas.drawCircle(start + pointSpace * 2 + pointRadiusMiddle * 2, baseY, pointRadiusMiddle, linePointPaint);
         canvas.drawCircle(start + pointSpace * 3 + pointRadiusMiddle * 2 + pointRadiusBig * 2, baseY, pointRadiusBig, linePointPaint);
@@ -158,7 +160,7 @@ public class ScheduleView_jht extends View {
         switch (currentIndex) {
             case 1:
                 canvas.drawText(texts[0], 0, baseTextY, textPaint);
-                textPaint.setColor(mContext.getResources().getColor(R.color.color_999));
+                textPaint.setColor(mContext.getResources().getColor(R.color.color_ada293));
                 canvas.drawText(texts[1], baseX + defalutRadius * 3 + lineWidth - getTextWith(texts[1]) / 2, baseTextY, textPaint);
                 canvas.drawText(texts[2], baseX + defalutRadius * 5 + lineWidth * 2 - getTextWith(texts[2]) / 2, baseTextY, textPaint);
                 canvas.drawText(texts[3], baseX + defalutRadius * 7 + lineWidth * 3 - getTextWith(texts[3]) / 2, baseTextY, textPaint);
@@ -166,7 +168,7 @@ public class ScheduleView_jht extends View {
                 //圆和线
                 canvas.drawCircle(baseX + defalutRadius, baseY, defalutRadius, roundPaint);
                 drawPointLine(canvas, baseX + defalutRadius * 2, true);
-                roundPaint.setColor(mContext.getResources().getColor(R.color.color_999));
+                roundPaint.setColor(mContext.getResources().getColor(R.color.color_ada293));
                 canvas.drawCircle(baseX + defalutRadius * 3 + lineWidth, baseY, defalutRadius, roundPaint);
                 drawPointLine(canvas, baseX + defalutRadius * 4 + lineWidth, false);
                 canvas.drawCircle(baseX + defalutRadius * 5 + lineWidth * 2, baseY, defalutRadius, roundPaint);
@@ -176,7 +178,7 @@ public class ScheduleView_jht extends View {
             case 2:
                 canvas.drawText(texts[0], 0, baseTextY, textPaint);
                 canvas.drawText(texts[1], baseX + defalutRadius * 3 + lineWidth - getTextWith(texts[1]) / 2, baseTextY, textPaint);
-                textPaint.setColor(mContext.getResources().getColor(R.color.color_999));
+                textPaint.setColor(mContext.getResources().getColor(R.color.color_ada293));
                 canvas.drawText(texts[2], baseX + defalutRadius * 5 + lineWidth * 2 - getTextWith(texts[2]) / 2, baseTextY, textPaint);
                 canvas.drawText(texts[3], baseX + defalutRadius * 7 + lineWidth * 3 - getTextWith(texts[3]) / 2, baseTextY, textPaint);
 
@@ -185,7 +187,7 @@ public class ScheduleView_jht extends View {
                 drawPointLine(canvas, baseX + defalutRadius * 2, true);
                 canvas.drawCircle(baseX + defalutRadius * 3 + lineWidth, baseY, defalutRadius, roundPaint);
                 drawPointLine(canvas, baseX + defalutRadius * 4 + lineWidth, true);
-                roundPaint.setColor(mContext.getResources().getColor(R.color.color_999));
+                roundPaint.setColor(mContext.getResources().getColor(R.color.color_ada293));
                 canvas.drawCircle(baseX + defalutRadius * 5 + lineWidth * 2, baseY, defalutRadius, roundPaint);
                 drawPointLine(canvas, baseX + defalutRadius * 6 + lineWidth * 2, false);
                 canvas.drawCircle(baseX + defalutRadius * 7 + lineWidth * 3, baseY, defalutRadius, roundPaint);
@@ -194,7 +196,7 @@ public class ScheduleView_jht extends View {
                 canvas.drawText(texts[0], 0, baseTextY, textPaint);
                 canvas.drawText(texts[1], baseX + defalutRadius * 3 + lineWidth - getTextWith(texts[1]) / 2, baseTextY, textPaint);
                 canvas.drawText(texts[2], baseX + defalutRadius * 5 + lineWidth * 2 - getTextWith(texts[2]) / 2, baseTextY, textPaint);
-                textPaint.setColor(mContext.getResources().getColor(R.color.color_999));
+                textPaint.setColor(mContext.getResources().getColor(R.color.color_ada293));
                 canvas.drawText(texts[3], baseX + defalutRadius * 7 + lineWidth * 3 - getTextWith(texts[3]) / 2, baseTextY, textPaint);
 
                 //圆和线
@@ -204,7 +206,7 @@ public class ScheduleView_jht extends View {
                 drawPointLine(canvas, baseX + defalutRadius * 4 + lineWidth, true);
                 canvas.drawCircle(baseX + defalutRadius * 5 + lineWidth * 2, baseY, defalutRadius, roundPaint);
                 drawPointLine(canvas, baseX + defalutRadius * 6 + lineWidth * 2, true);
-                roundPaint.setColor(mContext.getResources().getColor(R.color.color_999));
+                roundPaint.setColor(mContext.getResources().getColor(R.color.color_ada293));
                 canvas.drawCircle(baseX + defalutRadius * 7 + lineWidth * 3, baseY, defalutRadius, roundPaint);
                 break;
             case 4:
@@ -227,16 +229,16 @@ public class ScheduleView_jht extends View {
 
     //图片
     private void drawBitmap(Canvas canvas) {
-        canvas.drawBitmap(bitmap_compeled, null
+        canvas.drawBitmap(bitmap_step1, null
                 , new Rect(baseX, 0, baseX + defalutRadius * 2, defalutRadius * 2)
                 , null);
-        canvas.drawBitmap(bitmap_compeled, null
+        canvas.drawBitmap(bitmap_step2, null
                 , new Rect(baseX + defalutRadius * 2 + lineWidth, 0, baseX + defalutRadius * 4 + lineWidth, defalutRadius * 2)
                 , null);
-        canvas.drawBitmap(bitmap_compeled, null
+        canvas.drawBitmap(bitmap_step3, null
                 , new Rect(baseX + defalutRadius * 4 + lineWidth * 2, 0, baseX + defalutRadius * 6 + lineWidth * 2, defalutRadius * 2)
                 , null);
-        canvas.drawBitmap(bitmap_compeled, null
+        canvas.drawBitmap(bitmap_step4, null
                 , new Rect(baseX + defalutRadius * 6 + lineWidth * 3, 0, baseX + defalutRadius * 8 + lineWidth * 3, defalutRadius * 2)
                 , null);
     }

@@ -103,7 +103,7 @@ public class ChooseGoodAtActivity extends BaseActivity {
                     tagAdapter.notifyDataSetChanged();
                 } else {
                     if (selectBeans.size() >= 3) {
-                        ToastUtil.show("擅长疾病最多选择3项");
+                        ToastUtil.showShort("擅长疾病最多选择3项");
                         return;
                     }
                     selectBeans.add(showList.get(position));

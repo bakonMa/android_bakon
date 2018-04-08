@@ -16,7 +16,7 @@ import java.util.TreeMap;
 public class Params extends HashMap<String, Object> {
     //todo 公共请求参数
     public Params() {
-        put("timestamp", System.currentTimeMillis());
+        put(HttpConfig.TIMESTAMP, System.currentTimeMillis());
     }
 
     //获取sign

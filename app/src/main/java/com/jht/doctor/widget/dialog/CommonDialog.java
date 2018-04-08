@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.jht.doctor.R;
@@ -24,9 +25,10 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
     private Activity mContext;
     private int layout;
 
-    private int type;//0：只有确定 1：确定和取消
-    private String titleStr;
+    private int type;//0：只有确定 1：确定和取消(显示模式)
+    private EditText commEditext;
 
+    private String titleStr;
     private View layoutView;
     private View.OnClickListener listener;
 
@@ -71,16 +73,13 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
                     ((TextView) layoutView.findViewById(R.id.dialog_title)).setText(titleStr);
                 }
                 break;
-
-
-            case R.layout.dialog_my_info://普通 确定，取消
-                layoutView = LayoutInflater.from(mContext).inflate(R.layout.dialog_my_info, null);
+            case R.layout.dialog_edite_common://普通 确定，取消(输入内容)
+                layoutView = LayoutInflater.from(mContext).inflate(R.layout.dialog_edite_common, null);
                 layoutView.findViewById(R.id.btn_no).setOnClickListener(this);
                 layoutView.findViewById(R.id.btn_ok).setOnClickListener(this);
-                if (!TextUtils.isEmpty(titleStr)) {
-                    ((TextView) layoutView.findViewById(R.id.dialog_title)).setText(titleStr);
-                }
+                commEditext = layoutView.findViewById(R.id.dialog_content);
                 break;
+
         }
 
         setContentView(layoutView);
@@ -98,6 +97,16 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
             listener.onClick(view);
         }
         dismiss();
+    }
+
+    //dialog_edite_common 使用
+    public String getCommonEditText() {
+        if (commEditext == null || commEditext.getText().length() == 0) {
+            return "";
+        } else {
+            return commEditext.getText().toString().trim();
+        }
+
     }
 
 }

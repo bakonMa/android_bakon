@@ -87,7 +87,7 @@ public final class HttpAPIWrapper {
                                     //显示异常msg
                                     subscriber.onError(new ApiException(baseResponse.code, baseResponse.msg));
                                     //TODO 清空token
-                                    DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, "");
+//                                    DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, "");
                                     //表示Token失效--重新登录--成功跳HOME
                                     Intent intent = new Intent(DocApplication.getInstance(), LoginActivity.class);
                                     intent.putExtra("msg", baseResponse.msg);

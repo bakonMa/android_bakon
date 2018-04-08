@@ -36,7 +36,7 @@ public class MyInfoDialog extends Dialog implements View.OnClickListener{
     }
 
     private void init() {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_my_info, null);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_edite_common, null);
         btn_no = view.findViewById(R.id.btn_no);
         btn_no.setOnClickListener(this);
         btn_yes = view.findViewById(R.id.btn_ok);

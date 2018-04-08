@@ -84,7 +84,6 @@ public class AuthPresenter implements AuthContact.Presenter {
         mSubscription.add(subscription);
     }
 
-
     @Override
     public void uploadImg(String path) {
         //type：0：头像 1：其他认证图片  upload：图片文件
@@ -93,11 +92,16 @@ public class AuthPresenter implements AuthContact.Presenter {
         LogUtil.d("bytes befor size=" + file.length());
         byte[] bytes = FileUtil.zipImageToSize(file, FileUtil.MAX_UPLOAD_SIZE);
         LogUtil.d("bytes after size=" + bytes.length);
-        RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpg"), bytes);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), bytes);
         MultipartBody.Part partFile = MultipartBody.Part.createFormData("upload", file.getName(), requestBody);
 
+        Params params = new Params();
+        params.put("type","1");
+        MultipartBody.Part partTime = MultipartBody.Part.createFormData(HttpConfig.TIMESTAMP, params.get(HttpConfig.TIMESTAMP).toString());
+        MultipartBody.Part partSign = MultipartBody.Part.createFormData(HttpConfig.SIGN_KEY, params.getSign(params));
+
         Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
-                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().uploadSingleFile(partType, partFile))
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().uploadSingleFile(partType, partFile, partTime, partSign))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) mDialog.show();

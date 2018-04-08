@@ -16,7 +16,7 @@ import com.jht.doctor.config.EventConfig;
 import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.injection.components.DaggerFragmentComponent;
 import com.jht.doctor.injection.modules.FragmentModule;
-import com.jht.doctor.ui.activity.mine.AuthStep1Activity;
+import com.jht.doctor.ui.activity.mine.AuthStep2Activity;
 import com.jht.doctor.ui.activity.mine.AuthStep3Activity;
 import com.jht.doctor.ui.base.BaseFragment;
 import com.jht.doctor.ui.bean.OtherBean;
@@ -107,7 +107,7 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
                 switch (U.getAuthStatus()) {//状态值，0：未认证 1：审核中；2：审核通过 3：审核失败
                     case 0:
                     case 3:
-                        startActivity(new Intent(actContext(), AuthStep1Activity.class));
+                        startActivity(new Intent(actContext(), AuthStep2Activity.class));
                         break;
                     case 1:
                         startActivity(new Intent(actContext(), AuthStep3Activity.class));

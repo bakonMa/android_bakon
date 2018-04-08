@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_f6f6f6"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/llt_camera"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="23dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/icon_camera" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:text="拍摄照片"
+            android:textColor="@color/color_333"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+
+    <View
+        style="@style/line_gray_hor"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp" />
+
+    <LinearLayout
+        android:id="@+id/llt_photo"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/white"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="23dp"
+            android:layout_height="18dp"
+            android:src="@drawable/icon_photo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:text="手机相册"
+            android:textColor="@color/color_333"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_cancle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="@color/color_333"
+        android:textSize="16sp" />
+</LinearLayout>

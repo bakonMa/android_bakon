@@ -14,6 +14,7 @@ public interface HttpConfig {
     //私盐
     String SECRET_VALUE = "jht2018app";
     String SIGN_KEY = "sign";
+    String TIMESTAMP = "timestamp";
     String BASE_URL = BuildConfig.BASE_URL;
 
     long CONNECT_TIMEOUT = 30 * 1000;//超时30s
