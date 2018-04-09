@@ -20,6 +20,9 @@ import android.widget.TextView;
 import com.jht.doctor.BuildConfig;
 import com.jht.doctor.R;
 import com.jht.doctor.application.DocApplication;
+import com.jht.doctor.config.EventConfig;
+import com.jht.doctor.data.eventbus.Event;
+import com.jht.doctor.data.eventbus.EventBusUtil;
 import com.jht.doctor.data.http.Params;
 import com.jht.doctor.injection.components.DaggerActivityComponent;
 import com.jht.doctor.injection.modules.ActivityModule;
@@ -30,6 +33,7 @@ import com.jht.doctor.ui.bean_jht.UploadImgBean;
 import com.jht.doctor.ui.contact.AuthContact;
 import com.jht.doctor.ui.presenter.present_jht.AuthPresenter;
 import com.jht.doctor.utils.ActivityUtil;
+import com.jht.doctor.utils.Constant;
 import com.jht.doctor.utils.ImageUtil;
 import com.jht.doctor.utils.LogUtil;
 import com.jht.doctor.utils.SoftHideKeyBoardUtil;
@@ -39,7 +43,6 @@ import com.jht.doctor.widget.EditTextlayout;
 import com.jht.doctor.widget.EditableLayout;
 import com.jht.doctor.widget.dialog.CommonDialog;
 import com.jht.doctor.widget.popupwindow.CameraPopupView;
-import com.jht.doctor.widget.popupwindow.CommonBottomPopupView;
 import com.jht.doctor.widget.popupwindow.OnePopupWheel;
 import com.jht.doctor.widget.popupwindow.ProvCityPopupView;
 import com.jht.doctor.widget.toolbar.TitleOnclickListener;
@@ -102,7 +105,6 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     AuthPresenter mPresenter;
 
     private String headImgURL, provinceStr, cityStr;
-    private CommonBottomPopupView popupView;
     private OnePopupWheel mPopupWheel;
     private ProvCityPopupView mProvCityPopupView;
     private int labId;//科室
@@ -322,7 +324,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                     LogUtil.d("cameraPath=" + cameraPath.getAbsolutePath());
                     if (cameraPath.exists()) {
                         ImageUtil.showImage(cameraPath.getAbsolutePath(), ivImg);
-                        mPresenter.uploadImg(cameraPath.getAbsolutePath());
+                        mPresenter.uploadImg(cameraPath.getAbsolutePath(), Constant.UPLOADIMG_TYPE_0);
                     }
                     break;
                 //相册
@@ -332,7 +334,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                     if (uri != null && !TextUtils.isEmpty(headerPath = UriUtil.getRealFilePath(this, uri))) {
                         LogUtil.d("headerPath=" + headerPath);
                         ImageUtil.showImage(headerPath, ivImg);
-                        mPresenter.uploadImg(headerPath);
+                        mPresenter.uploadImg(headerPath, Constant.UPLOADIMG_TYPE_0);
                     }
                     break;
                 case REQUEST_CHOOSE_GOODAT://擅长疾病
@@ -365,7 +367,8 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-        ToastUtil.show(errorMsg);
+        CommonDialog commonDialog = new CommonDialog(this, errorMsg);
+        commonDialog.show();
     }
 
 
@@ -391,10 +394,6 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
             case AuthPresenter.UPLOADIMF_ERROR://上传失败
                 headImgURL = "";
                 ToastUtil.showShort("上传失败，请重新选择");
-                break;
-            case AuthPresenter.USERIDENTIFY_OK://认证信息提交
-                startActivity(new Intent(this, AuthStep2Activity.class));
-                finish();
                 break;
             case AuthPresenter.GETHOSPITAL_OK://获取医院列表
                 hospitalBeans = (List<HospitalBean>) message.obj;
@@ -428,6 +427,13 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                     }
                 });
                 mPopupWheel.show(scrollView);
+                break;
+            case AuthPresenter.USER_IDENTIFY_OK://认证信息提交
+                ToastUtil.showShort("认证基础信息提交成功");
+                //刷新个人认证状态
+                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_AUTH_STATUS));
+                startActivity(new Intent(this, AuthStep2Activity.class));
+                finish();
                 break;
         }
     }

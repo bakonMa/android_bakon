@@ -14,7 +14,7 @@ public interface PersonalContact {
     }
 
     interface Presenter extends BasePresenter{
-        void getPersonalInfo();
+        void getUserBasicInfo();
         void getUserIdentifyStatus();
     }
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Doctor</string>
+    <string name="app_name">君和中医</string>
 
     <string name="myinfo_dialog_title">您还未完成借款资料录入，\n是否急需完成</string>
 

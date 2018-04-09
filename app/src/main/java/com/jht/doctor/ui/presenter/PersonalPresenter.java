@@ -6,9 +6,10 @@ import com.jht.doctor.data.http.Params;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.ui.bean.OtherBean;
-import com.jht.doctor.ui.bean.PersonalBean;
+import com.jht.doctor.ui.bean_jht.UserBaseInfoBean;
 import com.jht.doctor.ui.contact.PersonalContact;
 import com.jht.doctor.utils.M;
+import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.utils.U;
 import com.jht.doctor.widget.dialog.LoadingDialog;
 
@@ -26,7 +27,7 @@ public class PersonalPresenter implements PersonalContact.Presenter {
 
     private LoadingDialog mDialog;
 
-    public static final int GET_PERSONAL_INFO = 0x110;
+    public static final int GET_USEBASE_INFO = 0x110;
     public static final int GET_AUTH_STATUS = 0x111;
 
     public PersonalPresenter(PersonalContact.View mView) {
@@ -46,24 +47,24 @@ public class PersonalPresenter implements PersonalContact.Presenter {
     }
 
     @Override
-    public void getPersonalInfo() {
+    public void getUserBasicInfo() {
         Params params = new Params();
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
         Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
-                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getPersonalInfo(params))
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getUserBasicInfo(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null)
                         mDialog.show();
-                }).subscribe(new BaseObserver<HttpResponse<PersonalBean>>(mDialog) {
+                }).subscribe(new BaseObserver<HttpResponse<UserBaseInfoBean>>(mDialog) {
                     @Override
-                    public void onSuccess(HttpResponse<PersonalBean> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_PERSONAL_INFO));
+                    public void onSuccess(HttpResponse<UserBaseInfoBean> personalBeanHttpResponse) {
+                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_USEBASE_INFO));
                     }
 
                     @Override
                     public void onError(String errorCode, String errorMsg) {
-                        mView.onError(errorCode, errorMsg);
+                        ToastUtil.showShort(errorCode);
                     }
                 });
         compositeSubscription.add(subscription);

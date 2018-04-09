@@ -23,15 +23,16 @@ import com.jht.doctor.ui.bean.MessageCountBean;
 import com.jht.doctor.ui.bean.MyAccountInfoBean;
 import com.jht.doctor.ui.bean.MyLoanBean;
 import com.jht.doctor.ui.bean.OtherBean;
-import com.jht.doctor.ui.bean.PersonalBean;
 import com.jht.doctor.ui.bean.RechargeBean;
 import com.jht.doctor.ui.bean.RepaymentHomeBean;
 import com.jht.doctor.ui.bean.RepaymentOffLineBean;
 import com.jht.doctor.ui.bean.ReusingBean;
 import com.jht.doctor.ui.bean.SupportBankBean;
+import com.jht.doctor.ui.bean_jht.AuthInfoBean;
 import com.jht.doctor.ui.bean_jht.BaseConfigBean;
 import com.jht.doctor.ui.bean_jht.HospitalBean;
 import com.jht.doctor.ui.bean_jht.UploadImgBean;
+import com.jht.doctor.ui.bean_jht.UserBaseInfoBean;
 
 import java.util.List;
 
@@ -85,8 +86,8 @@ public interface HttpAPI {
     Observable<HttpResponse<OtherBean>> getUserIdentifyStatus(@QueryMap Params params);
 
     //获取个人中心资料，认证时的资料
-    @GET("getUserIdentify")
-    Observable<HttpResponse<PersonalBean>> getPersonalInfo(@QueryMap Params params);
+    @GET("getUserBasicInfo")
+    Observable<HttpResponse<UserBaseInfoBean>> getUserBasicInfo(@QueryMap Params params);
 
     //获取科室、职称、擅长等信息
     @GET("getDpAndTitles")
@@ -99,6 +100,13 @@ public interface HttpAPI {
     //认证信息提交1
     @GET("userIdentify")
     Observable<HttpResponse<String>> userIdentify(@QueryMap Params params);
+    //认证信息提交1
+    @GET("userIdentifyNext")
+    Observable<HttpResponse<String>> userIdentifyNext(@QueryMap Params params);
+
+    //获取认证信息提交
+    @GET("getUserIdentify")
+    Observable<HttpResponse<AuthInfoBean>> getUserIdentify(@QueryMap Params params);
 
 
 

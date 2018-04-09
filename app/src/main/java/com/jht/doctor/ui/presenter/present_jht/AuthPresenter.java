@@ -7,6 +7,7 @@ import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.http.Params;
 import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
+import com.jht.doctor.ui.bean_jht.AuthInfoBean;
 import com.jht.doctor.ui.bean_jht.BaseConfigBean;
 import com.jht.doctor.ui.bean_jht.HospitalBean;
 import com.jht.doctor.ui.bean_jht.UploadImgBean;
@@ -38,7 +39,9 @@ public class AuthPresenter implements AuthContact.Presenter {
     public static final int UPLOADIMF_OK = 0x111;
     public static final int UPLOADIMF_ERROR = 0x112;
     public static final int GET_BASECONFIG = 0x113;
-    public static final int USERIDENTIFY_OK = 0x114;
+    public static final int USER_IDENTIFY_OK = 0x114;
+    public static final int USER_CREDENTIAL_OK = 0x115;
+    public static final int GET_AUTHINFO_OK = 0x116;
 
     private final AuthContact.View mView;
     private CompositeSubscription mSubscription;
@@ -85,9 +88,9 @@ public class AuthPresenter implements AuthContact.Presenter {
     }
 
     @Override
-    public void uploadImg(String path) {
+    public void uploadImg(String path, String type) {
         //type：0：头像 1：其他认证图片  upload：图片文件
-        MultipartBody.Part partType = MultipartBody.Part.createFormData("type", "1");
+        MultipartBody.Part partType = MultipartBody.Part.createFormData("type", type);
         File file = new File(path);
         LogUtil.d("bytes befor size=" + file.length());
         byte[] bytes = FileUtil.zipImageToSize(file, FileUtil.MAX_UPLOAD_SIZE);
@@ -96,7 +99,7 @@ public class AuthPresenter implements AuthContact.Presenter {
         MultipartBody.Part partFile = MultipartBody.Part.createFormData("upload", file.getName(), requestBody);
 
         Params params = new Params();
-        params.put("type","1");
+        params.put("type", "1");
         MultipartBody.Part partTime = MultipartBody.Part.createFormData(HttpConfig.TIMESTAMP, params.get(HttpConfig.TIMESTAMP).toString());
         MultipartBody.Part partSign = MultipartBody.Part.createFormData(HttpConfig.SIGN_KEY, params.getSign(params));
 
@@ -163,12 +166,64 @@ public class AuthPresenter implements AuthContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> response) {
-                        mView.onSuccess(M.createMessage(response.data, USERIDENTIFY_OK));
+                        mView.onSuccess(M.createMessage(response.data, USER_IDENTIFY_OK));
                     }
 
                     @Override
                     public void onError(String errorCode, String errorMsg) {
-                        ToastUtil.show(errorMsg);
+                        mView.onError(errorMsg, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void userIdentifyNext(String idCard, String path1, String path2, String path3) {
+        Params params = new Params();
+        params.put("idcard", idCard);
+        params.put("idcard_img", path1);//身份证id
+        params.put("qa_img", path2);//资格证地址
+        params.put("pro_img", path3);//执业证地址
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().userIdentifyNext(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null) mDialog.show();
+                })
+                .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<String> response) {
+                        mView.onSuccess(M.createMessage(response.data, USER_CREDENTIAL_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorMsg, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void getUserIdentify() {
+        Params params = new Params();
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getUserIdentify(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null) mDialog.show();
+                })
+                .subscribe(new BaseObserver<HttpResponse<AuthInfoBean>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<AuthInfoBean> response) {
+                        mView.onSuccess(M.createMessage(response.data, GET_AUTHINFO_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorMsg, errorMsg);
                     }
                 });
         mSubscription.add(subscription);

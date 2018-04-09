@@ -49,7 +49,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
         android:gravity="right"
-        android:text=""
+        tools:text="id_showtext"
         android:textColor="@color/color_333"
         android:textSize="14sp" />
 

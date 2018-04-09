@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
@@ -24,10 +23,13 @@ import com.jht.doctor.ui.bean_jht.UploadImgBean;
 import com.jht.doctor.ui.contact.AuthContact;
 import com.jht.doctor.ui.presenter.present_jht.AuthPresenter;
 import com.jht.doctor.utils.ActivityUtil;
+import com.jht.doctor.utils.Constant;
 import com.jht.doctor.utils.ImageUtil;
 import com.jht.doctor.utils.LogUtil;
 import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.utils.UriUtil;
+import com.jht.doctor.widget.EditTextlayout;
+import com.jht.doctor.widget.dialog.CommonDialog;
 import com.jht.doctor.widget.popupwindow.CameraPopupView;
 import com.jht.doctor.widget.toolbar.TitleOnclickListener;
 import com.jht.doctor.widget.toolbar.ToolbarBuilder;
@@ -40,7 +42,6 @@ import java.lang.ref.WeakReference;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observer;
 
@@ -64,7 +65,8 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View 
     ImageView ivImg2;
     @BindView(R.id.iv_img3)
     ImageView ivImg3;
-
+    @BindView(R.id.et_sfz)
+    EditTextlayout etSfz;
 
     @Inject
     AuthPresenter mPresenter;
@@ -116,14 +118,23 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View 
                 cameraPopupView.show(scrollView);
                 break;
             case R.id.tv_next_step:
-//                startActivity(new Intent(this, AuthStep3Activity.class));
+                if (TextUtils.isEmpty(etSfz.getEditText().getText().toString().trim())) {
+                    ToastUtil.showShort("请输入身份证号码");
+                    return;
+                }
+                if (TextUtils.isEmpty(imgPath1) || TextUtils.isEmpty(imgPath2) || TextUtils.isEmpty(imgPath3)) {
+                    ToastUtil.showShort("请选择全部证件照片");
+                    return;
+                }
+                mPresenter.userIdentifyNext(etSfz.getEditText().getText().toString().trim(),
+                        imgPath1, imgPath2, imgPath3);
                 break;
 
 
         }
     }
 
-    //公用
+    //照相机公用file
     public File cameraPath;
 
     //1:打开相机拍照 2:打开相册
@@ -171,6 +182,10 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View 
                 });
     }
 
+
+    //临时path  显示用，不需要再加载上传后的path
+    private String tempPath;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -182,19 +197,8 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View 
                 case REQUEST_CAMERA_CODE:
                     LogUtil.d("cameraPath=" + cameraPath.getAbsolutePath());
                     if (cameraPath.exists()) {
-                        switch (currImg) {
-                            case R.id.iv_img1:
-                                ImageUtil.showImage(cameraPath.getAbsolutePath(), ivImg1);
-                                break;
-                            case R.id.iv_img2:
-                                ImageUtil.showImage(cameraPath.getAbsolutePath(), ivImg2);
-                                break;
-                            case R.id.iv_img3:
-                                ImageUtil.showImage(cameraPath.getAbsolutePath(), ivImg3);
-                                break;
-                        }
-
-                        mPresenter.uploadImg(cameraPath.getAbsolutePath());
+                        tempPath = cameraPath.getAbsolutePath();
+                        mPresenter.uploadImg(cameraPath.getAbsolutePath(), Constant.UPLOADIMG_TYPE_1);
                     }
                     break;
                 //相册
@@ -202,19 +206,9 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View 
                     Uri uri = data.getData();
                     String headerPath;
                     if (uri != null && !TextUtils.isEmpty(headerPath = UriUtil.getRealFilePath(this, uri))) {
-                        LogUtil.d("headerPath=" + headerPath);
-                        switch (currImg) {
-                            case R.id.iv_img1:
-                                ImageUtil.showImage(headerPath, ivImg1);
-                                break;
-                            case R.id.iv_img2:
-                                ImageUtil.showImage(headerPath, ivImg2);
-                                break;
-                            case R.id.iv_img3:
-                                ImageUtil.showImage(headerPath, ivImg3);
-                                break;
-                        }
-                        mPresenter.uploadImg(headerPath);
+//                        LogUtil.d("headerPath=" + headerPath);
+                        tempPath = headerPath;
+                        mPresenter.uploadImg(headerPath, Constant.UPLOADIMG_TYPE_1);
                     }
                     break;
                 default:
@@ -243,12 +237,15 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View 
                 switch (currImg) {
                     case R.id.iv_img1:
                         imgPath1 = uploadImgBean.url;
+                        ImageUtil.showImage(tempPath, ivImg1);
                         break;
                     case R.id.iv_img2:
                         imgPath2 = uploadImgBean.url;
+                        ImageUtil.showImage(tempPath, ivImg2);
                         break;
                     case R.id.iv_img3:
                         imgPath3 = uploadImgBean.url;
+                        ImageUtil.showImage(tempPath, ivImg3);
                         break;
                 }
                 ToastUtil.showShort("上传成功");
@@ -257,7 +254,6 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View 
                 switch (currImg) {
                     case R.id.iv_img1:
                         imgPath1 = "";
-                        ivImg1.setImageResource(0);
                         break;
                     case R.id.iv_img2:
                         imgPath2 = "";
@@ -268,17 +264,18 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View 
                 }
                 ToastUtil.showShort("上传失败，请重新选择");
                 break;
-            case AuthPresenter.USERIDENTIFY_OK://认证信息提交
-                startActivity(new Intent(this, AuthStep2Activity.class));
+            case AuthPresenter.USER_CREDENTIAL_OK://认证信息提交
+                ToastUtil.showShort("认证提交成功");
+                startActivity(new Intent(this, AuthStep3Activity.class));
                 finish();
                 break;
         }
-
     }
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-
+        CommonDialog commonDialog = new CommonDialog(this, errorMsg);
+        commonDialog.show();
     }
 
     @Override
@@ -291,10 +288,4 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View 
         return bindToLifecycle();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

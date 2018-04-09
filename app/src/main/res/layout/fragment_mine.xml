@@ -8,8 +8,6 @@
 
     <include layout="@layout/base_toolbar" />
 
-    <View style="@style/line_gray_hor" />
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/id_swipe"
         android:layout_width="match_parent"
@@ -30,16 +28,18 @@
                     android:layout_marginBottom="10dp"
                     android:background="@color/white"
                     android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <ImageView
                         android:id="@+id/id_iv_head"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="20dp"
-                        android:src="@mipmap/logo" />
+                        android:src="@drawable/default_head" />
 
                     <LinearLayout
                         android:id="@+id/llt_auth_status"
