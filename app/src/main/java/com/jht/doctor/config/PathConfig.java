@@ -11,6 +11,16 @@ import com.jht.doctor.BuildConfig;
  */
 public interface PathConfig {
 
+
+//    发现H5链接:
+//    书籍http://dev.dr.jhtcm.com/books
+//    百科http://hxd.dev.dr.jhtcm.com/baike
+
+
+
+
+
+
     String CRASH_DIR_NAME = "crash";
 //    String DUBUG_H5_BASE = "http://116.62.244.195:9999/";//一期测试环境 h5地址
     String DUBUG_H5_BASE = "http://10.255.233.220:9999/";//二期测试环境 h5地址

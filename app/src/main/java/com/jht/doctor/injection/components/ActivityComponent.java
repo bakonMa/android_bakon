@@ -16,6 +16,7 @@ import com.jht.doctor.ui.activity.mine.ResetPasswordActivity;
 import com.jht.doctor.ui.activity.mine.SettingActivity;
 import com.jht.doctor.ui.activity.mine.UserExplainActivity;
 import com.jht.doctor.ui.activity.mine.UserNoticeActivity;
+import com.jht.doctor.ui.activity.mine.wallet.WalletActivity;
 import com.jht.doctor.ui.activity.welcome.TranslucentActivity;
 
 import dagger.Component;
@@ -47,6 +48,8 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(UserExplainActivity userExplainActivity);
 
     void inject(UserNoticeActivity userNoticeActivity);
+
+    void inject(WalletActivity walletActivity);
 
     /**********************JHT end ***********************/
 

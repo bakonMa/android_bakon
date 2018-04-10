@@ -21,6 +21,7 @@ import com.jht.doctor.injection.modules.FragmentModule;
 import com.jht.doctor.ui.activity.mine.AuthStep1Activity;
 import com.jht.doctor.ui.activity.mine.AuthStep3Activity;
 import com.jht.doctor.ui.activity.mine.UserInfoActivity;
+import com.jht.doctor.ui.activity.mine.wallet.WalletActivity;
 import com.jht.doctor.ui.base.BaseFragment;
 import com.jht.doctor.ui.bean.OtherBean;
 import com.jht.doctor.ui.bean_jht.UserBaseInfoBean;
@@ -128,6 +129,7 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
             case R.id.id_collect:
                 break;
             case R.id.id_wallet:
+                startActivity(new Intent(actContext(), WalletActivity.class));
                 break;
             case R.id.id_set_price:
                 break;

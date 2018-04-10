@@ -33,6 +33,7 @@ import com.jht.doctor.ui.contact.SettingContract;
 import com.jht.doctor.ui.contact.SupportBankContact;
 import com.jht.doctor.ui.contact.TradePwdContact;
 import com.jht.doctor.ui.contact.TranslucentContact;
+import com.jht.doctor.ui.contact.WalletContact;
 import com.jht.doctor.ui.contact.WebViewContact;
 import com.jht.doctor.ui.contact.AuthContact;
 import com.jht.doctor.ui.presenter.AddBankCardVerifyPresenter;
@@ -64,6 +65,7 @@ import com.jht.doctor.ui.presenter.TradePwdPresenter;
 import com.jht.doctor.ui.presenter.TranslucentPresenter;
 import com.jht.doctor.ui.presenter.WebviewPresenter;
 import com.jht.doctor.ui.presenter.present_jht.AuthPresenter;
+import com.jht.doctor.ui.presenter.present_jht.WalletPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -93,6 +95,7 @@ public final class ActivityModule {
     public AuthPresenter provideAuthPresenter() {
         return new AuthPresenter((AuthContact.View) mView);
     }
+
     @PerActivity
     @Provides
     public RegistePresenter provideRegistePresenter() {
@@ -105,21 +108,14 @@ public final class ActivityModule {
         return new PersonalPresenter((PersonalContact.View) mView);
     }
 
+    @PerActivity
+    @Provides
+    public WalletPresenter provideWalletPresenter() {
+        return new WalletPresenter((WalletContact.View) mView);
+    }
+
 
     /**********************JHT end ***********************/
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @PerActivity

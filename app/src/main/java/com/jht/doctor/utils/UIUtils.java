@@ -4,12 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.TypedValue;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.TextView;
 
 import com.jht.doctor.application.DocApplication;
 
@@ -158,5 +163,66 @@ public class UIUtils {
         return height;
     }
 
+    public static void setCompoundDrawable(View view, int widthdp, int paddingdp, int resId, int gravity) {
+        if (resId > 0) {
+            int width = dp2px(DocApplication.getInstance(), widthdp);
+            BitmapDrawable drawable = (BitmapDrawable) getDrawable(resId);
+            drawable.setBounds(0, 0, width, (int) ((float) width * ((float) drawable.getBitmap().getHeight() / (float) drawable.getBitmap().getWidth())));
+            Drawable[] drawables;
+            if (view instanceof TextView) {
+                TextView compoundView = (TextView) view;
+                compoundView.setCompoundDrawablePadding(dp2px(DocApplication.getInstance(), paddingdp));
+                drawables = compoundView.getCompoundDrawables();
+                switch (gravity) {
+                    case 3:
+                        compoundView.setCompoundDrawables(drawable, drawables[1], drawables[2], drawables[3]);
+                        break;
+                    case 5:
+                        compoundView.setCompoundDrawables(drawables[0], drawables[1], drawable, drawables[3]);
+                        break;
+                    case 48:
+                        compoundView.setCompoundDrawables(drawables[0], drawable, drawables[2], drawables[3]);
+                        break;
+                    case 80:
+                        compoundView.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawable);
+                }
+            } else if (view instanceof EditText) {
+                EditText compoundView = (EditText) view;
+                compoundView.setCompoundDrawablePadding(dp2px(DocApplication.getInstance(), paddingdp));
+                drawables = compoundView.getCompoundDrawables();
+                switch (gravity) {
+                    case 3:
+                        compoundView.setCompoundDrawables(drawable, drawables[1], drawables[2], drawables[3]);
+                        break;
+                    case 5:
+                        compoundView.setCompoundDrawables(drawables[1], drawables[2], drawable, drawables[3]);
+                        break;
+                    case 48:
+                        compoundView.setCompoundDrawables(drawables[0], drawable, drawables[2], drawables[3]);
+                        break;
+                    case 80:
+                        compoundView.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawable);
+                }
+            } else if (view instanceof RadioButton) {
+                RadioButton compoundView = (RadioButton) view;
+                compoundView.setCompoundDrawablePadding(dp2px(DocApplication.getInstance(), paddingdp));
+                drawables = compoundView.getCompoundDrawables();
+                switch (gravity) {
+                    case 3:
+                        compoundView.setCompoundDrawables(drawable, drawables[1], drawables[2], drawables[3]);
+                        break;
+                    case 5:
+                        compoundView.setCompoundDrawables(drawables[1], drawables[2], drawable, drawables[3]);
+                        break;
+                    case 48:
+                        compoundView.setCompoundDrawables(drawables[0], drawable, drawables[2], drawables[3]);
+                        break;
+                    case 80:
+                        compoundView.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawable);
+                }
+            }
+        }
+
+    }
 
 }

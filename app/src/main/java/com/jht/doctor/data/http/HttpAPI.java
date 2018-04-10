@@ -33,6 +33,7 @@ import com.jht.doctor.ui.bean_jht.BaseConfigBean;
 import com.jht.doctor.ui.bean_jht.HospitalBean;
 import com.jht.doctor.ui.bean_jht.UploadImgBean;
 import com.jht.doctor.ui.bean_jht.UserBaseInfoBean;
+import com.jht.doctor.ui.bean_jht.WalletBean;
 
 import java.util.List;
 
@@ -98,23 +99,28 @@ public interface HttpAPI {
     Observable<HttpResponse<List<HospitalBean>>> getHospital(@QueryMap Params params);
 
     //认证信息提交1
-    @GET("userIdentify")
+    @POST("userIdentify")
     Observable<HttpResponse<String>> userIdentify(@QueryMap Params params);
 
     //认证信息提交1
-    @GET("userIdentifyNext")
+    @POST("userIdentifyNext")
     Observable<HttpResponse<String>> userIdentifyNext(@QueryMap Params params);
 
     //获取认证信息提交
-    @GET("getUserIdentify")
+    @POST("getUserIdentify")
     Observable<HttpResponse<AuthInfoBean>> getUserIdentify(@QueryMap Params params);
 
     //个人公告和简介的提交
-    @GET("add_userbasic")
+    @POST("add_userbasic")
     Observable<HttpResponse<String>> addUserbasic(@QueryMap Params params);
 
+    //钱包首页
+    @POST("wallet_home")
+    Observable<HttpResponse<WalletBean>> getWallet(@QueryMap Params params);
 
-
+    //我的银行卡
+    @POST("userbanklist")
+    Observable<HttpResponse<List<BankCardBean>>> userbanklist(@QueryMap Params params);
 
 
     //***************************************************
