@@ -150,8 +150,18 @@
             android:name=".ui.activity.mine.AuthStep4Activity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.mine.UseInfoActivity"
+            android:name=".ui.activity.mine.UserInfoActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.mine.UserExplainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.mine.AddUseInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.mine.UserNoticeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.activity.mine.ChooseGoodAtActivity"
             android:screenOrientation="portrait" />

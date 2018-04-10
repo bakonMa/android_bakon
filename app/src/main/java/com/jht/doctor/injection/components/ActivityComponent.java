@@ -14,6 +14,8 @@ import com.jht.doctor.ui.activity.mine.AuthStep2Activity;
 import com.jht.doctor.ui.activity.mine.AuthStep4Activity;
 import com.jht.doctor.ui.activity.mine.ResetPasswordActivity;
 import com.jht.doctor.ui.activity.mine.SettingActivity;
+import com.jht.doctor.ui.activity.mine.UserExplainActivity;
+import com.jht.doctor.ui.activity.mine.UserNoticeActivity;
 import com.jht.doctor.ui.activity.welcome.TranslucentActivity;
 
 import dagger.Component;
@@ -41,6 +43,10 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(AuthStep4Activity authStep4Activity);
 
     void inject(RegisteActivity registeActivity);
+
+    void inject(UserExplainActivity userExplainActivity);
+
+    void inject(UserNoticeActivity userNoticeActivity);
 
     /**********************JHT end ***********************/
 

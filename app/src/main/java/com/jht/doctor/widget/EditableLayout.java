@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -101,11 +102,15 @@ public class EditableLayout extends RelativeLayout {
         }
 
         switch (mode) {
-            case 1:
+            case 1://edite模式
                 ed_editable.setVisibility(VISIBLE);
                 ll_select.setVisibility(GONE);
                 break;
             case 2:
+                //select模式
+                if(!TextUtils.isEmpty(editTextHint)){
+                    tv_select.setHint(editTextHint);
+                }
                 ed_editable.setVisibility(GONE);
                 ll_select.setVisibility(VISIBLE);
                 break;

@@ -1,5 +1,6 @@
 package com.jht.doctor.ui.presenter;
 
+import com.google.gson.Gson;
 import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.HttpConfig;
 import com.jht.doctor.data.http.Params;
@@ -29,6 +30,7 @@ public class PersonalPresenter implements PersonalContact.Presenter {
 
     public static final int GET_USEBASE_INFO = 0x110;
     public static final int GET_AUTH_STATUS = 0x111;
+    public static final int ADD_USER_BASEINFO = 0x112;
 
     public PersonalPresenter(PersonalContact.View mView) {
         this.mView = mView;
@@ -59,6 +61,8 @@ public class PersonalPresenter implements PersonalContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<UserBaseInfoBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<UserBaseInfoBean> personalBeanHttpResponse) {
+                        //sp 本地持久化
+                        U.saveUserInfo(new Gson().toJson(personalBeanHttpResponse.data));
                         mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_USEBASE_INFO));
                     }
 
@@ -94,4 +98,33 @@ public class PersonalPresenter implements PersonalContact.Presenter {
                 });
         compositeSubscription.add(subscription);
     }
+
+    //个人公告和简介的提交
+    @Override
+    public void addUserbasic(String content, int type) {
+        Params params = new Params();
+        params.put("user_content", content);
+        //提交类型标识 1：简介 2：公告
+        params.put("post_type", type);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().addUserbasic(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null) mDialog.show();
+                })
+                .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<String> resultResponse) {
+                        mView.onSuccess(M.createMessage(resultResponse.data, ADD_USER_BASEINFO));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        compositeSubscription.add(subscription);
+    }
+
 }

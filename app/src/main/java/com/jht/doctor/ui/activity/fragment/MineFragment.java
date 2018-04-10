@@ -20,8 +20,7 @@ import com.jht.doctor.injection.components.DaggerFragmentComponent;
 import com.jht.doctor.injection.modules.FragmentModule;
 import com.jht.doctor.ui.activity.mine.AuthStep1Activity;
 import com.jht.doctor.ui.activity.mine.AuthStep3Activity;
-import com.jht.doctor.ui.activity.mine.AuthStep4Activity;
-import com.jht.doctor.ui.activity.mine.UseInfoActivity;
+import com.jht.doctor.ui.activity.mine.UserInfoActivity;
 import com.jht.doctor.ui.base.BaseFragment;
 import com.jht.doctor.ui.bean.OtherBean;
 import com.jht.doctor.ui.bean_jht.UserBaseInfoBean;
@@ -74,6 +73,7 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
     @Inject
     PersonalPresenter mPresenter;
     private UserBaseInfoBean baseInfoBean;
+
     @Override
     protected int provideRootLayout() {
         return R.layout.fragment_mine;
@@ -94,8 +94,8 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
                 .setStatuBar(R.color.white)
                 .blank()
                 .setLeft(false)
-//                .setRightText("认证", true, R.color.color_popup_btn)
                 .bind();
+
         idSwipe.setColorSchemeColors(getResources().getColor(R.color.color_main));
         idSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -112,9 +112,7 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.llt_user_info:
-                Intent intent = new Intent(actContext(), UseInfoActivity.class);
-                intent.putExtra("userinfo", baseInfoBean);
-                startActivity(intent);
+                startActivity(new Intent(actContext(), UserInfoActivity.class));
                 break;
             case R.id.llt_auth_status:
                 switch (U.getAuthStatus()) {//状态值，0：未认证 1：审核中；2：审核通过 3：审核失败
@@ -128,7 +126,6 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
                 }
                 break;
             case R.id.id_collect:
-                startActivity(new Intent(actContext(), AuthStep4Activity.class));
                 break;
             case R.id.id_wallet:
                 break;

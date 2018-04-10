@@ -17,6 +17,8 @@ public interface SPConfig {
     String SP_NIM_ACCID = "accid";
     String SP_NIM_ACCTOKEN = "acctoken";
 
+    String SP_USERBEAN = "userbean";
+
 
 
     int GENERAL_SP_MODE = Context.MODE_PRIVATE;

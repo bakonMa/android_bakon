@@ -41,6 +41,10 @@
     <string name="str_auth_msg_1">请耐心等待</string>
     <string name="str_auth_3">认证失败</string>
     <string name="str_auth_msg_3">请重新认证</string>
+    <string name="str_notice1">因医院工作繁忙，未能及时回复，敬请谅解。</string>
+    <string name="str_notice2">本人近期停诊，恢复时间待定，给您造成不便，敬请谅解，如有疑问，请联系君和客服。</string>
+    <string name="str_notice3">您的健康，我的责任，让我们共同关注身体健康，欢迎新老患者前来咨询。</string>
+    <string name="str_notice4">感谢您光临我的诊室，针对您的咨询，我会及时认真的回复。</string>
 
 
 </resources>

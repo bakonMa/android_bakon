@@ -4,24 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.TypedValue;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import com.jht.doctor.application.DocApplication;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 /**
  * UIUtils
@@ -103,6 +93,13 @@ public class UIUtils {
      */
     public static int getColor(int res) {
         return ContextCompat.getColor(DocApplication.getInstance(), res);
+    }
+
+    /**
+     * 获取String
+     */
+    public static String getString(int res) {
+        return DocApplication.getInstance().getResources().getString(res);
     }
 
     /**

@@ -16,5 +16,6 @@ public interface PersonalContact {
     interface Presenter extends BasePresenter{
         void getUserBasicInfo();
         void getUserIdentifyStatus();
+        void addUserbasic(String content, int type);//个人公告和简介的提交
     }
 }

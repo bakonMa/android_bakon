@@ -7,6 +7,7 @@ import com.jht.doctor.R;
 import com.jht.doctor.application.DocApplication;
 import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.ui.bean.ConfigBean;
+import com.jht.doctor.ui.bean_jht.UserBaseInfoBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,18 +19,38 @@ import java.util.List;
 
 public class U {
 
+
+    //获取sp中 userbean 持久化
+    public static void saveUserInfo(String jsonBean) {
+        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_USERBEAN, jsonBean);
+    }
+
+    //获取sp中 userbean 持久化
+    public static UserBaseInfoBean getUserInfo() {
+        String json = DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_USERBEAN, "");
+        if (TextUtils.isEmpty(json)) {
+            return null;
+        } else {
+            return new Gson().fromJson(json, UserBaseInfoBean.class);
+        }
+    }
+
+
     //获取sp中本系统token
     public static String getToken() {
         return DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, "");
     }
+
     //获取sp中认证状态
     public static int getAuthStatus() {
         return DocApplication.getAppComponent().dataRepo().appSP().getInteger(SPConfig.SP_INT_SUTH_STATUS, 0);
     }
+
     //获取sp中认证状态 认证状态 0：未认证 1：审核中；2：审核通过 3：审核失败
     public static void setAuthStatus(int status) {
         DocApplication.getAppComponent().dataRepo().appSP().setInteger(SPConfig.SP_INT_SUTH_STATUS, status);
     }
+
     /**
      * token是否为空，是否登录
      * true : 未登录
@@ -68,9 +89,6 @@ public class U {
         RECHARGE_WITHRAW.put("2001", "充值");
         RECHARGE_WITHRAW.put("2003", "提现");
     }
-
-
-
 
 
     //获取base信息 ConfigBean

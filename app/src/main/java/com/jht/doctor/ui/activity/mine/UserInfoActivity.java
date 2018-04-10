@@ -12,6 +12,7 @@ import com.jht.doctor.ui.base.BaseActivity;
 import com.jht.doctor.ui.bean_jht.UserBaseInfoBean;
 import com.jht.doctor.utils.ImageUtil;
 import com.jht.doctor.utils.ToastUtil;
+import com.jht.doctor.utils.U;
 import com.jht.doctor.widget.EditTextlayout;
 import com.jht.doctor.widget.dialog.CommonDialog;
 import com.jht.doctor.widget.toolbar.TitleOnclickListener;
@@ -27,7 +28,7 @@ import butterknife.OnClick;
  * AuthStep4Activity
  * Create at 2018/4/3 下午3:58 by mayakun
  */
-public class UseInfoActivity extends BaseActivity {
+public class UserInfoActivity extends BaseActivity {
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
@@ -49,11 +50,12 @@ public class UseInfoActivity extends BaseActivity {
     protected void initView() {
         initToolbar();
 
-        baseInfoBean = getIntent().getParcelableExtra("userinfo");
-
-        ImageUtil.showCircleImage(baseInfoBean.header, ivHead);
-        tvName.setText(TextUtils.isEmpty(baseInfoBean.name) ? "" : baseInfoBean.name);
-        tvSex.setText(baseInfoBean.sex == 0 ? "男" : "女");
+        baseInfoBean = U.getUserInfo();
+        if (baseInfoBean != null) {
+            ImageUtil.showCircleImage(baseInfoBean.header, ivHead);
+            tvName.setText(TextUtils.isEmpty(baseInfoBean.name) ? "" : baseInfoBean.name);
+            tvSex.setText(baseInfoBean.sex == 0 ? "男" : "女");
+        }
     }
 
     private void initToolbar() {
@@ -77,15 +79,13 @@ public class UseInfoActivity extends BaseActivity {
                 }).bind();
     }
 
-    private CommonDialog commonDialog;
-
     @OnClick({R.id.rlt_head, R.id.tv_name, R.id.tv_sex, R.id.rlt_authinfo, R.id.rlt_addinfo})
     public void btnOnClick(View view) {
         switch (view.getId()) {
             case R.id.rlt_head:
             case R.id.tv_name:
             case R.id.tv_sex:
-                commonDialog = new CommonDialog(this, "认证后头像、姓名、性别无法修改\n" +
+                CommonDialog commonDialog = new CommonDialog(this, "认证后头像、姓名、性别无法修改\n" +
                         "如需修改请重新认证");
                 commonDialog.show();
                 break;
@@ -93,7 +93,7 @@ public class UseInfoActivity extends BaseActivity {
                 startActivity(new Intent(this, AuthStep4Activity.class));
                 break;
             case R.id.rlt_addinfo:
-                ToastUtil.showShort("完善资料");
+                startActivity(new Intent(this, AddUseInfoActivity.class));
                 break;
 
         }

@@ -26,6 +26,7 @@ import com.jht.doctor.ui.contact.MessageContact;
 import com.jht.doctor.ui.contact.MyBankCardContact;
 import com.jht.doctor.ui.contact.MyInfoContact;
 import com.jht.doctor.ui.contact.MyLoanContact;
+import com.jht.doctor.ui.contact.PersonalContact;
 import com.jht.doctor.ui.contact.RegisteContact;
 import com.jht.doctor.ui.contact.RepaymentContact;
 import com.jht.doctor.ui.contact.SettingContract;
@@ -54,6 +55,7 @@ import com.jht.doctor.ui.presenter.MessagePresenter;
 import com.jht.doctor.ui.presenter.MyBankCardPresenter;
 import com.jht.doctor.ui.presenter.MyInfoPresenter;
 import com.jht.doctor.ui.presenter.MyLoanPresenter;
+import com.jht.doctor.ui.presenter.PersonalPresenter;
 import com.jht.doctor.ui.presenter.RegistePresenter;
 import com.jht.doctor.ui.presenter.RepaymentPresenter;
 import com.jht.doctor.ui.presenter.SettingPresenter;
@@ -95,6 +97,12 @@ public final class ActivityModule {
     @Provides
     public RegistePresenter provideRegistePresenter() {
         return new RegistePresenter((RegisteContact.View) mView);
+    }
+
+    @PerActivity
+    @Provides
+    public PersonalPresenter providePersonalPresenter() {
+        return new PersonalPresenter((PersonalContact.View) mView);
     }
 
 

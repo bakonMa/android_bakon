@@ -27,7 +27,7 @@ import dagger.Provides;
  * @detail:
  */
 @Module
-public final class FragmentModule{
+public final class FragmentModule {
 
     private final BaseView mView;
 
@@ -38,8 +38,8 @@ public final class FragmentModule{
     @PerFragment
     @FragmentContext
     @Provides
-    public Context provideFragmentContext(){
-        if(mView instanceof BasicProvider){
+    public Context provideFragmentContext() {
+        if (mView instanceof BasicProvider) {
             return ((BasicProvider) mView).actContext();
         }
         //如果是Frament等，再自行实现BaseFrament并impl BasicProvider
@@ -53,19 +53,14 @@ public final class FragmentModule{
         return new LoginPresenter((LoginContact.View) mView);
     }
 
-     @PerFragment
+    @PerFragment
     @Provides
     public PersonalPresenter providePersonalPresenter() {
         return new PersonalPresenter((PersonalContact.View) mView);
     }
 
 
-
-
-
-
-
-
+    //********************************************************
 
 
 

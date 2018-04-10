@@ -46,8 +46,8 @@ public class ImageUtil {
         }
         GlideApp.with(imageView.getContext())
                 .load(url)
-                .placeholder(R.mipmap.logo)
-                .error(R.mipmap.logo)
+                .placeholder(R.drawable.default_head)
+                .error(R.drawable.default_head)
                 .circleCrop() //圆形
                 .into(imageView);
     }

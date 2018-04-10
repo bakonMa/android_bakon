@@ -100,6 +100,7 @@ public interface HttpAPI {
     //认证信息提交1
     @GET("userIdentify")
     Observable<HttpResponse<String>> userIdentify(@QueryMap Params params);
+
     //认证信息提交1
     @GET("userIdentifyNext")
     Observable<HttpResponse<String>> userIdentifyNext(@QueryMap Params params);
@@ -108,13 +109,15 @@ public interface HttpAPI {
     @GET("getUserIdentify")
     Observable<HttpResponse<AuthInfoBean>> getUserIdentify(@QueryMap Params params);
 
+    //个人公告和简介的提交
+    @GET("add_userbasic")
+    Observable<HttpResponse<String>> addUserbasic(@QueryMap Params params);
 
 
 
 
 
-
-
+    //***************************************************
     //发送修改验证码
     @POST("customerApp/userCenter/sendTradeCode")
     Observable<HttpResponse<String>> sendTradeCode(@Body Params params);
