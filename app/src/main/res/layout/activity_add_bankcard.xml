@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/llt_rootview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/base_toolbar" />
+
+
+    <com.jht.doctor.widget.EditTextlayout
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        app:editTextHint="姓名"
+        app:leftText="持卡人"
+        app:maxLength="20"
+        app:textMainSize="16sp" />
+
+    <com.jht.doctor.widget.EditableLayout
+        android:id="@+id/et_bankname"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        app:edit_editTextHint="请选择银行卡所属银行名称"
+        app:edit_leftText="银行"
+        app:edit_mode="select"
+        app:edit_textMainSize="16sp" />
+
+    <com.jht.doctor.widget.EditTextlayout
+        android:id="@+id/et_cardnum"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        app:editTextHint="请填写储蓄卡卡号"
+        app:editTextType="number"
+        app:leftText="卡号"
+        app:maxLength="19"
+        app:textMainSize="16sp" />
+
+    <com.jht.doctor.widget.EditTextlayout
+        android:id="@+id/et_cardbankname"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        app:editTextHint="请填写开户行名称"
+        app:isShowBottomLine="false"
+        app:leftText="开户行"
+        app:textMainSize="16sp" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="如有任何疑问，请联系客服：400-888-9999。"
+        android:textColor="@color/color_333"
+        android:textSize="10sp" />
+
+
+</LinearLayout>

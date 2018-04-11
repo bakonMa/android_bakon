@@ -144,11 +144,6 @@ public class ChooseGoodAtActivity extends BaseActivity {
 
     @Override
     protected void setupActivityComponent() {
-//        DaggerActivityComponent.builder()
-//                .applicationComponent(DocApplication.getAppComponent())
-//                .activityModule(new ActivityModule(this))
-//                .build()
-//                .inject(this);
     }
 
 }

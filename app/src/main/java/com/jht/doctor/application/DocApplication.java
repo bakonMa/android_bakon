@@ -10,7 +10,6 @@ import com.jht.doctor.data.http.APIModule;
 import com.jht.doctor.injection.components.ApplicationComponent;
 import com.jht.doctor.injection.components.DaggerApplicationComponent;
 import com.jht.doctor.injection.modules.ApplicationModule;
-import com.jht.doctor.manager.GreenDaoManager;
 import com.jht.doctor.manager.ManagerRepository;
 import com.jht.doctor.nim.NimManager;
 import com.squareup.leakcanary.LeakCanary;
@@ -48,7 +47,7 @@ public class DocApplication extends Application {
         //内存泄漏检测
         refWatcher = setupLeakCanary();
         //db 初始化
-        GreenDaoManager.getInstance();
+//        GreenDaoManager.getInstance();
         //基础数据
         if (TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_KEY_BASE_CONFIG, ""))) {
             mApplicationComponent.dataRepo().appSP().setString(SPConfig.SP_KEY_BASE_CONFIG, SPConfig.BASE_CONFIG);

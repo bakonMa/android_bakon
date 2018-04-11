@@ -1,6 +1,7 @@
 package com.jht.doctor.ui.activity.mine.wallet;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import com.jht.doctor.R;
 import com.jht.doctor.application.DocApplication;
+import com.jht.doctor.config.EventConfig;
+import com.jht.doctor.data.eventbus.Event;
 import com.jht.doctor.injection.components.DaggerActivityComponent;
 import com.jht.doctor.injection.modules.ActivityModule;
 import com.jht.doctor.ui.base.BaseActivity;
@@ -25,8 +28,11 @@ import com.jht.doctor.widget.toolbar.TitleOnclickListener;
 import com.jht.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.lang.ref.WeakReference;
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -71,7 +77,7 @@ public class WalletActivity extends BaseActivity implements WalletContact.View {
     @Inject
     WalletPresenter mPresenter;
     private WalletBean walletBean;
-    private List<BankCardBean> bankCardBeans;
+    private ArrayList<BankCardBean> bankCardBeans;
 
     @Override
     protected int provideRootLayout() {
@@ -103,19 +109,46 @@ public class WalletActivity extends BaseActivity implements WalletContact.View {
     }
 
 
-    @OnClick({R.id.tv_hidemoney, R.id.tv_withdraw, R.id.rlt_addbankcard, R.id.rlt_deal})
+    @OnClick({R.id.tv_hidemoney, R.id.tv_withdraw, R.id.rlt_addbankcard, R.id.rlt_deal, R.id.llt_bankcardinfo})
     public void btnOnClick(View view) {
         switch (view.getId()) {
             case R.id.tv_hidemoney:
+                tvHidemoney.setSelected(!tvHidemoney.isSelected());
+                if (tvHidemoney.isSelected()) {
+                    tvAllmoney.setText("******");
+                } else {
+                    tvAllmoney.setText(TextUtils.isEmpty(walletBean.remain) ? "0.00" : walletBean.remain);
+                }
                 break;
             case R.id.tv_withdraw:
+                if (bankCardBeans == null || bankCardBeans.isEmpty()) {
+                    CommonDialog commonDialog = new CommonDialog(this, 1, "您尚未绑定银行卡，点击[确定]\n绑定银行卡",
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (view.getId() == R.id.btn_ok) {
+                                        startActivity(new Intent(actContext(), AddBankCardActivity.class));
+                                    }
+                                }
+                            });
+                    commonDialog.show();
+                    return;
+                }
+                Intent intent = new Intent(this, WithdrawActivity.class);
+                intent.putExtra("bankcard", bankCardBeans.get(0));
+                intent.putExtra("remain", walletBean.remain);
+                startActivity(intent);
                 break;
             case R.id.rlt_addbankcard:
+                startActivity(new Intent(actContext(), AddBankCardActivity.class));
+                break;
+            case R.id.llt_bankcardinfo://我的银行卡
+                startActivity(new Intent(actContext(), MyBankCardActivity.class));
                 break;
             case R.id.rlt_deal:
+                startActivity(new Intent(actContext(), DealDetailListActivity.class));
                 break;
         }
-
     }
 
 
@@ -152,7 +185,7 @@ public class WalletActivity extends BaseActivity implements WalletContact.View {
                 break;
 
             case WalletPresenter.GET_BANKCARD_OK://银行卡
-                bankCardBeans = (List<BankCardBean>) message.obj;
+                bankCardBeans = (ArrayList<BankCardBean>) message.obj;
                 if (bankCardBeans.isEmpty()) {
                     rltAddbankcard.setVisibility(View.VISIBLE);
                     lltBankcardinfo.setVisibility(View.GONE);
@@ -165,6 +198,26 @@ public class WalletActivity extends BaseActivity implements WalletContact.View {
                 break;
 
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCome(Event event) {
+        if (event != null) {
+            switch (event.getCode()) {
+                case EventConfig.EVENT_KEY_ADDBANKCARD_OK://添加银行卡成功
+                case EventConfig.EVENT_KEY_DELBANKCARD_OK://删除银行卡成功
+                    mPresenter.userBankList();
+                    break;
+                case EventConfig.EVENT_KEY_WITHRAW_OK://提现成功
+                    finish();
+                    break;
+            }
+        }
+    }
+
+    @Override
+    protected boolean useEventBus() {
+        return true;
     }
 
     @Override

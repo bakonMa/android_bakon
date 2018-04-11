@@ -166,6 +166,22 @@
             android:name=".ui.activity.mine.wallet.WalletActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activity.mine.wallet.WithdrawActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.activity.mine.wallet.AddBankCardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.mine.wallet.MyBankCardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.mine.wallet.DeleteBankCardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.mine.wallet.DealDetailListActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activity.mine.ChooseGoodAtActivity"
             android:screenOrientation="portrait" />
 

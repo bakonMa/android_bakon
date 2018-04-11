@@ -88,8 +88,8 @@
 
                 <ImageView
                     android:id="@+id/id_img_right"
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="15dp" />

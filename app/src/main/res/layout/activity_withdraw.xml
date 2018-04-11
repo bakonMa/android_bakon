@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f6f6f6"
+    android:orientation="vertical">
+
+    <include layout="@layout/base_toolbar" />
+
+    <RelativeLayout
+        android:id="@+id/rlt_banklist"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_bg_tab"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:id="@+id/tv_cardbank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="@color/color_333"
+            android:textSize="16sp"
+            tools:text="建设银行" />
+
+        <TextView
+            android:id="@+id/tv_cardnum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/tv_cardbank"
+            android:paddingLeft="30dp"
+            android:textColor="@color/color_333"
+            android:textSize="12sp"
+            tools:text="***************1234" />
+
+        <ImageView
+            android:layout_width="6dp"
+            android:layout_height="9dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_xuanze" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/et_inputmoney"
+            android:gravity="center"
+            android:text="￥"
+            android:textColor="@color/color_333"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/et_inputmoney"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="请输入提现金额"
+            android:inputType="number"
+            android:maxLength="10"
+            android:paddingLeft="30dp"
+            android:textSize="14sp"
+            android:theme="@style/blackEditText" />
+
+        <TextView
+            android:id="@+id/tv_canusemoney"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center"
+            android:text="可提现金额2229"
+            android:textColor="@color/color_999"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tv_userall"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="全部提现"
+            android:textColor="@color/red"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="提示：我们将在7个工作日内把款项转入账户中,请注意查收。"
+        android:textColor="@color/color_main"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/btn_complete"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/selector_bg_button_login"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="提现"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+</LinearLayout>

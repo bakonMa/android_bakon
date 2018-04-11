@@ -8,8 +8,10 @@ import com.jht.doctor.ui.bean.ApplyInfoBean;
 import com.jht.doctor.ui.bean.ApplyUserBean;
 import com.jht.doctor.ui.bean.BankBean;
 import com.jht.doctor.ui.bean.BankCardBean;
+import com.jht.doctor.ui.bean.BankTypeBean;
 import com.jht.doctor.ui.bean.ConfigBean;
 import com.jht.doctor.ui.bean.ContributiveBean;
+import com.jht.doctor.ui.bean.DealDetailBean;
 import com.jht.doctor.ui.bean.DealInfoBean;
 import com.jht.doctor.ui.bean.HomeLoanBean;
 import com.jht.doctor.ui.bean.HouseInfoResponse;
@@ -40,7 +42,6 @@ import java.util.List;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
-import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -57,9 +58,6 @@ import rx.Observable;
  * description:
  */
 public interface HttpAPI {
-    //银行列表
-    @GET("getBank")
-    Observable<HttpResponse<List<com.jht.doctor.ui.bean_jht.BankBean>>> getBank(@QueryMap Params params);
 
     //上传单个文件
     //key multipartFiles
@@ -122,6 +120,20 @@ public interface HttpAPI {
     @POST("userbanklist")
     Observable<HttpResponse<List<BankCardBean>>> userbanklist(@QueryMap Params params);
 
+    //银行列表
+    @GET("getBank")
+    Observable<HttpResponse<List<BankTypeBean>>> getBankType(@QueryMap Params params);
+
+    //添加银行卡
+    @POST("useraddbank")
+    Observable<HttpResponse<String>> useraddbank(@QueryMap Params params);
+    //解绑
+    @POST("userdel_bank")
+    Observable<HttpResponse<String>> deleteBankCard(@QueryMap Params params);
+
+    //解绑
+    @POST("deal_flow")
+    Observable<HttpResponse<List<DealDetailBean>>> getDealFlow(@QueryMap Params params);
 
     //***************************************************
     //发送修改验证码
@@ -268,9 +280,7 @@ public interface HttpAPI {
     @POST("customerApp/bankCard/userAuthorization")
     Observable<HttpResponse<ApplyUserBean>> userAuthorization(@Body Params params);
 
-    //解绑
-    @DELETE("customerApp/bankCard/deleteBankCard")
-    Observable<HttpResponse<String>> deleteBankCard(@QueryMap Params params);
+
 
     //添加共借人
     @POST("customerApp/bankCard/insertDebtorByAPP")

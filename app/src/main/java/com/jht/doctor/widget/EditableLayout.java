@@ -87,6 +87,7 @@ public class EditableLayout extends RelativeLayout {
         ed_editable.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextMainSize);
         ed_editable.setHint(editTextHint);
         tv_show.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextMainSize);
+        tv_select.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextMainSize);
         line.setVisibility(isShowLine ? VISIBLE : GONE);
         switch (editTextType) {
             case 1:
@@ -108,7 +109,7 @@ public class EditableLayout extends RelativeLayout {
                 break;
             case 2:
                 //select模式
-                if(!TextUtils.isEmpty(editTextHint)){
+                if (!TextUtils.isEmpty(editTextHint)) {
                     tv_select.setHint(editTextHint);
                 }
                 ed_editable.setVisibility(GONE);

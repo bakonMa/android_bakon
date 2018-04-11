@@ -208,7 +208,7 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
         ToastUtil.show(errorMsg);
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventCome(Event event) {
         if (event != null) {
             switch (event.getCode()) {

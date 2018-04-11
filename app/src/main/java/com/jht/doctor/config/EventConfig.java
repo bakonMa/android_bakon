@@ -14,7 +14,9 @@ public interface EventConfig {
     int REFRESH_MESSAGE_RED_POINT = 0x122; //取消【我】消息红点
 
 
-
     //*********************jht**********************
     int EVENT_KEY_AUTH_STATUS = 0x111;   //刷新个人认证状态
+    int EVENT_KEY_ADDBANKCARD_OK = 0x112;   //添加银行卡
+    int EVENT_KEY_DELBANKCARD_OK = 0x113;   //删除银行卡
+    int EVENT_KEY_WITHRAW_OK = 0x114;   //提现成功
 }
