@@ -35,6 +35,7 @@ import com.jht.doctor.ui.bean_jht.BaseConfigBean;
 import com.jht.doctor.ui.bean_jht.HospitalBean;
 import com.jht.doctor.ui.bean_jht.UploadImgBean;
 import com.jht.doctor.ui.bean_jht.UserBaseInfoBean;
+import com.jht.doctor.ui.bean_jht.VisitInfoBean;
 import com.jht.doctor.ui.bean_jht.WalletBean;
 
 import java.util.List;
@@ -134,6 +135,18 @@ public interface HttpAPI {
     //解绑
     @POST("deal_flow")
     Observable<HttpResponse<List<DealDetailBean>>> getDealFlow(@QueryMap Params params);
+
+    //获取资费信息
+    @POST("getvisit_info")
+    Observable<HttpResponse<VisitInfoBean>> getVisitInfo(@QueryMap Params params);
+
+    //设置资费信息
+    @POST("visitcost_set")
+    Observable<HttpResponse<String>> setVisitPrice(@QueryMap Params params);
+
+
+
+
 
     //***************************************************
     //发送修改验证码

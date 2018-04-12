@@ -13,6 +13,7 @@ import com.jht.doctor.ui.activity.mine.AuthStep1Activity;
 import com.jht.doctor.ui.activity.mine.AuthStep2Activity;
 import com.jht.doctor.ui.activity.mine.AuthStep4Activity;
 import com.jht.doctor.ui.activity.mine.ResetPasswordActivity;
+import com.jht.doctor.ui.activity.mine.SetPriceActivity;
 import com.jht.doctor.ui.activity.mine.SettingActivity;
 import com.jht.doctor.ui.activity.mine.UserExplainActivity;
 import com.jht.doctor.ui.activity.mine.UserNoticeActivity;
@@ -65,6 +66,8 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(DeleteBankCardActivity deleteBankCardActivity);
 
     void inject(DealDetailListActivity dealDetailListActivity);
+
+    void inject(SetPriceActivity setPriceActivity);
 
     /**********************JHT end ***********************/
 

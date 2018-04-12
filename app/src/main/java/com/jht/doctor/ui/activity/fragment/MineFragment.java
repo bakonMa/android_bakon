@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,6 +21,7 @@ import com.jht.doctor.injection.components.DaggerFragmentComponent;
 import com.jht.doctor.injection.modules.FragmentModule;
 import com.jht.doctor.ui.activity.mine.AuthStep1Activity;
 import com.jht.doctor.ui.activity.mine.AuthStep3Activity;
+import com.jht.doctor.ui.activity.mine.SetPriceActivity;
 import com.jht.doctor.ui.activity.mine.UserInfoActivity;
 import com.jht.doctor.ui.activity.mine.wallet.WalletActivity;
 import com.jht.doctor.ui.base.BaseFragment;
@@ -28,10 +30,13 @@ import com.jht.doctor.ui.bean_jht.UserBaseInfoBean;
 import com.jht.doctor.ui.contact.PersonalContact;
 import com.jht.doctor.ui.presenter.PersonalPresenter;
 import com.jht.doctor.utils.ImageUtil;
+import com.jht.doctor.utils.ShareSDKUtils;
 import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.utils.U;
+import com.jht.doctor.widget.popupwindow.SharePopupWindow;
 import com.jht.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -132,10 +137,18 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
                 startActivity(new Intent(actContext(), WalletActivity.class));
                 break;
             case R.id.id_set_price:
+                startActivity(new Intent(actContext(), SetPriceActivity.class));
                 break;
             case R.id.id_setting:
                 break;
-            case R.id.id_recommend:
+            case R.id.id_recommend://分享app
+                SharePopupWindow sharePopupWindow = new SharePopupWindow(actContext(), new SharePopupWindow.ShareOnClickListener() {
+                    @Override
+                    public void onItemClick(SHARE_MEDIA shareType) {
+                        ShareSDKUtils.shareApp(getActivity(), shareType);
+                    }
+                });
+                sharePopupWindow.showAtLocation(idSwipe, Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.id_about:
                 break;

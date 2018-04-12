@@ -11,9 +11,6 @@
 
 
 
-
-
-
     <!--JHT-->
 
     <string name="home_workroom">工作室</string>
@@ -23,6 +20,7 @@
     <string name="str_jpg_png_gif">格式为jpg/png/gif</string>
     <string name="str_icon_demo">头像示例</string>
     <string name="str_check">1.我们会将在72小时内，对您提交的资料进行审核。 \n2.审核通过后，我们会将信息发到您的手机，请注意查收。 \n3.审核未通过，客服会联系您，请在审核期间请保持电话畅通。 \n4.如需帮助，请拨打客服电话 400-888-6666。</string>
+    <string name="str_share_app">我在使用【君和中医】APP，非常方便的，赶快下载吧！</string>
 
 
 

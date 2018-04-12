@@ -105,12 +105,36 @@
         <!-- 云信进程间通信service -->
         <service android:name="com.netease.nimlib.service.ResponseService" />
         <!-- 云信进程间通信provider -->
-        <!-- android:authorities="{包名}.ipc.provider", 请将com.netease.nim.demo替换为自己的包名 -->
         <provider
             android:name="com.netease.nimlib.ipc.NIMContentProvider"
             android:authorities="com.jht.doctor.ipc.provider"
             android:exported="false"
             android:process=":core" />
+
+        <!--微信分享-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!--qq分享-->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tencent100424468" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
 
 
         <!--android:theme="@style/SplashAppTheme"-->
@@ -134,11 +158,17 @@
         <activity
             android:name=".ui.activity.login.RegisteActivity"
             android:windowSoftInputMode="adjustPan" />
-
+        <activity
+            android:name=".ui.activity.mine.SetPriceActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.activity.mine.AuthStep1Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.activity.mine.ChooseGoodAtActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.mine.AuthStep2Activity"
             android:screenOrientation="portrait"
@@ -180,9 +210,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.mine.wallet.DealDetailListActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.mine.ChooseGoodAtActivity"
             android:screenOrientation="portrait" />
 
 

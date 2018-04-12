@@ -15,6 +15,7 @@ public final class DocAppGlideExtension {
     }
 
 //    @GlideOption
+
 //    public static void myRequestOptionExtension(RequestOptions requestOptions , int size){
 //        requestOptions.fitCenter().override(size);
 //        //外部调用ImageLoader.with(fragment).load(url).myRequestOptionExtension(mySize).into(imageView);

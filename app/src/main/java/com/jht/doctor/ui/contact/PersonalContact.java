@@ -17,5 +17,7 @@ public interface PersonalContact {
         void getUserBasicInfo();
         void getUserIdentifyStatus();
         void addUserbasic(String content, int type);//个人公告和简介的提交
+        void getVisitInfo();//资费信息
+        void setVisitInfo(String first, String again);//设置资费信息
     }
 }

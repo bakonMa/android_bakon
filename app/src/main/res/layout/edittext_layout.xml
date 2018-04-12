@@ -22,8 +22,8 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/id_tv_left"
         android:background="@null"
-        android:singleLine="true"
         android:ellipsize="end"
+        android:singleLine="true"
         android:textColor="@color/color_333"
         android:textSize="14sp"
         tools:hint="请输入姓名" />

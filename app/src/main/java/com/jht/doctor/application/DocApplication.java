@@ -3,9 +3,7 @@ package com.jht.doctor.application;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
-import android.text.TextUtils;
 
-import com.jht.doctor.config.SPConfig;
 import com.jht.doctor.data.http.APIModule;
 import com.jht.doctor.injection.components.ApplicationComponent;
 import com.jht.doctor.injection.components.DaggerApplicationComponent;
@@ -14,6 +12,9 @@ import com.jht.doctor.manager.ManagerRepository;
 import com.jht.doctor.nim.NimManager;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
 
 import javax.inject.Inject;
 
@@ -28,6 +29,7 @@ public class DocApplication extends Application {
     private static DocApplication mAppInstance;
     //Application为整个应用保存全局的RefWatcher
     private RefWatcher refWatcher;
+    public static UMShareAPI umShareAPI;
 
 
     @Inject
@@ -48,10 +50,13 @@ public class DocApplication extends Application {
         refWatcher = setupLeakCanary();
         //db 初始化
 //        GreenDaoManager.getInstance();
-        //基础数据
-        if (TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_KEY_BASE_CONFIG, ""))) {
-            mApplicationComponent.dataRepo().appSP().setString(SPConfig.SP_KEY_BASE_CONFIG, SPConfig.BASE_CONFIG);
-        }
+
+        UMConfigure.init(this, "5aced483b27b0a303b000044",
+                "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
+        umShareAPI = UMShareAPI.get(this);
+        PlatformConfig.setWeixin("wxa792384772439d0f", "2e37c33fd6ff031ebeae1cbeb94e6219");
+        PlatformConfig.setQQZone("1103454520", "IT6H5qigvERIKyzg");
+
     }
 
     public static DocApplication getInstance() {

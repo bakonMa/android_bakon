@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f6f6f6"
+    android:orientation="vertical">
+
+    <include layout="@layout/base_toolbar" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/white"
+        android:gravity="bottom"
+        android:paddingLeft="15dp"
+        android:text="资费说明："
+        android:textColor="@color/color_333"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_topicinfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:padding="15dp"
+        android:text="     主要内容简介主要内容简介主要容简主要介主主主要内容简介主要内容简介主要主要介主主主要内容简介主要内容简介主要主要"
+        android:textColor="@color/color_999"
+        android:textSize="12sp" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/et_firstprice"
+            android:gravity="center"
+            android:text="初诊"
+            android:textColor="@color/color_333"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/et_firstprice"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="50.00"
+            android:inputType="number"
+            android:maxLength="5"
+            android:paddingLeft="50dp"
+            android:paddingRight="20dp"
+            android:textSize="16sp"
+            android:theme="@style/blackEditText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/et_firstprice"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="元"
+            android:textColor="@color/color_333"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/et_againprice"
+            android:gravity="center"
+            android:text="复诊"
+            android:textColor="@color/color_333"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/et_againprice"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:hint="50.00"
+            android:inputType="number"
+            android:maxLength="5"
+            android:paddingLeft="50dp"
+            android:paddingRight="20dp"
+            android:textSize="16sp"
+            android:theme="@style/blackEditText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/et_againprice"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="元"
+            android:textColor="@color/color_333"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+
+</LinearLayout>
+

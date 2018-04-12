@@ -31,7 +31,6 @@
     </style>
 
     <!--从顶部弹出-->
-
     <style name="common_dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item><!--边框-->
         <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->

@@ -8,6 +8,7 @@ import com.jht.doctor.data.response.HttpResponse;
 import com.jht.doctor.ui.base.BaseObserver;
 import com.jht.doctor.ui.bean.OtherBean;
 import com.jht.doctor.ui.bean_jht.UserBaseInfoBean;
+import com.jht.doctor.ui.bean_jht.VisitInfoBean;
 import com.jht.doctor.ui.contact.PersonalContact;
 import com.jht.doctor.utils.M;
 import com.jht.doctor.utils.ToastUtil;
@@ -31,6 +32,8 @@ public class PersonalPresenter implements PersonalContact.Presenter {
     public static final int GET_USEBASE_INFO = 0x110;
     public static final int GET_AUTH_STATUS = 0x111;
     public static final int ADD_USER_BASEINFO = 0x112;
+    public static final int GET_VISITINFO_OK = 0x113;
+    public static final int SET_VISITINFO_OK = 0x114;
 
     public PersonalPresenter(PersonalContact.View mView) {
         this.mView = mView;
@@ -126,5 +129,56 @@ public class PersonalPresenter implements PersonalContact.Presenter {
                 });
         compositeSubscription.add(subscription);
     }
+    //资费信息
+    @Override
+    public void getVisitInfo() {
+        Params params = new Params();
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getVisitInfo(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null) mDialog.show();
+                })
+                .subscribe(new BaseObserver<HttpResponse<VisitInfoBean>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<VisitInfoBean> resultResponse) {
+                        mView.onSuccess(M.createMessage(resultResponse.data, GET_VISITINFO_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        compositeSubscription.add(subscription);
+    }
+
+    @Override
+    public void setVisitInfo(String first, String again) {
+        Params params = new Params();
+        params.put("first_diagnose", first);
+        params.put("second_diagnose", again);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().setVisitPrice(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null) mDialog.show();
+                })
+                .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<String> resultResponse) {
+                        mView.onSuccess(M.createMessage(resultResponse.data, SET_VISITINFO_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        compositeSubscription.add(subscription);
+    }
+
 
 }

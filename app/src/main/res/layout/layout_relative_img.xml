@@ -6,8 +6,8 @@
     android:background="@drawable/selector_bg_tab">
     <ImageView
         android:id="@+id/id_image"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:scaleType="fitXY"
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"/>
