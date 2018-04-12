@@ -67,6 +67,13 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
             }
 
         };
+        adapter.setEnableLoadMore(true);
+        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                mPresenter.getDealFlow(++pageNum);
+            }
+        }, bankRecycleview);
 
         bankRecycleview.setAdapter(adapter);
         mPresenter.getDealFlow(pageNum);
@@ -101,6 +108,15 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
     public void onSuccess(Message message) {
         switch (message.what) {
             case WalletPresenter.GET_BANKCARD_OK:
+                //todo 业务需要确定
+                //todo 业务需要确定
+                //todo 业务需要确定
+                //todo 业务需要确定
+                if (((List<DealDetailBean>) message.obj).isEmpty()) {
+                    adapter.loadMoreEnd();
+                } else {
+                    adapter.loadMoreComplete();
+                }
                 bankCardBeans.addAll((List<DealDetailBean>) message.obj);
                 adapter.notifyDataSetChanged();
                 break;
