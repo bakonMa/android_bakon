@@ -19,14 +19,14 @@
         android:layout_width="match_parent"
         android:layout_height="112dp"
         android:background="@color/white">
-        <com.jht.doctor.widget.ScheduleView
+        <com.renxin.doctor.activity.widget.ScheduleView
             android:id="@+id/id_step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             app:step="fisrt"/>
     </RelativeLayout>
-    <com.jht.doctor.widget.EditTextlayout
+    <com.renxin.doctor.activity.widget.EditTextlayout
         android:id="@+id/id_edit_name"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -34,20 +34,20 @@
         app:leftText="借款人姓名"
         app:editTextHint="请输入您的姓名"
         app:textMainSize="14sp">
-    </com.jht.doctor.widget.EditTextlayout>
+    </com.renxin.doctor.activity.widget.EditTextlayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/color_line"
         android:layout_marginLeft="15dp"/>
-    <com.jht.doctor.widget.EditTextlayout
+    <com.renxin.doctor.activity.widget.EditTextlayout
         android:id="@+id/id_edit_idcard"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:leftText="身份证号"
         app:editTextHint="请输入您的身份证号"
         app:textMainSize="14sp">
-    </com.jht.doctor.widget.EditTextlayout>
+    </com.renxin.doctor.activity.widget.EditTextlayout>
     
     <TextView
         android:id="@+id/id_btn_next_step"

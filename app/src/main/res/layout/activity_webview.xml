@@ -8,7 +8,7 @@
 
     <include layout="@layout/base_toolbar"/>
 
-    <com.jht.doctor.widget.ProgressWebView
+    <com.renxin.doctor.activity.widget.ProgressWebView
         android:id="@+id/wb_webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

@@ -27,7 +27,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <com.jht.doctor.widget.recycle_view.RecycleWithEmpty
+            <com.renxin.doctor.activity.widget.recycle_view.RecycleWithEmpty
                 android:id="@+id/id_recycle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

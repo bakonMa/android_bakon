@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.jht.doctor.widget.PickerView
+        <com.renxin.doctor.activity.widget.PickerView
             android:id="@+id/id_wheel1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
             app:visibleCount="5"
             android:layout_weight="3"/>
 
-        <com.jht.doctor.widget.PickerView
+        <com.renxin.doctor.activity.widget.PickerView
             android:id="@+id/id_wheel2"
             android:layout_width="0dp"
             app:textSize="16sp"

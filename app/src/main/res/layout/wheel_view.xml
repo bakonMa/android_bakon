@@ -43,7 +43,7 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <com.jht.doctor.widget.PickerView
+    <com.renxin.doctor.activity.widget.PickerView
         android:id="@+id/id_wheel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

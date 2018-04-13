@@ -1,0 +1,144 @@
+package com.renxin.doctor.activity.ui.activity.fragment;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Message;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.TextView;
+
+import com.renxin.doctor.activity.R;
+import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.config.SPConfig;
+import com.renxin.doctor.activity.data.eventbus.Event;
+import com.renxin.doctor.activity.injection.modules.FragmentModule;
+import com.renxin.doctor.activity.ui.bean.MaxAmtBean;
+import com.renxin.doctor.activity.ui.contact.HomeLoanContact;
+import com.renxin.doctor.activity.utils.RegexUtil;
+import com.renxin.doctor.activity.utils.ToastUtil;
+import com.renxin.doctor.activity.config.EventConfig;
+import com.renxin.doctor.activity.injection.components.DaggerFragmentComponent;
+import com.renxin.doctor.activity.ui.activity.login.LoginActivity;
+import com.renxin.doctor.activity.ui.base.BaseFragment;
+import com.renxin.doctor.activity.ui.presenter.HomeLoanPresenter;
+import com.trello.rxlifecycle.LifecycleTransformer;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.OnClick;
+
+/**
+ * Created by table on 2018/1/8.
+ * description:
+ */
+
+public class HomeFragment extends BaseFragment implements HomeLoanContact.View {
+    @BindView(R.id.id_tv_loan_money)
+    TextView idTvLoanMoney;
+    @BindView(R.id.id_tv_apply)
+    TextView idTvApply;
+
+    @Inject
+    HomeLoanPresenter mPresenter;
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        requestMaxAmt();
+    }
+
+    private void requestMaxAmt() {
+        if (!TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
+            mPresenter.getMaxAmt();
+        }
+    }
+
+    @Override
+    protected void setupActivityComponent() {
+        DaggerFragmentComponent.builder()
+                .fragmentModule(new FragmentModule(this))
+                .applicationComponent(DocApplication.getAppComponent())
+                .build().inject(this);
+    }
+
+    @Override
+    protected int provideRootLayout() {
+        return R.layout.fragment_home_loan;
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onEventCome(Event event) {
+        if (event != null) {
+            switch (event.getCode()) {
+                case EventConfig.REQUEST_HOMELOAN:
+                    //未登录状态下 点击申请  登录成功后返回的逻辑
+//                    startActivity(new Intent(actContext(), BasicInfoActivity.class));
+                    break;
+                case EventConfig.REFRESH_MAX_AMT:
+                    requestMaxAmt();
+                    break;
+            }
+
+        }
+    }
+
+
+    @Override
+    public void onError(String errorCode, String errorMsg) {
+        ToastUtil.show(errorMsg);
+    }
+
+    @Override
+    public void onSuccess(Message message) {
+        if (message == null) {
+            return;
+        }
+        switch (message.what) {
+            case HomeLoanPresenter.MAX_AMT:
+                if (message.obj != null) {
+                    double money = Double.parseDouble(((MaxAmtBean) message.obj).getConfigValue());
+                    idTvLoanMoney.setText(RegexUtil.formatMoney(money));
+                }
+                break;
+        }
+    }
+
+    @Override
+    public Activity provideContext() {
+        return getActivity();
+    }
+
+    @Override
+    public LifecycleTransformer toLifecycle() {
+        return bindToLifecycle();
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return true;
+    }
+
+    @OnClick(R.id.id_tv_apply)
+    public void onViewClicked() {
+        if (TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
+            Intent intent = new Intent(actContext(), LoginActivity.class);
+            startActivity(intent);
+        } else {
+//            startActivity(new Intent(actContext(), BasicInfoActivity.class));
+        }
+    }
+
+
+}

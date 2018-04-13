@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jht.doctor">
+    package="com.renxin.doctor.activity">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <!-- 在SDCard中创建与删除文件权限 -->
@@ -38,11 +38,11 @@
 
     <!-- 网易IM 需要，SDK 权限申明, 第三方 APP 接入时，请将 com.netease.nim.demo 替换为自己的包名 -->
     <!-- 和下面的 uses-permission 一起加入到你的 AndroidManifest 文件中。 -->
-    <permission
-        android:name="com.jht.doctor.permission.RECEIVE_MSG"
-        android:protectionLevel="signature" />
-    <!-- 网易IM 需要，接收 SDK 消息广播权限， 第三方 APP 接入时，请将 com.netease.nim.demo 替换为自己的包名 -->
-    <uses-permission android:name="com.jht.doctor.permission.RECEIVE_MSG" />
+    <!--<permission-->
+        <!--android:name="com.renxin.doctor.activity.permission.RECEIVE_MSG"-->
+        <!--android:protectionLevel="signature" />-->
+    <!--&lt;!&ndash; 网易IM 需要，接收 SDK 消息广播权限， 第三方 APP 接入时，请将 com.netease.nim.demo 替换为自己的包名 &ndash;&gt;-->
+    <!--<uses-permission android:name="com.renxin.doctor.activity.permission.RECEIVE_MSG" />-->
 
 
     <application
@@ -107,13 +107,13 @@
         <!-- 云信进程间通信provider -->
         <provider
             android:name="com.netease.nimlib.ipc.NIMContentProvider"
-            android:authorities="com.jht.doctor.ipc.provider"
+            android:authorities="com.renxin.doctor.activity.ipc.provider"
             android:exported="false"
             android:process=":core" />
 
         <!--微信分享-->
         <activity
-            android:name=".wxapi.WXEntryActivity"
+            android:name="com.renxin.doctor.activity.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"

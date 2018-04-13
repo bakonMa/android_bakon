@@ -4,11 +4,11 @@ apply plugin: 'org.greenrobot.greendao'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.jht.doctor"
+        applicationId "com.renxin.doctor.activity"
         minSdkVersion 19  //16:4.1(99.1%) 19:4.4(90%)
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 60
+        versionName "5.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true //dex分包
 //        ndk {
@@ -89,7 +89,7 @@ def onLineAddress() {
 greendao {
     //数据库schema版本号,默认1，数据库升级必须修改值
     schemaVersion 1
-    daoPackage 'com.jht.doctor.greendao.gen'
+    daoPackage 'com.renxin.doctor.activity.greendao.gen'
     targetGenDir 'src/main/java'
 }
 

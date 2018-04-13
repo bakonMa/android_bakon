@@ -150,10 +150,10 @@
 -keep class * extends java.lang.annotation.Annotation { *; }
 
 #---------------------------------实体类---------------------------------
--keep class com.jht.doctor.ui.bean_jht.** {*;}
--keep class com.jht.doctor.ui.bean.** {*;}
--keep class com.jht.doctor.data.response.** {*;}
--keep class com.jht.doctor.greendao.gen.** {*;}
+-keep class com.renxin.doctor.activity.ui.bean_jht.** {*;}
+-keep class com.renxin.doctor.activity.ui.bean.** {*;}
+-keep class com.renxin.doctor.activity.data.response.** {*;}
+-keep class com.renxin.doctor.activity.greendao.gen.** {*;}
 
 # -----------------------------------END---------------------------------
 

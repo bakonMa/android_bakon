@@ -10,7 +10,7 @@
 
     <include layout="@layout/base_toolbar" />
 
-    <com.jht.doctor.widget.EditTextlayout
+    <com.renxin.doctor.activity.widget.EditTextlayout
         android:id="@+id/id_edit_name"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -25,7 +25,7 @@
         android:layout_marginLeft="15dp"
         android:background="@color/color_line" />
 
-    <com.jht.doctor.widget.EditTextlayout
+    <com.renxin.doctor.activity.widget.EditTextlayout
         android:id="@+id/id_edit_idcard"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -39,7 +39,7 @@
         android:layout_marginLeft="15dp"
         android:background="@color/color_line" />
 
-    <com.jht.doctor.widget.EditTextlayout
+    <com.renxin.doctor.activity.widget.EditTextlayout
         android:id="@+id/id_edit_phone"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -54,7 +54,7 @@
         android:layout_marginLeft="15dp"
         android:background="@color/color_line" />
 
-    <com.jht.doctor.widget.EditableLayout
+    <com.renxin.doctor.activity.widget.EditableLayout
         android:id="@+id/id_edit_address"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -85,7 +85,7 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <com.jht.doctor.widget.EditableLayout
+    <com.renxin.doctor.activity.widget.EditableLayout
         android:id="@+id/id_edit_relation"
         android:layout_width="match_parent"
         android:layout_height="50dp"

@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.jht.doctor.widget.PickerView
+        <com.renxin.doctor.activity.widget.PickerView
             android:id="@+id/id_wheel1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
             app:textSize="16sp"
             app:visibleCount="5" />
 
-        <com.jht.doctor.widget.PickerView
+        <com.renxin.doctor.activity.widget.PickerView
             android:id="@+id/id_wheel2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
             app:textSize="16sp"
             app:visibleCount="5" />
 
-        <com.jht.doctor.widget.PickerView
+        <com.renxin.doctor.activity.widget.PickerView
             android:id="@+id/id_wheel3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

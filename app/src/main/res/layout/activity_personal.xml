@@ -120,13 +120,13 @@
                     android:paddingTop="30dp"
                     android:background="@color/white"
                     android:orientation="vertical">
-                    <com.jht.doctor.widget.RelativeWithImage
+                    <com.renxin.doctor.activity.widget.RelativeWithImage
                         android:id="@+id/id_tab_loan"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         app:leftIamge="@drawable/icon_jiekuan"
                         app:title="我的借款"/>
-                    <com.jht.doctor.widget.RelativeWithImage
+                    <com.renxin.doctor.activity.widget.RelativeWithImage
                         android:id="@+id/id_tab_data"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
@@ -134,20 +134,20 @@
                         app:isShowLine="false"
                         app:title="我的资料"/>
                 </LinearLayout>
-                <com.jht.doctor.widget.RelativeWithImage
+                <com.renxin.doctor.activity.widget.RelativeWithImage
                     android:id="@+id/id_tab_question"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="10dp"
                     app:leftIamge="@drawable/icon_wenti"
                     app:title="常见问题" />
-                <com.jht.doctor.widget.RelativeWithImage
+                <com.renxin.doctor.activity.widget.RelativeWithImage
                     android:id="@+id/id_tab_feedback"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     app:leftIamge="@drawable/icon_fankui"
                     app:title="使用反馈" />
-                <com.jht.doctor.widget.RelativeWithImage
+                <com.renxin.doctor.activity.widget.RelativeWithImage
                     android:id="@+id/id_tab_about_us"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"

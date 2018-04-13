@@ -9,7 +9,7 @@
 
     <include layout="@layout/base_toolbar"/>
 
-    <com.jht.doctor.widget.RelativeWithText
+    <com.renxin.doctor.activity.widget.RelativeWithText
         android:id="@+id/tv_reset_password"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -17,7 +17,7 @@
         app:isShowTab="false"
         app:titleT="设置交易密码"/>
 
-    <com.jht.doctor.widget.RelativeWithText
+    <com.renxin.doctor.activity.widget.RelativeWithText
         android:id="@+id/tv_check_update"
         android:layout_width="match_parent"
         android:layout_height="50dp"

@@ -23,7 +23,7 @@
         android:layout_height="112dp"
         android:background="@color/white">
 
-        <com.jht.doctor.widget.ScheduleView
+        <com.renxin.doctor.activity.widget.ScheduleView
             android:id="@+id/id_step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
             app:step="second" />
     </RelativeLayout>
 
-    <com.jht.doctor.widget.EditableLayout
+    <com.renxin.doctor.activity.widget.EditableLayout
         android:id="@+id/id_ed_company_name"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -47,7 +47,7 @@
         android:layout_marginLeft="15dp"
         android:background="@color/color_line" />
 
-    <com.jht.doctor.widget.EditableLayout
+    <com.renxin.doctor.activity.widget.EditableLayout
         android:id="@+id/id_ed_company_nature"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -61,7 +61,7 @@
         android:layout_marginLeft="15dp"
         android:background="@color/color_line" />
 
-    <com.jht.doctor.widget.EditableLayout
+    <com.renxin.doctor.activity.widget.EditableLayout
         android:id="@+id/id_ed_job_industry"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -75,7 +75,7 @@
         android:layout_marginLeft="15dp"
         android:background="@color/color_line" />
 
-    <com.jht.doctor.widget.EditableLayout
+    <com.renxin.doctor.activity.widget.EditableLayout
         android:id="@+id/id_ed_job_rank"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -89,7 +89,7 @@
         android:layout_marginLeft="15dp"
         android:background="@color/color_line" />
 
-    <com.jht.doctor.widget.EditableLayout
+    <com.renxin.doctor.activity.widget.EditableLayout
         android:id="@+id/id_ed_month_income"
         android:layout_width="match_parent"
         android:layout_height="50dp"

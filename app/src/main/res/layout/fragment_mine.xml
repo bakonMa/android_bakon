@@ -118,21 +118,21 @@
                 </LinearLayout>
 
 
-                <com.jht.doctor.widget.RelativeWithImage
+                <com.renxin.doctor.activity.widget.RelativeWithImage
                     android:id="@+id/id_collect"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     app:leftIamge="@drawable/icon_collect"
                     app:title="收藏" />
 
-                <com.jht.doctor.widget.RelativeWithImage
+                <com.renxin.doctor.activity.widget.RelativeWithImage
                     android:id="@+id/id_wallet"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     app:leftIamge="@drawable/icon_wallet"
                     app:title="钱包" />
 
-                <com.jht.doctor.widget.RelativeWithImage
+                <com.renxin.doctor.activity.widget.RelativeWithImage
                     android:id="@+id/id_set_price"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
@@ -140,7 +140,7 @@
                     app:leftIamge="@drawable/icon_setprice"
                     app:title="资费设置" />
 
-                <com.jht.doctor.widget.RelativeWithImage
+                <com.renxin.doctor.activity.widget.RelativeWithImage
                     android:id="@+id/id_setting"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
@@ -150,14 +150,14 @@
                     app:leftIamge="@drawable/icon_setting"
                     app:title="设置" />
 
-                <com.jht.doctor.widget.RelativeWithImage
+                <com.renxin.doctor.activity.widget.RelativeWithImage
                     android:id="@+id/id_recommend"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     app:leftIamge="@drawable/icon_recommend"
                     app:title="推荐同行" />
 
-                <com.jht.doctor.widget.RelativeWithImage
+                <com.renxin.doctor.activity.widget.RelativeWithImage
                     android:id="@+id/id_about"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"

@@ -31,7 +31,7 @@
             android:layout_marginRight="15dp"
             android:text=""/>
     </RelativeLayout>
-    <com.jht.doctor.widget.EditTextlayout
+    <com.renxin.doctor.activity.widget.EditTextlayout
         android:id="@+id/id_edit_bankcard"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -40,7 +40,7 @@
         app:textMainSize="14sp"
         app:isBankCard="true"
         app:editTextType="number">
-    </com.jht.doctor.widget.EditTextlayout>
+    </com.renxin.doctor.activity.widget.EditTextlayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -73,7 +73,7 @@
         android:layout_height="1dp"
         android:background="@color/color_line"
         android:layout_marginLeft="15dp"/>
-    <com.jht.doctor.widget.EditTextlayout
+    <com.renxin.doctor.activity.widget.EditTextlayout
         android:id="@+id/id_edit_phone"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -81,7 +81,7 @@
         app:editTextHint="请输入您银行卡预留手机号"
         app:textMainSize="14sp"
         app:editTextType="number">
-    </com.jht.doctor.widget.EditTextlayout>
+    </com.renxin.doctor.activity.widget.EditTextlayout>
     <TextView
         android:id="@+id/id_btn_confirm"
         android:layout_width="match_parent"

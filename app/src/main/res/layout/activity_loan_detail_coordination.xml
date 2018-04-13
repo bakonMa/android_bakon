@@ -332,7 +332,7 @@
                     </RelativeLayout>
                 </android.support.v7.widget.Toolbar>
 
-                <com.jht.doctor.widget.TabLayout
+                <com.renxin.doctor.activity.widget.TabLayout
                     android:id="@+id/id_tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
