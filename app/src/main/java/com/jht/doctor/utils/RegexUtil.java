@@ -60,8 +60,17 @@ public class RegexUtil {
      */
     public static String formatDoubleMoney(Double price) {
         DecimalFormat formater = new DecimalFormat();
-        formater.applyPattern("#0.00");//style形式
+        formater.applyPattern("#.##");//style形式
         return formater.format(price);
+    }
+    /**
+     * 格式化金额
+     *
+     * @param price 12345678901234.12645678，小数点前最多14位
+     * @return "123456.12"
+     */
+    public static String formatDoubleMoney(String price) {
+       return formatDoubleMoney(Double.parseDouble(price));
     }
 
     /**

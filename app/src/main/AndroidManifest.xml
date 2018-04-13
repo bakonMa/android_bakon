@@ -161,7 +161,7 @@
         <activity
             android:name=".ui.activity.mine.SetPriceActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
             android:name=".ui.activity.mine.AuthStep1Activity"
             android:screenOrientation="portrait"

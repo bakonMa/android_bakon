@@ -16,6 +16,7 @@ import com.jht.doctor.ui.base.BaseActivity;
 import com.jht.doctor.ui.bean_jht.VisitInfoBean;
 import com.jht.doctor.ui.contact.PersonalContact;
 import com.jht.doctor.ui.presenter.PersonalPresenter;
+import com.jht.doctor.utils.RegexUtil;
 import com.jht.doctor.utils.ToastUtil;
 import com.jht.doctor.widget.dialog.CommonDialog;
 import com.jht.doctor.widget.toolbar.TitleOnclickListener;
@@ -92,17 +93,17 @@ public class SetPriceActivity extends BaseActivity implements PersonalContact.Vi
 
     private void checkData() {
         if (TextUtils.isEmpty(etFirstprice.getText().toString().trim())
-                && Double.parseDouble(etFirstprice.getText().toString().trim()) > 0) {
+                && Double.parseDouble(etFirstprice.getText().toString().trim()) >= 0) {
             ToastUtil.showShort("请输入初诊资费");
             return;
         }
         if (TextUtils.isEmpty(etAgainprice.getText().toString().trim())
-                && Double.parseDouble(etAgainprice.getText().toString().trim()) > 0) {
+                && Double.parseDouble(etAgainprice.getText().toString().trim()) >= 0) {
             ToastUtil.showShort("请输入复诊资费");
             return;
         }
-        mPresenter.setVisitInfo(etAgainprice.getText().toString().trim(),
-                etAgainprice.getText().toString().trim());
+        mPresenter.setVisitInfo(RegexUtil.formatDoubleMoney(etFirstprice.getText().toString().trim()),
+                RegexUtil.formatDoubleMoney(etAgainprice.getText().toString().trim()));
     }
 
     @Override
@@ -113,8 +114,11 @@ public class SetPriceActivity extends BaseActivity implements PersonalContact.Vi
                     bean = (VisitInfoBean) message.obj;
                     if (bean != null) {
                         tvTopicinfo.setText("\u3000\u3000" + bean.fee_explain);
-                        etFirstprice.setText(bean.first_diagnose);
-                        etAgainprice.setText(bean.second_diagnose);
+                        etFirstprice.setText(TextUtils.isEmpty(bean.first_diagnose) ? "0.00" : bean.first_diagnose);
+                        etFirstprice.setSelection(etFirstprice.getText().length());
+                        etAgainprice.setText(TextUtils.isEmpty(bean.second_diagnose) ? "0.00" : bean.second_diagnose);
+                        etAgainprice.setSelection(etAgainprice.getText().length());
+
                     }
                     break;
                 case PersonalPresenter.SET_VISITINFO_OK:
