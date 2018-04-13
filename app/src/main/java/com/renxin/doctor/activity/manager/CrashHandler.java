@@ -27,7 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.renxin.doctor.activity.config.PathConfig.CRASH_DIR_NAME;
+import static com.renxin.doctor.activity.config.H5Config.CRASH_DIR_NAME;
 
 /**
  * @author: ZhaoYun

@@ -39,8 +39,8 @@
     <!-- 网易IM 需要，SDK 权限申明, 第三方 APP 接入时，请将 com.netease.nim.demo 替换为自己的包名 -->
     <!-- 和下面的 uses-permission 一起加入到你的 AndroidManifest 文件中。 -->
     <!--<permission-->
-        <!--android:name="com.renxin.doctor.activity.permission.RECEIVE_MSG"-->
-        <!--android:protectionLevel="signature" />-->
+    <!--android:name="com.renxin.doctor.activity.permission.RECEIVE_MSG"-->
+    <!--android:protectionLevel="signature" />-->
     <!--&lt;!&ndash; 网易IM 需要，接收 SDK 消息广播权限， 第三方 APP 接入时，请将 com.netease.nim.demo 替换为自己的包名 &ndash;&gt;-->
     <!--<uses-permission android:name="com.renxin.doctor.activity.permission.RECEIVE_MSG" />-->
 
@@ -125,8 +125,10 @@
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="tencent100424468" />
             </intent-filter>
         </activity>
@@ -134,7 +136,6 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
 
 
         <!--android:theme="@style/SplashAppTheme"-->
@@ -157,6 +158,9 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".ui.activity.login.RegisteActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.activity.login.ResetPasswordActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.activity.mine.SetPriceActivity"
@@ -211,10 +215,12 @@
         <activity
             android:name=".ui.activity.mine.wallet.DealDetailListActivity"
             android:screenOrientation="portrait" />
-
-
-        <activity android:name=".ui.activity.mine.SettingActivity" />
-        <activity android:name=".ui.activity.mine.ResetPasswordActivity" />
+        <activity
+            android:name=".ui.activity.mine.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.mine.AboutUsActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".ui.activity.WebViewActivity" />
     </application>
 

@@ -24,7 +24,6 @@ android {
     }
 
 
-
     signingConfigs {
 //        keytool -list -v -keystore /Users/mayakun/Downloads/mayakun-file/jht/jht_doc.keystore
 //        MD5:  88:0E:48:C1:1E:72:25:A6:CB:92:F3:D6:BC:79:85:DA
@@ -50,8 +49,8 @@ android {
             buildConfigField "boolean", "LOG_DEBUG", "true"
             minifyEnabled false
             shrinkResources false
-//            signingConfig signingConfigs.release
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             buildConfigField "String", "BASE_URL", onLineAddress()
@@ -83,7 +82,8 @@ def devAddress() {
 
 def onLineAddress() {
 //    "\"http://dr.jhtcm.com/\""  //正式线上环境
-    "\"http://wdev.dr.jhtcm.com:7996/\""  //测试环境
+//    "\"http://wdev.dr.jhtcm.com:7996/\""  //测试环境
+    "\"http://dev.dr.jhtcm.com/\""
 }
 
 greendao {

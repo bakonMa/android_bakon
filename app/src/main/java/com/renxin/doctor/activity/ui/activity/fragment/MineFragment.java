@@ -17,8 +17,10 @@ import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.data.eventbus.Event;
 import com.renxin.doctor.activity.injection.modules.FragmentModule;
+import com.renxin.doctor.activity.ui.activity.mine.AboutUsActivity;
 import com.renxin.doctor.activity.ui.activity.mine.AuthStep3Activity;
 import com.renxin.doctor.activity.ui.activity.mine.SetPriceActivity;
+import com.renxin.doctor.activity.ui.activity.mine.SettingActivity;
 import com.renxin.doctor.activity.ui.activity.mine.UserInfoActivity;
 import com.renxin.doctor.activity.ui.bean.OtherBean;
 import com.renxin.doctor.activity.utils.ImageUtil;
@@ -112,9 +114,8 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
         mPresenter.getUserIdentifyStatus();
     }
 
-
-    @OnClick({R.id.llt_auth_status, R.id.llt_user_info, R.id.id_collect, R.id.id_wallet, R.id.id_set_price,
-            R.id.id_setting, R.id.id_recommend, R.id.id_about, R.id.id_btn_logout})
+    @OnClick({R.id.llt_auth_status, R.id.llt_user_info, R.id.id_collect,
+            R.id.id_wallet, R.id.id_set_price, R.id.id_setting, R.id.id_recommend, R.id.id_about})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.llt_user_info:
@@ -140,6 +141,7 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
                 startActivity(new Intent(actContext(), SetPriceActivity.class));
                 break;
             case R.id.id_setting:
+                startActivity(new Intent(actContext(), SettingActivity.class));
                 break;
             case R.id.id_recommend://分享app
                 SharePopupWindow sharePopupWindow = new SharePopupWindow(actContext(), new SharePopupWindow.ShareOnClickListener() {
@@ -151,8 +153,7 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
                 sharePopupWindow.showAtLocation(idSwipe, Gravity.BOTTOM, 0, 0);
                 break;
             case R.id.id_about:
-                break;
-            case R.id.id_btn_logout:
+                startActivity(new Intent(actContext(), AboutUsActivity.class));
                 break;
         }
     }

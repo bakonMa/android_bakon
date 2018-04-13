@@ -9,13 +9,16 @@ import com.renxin.doctor.activity.BuildConfig;
  * @project: customer-android-2th
  * @detail:
  */
-public interface PathConfig {
+public interface H5Config {
 
 
 //    发现H5链接:
 //    书籍http://dev.dr.jhtcm.com/books
 //    百科http://hxd.dev.dr.jhtcm.com/baike
+    String H5_USERINFO = BuildConfig.BASE_URL + "web_mycard/";
+    String H5_USERINFO_TITLE = "个人名片";
 
+    //*******************jht end**********************
 
 
 

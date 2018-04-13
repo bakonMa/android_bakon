@@ -10,7 +10,7 @@ public interface Constant {
     String UPLOADIMG_TYPE_1 = "1";
 
     //下载链接（可以使用应用宝的推广链接）
-    String APP_SHARE_URL = "http://www.baidu.com";
+    String APP_SHARE_URL = "http://a.app.qq.com/o/simple.jsp?pkgname=com.renxin.doctor.activity";
 
 
 }

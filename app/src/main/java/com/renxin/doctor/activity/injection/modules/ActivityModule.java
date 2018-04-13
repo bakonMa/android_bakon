@@ -28,7 +28,6 @@ import com.renxin.doctor.activity.ui.contact.MyBankCardContact;
 import com.renxin.doctor.activity.ui.contact.MyInfoContact;
 import com.renxin.doctor.activity.ui.contact.MyLoanContact;
 import com.renxin.doctor.activity.ui.contact.PersonalContact;
-import com.renxin.doctor.activity.ui.contact.RegisteContact;
 import com.renxin.doctor.activity.ui.contact.RepaymentContact;
 import com.renxin.doctor.activity.ui.contact.SettingContract;
 import com.renxin.doctor.activity.ui.contact.SupportBankContact;
@@ -56,7 +55,6 @@ import com.renxin.doctor.activity.ui.presenter.MyBankCardPresenter;
 import com.renxin.doctor.activity.ui.presenter.MyInfoPresenter;
 import com.renxin.doctor.activity.ui.presenter.MyLoanPresenter;
 import com.renxin.doctor.activity.ui.presenter.PersonalPresenter;
-import com.renxin.doctor.activity.ui.presenter.RegistePresenter;
 import com.renxin.doctor.activity.ui.presenter.RepaymentPresenter;
 import com.renxin.doctor.activity.ui.presenter.SettingPresenter;
 import com.renxin.doctor.activity.ui.presenter.SupportBankPresenter;
@@ -94,12 +92,6 @@ public final class ActivityModule {
     @Provides
     public AuthPresenter provideAuthPresenter() {
         return new AuthPresenter((AuthContact.View) mView);
-    }
-
-    @PerActivity
-    @Provides
-    public RegistePresenter provideRegistePresenter() {
-        return new RegistePresenter((RegisteContact.View) mView);
     }
 
     @PerActivity

@@ -1,43 +1,31 @@
 package com.renxin.doctor.activity.ui.activity.mine;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Environment;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
-import com.renxin.doctor.activity.BuildConfig;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
-import com.renxin.doctor.activity.data.eventbus.Event;
-import com.renxin.doctor.activity.ui.base.BaseActivity;
-import com.renxin.doctor.activity.ui.bean.AppUpdateBean;
-import com.renxin.doctor.activity.ui.contact.SettingContract;
-import com.renxin.doctor.activity.ui.presenter.SettingPresenter;
-import com.renxin.doctor.activity.utils.ActivityUtil;
-import com.renxin.doctor.activity.utils.MD5Util;
-import com.renxin.doctor.activity.utils.ToastUtil;
-import com.renxin.doctor.activity.widget.dialog.AppUpdateDialog;
-import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
-import com.renxin.doctor.activity.config.EventConfig;
 import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
 import com.renxin.doctor.activity.injection.modules.ActivityModule;
-import com.renxin.doctor.activity.ui.bean.DownloadProgressBean;
-import com.renxin.doctor.activity.ui.bean.OtherBean;
+import com.renxin.doctor.activity.ui.activity.login.LoginActivity;
+import com.renxin.doctor.activity.ui.activity.login.ResetPasswordActivity;
+import com.renxin.doctor.activity.ui.base.BaseActivity;
+import com.renxin.doctor.activity.ui.contact.LoginContact;
+import com.renxin.doctor.activity.ui.presenter.LoginPresenter;
+import com.renxin.doctor.activity.utils.ToastUtil;
+import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.widget.RelativeWithText;
+import com.renxin.doctor.activity.widget.dialog.CommonDialog;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.io.File;
 import java.lang.ref.WeakReference;
 
 import javax.inject.Inject;
@@ -46,23 +34,20 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * mayakun 2017/11/16
- * 设置画面
+ * SettingActivity 设置
+ * Create at 2018/4/13 下午2:13 by mayakun
  */
-public class SettingActivity extends BaseActivity implements SettingContract.View {
+public class SettingActivity extends BaseActivity implements LoginContact.View {
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
-
-    @Inject
-    SettingPresenter mPresenter;
+    @BindView(R.id.st_changeflag)
+    Switch stChangeFlag;
     @BindView(R.id.tv_reset_password)
     RelativeWithText tvResetPassword;
-    @BindView(R.id.tv_check_update)
-    RelativeWithText tvCheckUpdate;
 
-    private OtherBean otherBean;
-    private AppUpdateDialog appUpdateDialog;
+    @Inject
+    LoginPresenter mPresenter;
 
     @Override
     protected int provideRootLayout() {
@@ -72,27 +57,15 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
     @Override
     protected void initView() {
         initToolbar();
-        //查询是否设置过交易密码
-        mPresenter.tradePwdStatus();
-    }
-
-    @Override
-    protected void onDestroy() {
-        mPresenter.unsubscribe();
-        if (appUpdateDialog != null) {
-            appUpdateDialog.dismiss();
-        }
-        super.onDestroy();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void downloadApkEvent(Event<DownloadProgressBean> downloadApkEvent) {
-        if (downloadApkEvent.getCode() == EventConfig.REFRESH_APK_DOWNLOAD_PROGRESS){
-            if (appUpdateDialog != null && appUpdateDialog.isShowing()){
-                double doubleProgress = ((double) downloadApkEvent.getData().bytesRead) / ((double) downloadApkEvent.getData().contentLength);
-                appUpdateDialog.setProgress((int) (doubleProgress * 10000));
+        //消息提醒
+        stChangeFlag.setChecked(U.getMessageStatus());
+        stChangeFlag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                U.setMessageStatus(b);
             }
-        }
+        });
+
     }
 
     //共同头部处理
@@ -110,26 +83,22 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
                 }).bind();
     }
 
-
-    @OnClick({R.id.tv_reset_password, R.id.tv_check_update})
+    @OnClick({R.id.tv_reset_password, R.id.tv_logout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_reset_password:
-                if (otherBean == null) {
-                    ToastUtil.show("数据异常，请退出后重试");
-                    return;
-                }
-                Intent intent = new Intent(this, ResetPasswordActivity.class);
-                intent.putExtra("isrest", otherBean.tradePwdStatus);
-                startActivity(intent);
-                finish();
+                startActivity(new Intent(this, ResetPasswordActivity.class));
                 break;
-
-            case R.id.tv_check_update:
-                mPresenter.checkUpdate();
-                break;
-
-            default:
+            case R.id.tv_logout:
+                CommonDialog commonDialog = new CommonDialog(this, 1, "确定退出当前账号吗？", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (view.getId() == R.id.btn_ok) {
+                            mPresenter.loginOut();
+                        }
+                    }
+                });
+                commonDialog.show();
                 break;
         }
     }
@@ -144,38 +113,16 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
     }
 
     @Override
-    public void onError(String errorCode, String errorMsg) {
-        if (!TextUtils.isEmpty(errorMsg)) {
-            ToastUtil.show(errorMsg);
-        }
-    }
-
-    @Override
     public void onSuccess(Message message) {
-        if (message != null) {
-            switch (message.what) {
-                case SettingPresenter.SETTING_PWD_STATUS:
-                    otherBean = (OtherBean) message.obj;
-                    Log.e("tag", otherBean.tradePwdStatus + "");
-                    if (otherBean != null) {
-                        tvResetPassword.setTitleText(otherBean.tradePwdStatus ?
-                                "重置交易密码" : "设置交易密码");
-                    }
-                    break;
-
-                case SettingPresenter.SETTING_CHECK_UPDATE_STATUS:
-                    showUpdateDialog((AppUpdateBean) message.obj);
-                    break;
-
-                default:
-                    break;
-            }
+        if (message.what == LoginPresenter.LOGOUT_SUCCESS) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
     }
 
     @Override
-    protected boolean useEventBus() {
-        return true;
+    public void onError(String errorCode, String errorMsg) {
+        ToastUtil.show(errorMsg);
     }
 
     @Override
@@ -187,86 +134,4 @@ public class SettingActivity extends BaseActivity implements SettingContract.Vie
     public <R> LifecycleTransformer<R> toLifecycle() {
         return bindToLifecycle();
     }
-
-    @Override
-    public void showUpdateDialog(AppUpdateBean appUpdateBean) {
-        AppUpdateDialog.StartDownloadingListener startDownloadingListener = (downloadUrl, netMD5, force) -> {
-            RxPermissions rxPermissions = new RxPermissions(SettingActivity.this);
-            rxPermissions.setLogging(BuildConfig.DEBUG);
-            rxPermissions
-                    .request(Manifest.permission.READ_EXTERNAL_STORAGE)
-                    .subscribe(aBoolean -> {
-                        if (aBoolean) {
-                            String apkDirPath;
-                            if (Environment.MEDIA_MOUNTED.equals(DocApplication.getAppComponent().dataRepo().storage().externalRootDirState())) {
-                                apkDirPath = DocApplication.getAppComponent().dataRepo().storage().externalPublicDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + getPackageName() + File.separator + "install";
-                            } else {
-                                apkDirPath = DocApplication.getAppComponent().dataRepo().storage().internalCustomDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator + getPackageName() + File.separator + "install";
-                            }
-                            File apkDir = new File(apkDirPath);
-                            if (!apkDir.exists()) {
-                                apkDir.mkdirs();
-                            }
-                            File apkFile = new File(apkDir, getPackageName() + ".apk");
-                            if (apkFile.exists()) {
-                                String localMD5 = MD5Util.md5(apkFile);
-                                if (localMD5.equals(netMD5)) {
-                                    ActivityUtil.installApk(SettingActivity.this, apkFile, getPackageName() + ".fileprovider");
-                                } else {
-                                    apkFile.delete();
-                                    if (appUpdateDialog != null){
-                                        appUpdateDialog.setProgress(0);
-                                        appUpdateDialog.switchViewState(true);
-                                    }
-                                    mPresenter.downloadApk(downloadUrl, apkFile.getAbsolutePath(), netMD5, force);
-                                }
-                            } else {
-                                if (appUpdateDialog != null){
-                                    appUpdateDialog.setProgress(0);
-                                    appUpdateDialog.switchViewState(true);
-                                }
-                                mPresenter.downloadApk(downloadUrl, apkFile.getAbsolutePath(), netMD5, force);
-                            }
-                        } else {
-                            ToastUtil.show("请求权限失败");
-                        }
-                    });
-        };
-        AppUpdateDialog.CancelListener cancelListener = force -> {
-            mPresenter.cancelDownload();
-            if (force){
-                DocApplication.getInstance().managerRepository.actMgr().finishAllActivity();
-            }
-        };
-        appUpdateDialog = new AppUpdateDialog(this , R.style.UpdateDialogTheme , appUpdateBean , startDownloadingListener , cancelListener);
-        appUpdateDialog.show();
-    }
-
-    @Override
-    public void apkDownloadSuccess(String localApkPath, String sourceMD5) {
-        String localMD5 = MD5Util.md5(new File(localApkPath));
-        if (localMD5.equals(sourceMD5)) {
-            if (appUpdateDialog != null && appUpdateDialog.isShowing()) {
-                ActivityUtil.installApk(this, new File(localApkPath), getPackageName() + ".fileprovider");
-                appUpdateDialog.switchViewState(false);
-                appUpdateDialog.setProgress(0);
-            }
-        }else {
-            if (appUpdateDialog != null && appUpdateDialog.isShowing()) {
-                appUpdateDialog.setUpdateText("点击重试");
-                appUpdateDialog.switchViewState(false);
-                appUpdateDialog.setProgress(0);
-            }
-        }
-    }
-
-    @Override
-    public void apkDownloadFailed(Throwable throwable) {
-        if (appUpdateDialog != null && appUpdateDialog.isShowing()) {
-            appUpdateDialog.setUpdateText("点击重试");
-            appUpdateDialog.switchViewState(false);
-            appUpdateDialog.setProgress(0);
-        }
-    }
-
 }

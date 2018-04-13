@@ -1,7 +1,5 @@
 package com.renxin.doctor.activity.ui.activity;
 
-import android.app.Activity;
-import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -14,20 +12,11 @@ import android.widget.TextView;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.utils.LogUtil;
-import com.renxin.doctor.activity.utils.ToastUtil;
-import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
-import com.renxin.doctor.activity.application.DocApplication;
-import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
-import com.renxin.doctor.activity.injection.modules.ActivityModule;
-import com.renxin.doctor.activity.ui.contact.WebViewContact;
-import com.renxin.doctor.activity.ui.presenter.WebviewPresenter;
 import com.renxin.doctor.activity.widget.ProgressWebView;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 
 import java.lang.ref.WeakReference;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -36,7 +25,7 @@ import butterknife.OnClick;
  * mayakun 2017/11/17
  * 共同webview画面
  */
-public class WebViewActivity extends BaseActivity implements ProgressWebView.ErrorCallback, WebViewContact.View {
+public class WebViewActivity extends BaseActivity implements ProgressWebView.ErrorCallback {
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
@@ -50,11 +39,10 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
     RelativeLayout rltError;
     @BindView(R.id.wb_webview)
     ProgressWebView wbWebview;
-    @Inject
-    WebviewPresenter mPresenter;
 
     //标题，url
-    private String orderNo, titleStr, urlStr;
+    private String titleStr, urlStr;
+    private int h5Type;//0：默认带头部导航栏 1：不带
 
     @Override
     protected int provideRootLayout() {
@@ -63,21 +51,18 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
 
     @Override
     protected void initView() {
-        orderNo = getIntent().getStringExtra("orderNo");
+        h5Type = getIntent().getIntExtra("type", 0);
         titleStr = getIntent().getStringExtra("title");
         urlStr = getIntent().getStringExtra("url");
-
+        LogUtil.d(urlStr);
         wbWebview.setErrorCallback(this);
-        //设置title
-        initToolbar();
-
-        if (TextUtils.isEmpty(orderNo)) {
-            //加载url
-            wbWebview.loadUrl(urlStr);
-            LogUtil.d("url=", urlStr);
+        if (h5Type == 0) {
+            initToolbar();
         } else {
-            mPresenter.getCreditUrl(orderNo);
+            idToolbar.setVisibility(View.GONE);
         }
+
+        wbWebview.loadUrl(urlStr);
     }
 
     @OnClick(R.id.btn_error_reload)
@@ -88,7 +73,7 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
     //共同头部处理
     private void initToolbar() {
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
-                .setTitle(TextUtils.isEmpty(titleStr) ? "" : titleStr)
+                .setTitle(TextUtils.isEmpty(titleStr) ? wbWebview.getTitle() : titleStr)
                 .setLeft(false)
                 .isShowClose(true)//是否显示close
                 .setStatuBar(R.color.white)
@@ -113,11 +98,6 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
 
     @Override
     protected void setupActivityComponent() {
-        DaggerActivityComponent.builder()
-                .applicationComponent(DocApplication.getAppComponent())
-                .activityModule(new ActivityModule(this))
-                .build()
-                .inject(this);
     }
 
     @Override
@@ -148,36 +128,4 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
         }
     }
 
-
-    @Override
-    public void onError(String errorCode, String errorMsg) {
-        if (!TextUtils.isEmpty(errorMsg)) {
-            ToastUtil.show(errorMsg);
-        }
-        finish();
-    }
-
-    @Override
-    public void onSuccess(Message message) {
-        if (message == null || message.obj == null) {
-            return;
-        }
-        switch (message.what) {
-            case WebviewPresenter.GET_CREDIT_URL://获取征信url后跳转
-                urlStr = message.obj.toString();
-                LogUtil.d(urlStr);
-                wbWebview.loadUrl(urlStr);
-                break;
-        }
-    }
-
-    @Override
-    public Activity provideContext() {
-        return this;
-    }
-
-    @Override
-    public LifecycleTransformer toLifecycle() {
-        return bindToLifecycle();
-    }
 }

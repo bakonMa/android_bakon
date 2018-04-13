@@ -1,7 +1,6 @@
 package com.renxin.doctor.activity.ui.activity.login;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,23 +9,21 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.renxin.doctor.activity.R;
-import com.renxin.doctor.activity.ui.activity.home.MainActivity;
+import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
+import com.renxin.doctor.activity.injection.modules.ActivityModule;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.ui.contact.LoginContact;
 import com.renxin.doctor.activity.ui.presenter.LoginPresenter;
 import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.widget.dialog.CommonDialog;
-import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
-import com.renxin.doctor.activity.application.DocApplication;
-import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
-import com.renxin.doctor.activity.injection.modules.ActivityModule;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
+import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
 import java.lang.ref.WeakReference;
@@ -45,10 +42,10 @@ import rx.functions.Action0;
 import rx.functions.Func1;
 
 /**
- * RegisteActivity  注册
- * Create at 2018/4/2 下午3:41 by mayakun
+ * ResetPasswordActivity 修改密码
+ * Create at 2018/4/13 下午4:27 by mayakun
  */
-public class RegisteActivity extends BaseActivity implements LoginContact.View {
+public class ResetPasswordActivity extends BaseActivity implements LoginContact.View {
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
@@ -68,16 +65,14 @@ public class RegisteActivity extends BaseActivity implements LoginContact.View {
     EditText etSecPassword;
     @BindView(R.id.iv_sec_pwd_clean)
     ImageView ivSecPwdClean;
-    @BindView(R.id.btn_registe)
-    Button btnRegiste;
+    @BindView(R.id.btn_resetpwd)
+    Button btnResetPwd;
     @BindView(R.id.iv_pwd_eye)
     ImageView ivPwdEye;
     @BindView(R.id.iv_sec_pwd_eye)
     ImageView ivSecPwdEye;
     @BindView(R.id.et_phone)
     EditText etPhone;
-    @BindView(R.id.cb_agreement)
-    CheckBox cbAgreement;
 
     @Inject
     LoginPresenter mPresenter;
@@ -90,13 +85,13 @@ public class RegisteActivity extends BaseActivity implements LoginContact.View {
 
     @Override
     protected int provideRootLayout() {
-        return R.layout.activity_registe;
+        return R.layout.activity_reset_password;
     }
 
     @Override
     protected void initView() {
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
-                .setTitle("快速注册")
+                .setTitle("修改密码")
                 .setStatuBar(R.color.white)
                 .setLeft(false)
                 .setListener(new TitleOnclickListener() {
@@ -107,29 +102,25 @@ public class RegisteActivity extends BaseActivity implements LoginContact.View {
                     }
                 })
                 .bind();
-
     }
 
-    @OnClick({R.id.btn_registe, R.id.tv_sendcode,
+    @OnClick({R.id.btn_resetpwd, R.id.tv_sendcode,
             R.id.iv_code_clean, R.id.iv_phone_clean, R.id.iv_pwd_clean, R.id.iv_sec_pwd_clean,
-            R.id.iv_pwd_eye, R.id.iv_sec_pwd_eye, R.id.tv_agreement})
+            R.id.iv_pwd_eye, R.id.iv_sec_pwd_eye})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btn_registe://注册
+            case R.id.btn_resetpwd://重设密码
                 if (!etPassword.getText().toString().trim().equals(etSecPassword.getText().toString().trim())) {
                     showDialog("两次密码不一致");
                     return;
-                } else if (!cbAgreement.isChecked()) {
-                    showDialog("未同意用户协议");
-                    return;
                 }
 
-                mPresenter.regist(etPhone.getText().toString().trim(),
-                        etPassword.getText().toString().trim(),
-                        etCode.getText().toString().trim());
+                mPresenter.restPwd(etPhone.getText().toString().trim(),
+                        etCode.getText().toString().trim(),
+                        etPassword.getText().toString().trim());
                 break;
             case R.id.tv_sendcode://发送验证码
-                mPresenter.sendMsgCode(etPhone.getText().toString().trim(), 0);
+                mPresenter.sendMsgCode(etPhone.getText().toString().trim(), 2);
                 break;
             case R.id.iv_phone_clean://手机清除
                 etPhone.setText("");
@@ -151,9 +142,6 @@ public class RegisteActivity extends BaseActivity implements LoginContact.View {
                 ivSecPwdEye.setSelected(!ivSecPwdEye.isSelected());
                 etSecPassword.setTransformationMethod(ivSecPwdEye.isSelected() ? HideReturnsTransformationMethod.getInstance() : PasswordTransformationMethod.getInstance());
                 etSecPassword.setSelection(etSecPassword.getText().length());
-                break;
-            case R.id.tv_agreement://用户协议
-                ToastUtil.show("进入用户协议");
                 break;
         }
     }
@@ -189,7 +177,7 @@ public class RegisteActivity extends BaseActivity implements LoginContact.View {
 
     //按钮状态
     private void setBtnNextStatus() {
-        btnRegiste.setEnabled(
+        btnResetPwd.setEnabled(
                 etPhone.getText().toString().trim().length() == 11
                         && etCode.getText().toString().trim().length() == 6
                         && etPassword.getText().toString().trim().length() >= 6
@@ -198,6 +186,7 @@ public class RegisteActivity extends BaseActivity implements LoginContact.View {
 
     //展示确定dialog
     private CommonDialog commonDialog;
+
     private void showDialog(String title) {
         if (commonDialog != null) {
             commonDialog.dismiss();
@@ -220,13 +209,11 @@ public class RegisteActivity extends BaseActivity implements LoginContact.View {
             return;
         }
         switch (message.what) {
-            case LoginPresenter.SEND_CODE://注册 发送短信成功
+            case LoginPresenter.SEND_CODE://修改密码 发送短信成功
                 timeDown();
                 break;
-            case LoginPresenter.REGISTE_SUCCESS://注册成功
-                ToastUtil.show("注册成功，已帮您自动登录");
-                //自动登录
-                startActivity(new Intent(this, MainActivity.class));
+            case LoginPresenter.RESETPWD_SUCCESS://密码修改成功
+                ToastUtil.show("密码修改成功");
                 finish();
                 break;
         }
@@ -273,7 +260,8 @@ public class RegisteActivity extends BaseActivity implements LoginContact.View {
         DaggerActivityComponent.builder()
                 .applicationComponent(DocApplication.getAppComponent())
                 .activityModule(new ActivityModule(this))
-                .build().inject(this);
+                .build()
+                .inject(this);
     }
 
     @Override

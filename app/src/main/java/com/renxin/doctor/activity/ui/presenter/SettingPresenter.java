@@ -45,7 +45,7 @@ public class SettingPresenter implements SettingContract.Presenter {
         if (mdialog != null) {
             mdialog.dismiss();
         }
-        if (downloadApkSubscription != null && !downloadApkSubscription.isUnsubscribed()){
+        if (downloadApkSubscription != null && !downloadApkSubscription.isUnsubscribed()) {
             downloadApkSubscription.unsubscribe();
         }
         if (!mSubscription.isUnsubscribed()) {
@@ -135,7 +135,7 @@ public class SettingPresenter implements SettingContract.Presenter {
 
     @Override
     public void downloadApk(String downloadUrl, String destLocaLPath, String sourceMD5, boolean force) {
-        if (downloadApkSubscription != null && !downloadApkSubscription.isUnsubscribed()){
+        if (downloadApkSubscription != null && !downloadApkSubscription.isUnsubscribed()) {
             downloadApkSubscription.unsubscribe();
         }
         //progress: progressCallback
@@ -156,7 +156,7 @@ public class SettingPresenter implements SettingContract.Presenter {
 
     @Override
     public void cancelDownload() {
-        if (downloadApkSubscription != null && !downloadApkSubscription.isUnsubscribed()){
+        if (downloadApkSubscription != null && !downloadApkSubscription.isUnsubscribed()) {
             downloadApkSubscription.unsubscribe();
         }
     }

@@ -21,15 +21,10 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.renxin.doctor.activity.R;
+import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.utils.UIUtils;
 
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
-
-import rx.Observable;
-import rx.Observer;
-import rx.Subscription;
-import rx.functions.Action0;
 
 /**
  * mayakun 2017/11/17
@@ -45,7 +40,6 @@ public class ProgressWebView extends WebView implements OnKeyListener {
     public static int ERROR_LOADFAIL = 2;
 
     private Context context;
-    private int TIMEOUT = 30;//超时时间30s
     //webview设置
     private WebSettings settings;
     private ErrorCallback errorCallback;
@@ -100,14 +94,9 @@ public class ProgressWebView extends WebView implements OnKeyListener {
 
     public void loadUrlWithHeader(String url) {
         HashMap<String, String> map = new HashMap<String, String>();
-//		map.put("APPVERSION", ICommonUtil.getAppVersionName(context));
-//		map.put("CHANNEL", SharedPerUtil.getConfigInfo(context, Contants.SharedConfigKey.channel));
-//		map.put("OS", "Android");
-//		map.put("uid", SharedPerUtil.getUserInfo(context, Contants.SharedUserKey.uid));
+        map.put("token", U.getToken());
         //添加header数据
         loadUrl(url, map);
-        //开始计时
-//        startTime();
     }
 
 
@@ -135,9 +124,7 @@ public class ProgressWebView extends WebView implements OnKeyListener {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            if (subscription != null) {
-                subscription.unsubscribe();
-            }
+
             //加载失败
             if (errorCallback != null) {
                 errorCallback.onError(isError);
@@ -197,45 +184,6 @@ public class ProgressWebView extends WebView implements OnKeyListener {
             }
             super.onProgressChanged(view, newProgress);
         }
-    }
-
-    /**
-     * 加载超时计数
-     */
-    private Subscription subscription;
-
-    //需要调试完善，暂时不用（加载超时）
-    private void startTime() {
-        subscription = null;
-        subscription = Observable.timer(TIMEOUT, TimeUnit.SECONDS)
-//                .observeOn(Schedulers.newThread())
-                .doOnSubscribe(new Action0() {
-                    @Override
-                    public void call() {
-                        ProgressWebView.this.setEnabled(false);//不可点击
-                    }
-                })
-//                .observeOn(AndroidSchedulers.mainThread())//操作UI主要在UI线程
-                .subscribe(new Observer<Long>() {
-                    @Override
-                    public void onCompleted() {
-                        //超时
-                        if (errorCallback != null) {
-                            errorCallback.onError(ERROR_LOADFAIL);
-                        }
-                        subscription.unsubscribe();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        subscription.unsubscribe();
-                    }
-
-                    @Override
-                    public void onNext(Long aLong) { //接受到一条就是会操作一次UI
-                    }
-                });
     }
 
     //监听webview KeyEvent

@@ -6,9 +6,10 @@ import com.renxin.doctor.activity.config.SPConfig;
 import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.data.response.HttpResponse;
 import com.renxin.doctor.activity.ui.base.BaseObserver;
-import com.renxin.doctor.activity.ui.contact.LoginContact;
 import com.renxin.doctor.activity.ui.bean.LoginResponse;
+import com.renxin.doctor.activity.ui.contact.LoginContact;
 import com.renxin.doctor.activity.utils.M;
+import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.widget.dialog.LoadingDialog;
 
 import javax.inject.Inject;
@@ -28,6 +29,9 @@ public class LoginPresenter implements LoginContact.Presenter {
 
     public static final int SEND_CODE = 0x110;//发送验证码
     public static final int LOGIN_SUCCESS = 0x111;//登录
+    public static final int REGISTE_SUCCESS = 0x112;//注册
+    public static final int LOGOUT_SUCCESS = 0x113;//退出登录
+    public static final int RESETPWD_SUCCESS = 0x114;//注册
 
     @Inject
     public LoginPresenter(LoginContact.View view) {
@@ -99,6 +103,94 @@ public class LoginPresenter implements LoginContact.Presenter {
                         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCTOKEN, loginResponseHttpResponse.data.acctoken);
 
                         mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, LOGIN_SUCCESS));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void regist(String phone, String pwd, String code) {
+        Params params = new Params();
+        params.put("mobile", phone);
+        params.put("password", pwd);
+        params.put("vcode", code);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().register(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mdialog != null) mdialog.show();
+                })
+                .subscribe(new BaseObserver<HttpResponse<LoginResponse>>(mdialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<LoginResponse> loginResponseHttpResponse) {
+                        //保存token
+                        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_PHONE, phone);
+                        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, loginResponseHttpResponse.data.token);
+                        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCID, loginResponseHttpResponse.data.accid);
+                        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCTOKEN, loginResponseHttpResponse.data.acctoken);
+
+                        mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, REGISTE_SUCCESS));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void loginOut() {
+        Params params = new Params();
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().logout(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mdialog != null) mdialog.show();
+                })
+                .subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<String> loginResponseHttpResponse) {
+                        //清空本地数据
+                        U.logout();
+                        mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, LOGOUT_SUCCESS));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void restPwd(String phone, String code, String pwd) {
+        Params params = new Params();
+        params.put("mobile", phone);
+        params.put("vcode", code);
+        params.put("password", pwd);
+        params.put("confirm_password", pwd);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().updatePwd(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mdialog != null) mdialog.show();
+                })
+                .subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<String> loginResponseHttpResponse) {
+                        mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, RESETPWD_SUCCESS));
                     }
 
                     @Override

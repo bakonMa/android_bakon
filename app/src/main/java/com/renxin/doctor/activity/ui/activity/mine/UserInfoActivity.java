@@ -8,15 +8,16 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.renxin.doctor.activity.R;
+import com.renxin.doctor.activity.config.H5Config;
+import com.renxin.doctor.activity.ui.activity.WebViewActivity;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
+import com.renxin.doctor.activity.ui.bean_jht.UserBaseInfoBean;
 import com.renxin.doctor.activity.utils.ImageUtil;
-import com.renxin.doctor.activity.utils.ToastUtil;
+import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.widget.EditTextlayout;
 import com.renxin.doctor.activity.widget.dialog.CommonDialog;
-import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
-import com.renxin.doctor.activity.ui.bean_jht.UserBaseInfoBean;
-import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
+import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 
 import java.lang.ref.WeakReference;
 
@@ -74,7 +75,10 @@ public class UserInfoActivity extends BaseActivity {
                     @Override
                     public void rightClick() {
                         super.rightClick();
-                        ToastUtil.showShort("预览");
+                        Intent intent = new Intent(actContext(), WebViewActivity.class);
+                        intent.putExtra("url", H5Config.H5_USERINFO);
+                        intent.putExtra("title", H5Config.H5_USERINFO_TITLE);
+                        startActivity(intent);
                     }
                 }).bind();
     }

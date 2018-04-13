@@ -77,9 +77,17 @@ public interface HttpAPI {
     @POST("login")
     Observable<HttpResponse<LoginResponse>> login(@Body Params params);
 
+    //登录
+    @POST("logout")
+    Observable<HttpResponse<String>> logout(@Body Params params);
+
     //注册
     @POST("register")
-    Observable<HttpResponse<LoginResponse>> register(@Body Params params);
+    Observable<HttpResponse<LoginResponse>> register(@Body Params params);//注册
+
+    //重设密码
+    @POST("updatePwd")
+    Observable<HttpResponse<String>> updatePwd(@Body Params params);
 
     //获取认证状态
     @POST("getUserIdentifyStatus")
@@ -128,6 +136,7 @@ public interface HttpAPI {
     //添加银行卡
     @POST("useraddbank")
     Observable<HttpResponse<String>> useraddbank(@QueryMap Params params);
+
     //解绑
     @POST("userdel_bank")
     Observable<HttpResponse<String>> deleteBankCard(@QueryMap Params params);
@@ -143,9 +152,6 @@ public interface HttpAPI {
     //设置资费信息
     @POST("visitcost_set")
     Observable<HttpResponse<String>> setVisitPrice(@QueryMap Params params);
-
-
-
 
 
     //***************************************************
@@ -292,7 +298,6 @@ public interface HttpAPI {
     //授权
     @POST("customerApp/bankCard/userAuthorization")
     Observable<HttpResponse<ApplyUserBean>> userAuthorization(@Body Params params);
-
 
 
     //添加共借人

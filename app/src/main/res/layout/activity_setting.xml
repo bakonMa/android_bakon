@@ -1,29 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_bg_main"
     android:orientation="vertical">
 
-    <include layout="@layout/base_toolbar"/>
+    <include layout="@layout/base_toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="新消息提醒"
+            android:textColor="@color/color_333"
+            android:textSize="16sp" />
+
+        <Switch
+            android:id="@+id/st_changeflag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:checked="true" />
+
+    </RelativeLayout>
+
+    <View style="@style/line_gray_hor" />
 
     <com.renxin.doctor.activity.widget.RelativeWithText
         android:id="@+id/tv_reset_password"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="44dp"
+        android:layout_marginBottom="20dp"
         app:isShowTab="false"
-        app:titleT="设置交易密码"/>
+        app:titleT="修改密码" />
 
-    <com.renxin.doctor.activity.widget.RelativeWithText
-        android:id="@+id/tv_check_update"
+    <TextView
+        android:id="@+id/tv_logout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        app:isShowTab="false"
-        app:titleT="检查更新"/>
+        android:layout_height="44dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/selector_bg_button_login"
+        android:clickable="true"
+        android:gravity="center"
+        android:text="退出当前账号"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
 
 </LinearLayout>
 

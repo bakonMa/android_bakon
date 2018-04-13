@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.renxin.doctor.activity.config.HttpConfig;
 import com.renxin.doctor.activity.data.http.APIModule;
 import com.renxin.doctor.activity.injection.components.ApplicationComponent;
 import com.renxin.doctor.activity.injection.components.DaggerApplicationComponent;
@@ -51,11 +52,12 @@ public class DocApplication extends Application {
         //db 初始化
 //        GreenDaoManager.getInstance();
 
+        //Umeng分享
         UMConfigure.init(this, "5aced483b27b0a303b000044",
                 "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
         umShareAPI = UMShareAPI.get(this);
-        PlatformConfig.setWeixin("wxa792384772439d0f", "2e37c33fd6ff031ebeae1cbeb94e6219");
-        PlatformConfig.setQQZone("1103454520", "IT6H5qigvERIKyzg");
+        PlatformConfig.setWeixin(HttpConfig.WX_APP_ID, HttpConfig.WX_APP_SECRET);
+        PlatformConfig.setQQZone(HttpConfig.QQ_APP_ID, HttpConfig.QQ_APP_ID_Key);
 
     }
 
