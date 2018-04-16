@@ -251,6 +251,11 @@ public static java.lang.String TABLENAME;
 # If you do not use RxJava:
 -dontwarn rx.**
 
+# banner 的混淆代码
+-keep class com.youth.banner.** {
+    *;
+ }
+
 # 微信支付
 -dontwarn com.tencent.mm.**
 -dontwarn com.tencent.wxop.stat.**

@@ -231,6 +231,7 @@ public class MessageFragment extends TFragment implements ModuleProxy {
         final IMMessage msg = message;
         appendPushConfig(message);
         // send message to server and save to db
+        //如果是发送失败后重发，标记为true，否则填false
         NIMClient.getService(MsgService.class).sendMessage(message, false).setCallback(new RequestCallback<Void>() {
             @Override
             public void onSuccess(Void param) {

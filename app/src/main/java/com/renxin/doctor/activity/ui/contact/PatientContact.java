@@ -4,11 +4,10 @@ import com.renxin.doctor.activity.ui.base.BaseView;
 import com.renxin.doctor.activity.ui.base.BasePresenter;
 
 /**
- * Created by table on 2017/11/28.
- * description:
+ * PatientContact
+ * Create at 2018/4/14 下午11:41 by mayakun
  */
-
-public interface HomeLoanContact {
+public interface PatientContact {
     interface View extends BaseView {
 
     }

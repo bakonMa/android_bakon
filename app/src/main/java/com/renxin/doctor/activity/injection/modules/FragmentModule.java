@@ -5,12 +5,12 @@ import android.content.Context;
 import com.renxin.doctor.activity.injection.qualifiers.FragmentContext;
 import com.renxin.doctor.activity.ui.base.BaseView;
 import com.renxin.doctor.activity.ui.base.BasicProvider;
-import com.renxin.doctor.activity.ui.contact.HomeLoanContact;
+import com.renxin.doctor.activity.ui.contact.PatientContact;
 import com.renxin.doctor.activity.ui.contact.LoginContact;
 import com.renxin.doctor.activity.ui.contact.MyLoanContact;
 import com.renxin.doctor.activity.ui.presenter.MyLoanPresenter;
+import com.renxin.doctor.activity.ui.presenter.PatientPresenter;
 import com.renxin.doctor.activity.ui.presenter.RepaymentPresenter;
-import com.renxin.doctor.activity.ui.presenter.HomeLoanPresenter;
 import com.renxin.doctor.activity.ui.presenter.LoginPresenter;
 import com.renxin.doctor.activity.injection.scopes.PerFragment;
 import com.renxin.doctor.activity.ui.contact.PersonalContact;
@@ -72,8 +72,8 @@ public final class FragmentModule {
 
     @PerFragment
     @Provides
-    public HomeLoanPresenter provideHomeLoanPresenter() {
-        return new HomeLoanPresenter((HomeLoanContact.View) mView);
+    public PatientPresenter provideHomeLoanPresenter() {
+        return new PatientPresenter((PatientContact.View) mView);
     }
 
 

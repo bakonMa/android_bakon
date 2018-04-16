@@ -95,5 +95,4 @@ public abstract class BaseFragment extends RxFragment implements BasicProvider {
         super.onDestroy();
     }
 
-
 }

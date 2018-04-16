@@ -5,12 +5,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.renxin.doctor.activity.R;
-import com.renxin.doctor.activity.ui.activity.fragment.OrderFragment;
-import com.renxin.doctor.activity.widget.BottomBarItem;
-import com.renxin.doctor.activity.ui.base.BaseActivity;
-import com.renxin.doctor.activity.ui.activity.fragment.HomeFragment;
+import com.renxin.doctor.activity.ui.activity.fragment.FindFragment;
 import com.renxin.doctor.activity.ui.activity.fragment.MineFragment;
+import com.renxin.doctor.activity.ui.activity.fragment.PatientFragment;
 import com.renxin.doctor.activity.ui.activity.fragment.WorkRoomFragment;
+import com.renxin.doctor.activity.ui.base.BaseActivity;
+import com.renxin.doctor.activity.widget.BottomBarItem;
 
 import java.util.HashMap;
 
@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity {
     BottomBarItem tabMe;
 
     private HashMap<Integer, Fragment> mFragmentMap = new HashMap<>();
-    private int currTag = R.id.tab_home;
+    private int currTag = 0;
 
     @Override
     protected int provideRootLayout() {
@@ -44,11 +44,16 @@ public class MainActivity extends BaseActivity {
         tabMe.showNotify();
 
         mFragmentMap.put(0, new WorkRoomFragment());
-        mFragmentMap.put(1, new HomeFragment());
-        mFragmentMap.put(2, new OrderFragment());
+        mFragmentMap.put(1, new PatientFragment());
+        mFragmentMap.put(2, new FindFragment());
         mFragmentMap.put(3, new MineFragment());
 
-        switchFrgment(currTag);
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.add(fragment对象);
+//        transaction.addToBackStack(null);
+//        transaction.commit();
+
+        switchFrgment(R.id.tab_home);
     }
 
 
@@ -66,10 +71,9 @@ public class MainActivity extends BaseActivity {
 
     //切换fragment
     private void switchFrgment(int viewId) {
-//        if (!mFragmentMap.isEmpty() && currTag == viewId) {
-//            return;
-//        }
-
+        if (currTag == viewId) {
+            return;
+        }
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         switch (viewId) {
             case R.id.tab_home:
@@ -80,13 +84,13 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.tab_patient:
                 if (mFragmentMap.get(1) == null) {
-                    mFragmentMap.put(1, new HomeFragment());
+                    mFragmentMap.put(1, new PatientFragment());
                 }
                 transaction.replace(R.id.id_content, mFragmentMap.get(1));
                 break;
             case R.id.tab_find:
                 if (mFragmentMap.get(2) == null) {
-                    mFragmentMap.put(2, new OrderFragment());
+                    mFragmentMap.put(2, new FindFragment());
                 }
                 transaction.replace(R.id.id_content, mFragmentMap.get(2));
                 break;

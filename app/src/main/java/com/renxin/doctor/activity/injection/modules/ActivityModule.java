@@ -15,7 +15,7 @@ import com.renxin.doctor.activity.ui.contact.BasicInfoContact;
 import com.renxin.doctor.activity.ui.contact.CoborrowerHistoryContact;
 import com.renxin.doctor.activity.ui.contact.DemoContact;
 import com.renxin.doctor.activity.ui.contact.FeedBackContact;
-import com.renxin.doctor.activity.ui.contact.HomeLoanContact;
+import com.renxin.doctor.activity.ui.contact.PatientContact;
 import com.renxin.doctor.activity.ui.contact.HomeRepaymentContact;
 import com.renxin.doctor.activity.ui.contact.HouseInfoContact;
 import com.renxin.doctor.activity.ui.contact.JobInfoContact;
@@ -43,7 +43,7 @@ import com.renxin.doctor.activity.ui.presenter.BasicInfoPresenter;
 import com.renxin.doctor.activity.ui.presenter.CoborrowerHistoryPresenter;
 import com.renxin.doctor.activity.ui.presenter.DemoPresenter;
 import com.renxin.doctor.activity.ui.presenter.FeedBackPresenter;
-import com.renxin.doctor.activity.ui.presenter.HomeLoanPresenter;
+import com.renxin.doctor.activity.ui.presenter.PatientPresenter;
 import com.renxin.doctor.activity.ui.presenter.HomeRepaymentPresenter;
 import com.renxin.doctor.activity.ui.presenter.JobInfoPresenter;
 import com.renxin.doctor.activity.ui.presenter.LoanApplyPresenter;
@@ -142,8 +142,8 @@ public final class ActivityModule {
 
     @PerActivity
     @Provides
-    public HomeLoanPresenter provideHomeLoanPresenter() {
-        return new HomeLoanPresenter((HomeLoanContact.View) mView);
+    public PatientPresenter provideHomeLoanPresenter() {
+        return new PatientPresenter((PatientContact.View) mView);
     }
 
     @PerActivity

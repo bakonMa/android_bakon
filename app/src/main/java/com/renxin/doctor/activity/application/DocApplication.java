@@ -53,8 +53,7 @@ public class DocApplication extends Application {
 //        GreenDaoManager.getInstance();
 
         //Umeng分享
-        UMConfigure.init(this, "5aced483b27b0a303b000044",
-                "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
+        UMConfigure.init(this, HttpConfig.UMENG_APPKEY, "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
         umShareAPI = UMShareAPI.get(this);
         PlatformConfig.setWeixin(HttpConfig.WX_APP_ID, HttpConfig.WX_APP_SECRET);
         PlatformConfig.setQQZone(HttpConfig.QQ_APP_ID, HttpConfig.QQ_APP_ID_Key);

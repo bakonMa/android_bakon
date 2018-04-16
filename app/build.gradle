@@ -77,6 +77,8 @@ android {
 
 def devAddress() {
     "\"http://dev.dr.jhtcm.com/\""  //测试环境
+
+//    "\"http://wdev.dr.jhtcm.com:7996/\""  //外网测试环境
 //    "\"http://dev.zj.jhtcm.com/\""  //测试环境
 }
 
@@ -103,7 +105,8 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$constraintlayout_version"
     implementation "com.android.support:design:$support_version"
     implementation "com.android.support:recyclerview-v7:$support_version"
-
+    //banner
+    implementation 'com.youth.banner:banner:1.4.10'
     //Dagger2
     implementation "com.google.dagger:dagger:$dagger_version"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -115,7 +118,6 @@ dependencies {
 
     //Eventbus
     implementation "org.greenrobot:eventbus:$eventbus_version"
-
     //annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
 
     //Retrofit
@@ -138,13 +140,10 @@ dependencies {
 
     //RxLifecycle
     implementation "com.trello:rxlifecycle:$rxlifecycle_version"
-
     // If you want to bind to Android-specific lifecycles
     implementation "com.trello:rxlifecycle-android:$rxlifecycle_version"
-
     // If you want pre-written Activities and Fragments you can subclass as providers
     implementation "com.trello:rxlifecycle-components:$rxlifecycle_version"
-
     // If you want to use Navi for providers
     implementation "com.trello:rxlifecycle-navi:$rxlifecycle_version"
 
@@ -173,7 +172,8 @@ dependencies {
 
     //BaseRecyclerViewAdapterHelper
     implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$brvah_version"
-
+    //分组可悬浮title
+    implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
     //greendao
     implementation "org.greenrobot:greendao:$greendao_version"
     //数据库加密 ***保留***

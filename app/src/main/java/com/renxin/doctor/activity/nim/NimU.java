@@ -3,6 +3,7 @@ package com.renxin.doctor.activity.nim;
 import android.text.TextUtils;
 
 import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.config.SPConfig;
 
 /**
  * 网易云im 业务工具
@@ -13,37 +14,24 @@ import com.renxin.doctor.activity.application.DocApplication;
 
 public class NimU {
 
-    private static final String KEY_NIM_ACCOUNT = "nim_account";
-    private static final String KEY_NIM_TOKEN = "nim_token";
-
     //获取sp中account
     public static String getNimAccount() {
-        return DocApplication.getAppComponent().dataRepo().appSP().getString(KEY_NIM_ACCOUNT, "");
+        return DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_NIM_ACCID, "");
     }
 
     //set sp中account
     public static void setNimAccount(String account) {
-         DocApplication.getAppComponent().dataRepo().appSP().setString(KEY_NIM_ACCOUNT, account);
-    }
-
-    //set sp中account
-    public static void setNimToken(String token) {
-        DocApplication.getAppComponent().dataRepo().appSP().setString(KEY_NIM_TOKEN, token);
-    }
-
-
-    /**
-     * account是否为空，是否登录
-     * true : 未登录
-     * false： 已登录
-     */
-    public static boolean isNimNoAccount() {
-        return TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(KEY_NIM_ACCOUNT));
+         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCID, account);
     }
 
     //获取sp中token
     public static String getNimToken() {
-        return DocApplication.getAppComponent().dataRepo().appSP().getString(KEY_NIM_TOKEN, "");
+        return DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_NIM_ACCTOKEN, "");
+    }
+
+    //set sp中account
+    public static void setNimToken(String token) {
+        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCTOKEN, token);
     }
 
     /**
@@ -52,8 +40,16 @@ public class NimU {
      * false： 已登录
      */
     public static boolean isNimNoToken() {
-        return TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(KEY_NIM_TOKEN));
+        return TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_NIM_ACCTOKEN));
     }
 
+    /**
+     * account是否为空，是否登录
+     * true : 未登录
+     * false： 已登录
+     */
+    public static boolean isNimNoAccount() {
+        return TextUtils.isEmpty(DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_NIM_ACCID));
+    }
 
 }

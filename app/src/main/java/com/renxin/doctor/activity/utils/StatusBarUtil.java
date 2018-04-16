@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.renxin.doctor.activity.R;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -42,6 +44,7 @@ public class StatusBarUtil {
         } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {    //4.3以上(不包含)
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+
     }
 
     /**
@@ -108,7 +111,20 @@ public class StatusBarUtil {
      * 设置状态栏颜色
      */
     public static void setStatusBarColor(Activity activity, int statusBarColor) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            Window window = activity.getWindow();
+//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor(statusBarColor);
+//        }
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+            if (statusBarColor == R.color.white) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M || OsUtil.isMIUI() || OsUtil.isFlyme()) {
+                    StatusBarUtil.setStatusBarDarkFont(activity, true);
+                } else {
+                    statusBarColor = R.color.statueBar_color;
+                }
+            }
             Window window = activity.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(statusBarColor);

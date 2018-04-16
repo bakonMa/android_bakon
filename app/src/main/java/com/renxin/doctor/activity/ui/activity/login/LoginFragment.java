@@ -121,7 +121,7 @@ public class LoginFragment extends BaseFragment implements LoginContact.View {
                 etCode.setText("");
                 break;
             case R.id.iv_pwd_clean://密码清除
-                etPhone.setText("");
+                etPassword.setText("");
                 break;
             case R.id.iv_pwd_eye://密码可视状态
                 ivPwdEye.setSelected(!ivPwdEye.isSelected());

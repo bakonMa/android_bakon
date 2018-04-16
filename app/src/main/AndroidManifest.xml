@@ -38,11 +38,11 @@
 
     <!-- 网易IM 需要，SDK 权限申明, 第三方 APP 接入时，请将 com.netease.nim.demo 替换为自己的包名 -->
     <!-- 和下面的 uses-permission 一起加入到你的 AndroidManifest 文件中。 -->
-    <!--<permission-->
-    <!--android:name="com.renxin.doctor.activity.permission.RECEIVE_MSG"-->
-    <!--android:protectionLevel="signature" />-->
-    <!--&lt;!&ndash; 网易IM 需要，接收 SDK 消息广播权限， 第三方 APP 接入时，请将 com.netease.nim.demo 替换为自己的包名 &ndash;&gt;-->
-    <!--<uses-permission android:name="com.renxin.doctor.activity.permission.RECEIVE_MSG" />-->
+    <permission
+        android:name="com.renxin.doctor.activity.permission.RECEIVE_MSG"
+        android:protectionLevel="signature" />
+    <!-- 网易IM 需要，接收 SDK 消息广播权限， 第三方 APP 接入时，请将 com.netease.nim.demo 替换为自己的包名 -->
+    <uses-permission android:name="com.renxin.doctor.activity.permission.RECEIVE_MSG" />
 
 
     <application
@@ -75,7 +75,7 @@
           如果 SDKOptions 中提供了，取 SDKOptions 中的值。 -->
         <meta-data
             android:name="com.netease.nim.appKey"
-            android:value="7a680056f35ab9d58ee3023a0c247d49" />
+            android:value="2e3de4134edc75184f5fa5f67a8a2ae2" />
         <!-- 云信后台服务，请使用独立进程。 -->
         <service
             android:name="com.netease.nimlib.service.NimService"
@@ -222,6 +222,13 @@
             android:name=".ui.activity.mine.AboutUsActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.activity.WebViewActivity" />
+
+
+        <!--im-->
+        <activity
+            android:name=".ui.nimview.RecentActivity"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

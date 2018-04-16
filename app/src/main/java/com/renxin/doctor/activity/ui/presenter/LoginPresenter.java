@@ -5,6 +5,7 @@ import com.renxin.doctor.activity.config.HttpConfig;
 import com.renxin.doctor.activity.config.SPConfig;
 import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.data.response.HttpResponse;
+import com.renxin.doctor.activity.nim.NimManager;
 import com.renxin.doctor.activity.ui.base.BaseObserver;
 import com.renxin.doctor.activity.ui.bean.LoginResponse;
 import com.renxin.doctor.activity.ui.contact.LoginContact;
@@ -99,8 +100,11 @@ public class LoginPresenter implements LoginContact.Presenter {
                         //保存token
                         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_PHONE, phone);
                         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, loginResponseHttpResponse.data.token);
+                        //nim的accid，acctoken
                         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCID, loginResponseHttpResponse.data.accid);
                         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCTOKEN, loginResponseHttpResponse.data.acctoken);
+
+                        NimManager.getInstance(DocApplication.getInstance()).nimLogin();
 
                         mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, LOGIN_SUCCESS));
                     }

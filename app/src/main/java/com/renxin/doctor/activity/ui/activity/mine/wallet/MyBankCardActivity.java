@@ -47,7 +47,7 @@ public class MyBankCardActivity extends BaseActivity implements WalletContact.Vi
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
-    @BindView(R.id.bank_recycleview)
+    @BindView(R.id.recycleview)
     RecyclerView bankRecycleview;
 
 

@@ -3,11 +3,15 @@ package com.renxin.doctor.activity.nim;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.renxin.doctor.activity.nim.event.DocOnlineStateContentProvider;
 import com.netease.nim.uikit.api.NimUIKit;
+import com.netease.nim.uikit.business.contact.core.query.PinYin;
 import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.util.NIMUtil;
+import com.renxin.doctor.activity.nim.event.DocOnlineStateContentProvider;
+import com.renxin.doctor.activity.utils.LogUtil;
 
 /**
  * 网易云IM相关
@@ -36,20 +40,29 @@ public class NimManager {
 
     public NimManager(Context context) {
         this.context = context;
+        DocCache.setContext(context);
         // SDK初始化（启动后台服务，若已经存在用户登录信息， SDK 将完成自动登录）
-//        NIMClient.init(context, null, NimSDKOptionConfig.getSDKOptions(context));
-        NIMClient.init(context, getLoginInfo(), NimSDKOptionConfig.getSDKOptions(context));
+        NIMClient.init(context, getLoginInfo(), NimSDKOptionConfig.getSDKOptions(context)); // init pinyin
+
         // ... your codes
         if (NIMUtil.isMainProcess(context)) {
             // 注意：以下操作必须在主进程中进行
             // 1、UI相关初始化操作
             // 2、相关Service调用
-            initUiKit();
+            // init pinyin
+            PinYin.init(context);
+            PinYin.validate();
+            // 初始化消息提醒
+            NIMClient.toggleNotification(UserPreferences.getNotificationToggle());
+            // 云信sdk相关业务初始化
+            NIMInitManager.getInstance().init(true);
+
+            initUIKit();
         }
+
     }
 
-    private void initUiKit() {
-
+    private void initUIKit() {
         // 初始化
         NimUIKit.init(context);
 
@@ -76,19 +89,43 @@ public class NimManager {
         NimUIKit.setOnlineStateContentProvider(new DocOnlineStateContentProvider());
     }
 
+    //手动登录
+    public void nimLogin() {
+        NIMClient.getService(AuthService.class).login(getLoginInfo())
+                .setCallback(new RequestCallback<LoginInfo>() {
+                    @Override
+                    public void onSuccess(LoginInfo loginInfo) {
+                        NimU.setNimAccount(loginInfo.getAccount());
+                        NimU.setNimToken(loginInfo.getToken());
+                        LogUtil.d("nimLogin onSuccess="+ loginInfo.toString());
+                    }
+
+                    @Override
+                    public void onFailed(int i) {
+                        LogUtil.d("nimLogin onFailed i=" + i);
+
+                    }
+
+                    @Override
+                    public void onException(Throwable throwable) {
+                        LogUtil.d("nimLogin errMsg=" + throwable.getMessage());
+
+                    }
+                });
+    }
+
 
     // 如果已经存在用户登录信息，返回LoginInfo，否则返回null即可
     private LoginInfo getLoginInfo() {
-        //TODO 测试
-        NimU.setNimAccount("123456");
-        NimU.setNimToken("123456");
+        String accId = NimU.getNimAccount();
+        String accToken = NimU.getNimToken();
+        //DocCache 缓存
+        DocCache.setAccount(accId.toLowerCase());
+        LogUtil.d("nim accid=" + accId + "acctoken=" + accToken);
 
-        String account = NimU.getNimAccount();
-        String token = NimU.getNimToken();
-
-        if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(token)) {
-            DocCache.setAccount(account.toLowerCase());
-            return new LoginInfo(account, token);
+        if (!TextUtils.isEmpty(accId) && !TextUtils.isEmpty(accToken)) {
+            DocCache.setAccount(accId.toLowerCase());
+            return new LoginInfo(accId, accToken);
         } else {
             return null;
         }

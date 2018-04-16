@@ -39,7 +39,7 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
-    @BindView(R.id.bank_recycleview)
+    @BindView(R.id.recycleview)
     RecyclerView bankRecycleview;
 
     @Inject

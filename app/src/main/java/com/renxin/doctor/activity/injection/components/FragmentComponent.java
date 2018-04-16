@@ -3,12 +3,12 @@ package com.renxin.doctor.activity.injection.components;
 import android.content.Context;
 
 import com.renxin.doctor.activity.injection.qualifiers.FragmentContext;
-import com.renxin.doctor.activity.ui.activity.fragment.OrderFragment;
+import com.renxin.doctor.activity.ui.activity.fragment.FindFragment;
+import com.renxin.doctor.activity.ui.activity.fragment.PatientFragment;
 import com.renxin.doctor.activity.ui.activity.fragment.WorkRoomFragment;
 import com.renxin.doctor.activity.ui.activity.login.LoginFragment;
 import com.renxin.doctor.activity.injection.modules.FragmentModule;
 import com.renxin.doctor.activity.injection.scopes.PerFragment;
-import com.renxin.doctor.activity.ui.activity.fragment.HomeFragment;
 import com.renxin.doctor.activity.ui.activity.fragment.MineFragment;
 
 import dagger.Component;
@@ -33,9 +33,9 @@ public interface FragmentComponent extends ApplicationComponent {
 
     void inject(LoginFragment loginFragment);
 
-    void inject(HomeFragment homeFragment);
+    void inject(PatientFragment patientFragment);
 
     void inject(MineFragment mineFragment);
 
-    void inject(OrderFragment orderFragment);
+    void inject(FindFragment findFragment);
 }

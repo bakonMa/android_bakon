@@ -69,6 +69,7 @@ public class U {
     //获取sp中 设置消息提醒flag
     public static void logout() {
         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, "");
+        //nim 的accid，acctoken
         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCID, "");
         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCTOKEN, "");
         //消息提醒
