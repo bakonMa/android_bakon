@@ -8,27 +8,30 @@
 
     <include layout="@layout/base_toolbar" />
 
-    <com.renxin.doctor.activity.widget.RelativeWithText
+    <com.renxin.doctor.activity.widget.RelativeWithImage
         android:id="@+id/tv_system_message"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_marginBottom="10dp"
-        app:isShowLineT="false"
-        app:isShowTab="false"
-        app:titleT="系统消息" />
+        app:isShowLine="false"
+        app:leftIamge="@drawable/icon_aboutapp"
+        app:title="系统消息" />
 
-    <com.renxin.doctor.activity.widget.RelativeWithText
+    <com.renxin.doctor.activity.widget.RelativeWithImage
         android:id="@+id/tv_p2p_message"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        app:isShowLineT="false"
-        app:isShowTab="false"
-        app:titleT="咨询消息" />
+        app:isShowLine="false"
+        app:leftIamge="@drawable/icon_aboutapp"
+        app:title="咨询消息" />
+
+    <View style="@style/line_gray_hor" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recent_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:overScrollMode="never" />
 
 </LinearLayout>

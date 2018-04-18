@@ -5,9 +5,6 @@ import android.graphics.Color;
 import android.os.Environment;
 import android.text.TextUtils;
 
-import com.renxin.doctor.activity.R;
-import com.renxin.doctor.activity.ui.activity.home.MainActivity;
-import com.renxin.doctor.activity.utils.UIUtils;
 import com.netease.nim.uikit.api.wrapper.MessageRevokeTip;
 import com.netease.nim.uikit.api.wrapper.NimUserInfoProvider;
 import com.netease.nimlib.sdk.SDKOptions;
@@ -16,6 +13,9 @@ import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.mixpush.MixPushConfig;
 import com.netease.nimlib.sdk.msg.MessageNotifierCustomization;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.renxin.doctor.activity.R;
+import com.renxin.doctor.activity.ui.nimview.RecentActivity;
+import com.renxin.doctor.activity.utils.UIUtils;
 
 import java.io.IOException;
 
@@ -64,10 +64,11 @@ class NimSDKOptionConfig {
         options.reducedIM = false;
 
         // 是否检查manifest 配置，调试阶段打开，调试通过之后请关掉
-        options.checkManifestConfig = false;
+        //todo
+        options.checkManifestConfig = true;
 
         // 是否启用群消息已读功能，默认关闭
-        options.enableTeamMsgAck = true;
+        options.enableTeamMsgAck = false;
 
         // 配置第三方推送
         options.mixPushConfig = buildMixPushConfig();
@@ -113,6 +114,7 @@ class NimSDKOptionConfig {
         }
     }
 
+    //新消息
     private static void initStatusBarNotificationConfig(SDKOptions options) {
         // load 应用的状态栏配置
         StatusBarNotificationConfig config = loadStatusBarNotificationConfig();
@@ -138,11 +140,11 @@ class NimSDKOptionConfig {
     // 这里开发者可以自定义该应用初始的 StatusBarNotificationConfig
     private static StatusBarNotificationConfig loadStatusBarNotificationConfig() {
         StatusBarNotificationConfig config = new StatusBarNotificationConfig();
-        // 点击通知需要跳转到的界面
         //todo 注意修改
-        config.notificationEntrance = MainActivity.class;
-        config.notificationSmallIconId = R.mipmap.logo;
-        config.notificationColor = DocCache.getContext().getResources().getColor(R.color.white);
+        //通知设置，点击通知需要跳转到的界面
+        config.notificationEntrance = RecentActivity.class;
+        config.notificationSmallIconId = R.drawable.ic_stat_notify_msg;//小图标，必须透明
+        config.notificationColor = DocCache.getContext().getResources().getColor(R.color.color_main);
         // 通知铃声的uri字符串
 //        config.notificationSound = "android.resource://com.netease.nim.demo/raw/msg";
 //        config.notificationFolded = true;

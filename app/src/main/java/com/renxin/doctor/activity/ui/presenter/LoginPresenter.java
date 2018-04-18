@@ -103,7 +103,7 @@ public class LoginPresenter implements LoginContact.Presenter {
                         //nim的accid，acctoken
                         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCID, loginResponseHttpResponse.data.accid);
                         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCTOKEN, loginResponseHttpResponse.data.acctoken);
-
+                        //nim手动登录
                         NimManager.getInstance(DocApplication.getInstance()).nimLogin();
 
                         mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, LOGIN_SUCCESS));
@@ -139,6 +139,8 @@ public class LoginPresenter implements LoginContact.Presenter {
                         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, loginResponseHttpResponse.data.token);
                         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCID, loginResponseHttpResponse.data.accid);
                         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCTOKEN, loginResponseHttpResponse.data.acctoken);
+                        //nim手动登录
+                        NimManager.getInstance(DocApplication.getInstance()).nimLogin();
 
                         mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, REGISTE_SUCCESS));
                     }

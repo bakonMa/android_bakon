@@ -42,11 +42,12 @@ public abstract class PickImageAction extends BaseAction {
 
     @Override
     public void onClick() {
+        //默认 照片和拍照 自己选择
         int requestCode = makeRequestCode(RequestCode.PICK_IMAGE);
-        showSelector(getTitleId(), requestCode, multiSelect, tempFile());
+        showSelector(getTitleId(), requestCode, multiSelect, tempFile(),2);
     }
 
-    private String tempFile() {
+    public String tempFile() {
         String filename = StringUtil.get32UUID() + JPG;
         return StorageUtil.getWritePath(filename, StorageType.TYPE_TEMP);
     }
@@ -54,7 +55,7 @@ public abstract class PickImageAction extends BaseAction {
     /**
      * 打开图片选择器
      */
-    private void showSelector(int titleId, final int requestCode, final boolean multiSelect, final String outPath) {
+    public void showSelector(int titleId, final int requestCode, final boolean multiSelect, final String outPath, int openType) {
         PickImageHelper.PickImageOption option = new PickImageHelper.PickImageOption();
         option.titleResId = titleId;
         option.multiSelect = multiSelect;
@@ -64,7 +65,17 @@ public abstract class PickImageAction extends BaseAction {
         option.cropOutputImageHeight = PORTRAIT_IMAGE_WIDTH;
         option.outputPath = outPath;
 
-        PickImageHelper.pickImage(getActivity(), requestCode, option);
+        switch (openType){
+            case 0://照片
+                PickImageHelper.openPhoto(getActivity(), requestCode, option);
+                break;
+            case 1://拍照
+                PickImageHelper.openCamera(getActivity(), requestCode, option);
+                break;
+            case 2://照片和拍照
+                PickImageHelper.pickImage(getActivity(), requestCode, option);
+                break;
+        }
     }
 
     @Override

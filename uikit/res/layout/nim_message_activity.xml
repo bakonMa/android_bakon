@@ -17,7 +17,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/white"
+            app:titleTextColor="@color/color_black_333333"
             app:titleTextAppearance="@style/Toolbar.TitleText"
             app:subtitleTextAppearance="@style/Toolbar.SubTitleText"/>
     </android.support.design.widget.AppBarLayout>

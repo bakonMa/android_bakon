@@ -194,7 +194,7 @@ public class LoginFragment extends BaseFragment implements LoginContact.View {
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-        ToastUtil.show(errorCode);
+        ToastUtil.show(errorMsg);
     }
 
     //倒计时

@@ -30,22 +30,22 @@ public class UIKitOptions {
     /**
      * 开启@功能
      */
-    public boolean aitEnable = true;
+    public boolean aitEnable = false;
 
     /**
      * 支持@群成员
      */
-    public boolean aitTeamMember = true;
+    public boolean aitTeamMember = false;
 
     /**
      * 支持在 IM 聊天中@机器人
      */
-    public boolean aitIMRobot = true;
+    public boolean aitIMRobot = false;
 
     /**
      * 支持在 Chat Room 中@机器人
      */
-    public boolean aitChatRoomRobot = true;
+    public boolean aitChatRoomRobot = false;
 
     /**
      * UIKit 异步初始化

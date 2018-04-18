@@ -15,8 +15,15 @@ public interface H5Config {
 //    发现H5链接:
 //    书籍http://dev.dr.jhtcm.com/books
 //    百科http://hxd.dev.dr.jhtcm.com/baike
+    //个人名片
     String H5_USERINFO = BuildConfig.BASE_URL + "web_mycard/";
     String H5_USERINFO_TITLE = "个人名片";
+    //问诊单
+    String H5_ASKPAPER = BuildConfig.BASE_URL + "web_edit_inquiry/";
+    String H5_ASKPAPER_INFO = BuildConfig.BASE_URL + "web_inquiryinfo?id=";
+    //随诊单
+    String H5_FOLLOWPAPER = BuildConfig.BASE_URL + "web_checkups/";
+    String H5_FOLLOWPAPER_INFO = BuildConfig.BASE_URL + "web_checkupsinfo?id=";
 
     //*******************jht end**********************
 

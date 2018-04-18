@@ -155,7 +155,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.home.MainActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.login.RegisteActivity"
             android:windowSoftInputMode="adjustPan" />
@@ -226,8 +227,17 @@
 
         <!--im-->
         <activity
+            android:name=".ui.nimview.PaperH5Activity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.nimview.RecentActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.nimview.P2PChatActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
 
     </application>
 

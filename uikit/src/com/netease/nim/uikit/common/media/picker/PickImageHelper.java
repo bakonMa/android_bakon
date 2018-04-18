@@ -96,4 +96,30 @@ public class PickImageHelper {
 
         dialog.show();
     }
+
+    //打开照片
+    public static void openPhoto(final Context context, final int requestCode, final PickImageOption option) {
+        int from = PickImageActivity.FROM_CAMERA;
+        if (!option.crop) {
+            PickImageActivity.start((Activity) context, requestCode, from, option.outputPath, option.multiSelect, 1,
+                    true, false, 0, 0);
+        } else {
+            PickImageActivity.start((Activity) context, requestCode, from, option.outputPath, false, 1,
+                    false, true, option.cropOutputImageWidth, option.cropOutputImageHeight);
+        }
+    }
+
+    //打开照相机
+    public static void openCamera(final Context context, final int requestCode, final PickImageOption option) {
+        int from = PickImageActivity.FROM_LOCAL;
+        if (!option.crop) {
+            PickImageActivity.start((Activity) context, requestCode, from, option.outputPath, option.multiSelect,
+                    option.multiSelectMaxCount, true, false, 0, 0);
+        } else {
+            PickImageActivity.start((Activity) context, requestCode, from, option.outputPath, false, 1,
+                    false, true, option.cropOutputImageWidth, option.cropOutputImageHeight);
+        }
+
+    }
+
 }

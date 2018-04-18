@@ -40,7 +40,16 @@ import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
 import com.renxin.doctor.activity.R;
+import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.nim.NimManager;
+import com.renxin.doctor.activity.nim.message.SessionHelper;
+import com.renxin.doctor.activity.nim.message.extension.AskPaperAttachment;
+import com.renxin.doctor.activity.nim.message.extension.FollowPaperAttachment;
+import com.renxin.doctor.activity.nim.message.extension.GuessAttachment;
+import com.renxin.doctor.activity.nim.message.extension.SnapChatAttachment;
+import com.renxin.doctor.activity.nim.message.extension.StickerAttachment;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
+import com.renxin.doctor.activity.utils.LogUtil;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
 import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 
@@ -70,16 +79,18 @@ public class RecentActivity extends BaseActivity {
     @BindView(R.id.recent_recyclerview)
     RecyclerView recyclerView;
 
-
     // data
     private List<RecentContact> items = new ArrayList<>();
     private Map<String, RecentContact> cached = new HashMap<>(3); // 暂缓刷上列表的数据（未读数红点拖拽动画运行时用）
     private RecentContactAdapter adapter;
-
     private RecentContactsCallback callback;
+
     private boolean msgLoaded = false;
     private UserInfoObserver userInfoObserver;
     private Handler handler = new Handler();
+    private List<RecentContact> loadedRecents;
+    // 暂存消息，当RecentContact 监听回来时使用，结束后清掉
+    private Map<String, Set<IMMessage>> cacheMessages = new HashMap<>();
 
     @Override
     protected int provideRootLayout() {
@@ -89,30 +100,9 @@ public class RecentActivity extends BaseActivity {
     @Override
     protected void initView() {
         initToolbar();
-        // adapter
-        adapter = new RecentContactAdapter(recyclerView, items);
-        initCallBack();
-        adapter.setCallback(callback);
-        // recyclerView
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addOnItemTouchListener(touchListener);
-
-        // ios style
-        OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
-        // drop listener
-        DropManager.getInstance().setDropListener(new DropManager.IDropListener() {
-            @Override
-            public void onDropBegin() {
-                touchListener.setShouldDetectGesture(false);
-            }
-
-            @Override
-            public void onDropEnd() {
-                touchListener.setShouldDetectGesture(true);
-            }
-        });
-
+        //nim手动登录
+        NimManager.getInstance(DocApplication.getInstance()).nimLogin();
+        initMessageList();
         requestMessages(true);
         registerObservers(true);
         registerDropCompletedListener(true);
@@ -136,7 +126,7 @@ public class RecentActivity extends BaseActivity {
 
     private void notifyDataSetChanged() {
         adapter.notifyDataSetChanged();
-        boolean empty = items.isEmpty() && msgLoaded;
+//        boolean empty = items.isEmpty() && msgLoaded;
 //        emptyBg.setVisibility(empty ? View.VISIBLE : View.GONE);
 //        emptyHint.setHint("还没有会话，在通讯录中找个人聊聊吧！");
     }
@@ -149,6 +139,37 @@ public class RecentActivity extends BaseActivity {
         registerOnlineStateChangeListener(false);
     }
 
+    /**
+     * 初始化消息列表
+     */
+    private void initMessageList() {
+        // adapter
+        adapter = new RecentContactAdapter(recyclerView, items);
+        //会话列表请求回调
+        initCallBack();
+        adapter.setCallback(callback);
+        // recyclerView
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addOnItemTouchListener(touchListener);
+
+        // ios style 弹性下拉
+        OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+        // drop listener
+        DropManager.getInstance().setDropListener(new DropManager.IDropListener() {
+            @Override
+            public void onDropBegin() {
+                touchListener.setShouldDetectGesture(false);
+            }
+
+            @Override
+            public void onDropEnd() {
+                touchListener.setShouldDetectGesture(true);
+            }
+        });
+    }
+
+    //消息记录回调
     private void initCallBack() {
         if (callback != null) {
             return;
@@ -156,67 +177,71 @@ public class RecentActivity extends BaseActivity {
         callback = new RecentContactsCallback() {
             @Override
             public void onRecentContactsLoaded() {
-
+                // 最近联系人列表加载完毕
             }
 
             @Override
             public void onUnreadCountChange(int unreadCount) {
-
+                // 未读数发生变化
+                LogUtil.d("未读消息数 unreadCount=" + unreadCount);
             }
 
             @Override
             public void onItemClick(RecentContact recent) {
-                if (recent.getSessionType() == SessionTypeEnum.Team) {
-                    NimUIKit.startTeamSession(actContext(), recent.getContactId());
-                } else if (recent.getSessionType() == SessionTypeEnum.P2P) {
-                    NimUIKit.startP2PSession(actContext(), recent.getContactId());
+                // 回调函数，以供打开会话窗口时传入定制化参数，或者做其他动作
+                switch (recent.getSessionType()) {
+                    case P2P:
+                        SessionHelper.startP2PSession(actContext(), recent.getContactId());
+//                        P2PChatActivity.start(actContext(), recent.getContactId(), null, null);
+                        break;
+                    case Team:
+                        NimUIKit.startTeamSession(actContext(), recent.getContactId());
+//                        SessionHelper.startTeamSession(getActivity(), recent.getContactId());
+                        break;
+                    default:
+                        break;
                 }
             }
 
             @Override
             public String getDigestOfAttachment(RecentContact recentContact, MsgAttachment attachment) {
+                // 设置自定义消息的摘要消息，展示在最近联系人列表的消息缩略栏上
+                // 当然，你也可以自定义一些内建消息的缩略语，例如图片，语音，音视频会话等，自定义的缩略语会被优先使用。
+                if (attachment instanceof AskPaperAttachment) {//问诊单
+                    return "[问诊单]";
+                } else if (attachment instanceof FollowPaperAttachment) {//随诊单
+                    return "[随诊单]";
+                } else if (attachment instanceof GuessAttachment) {
+                    GuessAttachment guess = (GuessAttachment) attachment;
+                    return guess.getValue().getDesc();
+                } else if (attachment instanceof StickerAttachment) {
+                    return "[贴图]";
+                } else if (attachment instanceof SnapChatAttachment) {
+                    return "[阅后即焚]";
+                }
                 return null;
             }
 
             @Override
             public String getDigestOfTipMsg(RecentContact recent) {
+                // 设置Tip消息的摘要信息，展示在最近联系人列表的消息缩略栏上
+                String msgId = recent.getRecentMessageId();
+                List<String> uuids = new ArrayList<>(1);
+                uuids.add(msgId);
+                List<IMMessage> msgs = NIMClient.getService(MsgService.class).queryMessageListByUuidBlock(uuids);
+                if (msgs != null && !msgs.isEmpty()) {
+                    IMMessage msg = msgs.get(0);
+                    Map<String, Object> content = msg.getRemoteExtension();
+                    if (content != null && !content.isEmpty()) {
+                        return (String) content.get("content");
+                    }
+                }
                 return null;
             }
         };
     }
 
-    private SimpleClickListener<RecentContactAdapter> touchListener = new SimpleClickListener<RecentContactAdapter>() {
-        @Override
-        public void onItemClick(RecentContactAdapter adapter, View view, int position) {
-            if (callback != null) {
-                RecentContact recent = adapter.getItem(position);
-                callback.onItemClick(recent);
-            }
-        }
-
-        @Override
-        public void onItemLongClick(RecentContactAdapter adapter, View view, int position) {
-            showLongClickMenu(adapter.getItem(position), position);
-        }
-
-        @Override
-        public void onItemChildClick(RecentContactAdapter adapter, View view, int position) {
-
-        }
-
-        @Override
-        public void onItemChildLongClick(RecentContactAdapter adapter, View view, int position) {
-
-        }
-    };
-
-    OnlineStateChangeObserver onlineStateChangeObserver = new OnlineStateChangeObserver() {
-        @Override
-        public void onlineStateChange(Set<String> accounts) {
-            notifyDataSetChanged();
-        }
-    };
-
+    //在线状态监听
     private void registerOnlineStateChangeListener(boolean register) {
         if (!NimUIKitImpl.enableOnlineState()) {
             return;
@@ -286,6 +311,175 @@ public class RecentActivity extends BaseActivity {
         alertDialog.show();
     }
 
+    //在线状态变化监听
+    OnlineStateChangeObserver onlineStateChangeObserver = new OnlineStateChangeObserver() {
+        @Override
+        public void onlineStateChange(Set<String> accounts) {
+            notifyDataSetChanged();
+        }
+    };
+    Observer<IMMessage> statusObserver = new Observer<IMMessage>() {
+        @Override
+        public void onEvent(IMMessage message) {
+            int index = getItemIndex(message.getUuid());
+            if (index >= 0 && index < items.size()) {
+                RecentContact item = items.get(index);
+                item.setMsgStatus(message.getStatus());
+                refreshViewHolderByIndex(index);
+            }
+        }
+    };
+    TeamDataChangedObserver teamDataChangedObserver = new TeamDataChangedObserver() {
+
+        @Override
+        public void onUpdateTeams(List<Team> teams) {
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRemoveTeam(Team team) {
+
+        }
+    };
+    TeamMemberDataChangedObserver teamMemberDataChangedObserver = new TeamMemberDataChangedObserver() {
+        @Override
+        public void onUpdateTeamMember(List<TeamMember> members) {
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onRemoveTeamMember(List<TeamMember> member) {
+
+        }
+    };
+
+    Observer<RecentContact> deleteObserver = new Observer<RecentContact>() {
+        @Override
+        public void onEvent(RecentContact recentContact) {
+            if (recentContact != null) {
+                for (RecentContact item : items) {
+                    if (TextUtils.equals(item.getContactId(), recentContact.getContactId())
+                            && item.getSessionType() == recentContact.getSessionType()) {
+                        items.remove(item);
+                        refreshMessages(true);
+                        break;
+                    }
+                }
+            } else {
+                items.clear();
+                refreshMessages(true);
+            }
+        }
+    };
+    //好友数据发送变化监听
+    ContactChangedObserver friendDataChangedObserver = new ContactChangedObserver() {
+        @Override
+        public void onAddedOrUpdatedFriends(List<String> accounts) {
+            refreshMessages(false);
+        }
+
+        @Override
+        public void onDeletedFriends(List<String> accounts) {
+            refreshMessages(false);
+        }
+
+        @Override
+        public void onAddUserToBlackList(List<String> account) {
+            refreshMessages(false);
+        }
+
+        @Override
+        public void onRemoveUserFromBlackList(List<String> account) {
+            refreshMessages(false);
+        }
+    };
+    //
+    private SimpleClickListener<RecentContactAdapter> touchListener = new SimpleClickListener<RecentContactAdapter>() {
+        @Override
+        public void onItemClick(RecentContactAdapter adapter, View view, int position) {
+            if (callback != null) {
+                RecentContact recent = adapter.getItem(position);
+                callback.onItemClick(recent);
+            }
+        }
+
+        @Override
+        public void onItemLongClick(RecentContactAdapter adapter, View view, int position) {
+            showLongClickMenu(adapter.getItem(position), position);
+        }
+
+        @Override
+        public void onItemChildClick(RecentContactAdapter adapter, View view, int position) {
+
+        }
+
+        @Override
+        public void onItemChildLongClick(RecentContactAdapter adapter, View view, int position) {
+
+        }
+    };
+
+    Observer<List<RecentContact>> messageObserver = new Observer<List<RecentContact>>() {
+        @Override
+        public void onEvent(List<RecentContact> recentContacts) {
+            if (!DropManager.getInstance().isTouchable()) {
+                // 正在拖拽红点，缓存数据
+                for (RecentContact r : recentContacts) {
+                    cached.put(r.getContactId(), r);
+                }
+
+                return;
+            }
+
+            onRecentContactChanged(recentContacts);
+        }
+    };
+    DropCover.IDropCompletedListener dropCompletedListener = new DropCover.IDropCompletedListener() {
+        @Override
+        public void onCompleted(Object id, boolean explosive) {
+            if (cached != null && !cached.isEmpty()) {
+                // 红点爆裂，已经要清除未读，不需要再刷cached
+                if (explosive) {
+                    if (id instanceof RecentContact) {
+                        RecentContact r = (RecentContact) id;
+                        cached.remove(r.getContactId());
+                    } else if (id instanceof String && ((String) id).contentEquals("0")) {
+                        cached.clear();
+                    }
+                }
+
+                // 刷cached
+                if (!cached.isEmpty()) {
+                    List<RecentContact> recentContacts = new ArrayList<>(cached.size());
+                    recentContacts.addAll(cached.values());
+                    cached.clear();
+
+                    onRecentContactChanged(recentContacts);
+                }
+            }
+        }
+    };
+    //监听在线消息中是否有@我
+    private Observer<List<IMMessage>> messageReceiverObserver = new Observer<List<IMMessage>>() {
+        @Override
+        public void onEvent(List<IMMessage> imMessages) {
+            if (imMessages != null) {
+                for (IMMessage imMessage : imMessages) {
+                    if (!TeamMemberAitHelper.isAitMessage(imMessage)) {
+                        continue;
+                    }
+                    Set<IMMessage> cacheMessageSet = cacheMessages.get(imMessage.getSessionId());
+                    if (cacheMessageSet == null) {
+                        cacheMessageSet = new HashSet<>();
+                        cacheMessages.put(imMessage.getSessionId(), cacheMessageSet);
+                    }
+                    cacheMessageSet.add(imMessage);
+                }
+            }
+        }
+    };
+
+
     private void addTag(RecentContact recent, long tag) {
         tag = recent.getTag() | tag;
         recent.setTag(tag);
@@ -300,46 +494,45 @@ public class RecentActivity extends BaseActivity {
         return (recent.getTag() & tag) == tag;
     }
 
-    private List<RecentContact> loadedRecents;
-
     private void requestMessages(boolean delay) {
         if (msgLoaded) {
             return;
         }
         handler.postDelayed(new Runnable() {
-
             @Override
             public void run() {
                 if (msgLoaded) {
                     return;
                 }
                 // 查询最近联系人列表数据
-                NIMClient.getService(MsgService.class).queryRecentContacts().setCallback(new RequestCallbackWrapper<List<RecentContact>>() {
-
-                    @Override
-                    public void onResult(int code, List<RecentContact> recents, Throwable exception) {
-                        if (code != ResponseCode.RES_SUCCESS || recents == null) {
-                            return;
-                        }
-                        loadedRecents = recents;
-                        // 初次加载，更新离线的消息中是否有@我的消息
-                        for (RecentContact loadedRecent : loadedRecents) {
-                            if (loadedRecent.getSessionType() == SessionTypeEnum.Team) {
-                                updateOfflineContactAited(loadedRecent);
-                            }
-                        }
-                        // 此处如果是界面刚初始化，为了防止界面卡顿，可先在后台把需要显示的用户资料和群组资料在后台加载好，然后再刷新界面
-                        msgLoaded = true;
-                        onRecentContactsLoaded();
+                NIMClient.getService(MsgService.class).queryRecentContacts()
+                        .setCallback(new RequestCallbackWrapper<List<RecentContact>>() {
+                            @Override
+                            public void onResult(int code, List<RecentContact> recents, Throwable exception) {
+                                if (code != ResponseCode.RES_SUCCESS || recents == null) {
+                                    return;
+                                }
+                                loadedRecents = recents;
+                                // 初次加载，更新离线的消息中是否有@我的消息
+                                for (RecentContact loadedRecent : loadedRecents) {
+                                    if (loadedRecent.getSessionType() == SessionTypeEnum.Team) {
+                                        updateOfflineContactAited(loadedRecent);
+                                    }
+                                }
+                                // 此处如果是界面刚初始化，为了防止界面卡顿，可先在后台把需要显示的用户资料和群组资料在后台加载好，然后再刷新界面
+                                msgLoaded = true;
+                                //会话列表数据处理
+                                onRecentContactsLoaded();
 //                        if (isAdded()) {
 //                            onRecentContactsLoaded();
 //                        }
-                    }
-                });
+                            }
+                        });
             }
         }, delay ? 250 : 0);
     }
 
+    //会话列表数据处理
     private void onRecentContactsLoaded() {
         items.clear();
         if (loadedRecents != null) {
@@ -353,14 +546,13 @@ public class RecentActivity extends BaseActivity {
         }
     }
 
+    //view数据数据刷新
     private void refreshMessages(boolean unreadChanged) {
         sortRecentContacts(items);
         notifyDataSetChanged();
 
         if (unreadChanged) {
-
             // 方式一：累加每个最近联系人的未读（快）
-
             int unreadNum = 0;
             for (RecentContact r : items) {
                 unreadNum += r.getUnreadCount();
@@ -368,7 +560,6 @@ public class RecentActivity extends BaseActivity {
 
             // 方式二：直接从SDK读取（相对慢）
             //int unreadNum = NIMClient.getService(MsgService.class).getTotalUnreadCount();
-
             if (callback != null) {
                 callback.onUnreadCountChange(unreadNum);
             }
@@ -441,45 +632,6 @@ public class RecentActivity extends BaseActivity {
         }
     }
 
-    // 暂存消息，当RecentContact 监听回来时使用，结束后清掉
-    private Map<String, Set<IMMessage>> cacheMessages = new HashMap<>();
-
-    //监听在线消息中是否有@我
-    private Observer<List<IMMessage>> messageReceiverObserver = new Observer<List<IMMessage>>() {
-        @Override
-        public void onEvent(List<IMMessage> imMessages) {
-            if (imMessages != null) {
-                for (IMMessage imMessage : imMessages) {
-                    if (!TeamMemberAitHelper.isAitMessage(imMessage)) {
-                        continue;
-                    }
-                    Set<IMMessage> cacheMessageSet = cacheMessages.get(imMessage.getSessionId());
-                    if (cacheMessageSet == null) {
-                        cacheMessageSet = new HashSet<>();
-                        cacheMessages.put(imMessage.getSessionId(), cacheMessageSet);
-                    }
-                    cacheMessageSet.add(imMessage);
-                }
-            }
-        }
-    };
-
-    Observer<List<RecentContact>> messageObserver = new Observer<List<RecentContact>>() {
-        @Override
-        public void onEvent(List<RecentContact> recentContacts) {
-            if (!DropManager.getInstance().isTouchable()) {
-                // 正在拖拽红点，缓存数据
-                for (RecentContact r : recentContacts) {
-                    cached.put(r.getContactId(), r);
-                }
-
-                return;
-            }
-
-            onRecentContactChanged(recentContacts);
-        }
-    };
-
     private void onRecentContactChanged(List<RecentContact> recentContacts) {
         int index;
         for (RecentContact r : recentContacts) {
@@ -506,88 +658,6 @@ public class RecentActivity extends BaseActivity {
 
         refreshMessages(true);
     }
-
-    DropCover.IDropCompletedListener dropCompletedListener = new DropCover.IDropCompletedListener() {
-        @Override
-        public void onCompleted(Object id, boolean explosive) {
-            if (cached != null && !cached.isEmpty()) {
-                // 红点爆裂，已经要清除未读，不需要再刷cached
-                if (explosive) {
-                    if (id instanceof RecentContact) {
-                        RecentContact r = (RecentContact) id;
-                        cached.remove(r.getContactId());
-                    } else if (id instanceof String && ((String) id).contentEquals("0")) {
-                        cached.clear();
-                    }
-                }
-
-                // 刷cached
-                if (!cached.isEmpty()) {
-                    List<RecentContact> recentContacts = new ArrayList<>(cached.size());
-                    recentContacts.addAll(cached.values());
-                    cached.clear();
-
-                    onRecentContactChanged(recentContacts);
-                }
-            }
-        }
-    };
-
-    Observer<IMMessage> statusObserver = new Observer<IMMessage>() {
-        @Override
-        public void onEvent(IMMessage message) {
-            int index = getItemIndex(message.getUuid());
-            if (index >= 0 && index < items.size()) {
-                RecentContact item = items.get(index);
-                item.setMsgStatus(message.getStatus());
-                refreshViewHolderByIndex(index);
-            }
-        }
-    };
-
-    Observer<RecentContact> deleteObserver = new Observer<RecentContact>() {
-        @Override
-        public void onEvent(RecentContact recentContact) {
-            if (recentContact != null) {
-                for (RecentContact item : items) {
-                    if (TextUtils.equals(item.getContactId(), recentContact.getContactId())
-                            && item.getSessionType() == recentContact.getSessionType()) {
-                        items.remove(item);
-                        refreshMessages(true);
-                        break;
-                    }
-                }
-            } else {
-                items.clear();
-                refreshMessages(true);
-            }
-        }
-    };
-
-    TeamDataChangedObserver teamDataChangedObserver = new TeamDataChangedObserver() {
-
-        @Override
-        public void onUpdateTeams(List<Team> teams) {
-            adapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onRemoveTeam(Team team) {
-
-        }
-    };
-
-    TeamMemberDataChangedObserver teamMemberDataChangedObserver = new TeamMemberDataChangedObserver() {
-        @Override
-        public void onUpdateTeamMember(List<TeamMember> members) {
-            adapter.notifyDataSetChanged();
-        }
-
-        @Override
-        public void onRemoveTeamMember(List<TeamMember> member) {
-
-        }
-    };
 
     private int getItemIndex(String uuid) {
         for (int i = 0; i < items.size(); i++) {
@@ -631,28 +701,6 @@ public class RecentActivity extends BaseActivity {
             NimUIKit.getUserInfoObservable().registerObserver(userInfoObserver, false);
         }
     }
-
-    ContactChangedObserver friendDataChangedObserver = new ContactChangedObserver() {
-        @Override
-        public void onAddedOrUpdatedFriends(List<String> accounts) {
-            refreshMessages(false);
-        }
-
-        @Override
-        public void onDeletedFriends(List<String> accounts) {
-            refreshMessages(false);
-        }
-
-        @Override
-        public void onAddUserToBlackList(List<String> account) {
-            refreshMessages(false);
-        }
-
-        @Override
-        public void onRemoveUserFromBlackList(List<String> account) {
-            refreshMessages(false);
-        }
-    };
 
     private void updateOfflineContactAited(final RecentContact recentContact) {
         if (recentContact == null || recentContact.getSessionType() != SessionTypeEnum.Team

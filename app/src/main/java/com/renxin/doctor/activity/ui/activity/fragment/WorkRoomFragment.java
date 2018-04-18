@@ -73,9 +73,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         banner.setIndicatorGravity(BannerConfig.RIGHT);
         //banner设置方法全部调用完毕时最后调用
         banner.start();
+
         requestPermissions();
-
-
     }
 
     @OnClick({R.id.tv_add_patient, R.id.tv_online_paper, R.id.tv_camera_patient, R.id.tv_comm_paper,
@@ -84,9 +83,10 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     void btnOnClick(View view) {
         switch (view.getId()) {
             case R.id.tv_add_patient:
+//                NimUIKit.startP2PSession(actContext(), "3ef2e56a2f9476de092743cbd577a900", null);
                 SessionHelper.startP2PSession(actContext(), "3ef2e56a2f9476de092743cbd577a900");
                 break;
-            case R.id.tv_online_paper:
+            case R.id.id_notification:
                 startActivity(new Intent(actContext(), RecentActivity.class));
                 break;
         }

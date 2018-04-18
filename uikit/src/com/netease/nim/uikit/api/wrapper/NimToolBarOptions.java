@@ -9,8 +9,9 @@ import com.netease.nim.uikit.common.activity.ToolBarOptions;
 public class NimToolBarOptions extends ToolBarOptions {
 
     public NimToolBarOptions() {
-        logoId = R.drawable.nim_actionbar_nest_dark_logo;
-        navigateId = R.drawable.nim_actionbar_dark_back_icon;
+//        logoId = R.drawable.nim_actionbar_nest_dark_logo;//logo小图标
+//        navigateId = R.drawable.nim_actionbar_dark_back_icon;//返回按钮
+        navigateId = R.drawable.icon_back_2;
         isNeedNavigate = true;
     }
 }

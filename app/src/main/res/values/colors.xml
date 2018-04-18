@@ -18,7 +18,7 @@
     <color name="color_popup_btn">#4F9EF3</color>
     <color name="color_phone">#828C9B</color>
     <color name="splash_tv_color">#B7B7B7</color>
-    <color name="toolbar_title">#666666</color>
+    <color name="toolbar_title">#333333</color>
     <color name="tab_selected">#4F9EF3</color>
     <color name="tab_unselected">#EDAF4A</color>
     <color name="card_start">#4F557F</color>

@@ -9,4 +9,9 @@ public class RequestCode {
     public final static int PREVIEW_IMAGE_FROM_CAMERA = 6;
     public final static int GET_LOCAL_IMAGE = 7;// 相册
     public final static int SEND_ACK_MESSAGE = 8; // 发送需要已读回执的消息
+    //jth使用
+    public final static int SEND_ASKPAPER = 10; //发送问诊单-进入h5
+    public final static int SEND_ASKPAPER_INFO = 11; //点击问诊单-进入h5
+    public final static int SEND_FOLLOWPAPER = 12; //发送随诊单-进入h5
+    public final static int SEND_FOLLOWPAPER_INFO = 13; //点击随诊单-进入h5
 }

@@ -76,9 +76,9 @@ public class ProgressWebView extends WebView implements OnKeyListener {
         //是否使用缓存
         settings.setAppCacheEnabled(true);
         //优先缓存
-        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+//        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         //不要缓存
-//        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
         //UserAgent添加appName,appVersion,channel,device_token
 //		StringBuilder stringBuilder = new StringBuilder(settings.getUserAgentString());

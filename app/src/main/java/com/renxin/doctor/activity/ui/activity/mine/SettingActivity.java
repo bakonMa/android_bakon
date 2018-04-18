@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.auth.AuthService;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
@@ -94,7 +96,13 @@ public class SettingActivity extends BaseActivity implements LoginContact.View {
                     @Override
                     public void onClick(View view) {
                         if (view.getId() == R.id.btn_ok) {
-                            mPresenter.loginOut();
+//                            mPresenter.loginOut();
+                            U.logout();
+                            NIMClient.getService(AuthService.class).logout();
+                            Intent intent = new Intent(DocApplication.getInstance(), LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
                         }
                     }
                 });

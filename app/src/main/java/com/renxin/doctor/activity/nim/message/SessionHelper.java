@@ -3,8 +3,6 @@ package com.renxin.doctor.activity.nim.message;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.netease.nim.uikit.api.NimUIKit;
@@ -16,8 +14,6 @@ import com.netease.nim.uikit.business.session.actions.BaseAction;
 import com.netease.nim.uikit.business.session.helper.MessageListPanelHelper;
 import com.netease.nim.uikit.business.session.module.MsgForwardFilter;
 import com.netease.nim.uikit.business.session.module.MsgRevokeFilter;
-import com.netease.nim.uikit.business.team.model.TeamExtras;
-import com.netease.nim.uikit.business.team.model.TeamRequestCode;
 import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialogHelper;
 import com.netease.nim.uikit.common.ui.popupmenu.NIMPopupMenu;
 import com.netease.nim.uikit.common.ui.popupmenu.PopupMenuItem;
@@ -39,17 +35,23 @@ import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.robot.model.RobotAttachment;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.nim.DocCache;
-import com.renxin.doctor.activity.nim.action.AVChatAction;
-import com.renxin.doctor.activity.nim.action.FileAction;
-import com.renxin.doctor.activity.nim.action.GuessAction;
-import com.renxin.doctor.activity.nim.action.SnapChatAction;
+import com.renxin.doctor.activity.nim.action.AskPaperAction;
+import com.renxin.doctor.activity.nim.action.FollowPaperAction;
+import com.renxin.doctor.activity.nim.action.PhotoAction;
 import com.renxin.doctor.activity.nim.action.TipAction;
+import com.renxin.doctor.activity.nim.message.extension.AskPaperAttachment;
 import com.renxin.doctor.activity.nim.message.extension.CustomAttachParser;
 import com.renxin.doctor.activity.nim.message.extension.CustomAttachment;
+import com.renxin.doctor.activity.nim.message.extension.FollowPaperAttachment;
 import com.renxin.doctor.activity.nim.message.extension.RedPacketAttachment;
 import com.renxin.doctor.activity.nim.message.extension.SnapChatAttachment;
 import com.renxin.doctor.activity.nim.message.extension.StickerAttachment;
+import com.renxin.doctor.activity.nim.message.viewholder.MsgViewHolderAskPaper;
 import com.renxin.doctor.activity.nim.message.viewholder.MsgViewHolderDefCustom;
+import com.renxin.doctor.activity.nim.message.viewholder.MsgViewHolderFollowPaper;
+import com.renxin.doctor.activity.nim.message.viewholder.MsgViewHolderSticker;
+import com.renxin.doctor.activity.nim.message.viewholder.MsgViewHolderTip;
+import com.renxin.doctor.activity.ui.nimview.P2PChatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,10 +66,6 @@ public class SessionHelper {
     private static final int ACTION_CLEAR_MESSAGE = 2;
 
     private static SessionCustomization p2pCustomization;
-    private static SessionCustomization normalTeamCustomization;
-    private static SessionCustomization advancedTeamCustomization;
-    private static SessionCustomization myP2pCustomization;
-    private static SessionCustomization robotCustomization;
     private static RecentCustomization recentCustomization;
 
     private static NIMPopupMenu popupMenu;
@@ -94,8 +92,6 @@ public class SessionHelper {
 
         NimUIKit.setCommonP2PSessionCustomization(getP2pCustomization());
 
-//        NimUIKit.setCommonTeamSessionCustomization(getTeamCustomization(null));
-
         NimUIKit.setRecentCustomization(getRecentCustomization());
     }
 
@@ -104,41 +100,27 @@ public class SessionHelper {
     }
 
     public static void startP2PSession(Context context, String account, IMMessage anchor) {
-
         if (!DocCache.getAccount().equals(account)) {
             if (NimUIKit.getRobotInfoProvider().getRobotByAccount(account) != null) {
-//                NimUIKit.startChatting(context, account, SessionTypeEnum.P2P, getRobotCustomization(), anchor);
+                NimUIKit.startChatting(context, account, SessionTypeEnum.P2P, null, anchor);
             } else {
-                NimUIKit.startP2PSession(context, account, anchor);
+//                NimUIKit.startP2PSession(context, account, anchor);
+                //p2p聊天
+                P2PChatActivity.start(context, account, getP2pCustomization(), null);
             }
         } else {
-            NimUIKit.startChatting(context, account, SessionTypeEnum.P2P, getMyP2pCustomization(), anchor);
+            NimUIKit.startChatting(context, account, SessionTypeEnum.P2P, null, anchor);
         }
-    }
-
-    public static void startTeamSession(Context context, String tid) {
-        startTeamSession(context, tid, null);
-    }
-
-    public static void startTeamSession(Context context, String tid, IMMessage anchor) {
-//        NimUIKit.startTeamSession(context, tid, getTeamCustomization(tid), anchor);
-    }
-
-    // 打开群聊界面(用于 UIKIT 中部分界面跳转回到指定的页面)
-    public static void startTeamSession(Context context, String tid, Class<? extends Activity> backToClass, IMMessage anchor) {
-//        NimUIKit.startChatting(context, tid, SessionTypeEnum.Team, getTeamCustomization(tid), backToClass, anchor);
     }
 
     // 定制化单聊界面。如果使用默认界面，返回null即可
     private static SessionCustomization getP2pCustomization() {
-
         if (p2pCustomization == null) {
             p2pCustomization = new SessionCustomization() {
                 // 由于需要Activity Result， 所以重载该函数。
                 @Override
                 public void onActivityResult(final Activity activity, int requestCode, int resultCode, Intent data) {
                     super.onActivityResult(activity, requestCode, resultCode, data);
-
                 }
 
                 @Override
@@ -147,7 +129,7 @@ public class SessionHelper {
                 }
             };
 
-            // 背景
+            // 聊天界面背景
 //            p2pCustomization.backgroundColor = Color.BLUE;
 //            p2pCustomization.backgroundUri = "file:///android_asset/xx/bk.jpg";
 //            p2pCustomization.backgroundUri = "file:///sdcard/Pictures/bk.png";
@@ -155,106 +137,44 @@ public class SessionHelper {
 
             // 定制加号点开后可以包含的操作， 默认已经有图片，视频等消息了
             ArrayList<BaseAction> actions = new ArrayList<>();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                actions.add(new AVChatAction(AVChatType.AUDIO));
-                actions.add(new AVChatAction(AVChatType.VIDEO));
-            }
-            actions.add(new SnapChatAction());
-            actions.add(new GuessAction());
-            actions.add(new FileAction());
+            actions.add(new AskPaperAction());
+            actions.add(new FollowPaperAction());
+            actions.add(new PhotoAction(0));
+            actions.add(new PhotoAction(1));
             actions.add(new TipAction());
 
             p2pCustomization.actions = actions;
-            p2pCustomization.withSticker = true;
+            p2pCustomization.withSticker = true;//显示表情为 true，不显示表情为 false（可自定义表情图）
 
             // 定制ActionBar右边的按钮，可以加多个
-            ArrayList<SessionCustomization.OptionsButton> buttons = new ArrayList<>();
-            SessionCustomization.OptionsButton cloudMsgButton = new SessionCustomization.OptionsButton() {
-                @Override
-                public void onClick(Context context, View view, String sessionId) {
-                    initPopuptWindow(context, view, sessionId, SessionTypeEnum.P2P);
-                }
-            };
-            cloudMsgButton.iconId = R.drawable.icon_setting;
-
+//            ArrayList<SessionCustomization.OptionsButton> buttons = new ArrayList<>();
+//            SessionCustomization.OptionsButton cloudMsgButton = new SessionCustomization.OptionsButton() {
+//                @Override
+//                public void onClick(Context context, View view, String sessionId) {
+//                    initPopuptWindow(context, view, sessionId, SessionTypeEnum.P2P);
+//                }
+//            };
+//            cloudMsgButton.iconId = R.drawable.icon_setting;
+//
 //            SessionCustomization.OptionsButton infoButton = new SessionCustomization.OptionsButton() {
 //                @Override
 //                public void onClick(Context context, View view, String sessionId) {
-//
-//                    MessageInfoActivity.startActivity(context, sessionId); //打开聊天信息
+////                    MessageInfoActivity.startActivity(context, sessionId); //打开聊天信息
 //                }
 //            };
 //
+//            infoButton.iconId = R.drawable.icon_add_main;
 //
-//            infoButton.iconId = R.drawable.nim_ic_message_actionbar_p2p_add;
-
-            buttons.add(cloudMsgButton);
+//            buttons.add(cloudMsgButton);
 //            buttons.add(infoButton);
-            p2pCustomization.buttons = buttons;
+//            p2pCustomization.buttons = buttons;
         }
 
         return p2pCustomization;
     }
 
-    private static SessionCustomization getMyP2pCustomization() {
-        if (myP2pCustomization == null) {
-            myP2pCustomization = new SessionCustomization() {
-                // 由于需要Activity Result， 所以重载该函数。
-                @Override
-                public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-                    if (requestCode == TeamRequestCode.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-                        String result = data.getStringExtra(TeamExtras.RESULT_EXTRA_REASON);
-                        if (result == null) {
-                            return;
-                        }
-                        if (result.equals(TeamExtras.RESULT_EXTRA_REASON_CREATE)) {
-                            String tid = data.getStringExtra(TeamExtras.RESULT_EXTRA_DATA);
-                            if (TextUtils.isEmpty(tid)) {
-                                return;
-                            }
 
-                            startTeamSession(activity, tid);
-                            activity.finish();
-                        }
-                    }
-                }
-
-                @Override
-                public MsgAttachment createStickerAttachment(String category, String item) {
-                    return new StickerAttachment(category, item);
-                }
-            };
-
-            // 背景
-//            p2pCustomization.backgroundColor = Color.BLUE;
-//            p2pCustomization.backgroundUri = "file:///android_asset/xx/bk.jpg";
-//            p2pCustomization.backgroundUri = "file:///sdcard/Pictures/bk.png";
-//            p2pCustomization.backgroundUri = "android.resource://com.netease.nim.demo/drawable/bk"
-
-            // 定制加号点开后可以包含的操作， 默认已经有图片，视频等消息了
-            ArrayList<BaseAction> actions = new ArrayList<>();
-            actions.add(new SnapChatAction());
-            actions.add(new GuessAction());
-            actions.add(new FileAction());
-            myP2pCustomization.actions = actions;
-            myP2pCustomization.withSticker = true;
-            // 定制ActionBar右边的按钮，可以加多个
-            ArrayList<SessionCustomization.OptionsButton> buttons = new ArrayList<>();
-            SessionCustomization.OptionsButton cloudMsgButton = new SessionCustomization.OptionsButton() {
-                @Override
-                public void onClick(Context context, View view, String sessionId) {
-                    initPopuptWindow(context, view, sessionId, SessionTypeEnum.P2P);
-                }
-            };
-
-            cloudMsgButton.iconId = R.drawable.icon_setting;
-
-            buttons.add(cloudMsgButton);
-            myP2pCustomization.buttons = buttons;
-        }
-        return myP2pCustomization;
-    }
-
+    //会话列表定义
     private static RecentCustomization getRecentCustomization() {
         if (recentCustomization == null) {
             recentCustomization = new DefaultRecentCustomization() {
@@ -289,6 +209,7 @@ public class SessionHelper {
                                     return ("[音频电话]");
                                 }
                             }
+
                     }
                     return super.getDefaultDigest(recent);
                 }
@@ -298,116 +219,24 @@ public class SessionHelper {
         return recentCustomization;
     }
 
-//    private static SessionCustomization getTeamCustomization(String tid) {
-//        if (normalTeamCustomization == null) {
-//
-//            // 定制加号点开后可以包含的操作， 默认已经有图片，视频等消息了
-//            final TeamAVChatAction avChatAction = new TeamAVChatAction(AVChatType.VIDEO);
-//            TeamAVChatProfile.sharedInstance().registerObserver(true);
-//
-//            ArrayList<BaseAction> actions = new ArrayList<>();
-//            actions.add(avChatAction);
-//            actions.add(new GuessAction());
-//            actions.add(new FileAction());
-//            if (NIMRedPacketClient.isEnable()) {
-//                actions.add(new RedPacketAction());
-//            }
-//            actions.add(new TipAction());
-//
-//            normalTeamCustomization = new SessionTeamCustomization(new SessionTeamCustomization.SessionTeamCustomListener() {
-//                @Override
-//                public void initPopupWindow(Context context, View view, String sessionId, SessionTypeEnum sessionTypeEnum) {
-//                    initPopuptWindow(context, view, sessionId, sessionTypeEnum);
-//                }
-//
-//                @Override
-//                public void onSelectedAccountsResult(ArrayList<String> selectedAccounts) {
-//                    avChatAction.onSelectedAccountsResult(selectedAccounts);
-//                }
-//
-//                @Override
-//                public void onSelectedAccountFail() {
-//                    avChatAction.onSelectedAccountFail();
-//                }
-//            });
-//
-//            normalTeamCustomization.actions = actions;
-//        }
-//
-//        if (advancedTeamCustomization == null) {
-//            // 定制加号点开后可以包含的操作， 默认已经有图片，视频等消息了
-//            final TeamAVChatAction avChatAction = new TeamAVChatAction(AVChatType.VIDEO);
-//            TeamAVChatProfile.sharedInstance().registerObserver(true);
-//
-//            ArrayList<BaseAction> actions = new ArrayList<>();
-//            actions.add(avChatAction);
-//            actions.add(new GuessAction());
-//            actions.add(new FileAction());
-//            actions.add(new AckMessageAction());
-//            if (NIMRedPacketClient.isEnable()) {
-//                actions.add(new RedPacketAction());
-//            }
-//            actions.add(new TipAction());
-//
-//            advancedTeamCustomization = new SessionTeamCustomization(new SessionTeamCustomization.SessionTeamCustomListener() {
-//                @Override
-//                public void initPopupWindow(Context context, View view, String sessionId, SessionTypeEnum sessionTypeEnum) {
-//                    initPopuptWindow(context, view, sessionId, sessionTypeEnum);
-//                }
-//
-//                @Override
-//                public void onSelectedAccountsResult(ArrayList<String> selectedAccounts) {
-//                    avChatAction.onSelectedAccountsResult(selectedAccounts);
-//                }
-//
-//                @Override
-//                public void onSelectedAccountFail() {
-//                    avChatAction.onSelectedAccountFail();
-//                }
-//            });
-//
-//            advancedTeamCustomization.actions = actions;
-//        }
-//
-//        if (TextUtils.isEmpty(tid)) {
-//            return normalTeamCustomization;
-//        } else {
-//            Team team = TeamDataCache.getInstance().getTeamById(tid);
-//            if (team != null && team.getType() == TeamTypeEnum.Advanced) {
-//                return advancedTeamCustomization;
-//            }
-//        }
-//        return normalTeamCustomization;
-//    }
 
     private static void registerViewHolders() {
-//        NimUIKit.registerMsgItemViewHolder(FileAttachment.class, MsgViewHolderFile.class);
+        NimUIKit.registerMsgItemViewHolder(AskPaperAttachment.class, MsgViewHolderAskPaper.class);//问诊单
+        NimUIKit.registerMsgItemViewHolder(FollowPaperAttachment.class, MsgViewHolderFollowPaper.class);//随诊单
 //        NimUIKit.registerMsgItemViewHolder(AVChatAttachment.class, MsgViewHolderAVChat.class);
 //        NimUIKit.registerMsgItemViewHolder(GuessAttachment.class, MsgViewHolderGuess.class);
+        NimUIKit.registerMsgItemViewHolder(StickerAttachment.class, MsgViewHolderSticker.class);
         NimUIKit.registerMsgItemViewHolder(CustomAttachment.class, MsgViewHolderDefCustom.class);
-//        NimUIKit.registerMsgItemViewHolder(StickerAttachment.class, MsgViewHolderSticker.class);
-//        NimUIKit.registerMsgItemViewHolder(SnapChatAttachment.class, MsgViewHolderSnapChat.class);
-//        NimUIKit.registerMsgItemViewHolder(RTSAttachment.class, MsgViewHolderRTS.class);
-//        NimUIKit.registerTipMsgViewHolder(MsgViewHolderTip.class);
-//
-//        registerRedPacketViewHolder();
+        NimUIKit.registerTipMsgViewHolder(MsgViewHolderTip.class);
     }
 
-//    private static void registerRedPacketViewHolder() {
-//        if (NIMRedPacketClient.isEnable()) {
-//            NimUIKit.registerMsgItemViewHolder(RedPacketAttachment.class, MsgViewHolderRedPacket.class);
-//            NimUIKit.registerMsgItemViewHolder(RedPacketOpenedAttachment.class, MsgViewHolderOpenRedPacket.class);
-//        } else {
-//            NimUIKit.registerMsgItemViewHolder(RedPacketAttachment.class, MsgViewHolderUnknown.class);
-//            NimUIKit.registerMsgItemViewHolder(RedPacketOpenedAttachment.class, MsgViewHolderUnknown.class);
-//        }
-//    }
-
+    //会话窗口消息列表一些点击事件的响应处理函数
     private static void setSessionListener() {
         SessionEventListener listener = new SessionEventListener() {
+
             @Override
             public void onAvatarClicked(Context context, IMMessage message) {
-                // 一般用于打开用户资料页面
+                //头像点击事件处理，一般用于打开用户资料页面
 //                if (message.getMsgType() == MsgTypeEnum.robot && message.getDirect() == MsgDirectionEnum.In) {
 //                    RobotAttachment attachment = (RobotAttachment) message.getAttachment();
 //                    if (attachment.isRobotSend()) {
@@ -436,6 +265,7 @@ public class SessionHelper {
 
     /**
      * 消息转发过滤器
+     * true：不允许转发
      */
     private static void registerMsgForwardFilter() {
         NimUIKit.setMsgForwardFilter(new MsgForwardFilter() {
@@ -448,7 +278,8 @@ public class SessionHelper {
                     return true;
                 } else if (message.getMsgType() == MsgTypeEnum.custom && message.getAttachment() != null
                         && (message.getAttachment() instanceof SnapChatAttachment
-//                        || message.getAttachment() instanceof RTSAttachment
+                        || message.getAttachment() instanceof AskPaperAttachment//问诊单
+                        || message.getAttachment() instanceof FollowPaperAttachment//随诊单
                         || message.getAttachment() instanceof RedPacketAttachment)) {
                     // 白板消息和阅后即焚消息，红包消息 不允许转发
                     return true;
@@ -462,6 +293,7 @@ public class SessionHelper {
 
     /**
      * 消息撤回过滤器
+     * true： 不允许撤回
      */
     private static void registerMsgRevokeFilter() {
         NimUIKit.setMsgRevokeFilter(new MsgRevokeFilter() {
@@ -469,7 +301,8 @@ public class SessionHelper {
             public boolean shouldIgnore(IMMessage message) {
                 if (message.getAttachment() != null
                         && (message.getAttachment() instanceof AVChatAttachment
-//                        || message.getAttachment() instanceof RTSAttachment
+                        || message.getAttachment() instanceof AskPaperAttachment//问诊单
+                        || message.getAttachment() instanceof FollowPaperAttachment//随诊单
                         || message.getAttachment() instanceof RedPacketAttachment)) {
                     // 视频通话消息和白板消息，红包消息 不允许撤回
                     return true;

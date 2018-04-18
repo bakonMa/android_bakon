@@ -7,10 +7,10 @@ import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.contact.core.query.PinYin;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
-import com.netease.nimlib.sdk.auth.AuthService;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.util.NIMUtil;
 import com.renxin.doctor.activity.nim.event.DocOnlineStateContentProvider;
+import com.renxin.doctor.activity.nim.message.SessionHelper;
 import com.renxin.doctor.activity.utils.LogUtil;
 
 /**
@@ -43,6 +43,7 @@ public class NimManager {
         DocCache.setContext(context);
         // SDK初始化（启动后台服务，若已经存在用户登录信息， SDK 将完成自动登录）
         NIMClient.init(context, getLoginInfo(), NimSDKOptionConfig.getSDKOptions(context)); // init pinyin
+//        NIMClient.init(context, getLoginInfo(), null); // init pinyin
 
         // ... your codes
         if (NIMUtil.isMainProcess(context)) {
@@ -76,7 +77,7 @@ public class NimManager {
         // 2.注册各种扩展消息类型的显示ViewHolder（可选）
         // 3.设置会话中点击事件响应处理（一般需要）
         //todo 需要
-//        SessionHelper.init();
+        SessionHelper.init();
 
         // 通讯录列表定制：示例代码可详见demo源码中的ContactHelper类。
         // 1.定制通讯录列表中点击事响应处理（一般需要，UIKit 提供默认实现为点击进入聊天界面)
@@ -91,27 +92,27 @@ public class NimManager {
 
     //手动登录
     public void nimLogin() {
-        NIMClient.getService(AuthService.class).login(getLoginInfo())
-                .setCallback(new RequestCallback<LoginInfo>() {
-                    @Override
-                    public void onSuccess(LoginInfo loginInfo) {
-                        NimU.setNimAccount(loginInfo.getAccount());
-                        NimU.setNimToken(loginInfo.getToken());
-                        LogUtil.d("nimLogin onSuccess="+ loginInfo.toString());
-                    }
+        NimUIKit.login(getLoginInfo(), new RequestCallback<LoginInfo>() {
+            @Override
+            public void onSuccess(LoginInfo loginInfo) {
+                NimU.setNimAccount(loginInfo.getAccount());
+                NimU.setNimToken(loginInfo.getToken());
+                LogUtil.d("nimLogin onSuccess="+ loginInfo.toString());
+            }
 
-                    @Override
-                    public void onFailed(int i) {
-                        LogUtil.d("nimLogin onFailed i=" + i);
+            @Override
+            public void onFailed(int i) {
+                LogUtil.d("nimLogin onFailed i=" + i);
 
-                    }
+            }
 
-                    @Override
-                    public void onException(Throwable throwable) {
-                        LogUtil.d("nimLogin errMsg=" + throwable.getMessage());
+            @Override
+            public void onException(Throwable throwable) {
+                LogUtil.d("nimLogin errMsg=" + throwable.getMessage());
 
-                    }
-                });
+            }
+        });
+
     }
 
 

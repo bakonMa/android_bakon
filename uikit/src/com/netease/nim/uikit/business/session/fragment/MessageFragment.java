@@ -376,11 +376,16 @@ public class MessageFragment extends TFragment implements ModuleProxy {
     // 操作面板集合
     protected List<BaseAction> getActionList() {
         List<BaseAction> actions = new ArrayList<>();
-        actions.add(new ImageAction());
-        actions.add(new VideoAction());
-        actions.add(new LocationAction());
+//        actions.add(new ImageAction());
+//        actions.add(new VideoAction());
+//        actions.add(new LocationAction());
 
         if (customization != null && customization.actions != null) {
+            if (customization.actions.isEmpty()) {//docjht 不要
+                actions.add(new ImageAction());
+                actions.add(new VideoAction());
+                actions.add(new LocationAction());
+            }
             actions.addAll(customization.actions);
         }
         return actions;
