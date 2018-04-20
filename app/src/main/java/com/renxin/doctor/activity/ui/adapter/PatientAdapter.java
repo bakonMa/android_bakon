@@ -2,6 +2,7 @@ package com.renxin.doctor.activity.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +32,12 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, PatientAdapter
 
     @Override
     protected void convert(ViewHolder helper, PatientBean item) {
-        helper.setText(R.id.tv_name, item.nickname);
-        ImageUtil.showCircleImage(item.headImg, helper.getView(R.id.iv_headerimg));
+        helper.setText(R.id.tv_name, TextUtils.isEmpty(item.remark_name) ? item.nick_name : item.remark_name)
+                .setText(R.id.tv_from, item.memb_class);
+        ImageUtil.showCircleImage(item.head_url, helper.getView(R.id.iv_headerimg));
+
         if (mData.size() == mData.lastIndexOf(item) + 1
-                ||!getFirstLetter(mData.indexOf(item)).equals(getFirstLetter(mData.indexOf(item) + 1))) {
+                || !getFirstLetter(mData.indexOf(item)).equals(getFirstLetter(mData.indexOf(item) + 1))) {
             helper.setGone(R.id.bottom_line, false);
         } else {
             helper.setGone(R.id.bottom_line, true);
@@ -43,7 +46,6 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, PatientAdapter
 
     @Override
     public long getHeaderId(int position) {
-//        if (position == 0) return -1;
         if (mData.isEmpty()) {
             return -1;
         }
@@ -67,7 +69,7 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, PatientAdapter
     //
     public int getPositionForSection(char section) {
         for (int i = 0; i < getData().size(); i++) {
-            String firstChar1 = CharacterParser.getInstance().getSelling(getData().get(i).nickname);
+            String firstChar1 = CharacterParser.getInstance().getSelling(getData().get(i).nick_name);
             String firstChar = CharacterParser.getInstance().getInitials(firstChar1);
             if (firstChar.charAt(0) == section) {
                 return i;
@@ -83,7 +85,7 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, PatientAdapter
 
     //获取 昵称的汉语拼音
     public String getItemSortLetter(int position) {
-        return CharacterParser.getInstance().getSelling(mData.get(position).nickname);
+        return CharacterParser.getInstance().getSelling(mData.get(position).nick_name);
     }
 
     class HeaderViewHolder extends BaseViewHolder {

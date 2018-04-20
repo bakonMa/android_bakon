@@ -25,7 +25,8 @@
             android:layout_alignParentTop="true"
             android:layout_centerVertical="true"
             android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="20dp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/indicator"

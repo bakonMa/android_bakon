@@ -1,6 +1,7 @@
 package com.renxin.doctor.activity.ui.bean;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.renxin.doctor.activity.utils.CharacterParser;
 
@@ -10,24 +11,29 @@ import com.renxin.doctor.activity.utils.CharacterParser;
  */
 public class PatientBean implements Comparable<PatientBean> {
 
-    public int id;
-    public String headImg;
-    public String nickname;
+//    id	int	患者id
+//    memb_no	int	患者编号
+//    nick_name	string	微信昵称
+//    im_accid	string	云信accid
+//    head_url	string	头像
+//    memb_class	string	会员性质
 
-    public PatientBean(int id, String headImg, String nickname) {
-        this.id = id;
-        this.headImg = headImg;
-        this.nickname = nickname;
-    }
+    public int id;
+    public String head_url;
+    public String nick_name;
+    public String memb_no;
+    public String im_accid;
+    public String remark_name;
+    public String memb_class;
 
     @Override
     public int compareTo(@NonNull PatientBean bean) {
-        String string = CharacterParser.getInstance().getSelling(nickname);
+        String string = CharacterParser.getInstance().getSelling(TextUtils.isEmpty(bean.remark_name) ? bean.nick_name : bean.remark_name);
         if (CharacterParser.getInstance().getInitials(string).equals("#")) {
             return 1;
         }
         char[] chars = string.toCharArray();
-        String antherString = CharacterParser.getInstance().getSelling(bean.nickname);
+        String antherString = CharacterParser.getInstance().getSelling(TextUtils.isEmpty(bean.remark_name) ? bean.nick_name : bean.remark_name);
         if (CharacterParser.getInstance().getInitials(antherString).equals("#")) {
             return -1;
         }

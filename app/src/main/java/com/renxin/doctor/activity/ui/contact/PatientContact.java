@@ -13,8 +13,6 @@ public interface PatientContact {
     }
 
     interface Presenter extends BasePresenter {
-        void applyStatus();
-
-        void getMaxAmt();
+        void getpatientlist();
     }
 }

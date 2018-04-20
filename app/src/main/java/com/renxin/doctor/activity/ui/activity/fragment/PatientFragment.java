@@ -6,12 +6,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
-import com.renxin.doctor.activity.config.EventConfig;
-import com.renxin.doctor.activity.data.eventbus.Event;
 import com.renxin.doctor.activity.injection.components.DaggerFragmentComponent;
 import com.renxin.doctor.activity.injection.modules.FragmentModule;
 import com.renxin.doctor.activity.ui.adapter.PatientAdapter;
@@ -21,13 +21,11 @@ import com.renxin.doctor.activity.ui.contact.PatientContact;
 import com.renxin.doctor.activity.ui.presenter.PatientPresenter;
 import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.widget.SideBar;
+import com.renxin.doctor.activity.widget.dialog.CommonDialog;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
 import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import com.trello.rxlifecycle.LifecycleTransformer;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -44,8 +42,6 @@ import butterknife.BindView;
 
 public class PatientFragment extends BaseFragment implements PatientContact.View {
 
-    @Inject
-    PatientPresenter mPresenter;
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
     @BindView(R.id.recyvleview)
@@ -55,6 +51,8 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
     @BindView(R.id.indicator)
     TextView indicator;
 
+    @Inject
+    PatientPresenter mPresenter;
 
     private PatientAdapter mAdapter;
     private List<PatientBean> dataList = new ArrayList<>();
@@ -74,19 +72,10 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
     }
 
 
-    void testData() {
-        for (int i = 0; i < 20; i++) {
-            dataList.add(new PatientBean(i, "", ((char) (65 + i)) + "32423423"));
-        }
-    }
-
-
-   private LinearLayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     protected void initView() {
-        testData();
-
         initToolBar();
 
         recycleView.setLayoutManager(mLayoutManager = new LinearLayoutManager(actContext()));
@@ -94,19 +83,31 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
         recycleView.addItemDecoration(new StickyRecyclerHeadersDecoration(mAdapter));
 //        recycleView.addItemDecoration(new DividerItemDecoration(actContext(), RecyclerView.VERTICAL));
         recycleView.setAdapter(mAdapter);
-        sideBar.setTextView(indicator);
-        sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
-            public void onTouchingLetterChanged(String s, int offsetY) {
-                int position = mAdapter.getPositionForSection(s.charAt(0));
-                indicator.setText(s);
-//                if (offsetY > indicator.getHeight() / 2 && offsetY + indicator.getHeight() / 2 < sideBar.getHeight())
-//                    indicator.setTranslationY(offsetY - indicator.getHeight() / 2 + sideBar.getTop());
-                if (position != -1) {
-                    mLayoutManager.scrollToPositionWithOffset(position, 0);
-                }
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ToastUtil.showShort(dataList.get(position).nick_name);
             }
         });
+
+        //是否显示侧边快捷栏
+        if (sideBar.getVisibility() == View.VISIBLE) {
+            sideBar.setTextView(indicator);
+            sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
+                @Override
+                public void onTouchingLetterChanged(String s, int offsetY) {
+                    int position = mAdapter.getPositionForSection(s.charAt(0));
+                    indicator.setText(s);
+//                if (offsetY > indicator.getHeight() / 2 && offsetY + indicator.getHeight() / 2 < sideBar.getHeight())
+//                    indicator.setTranslationY(offsetY - indicator.getHeight() / 2 + sideBar.getTop());
+                    if (position != -1) {
+                        mLayoutManager.scrollToPositionWithOffset(position, 0);
+                    }
+                }
+            });
+        }
+
+        mPresenter.getpatientlist();
     }
 
     private void initToolBar() {
@@ -126,37 +127,29 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
                 .bind();
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onEventCome(Event event) {
-        if (event != null) {
-            switch (event.getCode()) {
-                case EventConfig.REQUEST_HOMELOAN:
-                    //未登录状态下 点击申请  登录成功后返回的逻辑
-//                    startActivity(new Intent(actContext(), BasicInfoActivity.class));
-                    break;
-                case EventConfig.REFRESH_MAX_AMT:
-                    break;
-            }
-
-        }
-    }
-
-
-    @Override
-    public void onError(String errorCode, String errorMsg) {
-        ToastUtil.show(errorMsg);
-    }
-
     @Override
     public void onSuccess(Message message) {
         if (message == null) {
             return;
         }
         switch (message.what) {
-            case PatientPresenter.MAX_AMT:
+            case PatientPresenter.GET_PATIENTLIST_0K:
+                List<PatientBean> beans = (List<PatientBean>) message.obj;
+                if (beans != null) {
+                    dataList.clear();
+                    dataList.addAll(beans);
+                    mAdapter.notifyDataSetChanged();
+                }
                 break;
         }
     }
+
+    @Override
+    public void onError(String errorCode, String errorMsg) {
+        CommonDialog commonDialog = new CommonDialog(getActivity(), errorMsg);
+        commonDialog.show();
+    }
+
 
     @Override
     public Activity provideContext() {
@@ -168,8 +161,4 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
         return bindToLifecycle();
     }
 
-    @Override
-    public boolean useEventBus() {
-        return true;
-    }
 }

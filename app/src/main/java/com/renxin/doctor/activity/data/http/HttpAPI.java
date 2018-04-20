@@ -14,6 +14,7 @@ import com.renxin.doctor.activity.ui.bean.LoanDetailBean;
 import com.renxin.doctor.activity.ui.bean.MaxAmtBean;
 import com.renxin.doctor.activity.ui.bean.MessageBean;
 import com.renxin.doctor.activity.ui.bean.MyAccountInfoBean;
+import com.renxin.doctor.activity.ui.bean.PatientBean;
 import com.renxin.doctor.activity.ui.bean.RechargeBean;
 import com.renxin.doctor.activity.ui.bean.RepaymentHomeBean;
 import com.renxin.doctor.activity.ui.bean.RepaymentOffLineBean;
@@ -165,6 +166,10 @@ public interface HttpAPI {
     //删除常用语
     @POST("deluseful")
     Observable<HttpResponse<String>> deluseful(@QueryMap Params params);
+
+    //患者列表
+    @POST("getpatientlist")
+    Observable<HttpResponse<List<PatientBean>>> getpatientlist(@QueryMap Params params);
 
     //***************************************************
     //发送修改验证码
