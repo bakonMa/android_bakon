@@ -41,6 +41,9 @@ public class CustomAttachParser implements MsgAttachmentParser {
                 case CustomAttachmentType.MESSAGE_FOllOW_PAPER://随诊单
                     attachment = new FollowPaperAttachment();
                     break;
+                case CustomAttachmentType.MESSAGE_ClOSE://咨询结束
+                    attachment = new CloseChatAttachment();
+                    break;
                 default:
                     attachment = new DefaultCustomAttachment();
                     break;

@@ -249,6 +249,11 @@ public class ChatRoomMessageFragment extends TFragment implements ModuleProxy {
     }
 
     @Override
+    public void setEditeText(String messageText) {
+        inputPanel.setInputText(messageText);
+    }
+
+    @Override
     public boolean isLongClickEnabled() {
         return !inputPanel.isRecording();
     }

@@ -12,6 +12,7 @@ import com.renxin.doctor.activity.ui.contact.AddMainCardContact;
 import com.renxin.doctor.activity.ui.contact.AuthContact;
 import com.renxin.doctor.activity.ui.contact.BankCardSettingContact;
 import com.renxin.doctor.activity.ui.contact.BasicInfoContact;
+import com.renxin.doctor.activity.ui.contact.ChatMessageContact;
 import com.renxin.doctor.activity.ui.contact.CoborrowerHistoryContact;
 import com.renxin.doctor.activity.ui.contact.DemoContact;
 import com.renxin.doctor.activity.ui.contact.FeedBackContact;
@@ -40,6 +41,7 @@ import com.renxin.doctor.activity.ui.presenter.AddCoborrowerPresenter;
 import com.renxin.doctor.activity.ui.presenter.AddMainCardPresenter;
 import com.renxin.doctor.activity.ui.presenter.BankCardSettingPresenter;
 import com.renxin.doctor.activity.ui.presenter.BasicInfoPresenter;
+import com.renxin.doctor.activity.ui.presenter.ChatMessagePresenter;
 import com.renxin.doctor.activity.ui.presenter.CoborrowerHistoryPresenter;
 import com.renxin.doctor.activity.ui.presenter.DemoPresenter;
 import com.renxin.doctor.activity.ui.presenter.FeedBackPresenter;
@@ -104,6 +106,12 @@ public final class ActivityModule {
     @Provides
     public WalletPresenter provideWalletPresenter() {
         return new WalletPresenter((WalletContact.View) mView);
+    }
+
+    @PerActivity
+    @Provides
+    public ChatMessagePresenter provideChatMessagePresenter() {
+        return new ChatMessagePresenter((ChatMessageContact.View) mView);
     }
 
 

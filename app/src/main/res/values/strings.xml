@@ -66,6 +66,8 @@
     <string name="input_panel_followpaper">随诊单</string>
     <string name="input_panel_image">照片</string>
     <string name="input_panel_camera">拍照</string>
+    <string name="input_panel_quickreply">快速回复</string>
+    <string name="input_panel_close">结束咨询</string>
 
 
     <string name="input_panel_guess">猜 拳</string>

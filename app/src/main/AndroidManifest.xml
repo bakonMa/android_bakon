@@ -227,6 +227,15 @@
 
         <!--im-->
         <activity
+            android:name=".ui.nimview.QuickReplyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.nimview.CommMessageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.nimview.AddCommMessageActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.nimview.PaperH5Activity"
             android:screenOrientation="portrait" />
         <activity

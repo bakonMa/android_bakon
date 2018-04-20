@@ -453,6 +453,14 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
         initActionPanelLayout();
     }
 
+    //2018年04月20日09:57:24 bakon添加，方便输入常用语
+    public void setInputText(String messageTxt){
+        messageEditText.setText(messageTxt);
+        hideActionPanelLayout();
+        showInputMethod(messageEditText);
+    }
+
+
     // 显示键盘布局
     private void showInputMethod(EditText editTextMessage) {
         editTextMessage.requestFocus();

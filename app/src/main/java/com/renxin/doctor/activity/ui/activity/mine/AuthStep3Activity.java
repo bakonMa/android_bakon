@@ -61,12 +61,6 @@ public class AuthStep3Activity extends BaseActivity {
         }
     }
 
-
-    @Override
-    protected boolean useEventBus() {
-        return false;
-    }
-
     @Override
     protected void setupActivityComponent() {
 

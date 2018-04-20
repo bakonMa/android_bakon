@@ -44,6 +44,7 @@ import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.nim.NimManager;
 import com.renxin.doctor.activity.nim.message.SessionHelper;
 import com.renxin.doctor.activity.nim.message.extension.AskPaperAttachment;
+import com.renxin.doctor.activity.nim.message.extension.CloseChatAttachment;
 import com.renxin.doctor.activity.nim.message.extension.FollowPaperAttachment;
 import com.renxin.doctor.activity.nim.message.extension.GuessAttachment;
 import com.renxin.doctor.activity.nim.message.extension.SnapChatAttachment;
@@ -211,6 +212,8 @@ public class RecentActivity extends BaseActivity {
                     return "[问诊单]";
                 } else if (attachment instanceof FollowPaperAttachment) {//随诊单
                     return "[随诊单]";
+                } else if (attachment instanceof CloseChatAttachment) {//咨询结束
+                    return "[咨询结束]";
                 } else if (attachment instanceof GuessAttachment) {
                     GuessAttachment guess = (GuessAttachment) attachment;
                     return guess.getValue().getDesc();

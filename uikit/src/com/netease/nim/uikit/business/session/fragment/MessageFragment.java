@@ -364,6 +364,12 @@ public class MessageFragment extends TFragment implements ModuleProxy {
     }
 
     @Override
+    public void setEditeText(String messageText) {
+        inputPanel.setInputText(messageText);
+
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (aitManager != null) {

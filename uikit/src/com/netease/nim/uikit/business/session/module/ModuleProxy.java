@@ -19,4 +19,8 @@ public interface ModuleProxy {
     boolean isLongClickEnabled();
 
     void onItemFooterClick(IMMessage message);
+
+    //2018年04月20日09:54:05 bakon添加，方便设置常用语
+    void setEditeText(String messageText);
+
 }

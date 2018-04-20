@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.netease.nim.uikit.common.fragment.TFragment;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.common.util.sys.ReflectionUtil;
+import com.netease.nim.uikit.common.util.sys.StatusBarUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public abstract class UI extends AppCompatActivity {
 
     private static Handler handler;
 
-    private Toolbar toolbar;
+    protected Toolbar toolbar;
 
     @Override
     protected void onStart() {
@@ -37,7 +38,9 @@ public abstract class UI extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        StatusBarUtil.initStatusBar(this);
+//        StatusBarUtil.setStatusBarColor(this, Color.TRANSPARENT);
+        StatusBarUtil.setStatusBarDarkFont(this, true);
         LogUtil.ui("activity: " + getClass().getSimpleName() + " onCreate()");
     }
 
@@ -98,6 +101,7 @@ public abstract class UI extends AppCompatActivity {
                 }
             });
         }
+
     }
 
     public void setToolBar(int toolbarId, int titleId, int logoId) {

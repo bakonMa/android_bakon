@@ -4,6 +4,7 @@ import com.renxin.doctor.activity.data.response.HttpResponse;
 import com.renxin.doctor.activity.ui.bean.AppUpdateBean;
 import com.renxin.doctor.activity.ui.bean.ApplyInfoBean;
 import com.renxin.doctor.activity.ui.bean.BankBean;
+import com.renxin.doctor.activity.ui.bean.CommMessageBean;
 import com.renxin.doctor.activity.ui.bean.ConfigBean;
 import com.renxin.doctor.activity.ui.bean.DealDetailBean;
 import com.renxin.doctor.activity.ui.bean.HomeLoanBean;
@@ -130,7 +131,7 @@ public interface HttpAPI {
     Observable<HttpResponse<List<BankCardBean>>> userbanklist(@QueryMap Params params);
 
     //银行列表
-    @GET("getBank")
+    @POST("getBank")
     Observable<HttpResponse<List<BankTypeBean>>> getBankType(@QueryMap Params params);
 
     //添加银行卡
@@ -153,6 +154,17 @@ public interface HttpAPI {
     @POST("visitcost_set")
     Observable<HttpResponse<String>> setVisitPrice(@QueryMap Params params);
 
+    //用户获取常用语
+    @POST("getuseful")
+    Observable<HttpResponse<List<CommMessageBean>>> getuseful(@QueryMap Params params);
+
+    //添加常用语
+    @POST("adduseful")
+    Observable<HttpResponse<String>> adduseful(@QueryMap Params params);
+
+    //删除常用语
+    @POST("deluseful")
+    Observable<HttpResponse<String>> deluseful(@QueryMap Params params);
 
     //***************************************************
     //发送修改验证码

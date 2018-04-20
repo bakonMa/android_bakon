@@ -14,4 +14,5 @@ public class RequestCode {
     public final static int SEND_ASKPAPER_INFO = 11; //点击问诊单-进入h5
     public final static int SEND_FOLLOWPAPER = 12; //发送随诊单-进入h5
     public final static int SEND_FOLLOWPAPER_INFO = 13; //点击随诊单-进入h5
+    public final static int SEND_COMM_MESSAGE = 14; //点击常用语
 }

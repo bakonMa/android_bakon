@@ -23,6 +23,8 @@ import com.renxin.doctor.activity.ui.activity.mine.wallet.MyBankCardActivity;
 import com.renxin.doctor.activity.ui.activity.mine.wallet.WalletActivity;
 import com.renxin.doctor.activity.ui.activity.mine.wallet.WithdrawActivity;
 import com.renxin.doctor.activity.ui.activity.welcome.TranslucentActivity;
+import com.renxin.doctor.activity.ui.nimview.AddCommMessageActivity;
+import com.renxin.doctor.activity.ui.nimview.CommMessageActivity;
 
 import dagger.Component;
 
@@ -75,5 +77,9 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(TranslucentActivity translucentActivity);
 
     void inject(LoginActivity loginActivity);
+
+    void inject(CommMessageActivity commMessageActivity);
+
+    void inject(AddCommMessageActivity addCommMessageActivity);
 
 }

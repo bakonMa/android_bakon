@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Toast;
 
 import com.netease.nim.uikit.R;
@@ -40,6 +41,7 @@ public class PickImageActivity extends UI {
     private static final int REQUEST_CODE_CAMERA = FROM_CAMERA;
 
     private boolean inited = false;
+    private View view_status;
 
     public static void start(Activity activity, int requestCode, int from, String outPath) {
         Intent intent = new Intent(activity, PickImageActivity.class);
