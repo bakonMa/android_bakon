@@ -14,7 +14,9 @@ import com.renxin.doctor.activity.ui.bean.LoanDetailBean;
 import com.renxin.doctor.activity.ui.bean.MaxAmtBean;
 import com.renxin.doctor.activity.ui.bean.MessageBean;
 import com.renxin.doctor.activity.ui.bean.MyAccountInfoBean;
+import com.renxin.doctor.activity.ui.bean.OPenPaperBaseBean;
 import com.renxin.doctor.activity.ui.bean.PatientBean;
+import com.renxin.doctor.activity.ui.bean.PatientFamilyBean;
 import com.renxin.doctor.activity.ui.bean.RechargeBean;
 import com.renxin.doctor.activity.ui.bean.RepaymentHomeBean;
 import com.renxin.doctor.activity.ui.bean.RepaymentOffLineBean;
@@ -170,6 +172,33 @@ public interface HttpAPI {
     //患者列表
     @POST("getpatientlist")
     Observable<HttpResponse<List<PatientBean>>> getpatientlist(@QueryMap Params params);
+
+    //患者详情 和就诊人列表
+    @POST("getpatientinfo")
+    Observable<HttpResponse<PatientFamilyBean>> getpatientinfo(@QueryMap Params params);
+
+    //设置患者备注
+    @POST("set_remarkname")
+    Observable<HttpResponse<String>> setRemarkName(@QueryMap Params params);
+
+    //设置咨询价格
+    @POST("set_advisoryfee")
+    Observable<HttpResponse<String>> setAdvisoryfee(@QueryMap Params params);
+
+    //开方基础数据
+    @POST("getsomeadvisory")
+    Observable<HttpResponse<OPenPaperBaseBean>> getSomeadvisory(@QueryMap Params params);
+
+
+
+
+
+
+
+
+
+
+
 
     //***************************************************
     //发送修改验证码

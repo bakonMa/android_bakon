@@ -20,4 +20,5 @@ public interface EventConfig {
     int EVENT_KEY_DELBANKCARD_OK = 0x113;//删除银行卡
     int EVENT_KEY_WITHRAW_OK = 0x114;//提现成功
     int EVENT_KEY_CHAT_SELECT_COMMMSG = 0x115;//聊天，选择发送常用语
+    int EVENT_KEY_H5_BOOKS_SHARE = 0x116;//书籍 分享
 }

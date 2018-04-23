@@ -86,7 +86,7 @@ public class DeleteBankCardActivity extends BaseActivity implements WalletContac
 
     @OnClick(R.id.tv_delete)
     void deleteOncick() {
-        CommonDialog commonDialog = new CommonDialog(this, 1, "您确定删除该银行卡吗？", new View.OnClickListener() {
+        CommonDialog commonDialog = new CommonDialog(this, false, "您确定删除该银行卡吗？", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (view.getId() == R.id.btn_ok) {

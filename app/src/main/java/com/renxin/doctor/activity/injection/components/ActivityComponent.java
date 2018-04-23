@@ -5,6 +5,7 @@ import android.content.Context;
 import com.renxin.doctor.activity.injection.modules.ActivityModule;
 import com.renxin.doctor.activity.injection.qualifiers.ActivityContext;
 import com.renxin.doctor.activity.injection.scopes.PerActivity;
+import com.renxin.doctor.activity.ui.activity.home.OpenPaperCameraActivity;
 import com.renxin.doctor.activity.ui.activity.login.LoginActivity;
 import com.renxin.doctor.activity.ui.activity.login.RegisteActivity;
 import com.renxin.doctor.activity.ui.activity.login.ResetPasswordActivity;
@@ -22,6 +23,9 @@ import com.renxin.doctor.activity.ui.activity.mine.wallet.DeleteBankCardActivity
 import com.renxin.doctor.activity.ui.activity.mine.wallet.MyBankCardActivity;
 import com.renxin.doctor.activity.ui.activity.mine.wallet.WalletActivity;
 import com.renxin.doctor.activity.ui.activity.mine.wallet.WithdrawActivity;
+import com.renxin.doctor.activity.ui.activity.patient.PatienHealthRecordActivity;
+import com.renxin.doctor.activity.ui.activity.patient.PatientFamilyActivity;
+import com.renxin.doctor.activity.ui.activity.patient.RemarkNameActivity;
 import com.renxin.doctor.activity.ui.activity.welcome.TranslucentActivity;
 import com.renxin.doctor.activity.ui.nimview.AddCommMessageActivity;
 import com.renxin.doctor.activity.ui.nimview.CommMessageActivity;
@@ -81,5 +85,13 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(CommMessageActivity commMessageActivity);
 
     void inject(AddCommMessageActivity addCommMessageActivity);
+
+    void inject(PatientFamilyActivity patientFamilyActivity);
+
+    void inject(RemarkNameActivity remarkNameActivity);
+
+    void inject(PatienHealthRecordActivity patienHealthRecordActivity);
+
+    void inject(OpenPaperCameraActivity openPaperCameraActivity);
 
 }

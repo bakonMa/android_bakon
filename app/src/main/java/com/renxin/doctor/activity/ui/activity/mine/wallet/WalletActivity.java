@@ -122,7 +122,7 @@ public class WalletActivity extends BaseActivity implements WalletContact.View {
                 break;
             case R.id.tv_withdraw:
                 if (bankCardBeans == null || bankCardBeans.isEmpty()) {
-                    CommonDialog commonDialog = new CommonDialog(this, 1, "您尚未绑定银行卡，点击[确定]\n绑定银行卡",
+                    CommonDialog commonDialog = new CommonDialog(this, false, "您尚未绑定银行卡，点击[确定]\n绑定银行卡",
                             new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {

@@ -161,7 +161,7 @@ public class CommMessageActivity extends BaseActivity implements ChatMessageCont
                     }
                 }
                 if (!TextUtils.isEmpty(stringBuffer)) {
-                    commonDialog = new CommonDialog(provideContext(), 1, "确定删除选中的常用语？", btnview -> {
+                    commonDialog = new CommonDialog(provideContext(), false, "确定删除选中的常用语？", btnview -> {
                         if (btnview.getId() == R.id.btn_ok) {
                             mPresenter.deluseful(stringBuffer.toString());
                         }
@@ -219,7 +219,7 @@ public class CommMessageActivity extends BaseActivity implements ChatMessageCont
     @Override
     public void onBackPressed() {
         if (isEdite) {
-            commonDialog = new CommonDialog(provideContext(), 1, "放弃编辑常用语？", view -> {
+            commonDialog = new CommonDialog(provideContext(), false, "放弃编辑常用语？", view -> {
                 if (view.getId() == R.id.btn_ok) {
                     finish();
                 }

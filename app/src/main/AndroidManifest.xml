@@ -222,7 +222,22 @@
         <activity
             android:name=".ui.activity.mine.AboutUsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.activity.WebViewActivity" />
+        <activity
+            android:name=".ui.activity.WebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.patient.PatientFamilyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.patient.RemarkNameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.patient.PatienHealthRecordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.home.OpenPaperCameraActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait" />
 
 
         <!--im-->

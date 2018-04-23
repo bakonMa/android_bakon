@@ -121,7 +121,7 @@ public class WithdrawActivity extends BaseActivity implements WalletContact.View
                 etInputmoney.setSelection(canUseMoney.length());
                 break;
             case R.id.btn_complete:
-                CommonDialog commonDialog = new CommonDialog(this, 1, "确认提现", new View.OnClickListener() {
+                CommonDialog commonDialog = new CommonDialog(this, false, "确认提现", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (view.getId() == R.id.btn_ok) {

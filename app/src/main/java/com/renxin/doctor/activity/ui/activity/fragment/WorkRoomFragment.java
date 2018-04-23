@@ -14,6 +14,7 @@ import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.injection.components.DaggerFragmentComponent;
 import com.renxin.doctor.activity.injection.modules.FragmentModule;
 import com.renxin.doctor.activity.nim.message.SessionHelper;
+import com.renxin.doctor.activity.ui.activity.home.OpenPaperCameraActivity;
 import com.renxin.doctor.activity.ui.base.BaseFragment;
 import com.renxin.doctor.activity.ui.contact.WorkRoomContact;
 import com.renxin.doctor.activity.ui.nimview.RecentActivity;
@@ -88,6 +89,9 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 break;
             case R.id.id_notification:
                 startActivity(new Intent(actContext(), RecentActivity.class));
+                break;
+            case R.id.tv_camera_patient://拍照开方
+                startActivity(new Intent(actContext(), OpenPaperCameraActivity.class));
                 break;
         }
 

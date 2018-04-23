@@ -122,7 +122,7 @@ public class AddCommMessageActivity extends BaseActivity implements ChatMessageC
     //点击返回
     @Override
     public void onBackPressed() {
-        commonDialog = new CommonDialog(provideContext(), 1, "放弃添加常用语吗？", view -> {
+        commonDialog = new CommonDialog(provideContext(), false, "放弃添加常用语吗？", view -> {
             if (view.getId() == R.id.btn_ok) {
                 finish();
             }

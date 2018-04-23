@@ -13,6 +13,9 @@ public interface PatientContact {
     }
 
     interface Presenter extends BasePresenter {
-        void getpatientlist();
+        void getpatientlist();//患者列表
+        void getpatientFamily(String memb_no);//患者信息和关系列表
+        void setRemarkName(String accID, String memb_no, String remarkName);//设置备注
+        void setPrice(String memb_no, String advisory_fee);//设置咨询价格
     }
 }

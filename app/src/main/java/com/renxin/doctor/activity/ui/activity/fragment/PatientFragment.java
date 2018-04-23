@@ -1,6 +1,7 @@
 package com.renxin.doctor.activity.ui.activity.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.injection.components.DaggerFragmentComponent;
 import com.renxin.doctor.activity.injection.modules.FragmentModule;
+import com.renxin.doctor.activity.ui.activity.patient.PatientFamilyActivity;
 import com.renxin.doctor.activity.ui.adapter.PatientAdapter;
 import com.renxin.doctor.activity.ui.base.BaseFragment;
 import com.renxin.doctor.activity.ui.bean.PatientBean;
@@ -86,7 +88,9 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToastUtil.showShort(dataList.get(position).nick_name);
+                Intent intent = new Intent(actContext(), PatientFamilyActivity.class);
+                intent.putExtra("memb_no", dataList.get(position).memb_no);
+                startActivity(intent);
             }
         });
 

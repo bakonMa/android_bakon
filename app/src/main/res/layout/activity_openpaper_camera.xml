@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/base_toolbar" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="患者信息"
+                android:textColor="@color/color_999"
+                android:textSize="10sp" />
+
+
+            <RelativeLayout
+                android:id="@+id/rlt_addpatient"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@drawable/selector_bg_tab"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center"
+                    android:text="添加患者"
+                    android:textColor="@color/color_main"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="6dp"
+                    android:layout_height="9dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_xuanze" />
+            </RelativeLayout>
+
+
+            <com.renxin.doctor.activity.widget.EditTextlayout
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                app:editTextHint="患者姓名"
+                app:leftText="姓名"
+                app:maxLength="10"
+                app:textMainSize="16sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp">
+
+                <TextView
+                    android:id="@+id/tv_sex"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="性别"
+                    android:textColor="@color/color_333"
+                    android:textSize="16sp" />
+
+                <RadioGroup
+                    android:id="@+id/rg_sex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/tv_sex"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_nan"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:button="@drawable/selector_radiobutton"
+                        android:checked="true"
+                        android:paddingLeft="20dp"
+                        android:text="男"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_nv"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:button="@drawable/selector_radiobutton"
+                        android:paddingLeft="20dp"
+                        android:text="女"
+                        android:textSize="16sp" />
+                </RadioGroup>
+
+                <View
+                    style="@style/line_gray_hor"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+
+            <com.renxin.doctor.activity.widget.EditTextlayout
+                android:id="@+id/et_age"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                app:editTextHint="患者年龄"
+                app:editTextType="number"
+                app:leftText="年龄"
+                app:maxLength="2"
+                app:textMainSize="16sp" />
+
+            <com.renxin.doctor.activity.widget.EditTextlayout
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                app:editTextHint="请输入手机号"
+                app:editTextType="number"
+                app:isShowBottomLine="false"
+                app:leftText="联系电话"
+                app:maxLength="11"
+                app:textMainSize="16sp" />
+
+            <com.renxin.doctor.activity.widget.EditableLayout
+                android:id="@+id/et_drugstore"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                app:edit_editTextHint="请选择药房"
+                app:edit_leftText="药房"
+                app:edit_mode="select"
+                app:edit_textMainSize="16sp"
+                app:isShowLineBottom="false" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="请拍照或从相册选择图片上传处方（最多可上传3张）"
+                    android:textColor="@color/color_999"
+                    android:textSize="12sp" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_img1"
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/img_default_1"
+                        android:scaleType="centerInside" />
+
+                    <ImageView
+                        android:id="@+id/iv_img2"
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/img_default_1" />
+
+                    <ImageView
+                        android:id="@+id/iv_img3"
+                        android:layout_width="0dp"
+                        android:layout_height="80dp"
+                        android:layout_weight="1"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/img_default_1" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/attention"
+                    android:drawablePadding="5dp"
+                    android:paddingBottom="10dp"
+                    android:text="格式为JPG/PNG/GIF，请确保图片内文字清晰可见。"
+                    android:textColor="@color/color_999"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="温馨提示：汤剂代煎费及其他剂型加工费，以药房实际计算为准。"
+                android:textColor="@color/color_999"
+                android:textSize="10sp" />
+
+            <com.renxin.doctor.activity.widget.EditableLayout
+                android:id="@+id/et_drugclass"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                app:edit_leftText="剂型"
+                app:edit_mode="select"
+                app:edit_textMainSize="16sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp">
+
+                <TextView
+                    android:id="@+id/tv_daijian"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="代煎"
+                    android:textColor="@color/color_333"
+                    android:textSize="16sp" />
+
+                <RadioGroup
+                    android:id="@+id/rg_daijian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/tv_daijian"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_yes"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:button="@drawable/selector_radiobutton"
+                        android:checked="true"
+                        android:paddingLeft="20dp"
+                        android:text="是"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_no"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:button="@drawable/selector_radiobutton"
+                        android:paddingLeft="20dp"
+                        android:text="否"
+                        android:textSize="16sp" />
+                </RadioGroup>
+
+                <View
+                    style="@style/line_gray_hor"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
+
+            <com.renxin.doctor.activity.widget.RelativeWithText
+                android:id="@+id/tv_otherfee"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:isShowLineT="false"
+                app:isShowTab="false"
+                app:titleT="开方补充收费" />
+
+            <TextView
+                android:id="@+id/tv_next_step"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_margin="20dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/selector_bg_button_login"
+                android:clickable="true"
+                android:enabled="true"
+                android:gravity="center"
+                android:text="下一步"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

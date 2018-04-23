@@ -16,6 +16,7 @@ import com.renxin.doctor.activity.ui.contact.ChatMessageContact;
 import com.renxin.doctor.activity.ui.contact.CoborrowerHistoryContact;
 import com.renxin.doctor.activity.ui.contact.DemoContact;
 import com.renxin.doctor.activity.ui.contact.FeedBackContact;
+import com.renxin.doctor.activity.ui.contact.OpenPaperContact;
 import com.renxin.doctor.activity.ui.contact.PatientContact;
 import com.renxin.doctor.activity.ui.contact.HomeRepaymentContact;
 import com.renxin.doctor.activity.ui.contact.HouseInfoContact;
@@ -45,6 +46,7 @@ import com.renxin.doctor.activity.ui.presenter.ChatMessagePresenter;
 import com.renxin.doctor.activity.ui.presenter.CoborrowerHistoryPresenter;
 import com.renxin.doctor.activity.ui.presenter.DemoPresenter;
 import com.renxin.doctor.activity.ui.presenter.FeedBackPresenter;
+import com.renxin.doctor.activity.ui.presenter.OpenPaperPresenter;
 import com.renxin.doctor.activity.ui.presenter.PatientPresenter;
 import com.renxin.doctor.activity.ui.presenter.HomeRepaymentPresenter;
 import com.renxin.doctor.activity.ui.presenter.JobInfoPresenter;
@@ -112,6 +114,12 @@ public final class ActivityModule {
     @Provides
     public ChatMessagePresenter provideChatMessagePresenter() {
         return new ChatMessagePresenter((ChatMessageContact.View) mView);
+    }
+
+    @PerActivity
+    @Provides
+    public OpenPaperPresenter provideOpenPaperPresenter() {
+        return new OpenPaperPresenter((OpenPaperContact.View) mView);
     }
 
 

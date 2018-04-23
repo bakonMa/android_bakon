@@ -12,7 +12,7 @@ import com.renxin.doctor.activity.BuildConfig;
 public interface H5Config {
 
 
-//    发现H5链接:
+    //    发现H5链接:
 //    书籍http://dev.dr.jhtcm.com/books
 //    百科http://hxd.dev.dr.jhtcm.com/baike
     //个人名片
@@ -24,15 +24,15 @@ public interface H5Config {
     //随诊单
     String H5_FOLLOWPAPER = BuildConfig.BASE_URL + "web_checkups/";
     String H5_FOLLOWPAPER_INFO = BuildConfig.BASE_URL + "web_checkupsinfo?id=";
+    //发现 书籍 百科
+    String H5_BOOKS = BuildConfig.BASE_URL + "books/";
+    String H5_BAIKE = BuildConfig.BASE_URL + "baike/";
 
     //*******************jht end**********************
 
 
-
-
-
     String CRASH_DIR_NAME = "crash";
-//    String DUBUG_H5_BASE = "http://116.62.244.195:9999/";//一期测试环境 h5地址
+    //    String DUBUG_H5_BASE = "http://116.62.244.195:9999/";//一期测试环境 h5地址
     String DUBUG_H5_BASE = "http://10.255.233.220:9999/";//二期测试环境 h5地址
 
     String RLEASE_H5_BASE = "http://front.sd-bao.com/";//一期正式环境 h5地址

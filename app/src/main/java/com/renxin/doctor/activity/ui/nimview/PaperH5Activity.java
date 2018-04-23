@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.widget.ImageView;
@@ -14,13 +15,22 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.renxin.doctor.activity.R;
+import com.renxin.doctor.activity.config.EventConfig;
+import com.renxin.doctor.activity.data.eventbus.Event;
+import com.renxin.doctor.activity.data.eventbus.EventBusUtil;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.ui.bean_jht.H5JsonBean;
 import com.renxin.doctor.activity.utils.LogUtil;
+import com.renxin.doctor.activity.utils.ShareSDKUtils;
 import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.widget.ProgressWebView;
+import com.renxin.doctor.activity.widget.popupwindow.SharePopupWindow;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
 import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 
@@ -73,6 +83,9 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
             initToolbar();
         } else {
             idToolbar.setVisibility(View.GONE);
+            ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
+                    .setStatuBar(R.color.white)
+                    .bind();
         }
         wbWebview.addJavascriptInterface(new JSInterface(), "Android");
 
@@ -115,6 +128,33 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
                 }).bind();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCome(Event event) {
+        if (event == null) {
+            return;
+        }
+        switch (event.getCode()) {
+            case EventConfig.EVENT_KEY_H5_BOOKS_SHARE://书籍分享
+                H5JsonBean bean = (H5JsonBean) event.getData();
+                SharePopupWindow sharePopupWindow = new SharePopupWindow(actContext(), new SharePopupWindow.ShareOnClickListener() {
+                    @Override
+                    public void onItemClick(SHARE_MEDIA shareType) {
+                        ShareSDKUtils.share(PaperH5Activity.this, shareType,
+                                bean.img_url, bean.link, bean.title, bean.desc, null);
+                    }
+                });
+                sharePopupWindow.showAtLocation(wbWebview, Gravity.BOTTOM, 0, 0);
+                break;
+        }
+    }
+
+
+
+    @Override
+    protected boolean useEventBus() {
+        return true;
+    }
+
     @Override
     protected void setupActivityComponent() {
     }
@@ -123,6 +163,7 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
     protected void onDestroy() {
         super.onDestroy();
         wbWebview.removeJavascriptInterface("Android");
+        wbWebview.clearHistory();
         wbWebview.removeAllViews();
         wbWebview.destroy();
     }
@@ -180,6 +221,14 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
                 case "web_checkupsinfo"://随诊单详情 医生
                     ToastUtil.showShort("给他开方");
                     finish();
+                    break;
+                case "close"://发现 书籍
+                    finish();
+                    break;
+                case "share_books"://发现 分享
+
+                    EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_H5_BOOKS_SHARE, bean));
+
                     break;
 
             }

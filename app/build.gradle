@@ -77,9 +77,7 @@ android {
 
 def devAddress() {
     "\"http://dev.dr.jhtcm.com/\""  //测试环境
-
 //    "\"http://wdev.dr.jhtcm.com:7996/\""  //外网测试环境
-//    "\"http://dev.zj.jhtcm.com/\""  //测试环境
 }
 
 def onLineAddress() {

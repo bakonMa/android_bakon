@@ -1,11 +1,14 @@
 package com.renxin.doctor.activity.ui.activity.fragment;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.renxin.doctor.activity.R;
+import com.renxin.doctor.activity.config.H5Config;
 import com.renxin.doctor.activity.ui.base.BaseFragment;
+import com.renxin.doctor.activity.ui.nimview.PaperH5Activity;
 import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 
 import java.lang.ref.WeakReference;
@@ -45,10 +48,16 @@ public class FindFragment extends BaseFragment {
     @OnClick({R.id.tv_books, R.id.tv_encyclopedia, R.id.tv_policy,
             R.id.tv_daywork, R.id.tv_classroom})
     public void onViewClicked(View view) {
+        Intent intent = new Intent(actContext(), PaperH5Activity.class);
+        intent.putExtra("type", 1);
         switch (view.getId()) {
             case R.id.tv_books://经典书籍
+                intent.putExtra("url", H5Config.H5_BOOKS);
+                startActivity(intent);
                 break;
             case R.id.tv_encyclopedia://中医百科
+                intent.putExtra("url", H5Config.H5_BAIKE);
+                startActivity(intent);
                 break;
             case R.id.tv_policy://政策追踪
                 break;

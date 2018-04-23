@@ -92,7 +92,7 @@ public class SettingActivity extends BaseActivity implements LoginContact.View {
                 startActivity(new Intent(this, ResetPasswordActivity.class));
                 break;
             case R.id.tv_logout:
-                CommonDialog commonDialog = new CommonDialog(this, 1, "确定退出当前账号吗？", new View.OnClickListener() {
+                CommonDialog commonDialog = new CommonDialog(this, false, "确定退出当前账号吗？", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (view.getId() == R.id.btn_ok) {
