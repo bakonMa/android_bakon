@@ -420,7 +420,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 case REQUEST_CAMERA_CODE:
                     LogUtil.d("cameraPath=" + cameraPath.getAbsolutePath());
                     if (cameraPath.exists()) {
-                        mPresenter.uploadImg(cameraPath.getAbsolutePath(), Constant.UPLOADIMG_TYPE_2);
+                        tempPath = cameraPath.getAbsolutePath();
+                        mPresenter.uploadImg(tempPath, Constant.UPLOADIMG_TYPE_2);
                     }
                     break;
                 //相册
