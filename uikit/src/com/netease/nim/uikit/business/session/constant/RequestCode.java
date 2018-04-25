@@ -15,4 +15,5 @@ public class RequestCode {
     public final static int SEND_FOLLOWPAPER = 12; //发送随诊单-进入h5
     public final static int SEND_FOLLOWPAPER_INFO = 13; //点击随诊单-进入h5
     public final static int SEND_COMM_MESSAGE = 14; //点击常用语
+    public final static int SEND_OPENPAPER_CAMERA = 15; //发送拍照开方
 }

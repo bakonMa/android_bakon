@@ -76,7 +76,6 @@ public class NimManager {
         // 1.注册自定义消息附件解析器（可选）
         // 2.注册各种扩展消息类型的显示ViewHolder（可选）
         // 3.设置会话中点击事件响应处理（一般需要）
-        //todo 需要
         SessionHelper.init();
 
         // 通讯录列表定制：示例代码可详见demo源码中的ContactHelper类。

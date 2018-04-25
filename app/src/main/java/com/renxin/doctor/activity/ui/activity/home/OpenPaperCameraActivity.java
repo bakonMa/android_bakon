@@ -2,6 +2,7 @@ package com.renxin.doctor.activity.ui.activity.home;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -10,7 +11,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -19,15 +22,22 @@ import android.widget.TextView;
 import com.renxin.doctor.activity.BuildConfig;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.config.EventConfig;
+import com.renxin.doctor.activity.data.eventbus.Event;
+import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
 import com.renxin.doctor.activity.injection.modules.ActivityModule;
+import com.renxin.doctor.activity.ui.activity.patient.PatientFamilyActivity;
+import com.renxin.doctor.activity.ui.activity.patient.PatientListActivity;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.ui.bean.OPenPaperBaseBean;
+import com.renxin.doctor.activity.ui.bean.PatientFamilyBean;
 import com.renxin.doctor.activity.ui.bean_jht.UploadImgBean;
 import com.renxin.doctor.activity.ui.contact.OpenPaperContact;
 import com.renxin.doctor.activity.ui.presenter.OpenPaperPresenter;
-import com.renxin.doctor.activity.ui.presenter.present_jht.AuthPresenter;
 import com.renxin.doctor.activity.utils.ActivityUtil;
+import com.renxin.doctor.activity.utils.Constant;
+import com.renxin.doctor.activity.utils.ImageUtil;
 import com.renxin.doctor.activity.utils.LogUtil;
 import com.renxin.doctor.activity.utils.SoftHideKeyBoardUtil;
 import com.renxin.doctor.activity.utils.ToastUtil;
@@ -41,6 +51,9 @@ import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
 import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -66,6 +79,12 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     Toolbar idToolbar;
     @BindView(R.id.scrollView)
     ScrollView scrollView;
+    @BindView(R.id.tv_addpatient)
+    TextView tvAddpatient;
+    @BindView(R.id.tv_editepatient)
+    TextView tv_editepatient;
+    @BindView(R.id.llt_jzinfo)
+    LinearLayout lltJZinfo;
     @BindView(R.id.et_name)
     EditTextlayout etName;
     @BindView(R.id.rb_nan)
@@ -88,29 +107,46 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     RadioButton rbNo;
     @BindView(R.id.rg_daijian)
     RadioGroup rgDaijian;
-
-    @BindView(R.id.tv_next_step)
-    TextView tvNextStep;
     @BindView(R.id.iv_img1)
     ImageView ivImg1;
     @BindView(R.id.iv_img2)
     ImageView ivImg2;
     @BindView(R.id.iv_img3)
     ImageView ivImg3;
+    @BindView(R.id.iv_img1_clean)
+    ImageView ivImg1Clean;
+    @BindView(R.id.iv_img2_clean)
+    ImageView ivImg2Clean;
+    @BindView(R.id.iv_img3_clean)
+    ImageView ivImg3Clean;
+    @BindView(R.id.tv_next_step)
+    TextView tvNextStep;
+    @BindView(R.id.et_serverprice)
+    EditText etServerprice;
 
     @Inject
     OpenPaperPresenter mPresenter;
 
-    private String headImgURL;
-    private OnePopupWheel mPopupWheel;
+    private int formParent = 0;//是否来自聊天(0 默认不是 1：聊天)
     private int storeId, drugClassId;
-
     private int sexType = 0;
     private int daijianType = 0;
+    private String membNo = "";//患者编号，选择患者才有
 
     private OPenPaperBaseBean baseBean;
     private List<String> drugStoreList = new ArrayList<>();//药房
     private List<String> drugClassList = new ArrayList<>();//剂型
+    private OnePopupWheel mPopupWheel;
+    private CameraPopupView cameraPopupView;
+
+
+    //带有返回的startActivityForResult-仅限nim中使用 formParent=1
+    public static void startResultActivity(Context context, int requestCode, int formParent, String membNo) {
+        Intent intent = new Intent(context, OpenPaperCameraActivity.class);
+        intent.putExtra("formParent", formParent);
+        intent.putExtra("memb_no", membNo);
+        ((Activity) context).startActivityForResult(intent, requestCode);
+    }
 
     @Override
     protected int provideRootLayout() {
@@ -120,9 +156,15 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     @Override
     protected void initView() {
         SoftHideKeyBoardUtil.assistActivity(this);
+        formParent = getIntent().getIntExtra("formParent", 0);
+        membNo = getIntent().getStringExtra("memb_no");
+        //聊天进来不能填写
+        tv_editepatient.setVisibility(formParent == 0 ? View.VISIBLE : View.GONE);
+
         initToolbar();
         //获取基础数据
         mPresenter.getOPenPaperBaseData();
+
         //性别
         rgSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -134,7 +176,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         rgDaijian.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                sexType = (i == R.id.rb_nan ? 0 : 1);
+                daijianType = (i == R.id.rb_yes ? 0 : 1);
             }
         });
 
@@ -144,9 +186,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private void initToolbar() {
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("拍照开方")
-                .setStatuBar(R.color.white)
                 .setLeft(false)
-//                .setRightText("认证", true, R.color.color_popup_btn)
+                .setStatuBar(R.color.white)
                 .setListener(new TitleOnclickListener() {
                     @Override
                     public void leftClick() {
@@ -157,15 +198,30 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 }).bind();
     }
 
+    private String imgPath1, imgPath2, imgPath3;
+    private int currImg;
 
-    @OnClick({R.id.rlt_addpatient, R.id.et_drugstore, R.id.et_drugclass, R.id.tv_otherfee,
-            R.id.iv_img1, R.id.iv_img2, R.id.iv_img3, R.id.tv_next_step})
+    @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugstore, R.id.et_drugclass,
+            R.id.iv_img1, R.id.iv_img2, R.id.iv_img3, R.id.iv_img1_clean, R.id.iv_img2_clean,
+            R.id.iv_img3_clean, R.id.tv_next_step})
     public void tabOnClick(View view) {
         switch (view.getId()) {
-            case R.id.rlt_addpatient:
-                ToastUtil.showShort("添加患者");
+            case R.id.tv_addpatient://选择患者
+                Intent intent = new Intent();
+                if(formParent == 1){
+                    intent.setClass(this, PatientFamilyActivity.class);
+                    intent.putExtra("memb_no", membNo);
+                } else {
+                    intent.setClass(this, PatientListActivity.class);
+
+                }
+                intent.putExtra("formtype", 1);//来自 选择患者
+                startActivity(intent);
                 break;
-            case R.id.et_drugstore:
+            case R.id.tv_editepatient://编辑就诊人
+                writeJzInfo();
+                break;
+            case R.id.et_drugstore://药房
                 mPopupWheel = new OnePopupWheel(this, drugStoreList, "请选择药房", new OnePopupWheel.Listener() {
                     @Override
                     public void completed(int position) {
@@ -175,7 +231,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 });
                 mPopupWheel.show(scrollView);
                 break;
-            case R.id.et_drugclass:
+            case R.id.et_drugclass://剂型
                 mPopupWheel = new OnePopupWheel(this, drugClassList, "请选择剂型", new OnePopupWheel.Listener() {
                     @Override
                     public void completed(int position) {
@@ -186,74 +242,124 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 mPopupWheel.show(scrollView);
 
                 break;
-            case R.id.tv_otherfee:
-                ToastUtil.showShort("收费");
-                break;
             case R.id.tv_next_step://提交
                 checkData();
+                break;
+            case R.id.iv_img1_clean:
+                imgPath1 = "";
+                ivImg1.setImageResource(0);
+                ivImg1Clean.setVisibility(View.GONE);
+                break;
+            case R.id.iv_img2_clean:
+                imgPath2 = "";
+                ivImg2.setImageResource(0);
+                ivImg2Clean.setVisibility(View.GONE);
+                break;
+            case R.id.iv_img3_clean:
+                imgPath3 = "";
+                ivImg3.setImageResource(0);
+                ivImg3Clean.setVisibility(View.GONE);
                 break;
             case R.id.iv_img1:
             case R.id.iv_img2:
             case R.id.iv_img3:
-                CameraPopupView cameraPopupView = new CameraPopupView(this, new View.OnClickListener() {
+                cameraPopupView = new CameraPopupView(this, new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        openCameraOrPhoto(view.getId() == R.id.llt_camera);
+                    public void onClick(View v) {
+                        //标识点击的哪一个
+                        currImg = view.getId();
+                        openCameraOrPhoto(v.getId() == R.id.llt_camera);
                     }
                 });
                 cameraPopupView.show(scrollView);
-
                 break;
         }
+    }
 
+    //手写就诊人信息
+    private void writeJzInfo() {
+        lltJZinfo.setVisibility(View.VISIBLE);
+        etName.setEditeEnable(true);
+        etAge.setEditeEnable(true);
+        etPhone.setEditeEnable(true);
+        rbNan.setEnabled(true);
+        rbNv.setEnabled(true);
+        membNo = "";
+        etName.setEditeText("");
+        etAge.setEditeText("");
+        etPhone.setEditeText("");
+        rgSex.check(R.id.rb_nan);
+    }
+
+    //选择的就诊人
+    private void chooseJzInfo(PatientFamilyBean.JiuzhenBean bean) {
+        lltJZinfo.setVisibility(View.VISIBLE);
+        etName.setEditeText(TextUtils.isEmpty(bean.patient_name) ? "" : bean.patient_name);
+        etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
+        etAge.setEditeText(bean.age > 0 ? (bean.age + "") : "");
+        rgSex.check(bean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
+        membNo = bean.id;
+        etName.setEditeEnable(false);
+        etAge.setEditeEnable(false);
+        etPhone.setEditeEnable(false);
+        rbNan.setEnabled(false);
+        rbNv.setEnabled(false);
     }
 
     //数据检测
     private void checkData() {
-//        if (TextUtils.isEmpty(headImgURL)) {
-//            ToastUtil.showShort("请选择头像");
-//            return;
-//        }
-//        if (TextUtils.isEmpty(etName.getEditText().getText())) {
-//            ToastUtil.showShort("请填写姓名");
-//            return;
-//        }
-//        if (TextUtils.isEmpty(provinceStr) || TextUtils.isEmpty(cityStr)) {
-//            ToastUtil.showShort("请选择地区");
-//            return;
-//        }
-//        if (TextUtils.isEmpty(etOrganization.getText())) {
-//            ToastUtil.showShort("请选择医疗机构");
-//            return;
-//        }
-//        if (TextUtils.isEmpty(etLabType.getText())) {
-//            ToastUtil.showShort("请选择科室");
-//            return;
-//        }
-//        if (TextUtils.isEmpty(etTitle.getText())) {
-//            ToastUtil.showShort("请选择职称");
-//            return;
-//        }
-//        if (TextUtils.isEmpty(etGoodat.getText())) {
-//            ToastUtil.showShort("请选择擅长疾病");
-//            return;
-//        }
-//
-//        Params params = new Params();
-//        params.put("header", headImgURL);
-//        params.put("name", etName.getEditText().getText());
-//        params.put("sex", sexType);
-//        params.put("prov", provinceStr);
-//        params.put("city", cityStr);
-//        params.put("hospital", etOrganization.getText());
-//        params.put("department", labId);
-//        params.put("title", etTitle.getText());
-//        params.put("skills", etGoodat.getText());
-//        mPresenter.userIdentify(params);
+        if (TextUtils.isEmpty(etName.getEditText().getText())
+                || TextUtils.isEmpty(etAge.getEditText().getText())) {
+            ToastUtil.showShort("请填写就诊人信息");
+            return;
+        }
+        if (TextUtils.isEmpty(etDrugstore.getText())) {
+            ToastUtil.showShort("请选择药房");
+            return;
+        }
+        if (TextUtils.isEmpty(etDrugstore.getText())) {
+            ToastUtil.showShort("请选择剂型");
+            return;
+        }
+        if (TextUtils.isEmpty(imgPath1)
+                && TextUtils.isEmpty(imgPath2)
+                && TextUtils.isEmpty(imgPath3)) {
+            ToastUtil.showShort("请上传处方照片");
+            return;
+        }
+        //图片路径拼接
+        StringBuffer imgPath = new StringBuffer();
+        if (!TextUtils.isEmpty(imgPath1)) {
+            imgPath.append(imgPath1).append(",");
+        } else if (!TextUtils.isEmpty(imgPath2)) {
+            imgPath.append(imgPath2).append(",");
+        } else if (!TextUtils.isEmpty(imgPath3)) {
+            imgPath.append(imgPath3);
+        }
+
+        Params params = new Params();
+        //患者编号
+        if (!TextUtils.isEmpty(membNo)) {
+            params.put("memb_no", membNo);
+        }
+        //补充收费
+        if (!TextUtils.isEmpty(etServerprice.getText().toString().trim())) {
+            params.put("service_price", etServerprice.getText().toString().trim());
+        }
+        params.put("name", etName.getEditText().getText());
+        params.put("sex", sexType);
+        params.put("age", etAge.getEditText().getText());
+        params.put("phone", etPhone.getEditText().getText());
+        params.put("store_id", storeId);
+        params.put("drug_class", drugClassId);
+        params.put("img_url", imgPath.toString());
+        params.put("boiled_type", daijianType);
+
+        mPresenter.openPaperCamera(params);
     }
 
-
-    private File cameraPath;
+    //照相机公用file
+    public File cameraPath;
 
     //1:打开相机拍照 2:打开相册
     private void openCameraOrPhoto(boolean isCamera) {
@@ -261,7 +367,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions.setLogging(BuildConfig.DEBUG);
         rxPermissions
-                .request(isCamera ? new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA} : new String[]{Manifest.permission.READ_EXTERNAL_STORAGE})
+                .request(isCamera ? new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA} : new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onNext(Boolean aBoolean) {
@@ -300,6 +406,9 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 });
     }
 
+    //临时path  显示用，不需要再加载上传后的path
+    private String tempPath;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -311,18 +420,17 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 case REQUEST_CAMERA_CODE:
                     LogUtil.d("cameraPath=" + cameraPath.getAbsolutePath());
                     if (cameraPath.exists()) {
-//                        ImageUtil.showImage(cameraPath.getAbsolutePath(), ivImg);
-//                        mPresenter.uploadImg(cameraPath.getAbsolutePath(), Constant.UPLOADIMG_TYPE_0);
+                        mPresenter.uploadImg(cameraPath.getAbsolutePath(), Constant.UPLOADIMG_TYPE_2);
                     }
                     break;
                 //相册
                 case REQUEST_ALBUM_CODE:
                     Uri uri = data.getData();
-                    String headerPath;
-                    if (uri != null && !TextUtils.isEmpty(headerPath = UriUtil.getRealFilePath(this, uri))) {
-                        LogUtil.d("headerPath=" + headerPath);
-//                        ImageUtil.showImage(headerPath, ivImg);
-//                        mPresenter.uploadImg(headerPath, Constant.UPLOADIMG_TYPE_0);
+                    String imagePath;
+                    if (uri != null && !TextUtils.isEmpty(imagePath = UriUtil.getRealFilePath(this, uri))) {
+                        LogUtil.d("headerPath=" + imagePath);
+                        tempPath = imagePath;
+                        mPresenter.uploadImg(imagePath, Constant.UPLOADIMG_TYPE_2);
                     }
                     break;
             }
@@ -363,17 +471,77 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                     drugClassList.add(bean.name);
                 }
                 break;
-            case AuthPresenter.UPLOADIMF_OK://上传成功
+            case OpenPaperPresenter.UPLOADIMF_OK://上传成功
                 UploadImgBean uploadImgBean = (UploadImgBean) message.obj;
-                headImgURL = uploadImgBean.url;
+                switch (currImg) {
+                    case R.id.iv_img1:
+                        imgPath1 = uploadImgBean.url;
+                        ImageUtil.showImage(tempPath, ivImg1);
+                        ivImg1Clean.setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.iv_img2:
+                        imgPath2 = uploadImgBean.url;
+                        ImageUtil.showImage(tempPath, ivImg2);
+                        ivImg2Clean.setVisibility(View.VISIBLE);
+                        break;
+                    case R.id.iv_img3:
+                        imgPath3 = uploadImgBean.url;
+                        ImageUtil.showImage(tempPath, ivImg3);
+                        ivImg3Clean.setVisibility(View.VISIBLE);
+                        break;
+                }
                 ToastUtil.showShort("上传成功");
                 break;
-            case AuthPresenter.UPLOADIMF_ERROR://上传失败
-                headImgURL = "";
+            case OpenPaperPresenter.UPLOADIMF_ERROR://上传失败
+                switch (currImg) {
+                    case R.id.iv_img1:
+                        imgPath1 = "";
+                        break;
+                    case R.id.iv_img2:
+                        imgPath2 = "";
+                        break;
+                    case R.id.iv_img3:
+                        imgPath3 = "";
+                        break;
+                }
                 ToastUtil.showShort("上传失败，请重新选择");
                 break;
-
+            case OpenPaperPresenter.OPENPAPER_OK://开方ok
+                if (formParent == 1) {//聊天开方
+                    setResult(RESULT_OK, new Intent());
+                    finish();
+                } else {//普通开方
+                    commonDialog = new CommonDialog(this, true, "处方已上传至药房", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            finish();
+                        }
+                    });
+                    commonDialog.show();
+                }
+                break;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCome(Event event) {
+        if (event == null) {
+            return;
+        }
+        switch (event.getCode()) {
+            case EventConfig.EVENT_KEY_CHOOSE_PATIENT://选择就诊人
+                PatientFamilyBean.JiuzhenBean bean = (PatientFamilyBean.JiuzhenBean) event.getData();
+                if (bean != null) {
+                    chooseJzInfo(bean);
+                }
+                break;
+        }
+
+    }
+
+    @Override
+    protected boolean useEventBus() {
+        return true;
     }
 
     @Override

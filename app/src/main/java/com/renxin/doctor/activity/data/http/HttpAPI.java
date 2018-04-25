@@ -189,15 +189,13 @@ public interface HttpAPI {
     @POST("getsomeadvisory")
     Observable<HttpResponse<OPenPaperBaseBean>> getSomeadvisory(@QueryMap Params params);
 
+    //拍照开方
+    @POST("photo_extraction")
+    Observable<HttpResponse<String>> photoExtraction(@QueryMap Params params);
 
-
-
-
-
-
-
-
-
+    //拍照开方
+    @POST("getmemb_no")
+    Observable<HttpResponse<OtherBean>> getMembNo(@QueryMap Params params);
 
 
     //***************************************************

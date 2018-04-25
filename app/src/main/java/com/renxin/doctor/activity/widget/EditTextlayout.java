@@ -180,16 +180,34 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    public EditText getEditText() {
-        return mEditText;
+    //**********TextView*********************
+    //获取显示的text
+    public String getText() {
+        return showText.getText().toString();
     }
-
+    //设置text
     public void setText(String text) {
         mEditText.setVisibility(GONE);
         showText.setText(text);
         showText.setVisibility(VISIBLE);
     }
-
+    //**********EditText*********************
+    public EditText getEditText() {
+        return mEditText;
+    }
+    //设置EditText的text
+    public void setEditeText(String str) {
+        mEditText.setVisibility(VISIBLE);
+        mEditText.setText(str);
+        showText.setText("");
+        showText.setVisibility(GONE);
+    }
+    //设置EditText是否可以编辑
+    public void setEditeEnable(boolean isEnable) {
+        mEditText.setEnabled(isEnable);
+        setClearImageVisible(false);
+    }
+    //设置EditText输入长度
     public void setMaxLength(int length) {
         mEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(length)});
     }

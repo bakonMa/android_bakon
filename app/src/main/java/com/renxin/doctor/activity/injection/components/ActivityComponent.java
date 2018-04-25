@@ -25,6 +25,7 @@ import com.renxin.doctor.activity.ui.activity.mine.wallet.WalletActivity;
 import com.renxin.doctor.activity.ui.activity.mine.wallet.WithdrawActivity;
 import com.renxin.doctor.activity.ui.activity.patient.PatienHealthRecordActivity;
 import com.renxin.doctor.activity.ui.activity.patient.PatientFamilyActivity;
+import com.renxin.doctor.activity.ui.activity.patient.PatientListActivity;
 import com.renxin.doctor.activity.ui.activity.patient.RemarkNameActivity;
 import com.renxin.doctor.activity.ui.activity.welcome.TranslucentActivity;
 import com.renxin.doctor.activity.ui.nimview.AddCommMessageActivity;
@@ -93,5 +94,7 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(PatienHealthRecordActivity patienHealthRecordActivity);
 
     void inject(OpenPaperCameraActivity openPaperCameraActivity);
+
+    void inject(PatientListActivity patientListActivity);
 
 }

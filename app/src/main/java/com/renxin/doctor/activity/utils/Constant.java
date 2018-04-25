@@ -5,9 +5,10 @@ package com.renxin.doctor.activity.utils;
  * Create at 2018/4/9 下午4:43 by mayakun
  */
 public interface Constant {
-    //上传图片 0：头像 1：其他认证图片
+    //上传图片 0：头像 1：其他认证图片 2:拍照开方照片
     String UPLOADIMG_TYPE_0 = "0";
     String UPLOADIMG_TYPE_1 = "1";
+    String UPLOADIMG_TYPE_2 = "2";
 
     //下载链接（可以使用应用宝的推广链接）
     String APP_SHARE_URL = "http://a.app.qq.com/o/simple.jsp?pkgname=com.renxin.doctor.activity";

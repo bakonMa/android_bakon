@@ -1,8 +1,10 @@
 package com.renxin.doctor.activity.ui.nimview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -25,11 +27,15 @@ import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.renxin.doctor.activity.R;
+import com.renxin.doctor.activity.ui.base.BaseView;
+import com.renxin.doctor.activity.ui.presenter.CommonPresenter;
+import com.renxin.doctor.activity.utils.LogUtil;
 import com.renxin.doctor.activity.utils.SoftHideKeyBoardUtil;
 import com.renxin.doctor.activity.utils.StatusBarUtil;
 import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
 import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
+import com.trello.rxlifecycle.LifecycleTransformer;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -39,11 +45,12 @@ import java.util.Set;
  * P2PChatActivity  定制p2p单聊
  * Create at 2018/4/17 下午3:24 by mayakun
  */
-public class P2PChatActivity extends BaseMessageActivity {
+public class P2PChatActivity extends BaseMessageActivity implements BaseView{
 
     private Toolbar idToolbar;
     private ToolbarBuilder toolbarBuilder;
     private boolean isResume = false;
+    private CommonPresenter commonPresenter;
 
     public static void start(Context context, String contactId, SessionCustomization customization, IMMessage anchor) {
         Intent intent = new Intent();
@@ -61,6 +68,8 @@ public class P2PChatActivity extends BaseMessageActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        commonPresenter = new CommonPresenter(this);
+        commonPresenter.getMembNo(getIntent().getStringExtra(Extras.EXTRA_ACCOUNT));
         // 单聊特例话数据，包括个人信息，
         setTitleText();//这里才拿到数据
         displayOnlineState();
@@ -240,6 +249,7 @@ public class P2PChatActivity extends BaseMessageActivity {
         super.onDestroy();
         registerObservers(false);
         registerOnlineStateChangeListener(false);
+        commonPresenter.unsubscribe();
     }
 
     @Override
@@ -254,5 +264,30 @@ public class P2PChatActivity extends BaseMessageActivity {
         isResume = false;
     }
 
+    @Override
+    public void onSuccess(Message message) {
+        if (message == null) {
+            return;
+        }
+        switch (message.what){
+            case CommonPresenter.GET_MOMBNO_OK://获取memb_no
+                LogUtil.d("memb_no=" + message.obj.toString());
+                break;
+        }
+    }
 
+    @Override
+    public void onError(String errorCode, String errorMsg) {
+
+    }
+
+    @Override
+    public Activity provideContext() {
+        return this;
+    }
+
+    @Override
+    public LifecycleTransformer toLifecycle() {
+        return null;
+    }
 }

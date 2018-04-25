@@ -143,7 +143,7 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View 
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions.setLogging(BuildConfig.DEBUG);
         rxPermissions
-                .request(isCamera ? new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA} : new String[]{Manifest.permission.READ_EXTERNAL_STORAGE})
+                .request(isCamera ? new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA} : new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
                 .subscribe(new Observer<Boolean>() {
                     @Override
                     public void onNext(Boolean aBoolean) {

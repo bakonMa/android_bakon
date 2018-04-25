@@ -16,6 +16,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.config.EventConfig;
+import com.renxin.doctor.activity.data.eventbus.Event;
+import com.renxin.doctor.activity.data.eventbus.EventBusUtil;
 import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
 import com.renxin.doctor.activity.injection.modules.ActivityModule;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
@@ -65,7 +68,7 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
     @Inject
     PatientPresenter mPresenter;
 
-
+    private int formType = 0;//是否来自选择患者(0 默认不是 1：选择患者)
     private String membNo;
     private PatientFamilyBean bean;
     private List<PatientFamilyBean.JiuzhenBean> jiuzhenBeans = new ArrayList<>();
@@ -81,6 +84,7 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
     protected void initView() {
         initToolbar();
         membNo = getIntent().getStringExtra("memb_no");
+        formType = getIntent().getIntExtra("formtype", 0);
 
         recycleview.setLayoutManager(new LinearLayoutManager(actContext()));
         mAdapter = new BaseQuickAdapter<PatientFamilyBean.JiuzhenBean, BaseViewHolder>(R.layout.item_jiuzhen, jiuzhenBeans) {
@@ -91,12 +95,21 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
             }
         };
         recycleview.setAdapter(mAdapter);
+
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(actContext(), PatienHealthRecordActivity.class);
-                intent.putExtra("bean", jiuzhenBeans.get(position));
-                startActivity(intent);
+                //选择患者
+                if(formType == 1){
+                    PatientFamilyBean.JiuzhenBean bean = jiuzhenBeans.get(position);
+                    bean.id = membNo;//讨巧，后台需要的是患者的id
+                    EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_CHOOSE_PATIENT, bean));
+                    finish();
+                }
+                //可能可以点击进入健康档案，需求待定
+//                Intent intent = new Intent(actContext(), PatienHealthRecordActivity.class);
+//                intent.putExtra("bean", jiuzhenBeans.get(position));
+//                startActivity(intent);
             }
         });
 
@@ -121,6 +134,10 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
 
     @OnClick({R.id.et_price, R.id.rlt_head})
     public void btnOnClick(View view) {
+        //选择患者时不能修改其他都行
+        if(formType == 1){
+            return;
+        }
         switch (view.getId()) {
             case R.id.rlt_head://设置备注
                 Intent intent = new Intent(this, RemarkNameActivity.class);
@@ -171,6 +188,7 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
                 if (bean != null && bean.jiuzhen != null) {
                     jiuzhenBeans.clear();
                     jiuzhenBeans.addAll(bean.jiuzhen);
+                    mAdapter.notifyDataSetChanged();
                 }
                 break;
             case PatientPresenter.SET_PRICE_0K://设置咨询价格
@@ -188,7 +206,6 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
                 bean.patientinfo.remark_name = getIntent().getStringExtra("remarkname");
                 tvRemark.setText(TextUtils.isEmpty(bean.patientinfo.remark_name) ? "" : bean.patientinfo.remark_name);
             }
-
         }
     }
 

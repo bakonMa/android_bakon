@@ -45,8 +45,10 @@ import com.renxin.doctor.activity.nim.NimManager;
 import com.renxin.doctor.activity.nim.message.SessionHelper;
 import com.renxin.doctor.activity.nim.message.extension.AskPaperAttachment;
 import com.renxin.doctor.activity.nim.message.extension.CloseChatAttachment;
+import com.renxin.doctor.activity.nim.message.extension.FirstMessageAttachment;
 import com.renxin.doctor.activity.nim.message.extension.FollowPaperAttachment;
 import com.renxin.doctor.activity.nim.message.extension.GuessAttachment;
+import com.renxin.doctor.activity.nim.message.extension.OPenPaperAttachment;
 import com.renxin.doctor.activity.nim.message.extension.SnapChatAttachment;
 import com.renxin.doctor.activity.nim.message.extension.StickerAttachment;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
@@ -193,7 +195,6 @@ public class RecentActivity extends BaseActivity {
                 switch (recent.getSessionType()) {
                     case P2P:
                         SessionHelper.startP2PSession(actContext(), recent.getContactId());
-//                        P2PChatActivity.start(actContext(), recent.getContactId(), null, null);
                         break;
                     case Team:
                         NimUIKit.startTeamSession(actContext(), recent.getContactId());
@@ -208,10 +209,14 @@ public class RecentActivity extends BaseActivity {
             public String getDigestOfAttachment(RecentContact recentContact, MsgAttachment attachment) {
                 // 设置自定义消息的摘要消息，展示在最近联系人列表的消息缩略栏上
                 // 当然，你也可以自定义一些内建消息的缩略语，例如图片，语音，音视频会话等，自定义的缩略语会被优先使用。
-                if (attachment instanceof AskPaperAttachment) {//问诊单
+                if (attachment instanceof FirstMessageAttachment) {//第一条消息 患者信息
+                    return "[患者信息]";
+                } else if (attachment instanceof AskPaperAttachment) {//问诊单
                     return "[问诊单]";
                 } else if (attachment instanceof FollowPaperAttachment) {//随诊单
                     return "[随诊单]";
+                }  else if (attachment instanceof OPenPaperAttachment) {//开方
+                    return "[处方已提交]";
                 } else if (attachment instanceof CloseChatAttachment) {//咨询结束
                     return "[咨询结束]";
                 } else if (attachment instanceof GuessAttachment) {

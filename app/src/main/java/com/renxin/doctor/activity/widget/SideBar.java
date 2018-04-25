@@ -2,7 +2,6 @@ package com.renxin.doctor.activity.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -69,14 +68,14 @@ public class SideBar extends View {
         int singleHeight = height / b.length;// 获取每一个字母的高度
 
         for (int i = 0; i < b.length; i++) {
-            paint.setColor(getResources().getColor(R.color.color_main));//深蓝
+            paint.setColor(getResources().getColor(R.color.color_333));
             paint.setTypeface(Typeface.DEFAULT);
             paint.setAntiAlias(true);
             paint.setTextSize(UIUtils.dp2px(DocApplication.getInstance(), 12));
 //            AutoUtils.getPercentWidthSize(12);
             // 选中的状态
             if (i == choose) {
-                paint.setColor(Color.parseColor("#FEB13A"));//浅蓝
+                paint.setColor(getResources().getColor(R.color.color_main));//黄色
                 paint.setFakeBoldText(true);
             }
             // x坐标等于中间-字符串宽度的一半.

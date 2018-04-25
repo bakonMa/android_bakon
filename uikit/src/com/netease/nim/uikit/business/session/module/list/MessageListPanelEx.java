@@ -848,8 +848,8 @@ public class MessageListPanelEx {
             if (!NimUIKitImpl.getMsgForwardFilter().shouldIgnore(selectedItem) && !recordOnly) {
                 // 6 forward to person
                 longClickItemForwardToPerson(selectedItem, alertDialog);
-                // 7 forward to team
-                longClickItemForwardToTeam(selectedItem, alertDialog);
+                // 7 forward to team 转发到群组  暂时不需要
+                //longClickItemForwardToTeam(selectedItem, alertDialog);
             }
         }
 

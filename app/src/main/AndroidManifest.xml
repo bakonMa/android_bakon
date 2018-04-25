@@ -238,6 +238,9 @@
             android:name=".ui.activity.home.OpenPaperCameraActivity"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.patient.PatientListActivity"
+            android:screenOrientation="portrait" />
 
 
         <!--im-->

@@ -35,11 +35,17 @@ public class CustomAttachParser implements MsgAttachmentParser {
                 case CustomAttachmentType.OpenedRedPacket:
                     attachment = new RedPacketOpenedAttachment();
                     break;
-                case CustomAttachmentType.MESSAGE_ASK_PAPER://问诊单
+                case CustomAttachmentType.MESSAGE_PAY_OK://第一条消息，患者信息
+                    attachment = new FirstMessageAttachment();
+                    break;
+                 case CustomAttachmentType.MESSAGE_ASK_PAPER://问诊单
                     attachment = new AskPaperAttachment();
                     break;
                 case CustomAttachmentType.MESSAGE_FOllOW_PAPER://随诊单
                     attachment = new FollowPaperAttachment();
+                    break;
+                 case CustomAttachmentType.MESSAGE_DOC_OPENPAPER://开方子
+                    attachment = new OPenPaperAttachment();
                     break;
                 case CustomAttachmentType.MESSAGE_ClOSE://咨询结束
                     attachment = new CloseChatAttachment();

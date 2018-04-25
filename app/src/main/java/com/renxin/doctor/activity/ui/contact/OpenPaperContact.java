@@ -1,5 +1,6 @@
 package com.renxin.doctor.activity.ui.contact;
 
+import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.ui.base.BasePresenter;
 import com.renxin.doctor.activity.ui.base.BaseView;
 
@@ -15,7 +16,8 @@ public interface OpenPaperContact {
 
     interface Presenter extends BasePresenter {
         void getOPenPaperBaseData();//开方基础数据
-
+        void uploadImg(String path, String type);
+        void openPaperCamera(Params params);//拍照开方
     }
 
 }

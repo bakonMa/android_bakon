@@ -188,6 +188,18 @@ public class UserPreferences {
     }
 
     static SharedPreferences getSharedPreferences() {
-        return DocCache.getContext().getSharedPreferences("Demo." + DocCache.getAccount(), Context.MODE_PRIVATE);
+        return DocCache.getContext().getSharedPreferences("JHT." + DocCache.getAccount(), Context.MODE_PRIVATE);
+    }
+
+    //保存accid和memb_no
+    public static void saveAccidMembNo(String key, String value) {
+        SharedPreferences.Editor editor = getSharedPreferences().edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    //保存accid和memb_no
+    public static String getMembNoByAccid(String accid) {
+        return getSharedPreferences().getString(accid, "");
     }
 }

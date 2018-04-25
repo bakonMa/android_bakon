@@ -22,7 +22,8 @@ public interface HttpConfig {
     long IO_WRITE_TIMEOUT = 60 * 1000;
 
     //微信分享AppId
-    String UMENG_APPKEY = "5aced483b27b0a303b000044";
+//    String UMENG_APPKEY = "5aced483b27b0a303b000044";
+    String UMENG_APPKEY = "5aded051f29d985b64000026";
     String WX_APP_ID = "wxa792384772439d0f";
     String WX_APP_SECRET = "2e37c33fd6ff031ebeae1cbeb94e6219";
     String QQ_APP_ID = "1103454520";

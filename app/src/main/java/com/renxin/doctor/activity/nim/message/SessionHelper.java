@@ -38,20 +38,25 @@ import com.renxin.doctor.activity.nim.DocCache;
 import com.renxin.doctor.activity.nim.action.AskPaperAction;
 import com.renxin.doctor.activity.nim.action.CloseChatAction;
 import com.renxin.doctor.activity.nim.action.FollowPaperAction;
+import com.renxin.doctor.activity.nim.action.OpenPaperCameraAction;
 import com.renxin.doctor.activity.nim.action.PhotoAction;
 import com.renxin.doctor.activity.nim.action.QuickReplyAction;
 import com.renxin.doctor.activity.nim.message.extension.AskPaperAttachment;
 import com.renxin.doctor.activity.nim.message.extension.CloseChatAttachment;
 import com.renxin.doctor.activity.nim.message.extension.CustomAttachParser;
 import com.renxin.doctor.activity.nim.message.extension.CustomAttachment;
+import com.renxin.doctor.activity.nim.message.extension.FirstMessageAttachment;
 import com.renxin.doctor.activity.nim.message.extension.FollowPaperAttachment;
+import com.renxin.doctor.activity.nim.message.extension.OPenPaperAttachment;
 import com.renxin.doctor.activity.nim.message.extension.RedPacketAttachment;
 import com.renxin.doctor.activity.nim.message.extension.SnapChatAttachment;
 import com.renxin.doctor.activity.nim.message.extension.StickerAttachment;
 import com.renxin.doctor.activity.nim.message.viewholder.MsgViewHolderAskPaper;
 import com.renxin.doctor.activity.nim.message.viewholder.MsgViewHolderCloseChat;
 import com.renxin.doctor.activity.nim.message.viewholder.MsgViewHolderDefCustom;
+import com.renxin.doctor.activity.nim.message.viewholder.MsgViewHolderFirstMessage;
 import com.renxin.doctor.activity.nim.message.viewholder.MsgViewHolderFollowPaper;
+import com.renxin.doctor.activity.nim.message.viewholder.MsgViewHolderOpenPaperCamera;
 import com.renxin.doctor.activity.nim.message.viewholder.MsgViewHolderSticker;
 import com.renxin.doctor.activity.nim.message.viewholder.MsgViewHolderTip;
 import com.renxin.doctor.activity.ui.nimview.P2PChatActivity;
@@ -142,6 +147,7 @@ public class SessionHelper {
             ArrayList<BaseAction> actions = new ArrayList<>();
             actions.add(new AskPaperAction());
             actions.add(new FollowPaperAction());
+            actions.add(new OpenPaperCameraAction());
             actions.add(new QuickReplyAction());
             actions.add(new PhotoAction(0));
             actions.add(new PhotoAction(1));
@@ -226,8 +232,10 @@ public class SessionHelper {
 
 
     private static void registerViewHolders() {
+        NimUIKit.registerMsgItemViewHolder(FirstMessageAttachment.class, MsgViewHolderFirstMessage.class);//第一条消息（患者信息）
         NimUIKit.registerMsgItemViewHolder(AskPaperAttachment.class, MsgViewHolderAskPaper.class);//问诊单
         NimUIKit.registerMsgItemViewHolder(FollowPaperAttachment.class, MsgViewHolderFollowPaper.class);//随诊单
+        NimUIKit.registerMsgItemViewHolder(OPenPaperAttachment.class, MsgViewHolderOpenPaperCamera.class);//拍照开方
         NimUIKit.registerMsgItemViewHolder(CloseChatAttachment.class, MsgViewHolderCloseChat.class);//咨询结束
 
         NimUIKit.registerMsgItemViewHolder(StickerAttachment.class, MsgViewHolderSticker.class);//贴图
@@ -283,8 +291,10 @@ public class SessionHelper {
                     return true;
                 } else if (message.getMsgType() == MsgTypeEnum.custom && message.getAttachment() != null
                         && (message.getAttachment() instanceof SnapChatAttachment
+                        || message.getAttachment() instanceof FirstMessageAttachment//第一条消息
                         || message.getAttachment() instanceof AskPaperAttachment//问诊单
                         || message.getAttachment() instanceof FollowPaperAttachment//随诊单
+                        || message.getAttachment() instanceof OPenPaperAttachment//拍照开方
                         || message.getAttachment() instanceof CloseChatAttachment//结束咨询
                         || message.getAttachment() instanceof RedPacketAttachment)) {
                     // 白板消息和阅后即焚消息，红包消息 不允许转发
@@ -307,8 +317,10 @@ public class SessionHelper {
             public boolean shouldIgnore(IMMessage message) {
                 if (message.getAttachment() != null
                         && (message.getAttachment() instanceof AVChatAttachment
+                        || message.getAttachment() instanceof FirstMessageAttachment//第一条消息
                         || message.getAttachment() instanceof AskPaperAttachment//问诊单
                         || message.getAttachment() instanceof FollowPaperAttachment//随诊单
+                        || message.getAttachment() instanceof OPenPaperAttachment//拍照开方
                         || message.getAttachment() instanceof CloseChatAttachment//结束咨询
                         || message.getAttachment() instanceof RedPacketAttachment)) {
                     // 视频通话消息和白板消息，红包消息 不允许撤回

@@ -86,16 +86,18 @@ public class PatientFamilyBean {
         };
     }
 
-    public static class JiuzhenBean implements Parcelable{
-        public int id;
+    public static class JiuzhenBean implements Parcelable {
+        public String id;
         public String patient_name;
+        public String phone;
         public int sex;//0 男 1 女
         public int age;
         public int relationship;//就诊人与患者的关系 0：本人 1：父母 2：子女 3：其他亲属 4：其他
 
         protected JiuzhenBean(Parcel in) {
-            id = in.readInt();
+            id = in.readString();
             patient_name = in.readString();
+            phone = in.readString();
             sex = in.readInt();
             age = in.readInt();
             relationship = in.readInt();
@@ -103,8 +105,9 @@ public class PatientFamilyBean {
 
         @Override
         public void writeToParcel(Parcel dest, int flags) {
-            dest.writeInt(id);
+            dest.writeString(id);
             dest.writeString(patient_name);
+            dest.writeString(phone);
             dest.writeInt(sex);
             dest.writeInt(age);
             dest.writeInt(relationship);

@@ -99,7 +99,7 @@ public class AuthPresenter implements AuthContact.Presenter {
         MultipartBody.Part partFile = MultipartBody.Part.createFormData("upload", file.getName(), requestBody);
 
         Params params = new Params();
-        params.put("type", "1");
+        params.put("type", type);
         MultipartBody.Part partTime = MultipartBody.Part.createFormData(HttpConfig.TIMESTAMP, params.get(HttpConfig.TIMESTAMP).toString());
         MultipartBody.Part partSign = MultipartBody.Part.createFormData(HttpConfig.SIGN_KEY, params.getSign(params));
 
