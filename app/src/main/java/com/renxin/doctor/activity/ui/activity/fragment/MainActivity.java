@@ -1,4 +1,4 @@
-package com.renxin.doctor.activity.ui.activity.home;
+package com.renxin.doctor.activity.ui.activity.fragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;

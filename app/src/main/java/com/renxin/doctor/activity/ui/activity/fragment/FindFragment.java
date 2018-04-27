@@ -53,6 +53,7 @@ public class FindFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.tv_books://经典书籍
                 intent.putExtra("url", H5Config.H5_BOOKS);
+
                 startActivity(intent);
                 break;
             case R.id.tv_encyclopedia://中医百科

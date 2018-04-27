@@ -5,7 +5,10 @@ import android.content.Context;
 import com.renxin.doctor.activity.injection.modules.ActivityModule;
 import com.renxin.doctor.activity.injection.qualifiers.ActivityContext;
 import com.renxin.doctor.activity.injection.scopes.PerActivity;
+import com.renxin.doctor.activity.ui.activity.home.AddDrugActivity;
 import com.renxin.doctor.activity.ui.activity.home.OpenPaperCameraActivity;
+import com.renxin.doctor.activity.ui.activity.home.OpenPaperOnlineActivity;
+import com.renxin.doctor.activity.ui.activity.home.SearchSkillNameActivity;
 import com.renxin.doctor.activity.ui.activity.login.LoginActivity;
 import com.renxin.doctor.activity.ui.activity.login.RegisteActivity;
 import com.renxin.doctor.activity.ui.activity.login.ResetPasswordActivity;
@@ -95,6 +98,12 @@ public interface ActivityComponent extends ApplicationComponent {
 
     void inject(OpenPaperCameraActivity openPaperCameraActivity);
 
+    void inject(OpenPaperOnlineActivity openPaperOnlineActivity);
+
     void inject(PatientListActivity patientListActivity);
+
+    void inject(SearchSkillNameActivity searchSkillNameActivity);
+
+    void inject(AddDrugActivity addDrugActivity);
 
 }

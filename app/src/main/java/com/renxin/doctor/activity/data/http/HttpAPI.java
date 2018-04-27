@@ -22,6 +22,7 @@ import com.renxin.doctor.activity.ui.bean.RepaymentHomeBean;
 import com.renxin.doctor.activity.ui.bean.RepaymentOffLineBean;
 import com.renxin.doctor.activity.ui.bean.SupportBankBean;
 import com.renxin.doctor.activity.ui.bean_jht.AuthInfoBean;
+import com.renxin.doctor.activity.ui.bean_jht.SearchDrugBean;
 import com.renxin.doctor.activity.ui.bean_jht.HospitalBean;
 import com.renxin.doctor.activity.ui.bean_jht.WalletBean;
 import com.renxin.doctor.activity.config.HttpConfig;
@@ -196,6 +197,14 @@ public interface HttpAPI {
     //拍照开方
     @POST("getmemb_no")
     Observable<HttpResponse<OtherBean>> getMembNo(@QueryMap Params params);
+
+    //疾病名称搜索
+    @POST("searchicd10")
+    Observable<HttpResponse<List<BaseConfigBean.Skill>>> searchSkillName(@QueryMap Params params);
+
+    //药材名称搜索
+    @POST("searchgetmedicine")
+    Observable<HttpResponse<List<SearchDrugBean>>> searchDrugName(@QueryMap Params params);
 
 
     //***************************************************

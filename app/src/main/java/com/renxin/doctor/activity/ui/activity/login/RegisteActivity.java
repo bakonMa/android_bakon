@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.renxin.doctor.activity.R;
-import com.renxin.doctor.activity.ui.activity.home.MainActivity;
+import com.renxin.doctor.activity.ui.activity.fragment.MainActivity;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.ui.contact.LoginContact;
 import com.renxin.doctor.activity.ui.presenter.LoginPresenter;

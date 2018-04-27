@@ -2,14 +2,16 @@ package com.renxin.doctor.activity.widget.popupwindow;
 
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.renxin.doctor.activity.R;
+import com.renxin.doctor.activity.utils.UIUtils;
 import com.renxin.doctor.activity.widget.PickerView;
 
 import java.util.List;
@@ -19,20 +21,21 @@ import java.util.List;
  */
 
 public class TwoPopupWheel extends PopupWindow implements PopupWindow.OnDismissListener, View.OnClickListener {
-    private TextView btn_cancel, btn_Comfirm;
+    private TextView btn_cancel, btn_Comfirm, titleView;
 
     private PickerView pickerView1, pickerView2;
 
     private Activity mActivity;
+    private String title;
+    private List<String> mData1, mData2;
 
-    private List<String> mData1,mData2;
 
-
-    public TwoPopupWheel(Activity activity, List<String> repaymentMethods,List<String> period, ClickedListener listener) {
+    public TwoPopupWheel(Activity activity, String title, List<String> mData1, List<String> mData2, ClickedListener listener) {
         super(activity);
         this.mActivity = activity;
-        this.mData1 = repaymentMethods;
-        this.mData2 = period;
+        this.mData1 = mData1;
+        this.mData2 = mData2;
+        this.title = title;
         this.mListener = listener;
         initView();
         initEvent();
@@ -66,19 +69,24 @@ public class TwoPopupWheel extends PopupWindow implements PopupWindow.OnDismissL
         this.setContentView(view);
         this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        titleView = view.findViewById(R.id.id_title);
         btn_cancel = (TextView) view.findViewById(R.id.id_btn_cancel);
         btn_cancel.setOnClickListener(this);
         btn_Comfirm = (TextView) view.findViewById(R.id.id_btn_comfirm);
         btn_Comfirm.setOnClickListener(this);
         pickerView1 = (PickerView) view.findViewById(R.id.id_wheel1);
         pickerView2 = (PickerView) view.findViewById(R.id.id_wheel2);
+        titleView.setText(TextUtils.isEmpty(title) ? "" : title);
     }
 
     @Override
     public void onDismiss() {
-        WindowManager.LayoutParams lp = mActivity.getWindow().getAttributes();
-        lp.alpha = 1.0f;
-        mActivity.getWindow().setAttributes(lp);
+        UIUtils.lightOn(mActivity);
+    }
+
+    public void show(View parent) {
+        UIUtils.lightOff(mActivity);
+        showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 
     @Override
@@ -90,7 +98,7 @@ public class TwoPopupWheel extends PopupWindow implements PopupWindow.OnDismissL
             case R.id.id_btn_comfirm:
                 dismiss();
                 if (mListener != null) {
-                    mListener.completeClicked(pickerView1.getPosition(),pickerView2.getPosition());
+                    mListener.completeClicked(pickerView1.getPosition(), pickerView2.getPosition());
                 }
                 break;
         }
@@ -99,6 +107,6 @@ public class TwoPopupWheel extends PopupWindow implements PopupWindow.OnDismissL
     private ClickedListener mListener;
 
     public interface ClickedListener {
-        void completeClicked(int pos1,int pos2);
+        void completeClicked(int pos1, int pos2);
     }
 }

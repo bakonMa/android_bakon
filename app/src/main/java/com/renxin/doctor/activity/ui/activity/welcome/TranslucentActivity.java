@@ -11,7 +11,7 @@ import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.config.SPConfig;
 import com.renxin.doctor.activity.data.eventbus.Event;
-import com.renxin.doctor.activity.ui.activity.home.MainActivity;
+import com.renxin.doctor.activity.ui.activity.fragment.MainActivity;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.ui.bean.AppUpdateBean;
 import com.renxin.doctor.activity.ui.bean.RepaymentHomeBean;

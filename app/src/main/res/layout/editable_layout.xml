@@ -48,17 +48,19 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
+        android:ellipsize="end"
         android:gravity="right"
-        tools:text="id_showtext"
+        android:singleLine="true"
         android:textColor="@color/color_333"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        tools:text="id_showtext" />
 
     <LinearLayout
         android:id="@+id/id_ll_select"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@+id/id_tv_left"
         android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/id_tv_left"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -66,10 +68,12 @@
         <TextView
             android:id="@+id/id_tv_select"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:ellipsize="end"
             android:gravity="center_vertical"
             android:hint="请选择"
+            android:singleLine="true"
             android:textColor="@color/black"
             android:textColorHint="@color/color_999"
             android:textSize="16sp" />

@@ -30,7 +30,7 @@ public class OnePopupWheel extends PopupWindow implements PopupWindow.OnDismissL
 
     private List<String> mData;
 
-    private String titel;
+    private String title;
 
     private Listener mListener;
 
@@ -39,7 +39,7 @@ public class OnePopupWheel extends PopupWindow implements PopupWindow.OnDismissL
         this.mActivity = activity;
         this.mData = datas;
         this.mListener = listener;
-        this.titel = title;
+        this.title = title;
         initView();
         // 设置SelectPicPopupWindow弹出窗体可点击
         this.setFocusable(true);
@@ -68,7 +68,7 @@ public class OnePopupWheel extends PopupWindow implements PopupWindow.OnDismissL
         btn_Comfirm.setOnClickListener(this);
         pickerView = view.findViewById(R.id.id_wheel);
         pickerView.setData(mData);
-        titleView.setText(TextUtils.isEmpty(titel) ? "" : titel);
+        titleView.setText(TextUtils.isEmpty(title) ? "" : title);
     }
 
     public void show(View parent) {

@@ -18,6 +18,9 @@ public interface OpenPaperContact {
         void getOPenPaperBaseData();//开方基础数据
         void uploadImg(String path, String type);
         void openPaperCamera(Params params);//拍照开方
+        void searchSkillName(String name);//搜索疾病名称
+        void searchDrugName(String name);//搜索药材名称
+
     }
 
 }

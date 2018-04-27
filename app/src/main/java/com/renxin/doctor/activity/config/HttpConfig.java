@@ -26,8 +26,10 @@ public interface HttpConfig {
     String UMENG_APPKEY = "5aded051f29d985b64000026";
     String WX_APP_ID = "wxa792384772439d0f";
     String WX_APP_SECRET = "2e37c33fd6ff031ebeae1cbeb94e6219";
-    String QQ_APP_ID = "1103454520";
-    String QQ_APP_ID_Key = "IT6H5qigvERIKyzg";
+//    String QQ_APP_ID = "1103454520";
+//    String QQ_APP_ID_Key = "IT6H5qigvERIKyzg";
+    String QQ_APP_ID = "1104231476";
+    String QQ_APP_ID_Key = "WJXfjBPBJpTJWfr5";
 
     String HTTP_HEADER_OS = "android";
     String HTTP_HEADER_CONTENTTYPE_KEY = "Content-Type";

@@ -10,7 +10,7 @@ import android.os.Environment;
 import com.renxin.doctor.activity.BuildConfig;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.data.localdata.StorageOperator;
-import com.renxin.doctor.activity.ui.activity.home.MainActivity;
+import com.renxin.doctor.activity.ui.activity.fragment.MainActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;

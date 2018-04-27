@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -111,12 +112,6 @@ public class StatusBarUtil {
      * 设置状态栏颜色
      */
     public static void setStatusBarColor(Activity activity, int statusBarColor) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            Window window = activity.getWindow();
-//            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//            window.setStatusBarColor(statusBarColor);
-//        }
-
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             if (statusBarColor == R.color.white) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M || OsUtil.isMIUI() || OsUtil.isFlyme()) {
@@ -128,6 +123,27 @@ public class StatusBarUtil {
             Window window = activity.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(statusBarColor);
+        }
+    }
+    /**
+     * Set the status bar color.
+     * 设置状态栏颜色 设置给title
+     */
+    public static void setStatusBarColor(Activity activity, View view, int colorRes) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            if (colorRes == R.color.white) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M || OsUtil.isMIUI() || OsUtil.isFlyme()) {
+                    StatusBarUtil.setStatusBarDarkFont(activity, true);
+                } else {
+                    colorRes = R.color.statueBar_color;
+                }
+            }
+            //添加一个状态栏的高度的高度
+            view.setBackgroundResource(colorRes);
+            ViewGroup.LayoutParams lp = view.getLayoutParams();
+            lp.height = StatusBarUtil.getStatusBarHeight(activity);
+            view.setLayoutParams(lp);
+            view.setVisibility(View.VISIBLE);
         }
     }
 

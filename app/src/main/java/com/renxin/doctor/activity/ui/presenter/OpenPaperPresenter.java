@@ -6,6 +6,8 @@ import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.data.response.HttpResponse;
 import com.renxin.doctor.activity.ui.base.BaseObserver;
 import com.renxin.doctor.activity.ui.bean.OPenPaperBaseBean;
+import com.renxin.doctor.activity.ui.bean_jht.BaseConfigBean;
+import com.renxin.doctor.activity.ui.bean_jht.SearchDrugBean;
 import com.renxin.doctor.activity.ui.bean_jht.UploadImgBean;
 import com.renxin.doctor.activity.ui.contact.OpenPaperContact;
 import com.renxin.doctor.activity.utils.FileUtil;
@@ -14,6 +16,7 @@ import com.renxin.doctor.activity.utils.M;
 import com.renxin.doctor.activity.widget.dialog.LoadingDialog;
 
 import java.io.File;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -37,6 +40,8 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
     public static final int UPLOADIMF_OK = 0x111;
     public static final int UPLOADIMF_ERROR = 0x112;
     public static final int OPENPAPER_OK = 0x113;
+    public static final int SEARCH_SKILL_OK = 0x114;
+    public static final int SEARCH_DRUG_OK = 0x115;
 
     public OpenPaperPresenter(OpenPaperContact.View mView) {
         this.mView = mView;
@@ -74,6 +79,7 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                 });
         mSubscription.add(subscription);
     }
+
     @Override
     public void uploadImg(String path, String type) {
         //type：0：头像 1：其他认证图片  upload：图片文件
@@ -123,6 +129,54 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
                         mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, OPENPAPER_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void searchSkillName(String name) {
+        Params params = new Params();
+        params.put("search", name);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().searchSkillName(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null)
+                        mDialog.show();
+                }).subscribe(new BaseObserver<HttpResponse<List<BaseConfigBean.Skill>>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<List<BaseConfigBean.Skill>> personalBeanHttpResponse) {
+                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, SEARCH_SKILL_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void searchDrugName(String name) {
+        Params params = new Params();
+        params.put("search", name);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().searchDrugName(params))
+                .compose(mView.toLifecycle())
+                //不需要dialog
+                .subscribe(new BaseObserver<HttpResponse<List<SearchDrugBean>>>(null) {
+                    @Override
+                    public void onSuccess(HttpResponse<List<SearchDrugBean>> personalBeanHttpResponse) {
+                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, SEARCH_DRUG_OK));
                     }
 
                     @Override

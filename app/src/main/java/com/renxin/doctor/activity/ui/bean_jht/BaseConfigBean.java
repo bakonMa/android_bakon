@@ -69,10 +69,11 @@ public class BaseConfigBean {
     }
 
     //具体疾病名称
-    public static class Skill implements MultiItemEntity,Parcelable {
+    public static class Skill implements MultiItemEntity, Parcelable {
 
         public int id;
         public String name;
+        public String icd10_code;//搜索疾病使用
         //区分ui使用
         public int itemType;
         public boolean isSelect;
@@ -82,6 +83,11 @@ public class BaseConfigBean {
             this.itemType = itemType;
         }
 
+        @Override
+        public int getItemType() {
+            return itemType;
+        }
+
         protected Skill(Parcel in) {
             id = in.readInt();
             name = in.readString();
@@ -89,15 +95,12 @@ public class BaseConfigBean {
         }
 
         @Override
-        public int getItemType() {
-            return itemType;
-        }
-
-        @Override
         public void writeToParcel(Parcel dest, int flags) {
             dest.writeInt(id);
             dest.writeString(name);
+            dest.writeString(icd10_code);
             dest.writeInt(itemType);
+            dest.writeByte((byte) (isSelect ? 1 : 0));
         }
 
         @Override
@@ -116,7 +119,6 @@ public class BaseConfigBean {
                 return new Skill[size];
             }
         };
-
 
     }
 

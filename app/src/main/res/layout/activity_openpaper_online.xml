@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -146,10 +146,34 @@
                     android:paddingRight="15dp"
                     app:editTextHint="请输入手机号"
                     app:editTextType="number"
-                    app:isShowBottomLine="false"
                     app:leftText="联系电话"
                     app:maxLength="11"
                     app:textMainSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="15dp"
+                    android:text="主述及辩证型"
+                    android:textColor="@color/color_333"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_skillname"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/white"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:text="请选择病名或证型"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:singleLine="true"
+                    android:textColor="@color/color_999"
+                    android:textSize="16sp" />
 
             </LinearLayout>
 
@@ -170,122 +194,126 @@
                 app:isShowLineBottom="false" />
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_height="35dp"
                 android:background="@color/white"
-                android:orientation="vertical"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="10dp"
-                    android:text="请拍照或从相册选择图片上传处方（最多可上传3张）"
-                    android:textColor="@color/color_999"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="处方"
+                    android:textColor="@color/color_333"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_addcommpaper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:text="保存为常用处方"
+                    android:textColor="@color/color_main"
                     android:textSize="12sp" />
 
+                <View
+                    style="@style/line_gray_hor"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="85dp"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/white"
+                android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:text="药名"
+                    android:textColor="@color/color_333"
+                    android:textSize="16sp" />
 
-                        <ImageView
-                            android:id="@+id/iv_img1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/img_default_1"
-                            android:scaleType="centerInside" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="用量"
+                    android:textColor="@color/color_333"
+                    android:textSize="16sp" />
 
-                        <ImageView
-                            android:id="@+id/iv_img1_clean"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginRight="6dp"
-                            android:background="@drawable/icon_img_del"
-                            android:visibility="gone" />
-                    </RelativeLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="煎法"
+                    android:textColor="@color/color_333"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
+            <View
+                style="@style/line_gray_hor"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
 
-                        <ImageView
-                            android:id="@+id/iv_img2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/img_default_1"
-                            android:scaleType="centerInside" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white" />
 
-                        <ImageView
-                            android:id="@+id/iv_img2_clean"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginRight="6dp"
-                            android:background="@drawable/icon_img_del"
-                            android:visibility="gone" />
-                    </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
 
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <ImageView
-                            android:id="@+id/iv_img3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="6dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/img_default_1"
-                            android:scaleType="centerInside" />
-
-                        <ImageView
-                            android:id="@+id/iv_img3_clean"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:background="@drawable/icon_img_del"
-                            android:visibility="gone" />
-                    </RelativeLayout>
-
-                </LinearLayout>
+                <View
+                    style="@style/line_gray_hor"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/attention"
-                    android:drawablePadding="5dp"
-                    android:paddingBottom="10dp"
-                    android:text="格式为JPG/PNG/GIF，请确保图片内文字清晰可见。"
-                    android:textColor="@color/color_999"
-                    android:textSize="12sp" />
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:background="@color/white"
+                    android:drawableRight="@drawable/icon_dian"
+                    android:gravity="center"
+                    android:paddingLeft="50dp"
+                    android:paddingRight="50dp"
+                    android:text="展开"
+                    android:textColor="@color/color_333"
+                    android:textSize="16sp" />
+
+
+                <TextView
+                    android:id="@+id/tv_adddrug"
+                    android:layout_width="120dp"
+                    android:layout_height="44dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/shape_stroke_graybg_1"
+                    android:gravity="center"
+                    android:text="添加药材"
+                    android:textColor="@color/color_main"
+                    android:textSize="16sp" />
+
             </LinearLayout>
+
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="15dp"
@@ -363,6 +391,96 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:text="共"
+                    android:textColor="@color/color_333"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/shape_stroke_bg_10"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_minus_one"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/shape_solid_cornerleft_selector"
+                        android:gravity="center"
+                        android:text="－"
+                        android:textColor="@drawable/selector_textcolor_grayyellow" />
+
+                    <EditText
+                        android:id="@+id/et_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:background="@null"
+                        android:cursorVisible="false"
+                        android:enabled="false"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="5"
+                        android:minWidth="30dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:text="1"
+                        android:textColor="@color/color_333"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_add_one"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/shape_solid_cornerright_selector"
+                        android:gravity="center"
+                        android:text="＋"
+                        android:textColor="@drawable/selector_textcolor_grayyellow" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="副"
+                    android:textColor="@color/color_333"
+                    android:textSize="16sp" />
+
+
+            </LinearLayout>
+
+            <View
+                style="@style/line_gray_hor"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+            <com.renxin.doctor.activity.widget.EditableLayout
+                android:id="@+id/et_usetype"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                app:edit_editTextHint="请选择用法用量"
+                app:edit_leftText="用法用量"
+                app:edit_mode="select"
+                app:edit_textMainSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:text="开方补充收费"
                     android:textColor="@color/color_333"
                     android:textSize="16sp" />
@@ -376,8 +494,8 @@
                     android:hint="开方补充收费"
                     android:inputType="number"
                     android:maxLength="5"
-                    android:textSize="16sp"
-                    android:paddingLeft="15dp" />
+                    android:paddingLeft="15dp"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -388,6 +506,24 @@
                     android:textSize="16sp" />
 
             </LinearLayout>
+
+            <View
+                style="@style/line_gray_hor"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+            <com.renxin.doctor.activity.widget.EditableLayout
+                android:id="@+id/et_docadvice"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                app:edit_editTextHint="（必填）"
+                app:edit_leftText="医嘱"
+                app:edit_mode="select"
+                app:edit_textMainSize="16sp"
+                app:isShowLineBottom="false" />
 
             <TextView
                 android:id="@+id/tv_next_step"

@@ -19,7 +19,7 @@ import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.injection.components.DaggerFragmentComponent;
 import com.renxin.doctor.activity.injection.modules.FragmentModule;
-import com.renxin.doctor.activity.ui.activity.home.MainActivity;
+import com.renxin.doctor.activity.ui.activity.fragment.MainActivity;
 import com.renxin.doctor.activity.ui.base.BaseFragment;
 import com.renxin.doctor.activity.ui.contact.LoginContact;
 import com.renxin.doctor.activity.ui.presenter.LoginPresenter;

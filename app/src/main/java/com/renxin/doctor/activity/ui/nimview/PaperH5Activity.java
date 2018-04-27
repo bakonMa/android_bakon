@@ -175,18 +175,18 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
                 wbWebview.setVisibility(View.VISIBLE);
                 rltError.setVisibility(View.GONE);
                 break;
-            case 1://无网络
-                wbWebview.setVisibility(View.GONE);
-                rltError.setVisibility(View.VISIBLE);
-                ivErrorImage.setImageResource(R.drawable.wangluoyichang);
-                tvErrorText.setText("啊哦～网络异常");
-                break;
-            case 2://其他-加载失败
-                wbWebview.setVisibility(View.GONE);
-                rltError.setVisibility(View.VISIBLE);
-                ivErrorImage.setImageResource(R.drawable.wangyechucuo);
-                tvErrorText.setText("啊哦～页面出错了");
-                break;
+//            case 1://无网络
+//                wbWebview.setVisibility(View.GONE);
+//                rltError.setVisibility(View.VISIBLE);
+//                ivErrorImage.setImageResource(R.drawable.wangluoyichang);
+//                tvErrorText.setText("啊哦～网络异常");
+//                break;
+//            case 2://其他-加载失败
+//                wbWebview.setVisibility(View.GONE);
+//                rltError.setVisibility(View.VISIBLE);
+//                ivErrorImage.setImageResource(R.drawable.wangyechucuo);
+//                tvErrorText.setText("啊哦～页面出错了");
+//                break;
         }
     }
 

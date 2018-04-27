@@ -286,6 +286,7 @@ public class MessageListPanelEx {
                 addedListItems.add(message);
                 needRefresh = true;
             }
+            //接收消息处理 bakon mark
         }
         if (needRefresh) {
             sortMessages(items);
