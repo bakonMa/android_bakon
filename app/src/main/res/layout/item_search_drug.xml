@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_height="40dp"
     android:background="@drawable/selector_bg_tab"
+    android:orientation="vertical"
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
 
     <TextView
         android:id="@+id/tv_drugname"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
         android:textColor="@color/color_333"
         android:textSize="14sp"
         tools:text="尿糖尿病" />
@@ -20,9 +22,8 @@
         android:id="@+id/tv_drugprice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_drugname"
-        android:gravity="center_horizontal"
+        android:layout_gravity="center"
         android:textColor="@color/color_999"
         android:textSize="10sp"
         tools:text="尿糖" />
-</RelativeLayout>
+</LinearLayout>

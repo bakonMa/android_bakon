@@ -6,6 +6,7 @@ import com.renxin.doctor.activity.injection.modules.ActivityModule;
 import com.renxin.doctor.activity.injection.qualifiers.ActivityContext;
 import com.renxin.doctor.activity.injection.scopes.PerActivity;
 import com.renxin.doctor.activity.ui.activity.home.AddDrugActivity;
+import com.renxin.doctor.activity.ui.activity.home.CommUsePaperActivity;
 import com.renxin.doctor.activity.ui.activity.home.OpenPaperCameraActivity;
 import com.renxin.doctor.activity.ui.activity.home.OpenPaperOnlineActivity;
 import com.renxin.doctor.activity.ui.activity.home.SearchSkillNameActivity;
@@ -105,5 +106,7 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(SearchSkillNameActivity searchSkillNameActivity);
 
     void inject(AddDrugActivity addDrugActivity);
+
+    void inject(CommUsePaperActivity commUsePaperActivity);
 
 }

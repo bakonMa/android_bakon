@@ -255,6 +255,9 @@
             android:name=".ui.activity.home.SearchSkillNameActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activity.home.CommUsePaperActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activity.home.AddDrugActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"

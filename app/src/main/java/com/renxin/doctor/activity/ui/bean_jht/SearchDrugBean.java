@@ -24,10 +24,7 @@ public class SearchDrugBean {
     public String unit;
     public String spec;
     public int use_flag;
+    //数据类型，1:药品，2：处方
     public int datatype;
-    //添加药材使用
-    public int drug_id;//id
-    public int drug_num;//用量
-    public String decoction;//用法（常规）
 
 }

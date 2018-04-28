@@ -1,47 +1,49 @@
 package com.renxin.doctor.activity.data.http;
 
+import com.renxin.doctor.activity.config.HttpConfig;
 import com.renxin.doctor.activity.data.response.HttpResponse;
+import com.renxin.doctor.activity.ui.bean.AddCoborrowerBean;
 import com.renxin.doctor.activity.ui.bean.AppUpdateBean;
 import com.renxin.doctor.activity.ui.bean.ApplyInfoBean;
+import com.renxin.doctor.activity.ui.bean.ApplyUserBean;
 import com.renxin.doctor.activity.ui.bean.BankBean;
+import com.renxin.doctor.activity.ui.bean.BankCardBean;
+import com.renxin.doctor.activity.ui.bean.BankTypeBean;
 import com.renxin.doctor.activity.ui.bean.CommMessageBean;
 import com.renxin.doctor.activity.ui.bean.ConfigBean;
+import com.renxin.doctor.activity.ui.bean.ContributiveBean;
 import com.renxin.doctor.activity.ui.bean.DealDetailBean;
+import com.renxin.doctor.activity.ui.bean.DealInfoBean;
 import com.renxin.doctor.activity.ui.bean.HomeLoanBean;
 import com.renxin.doctor.activity.ui.bean.HouseInfoResponse;
+import com.renxin.doctor.activity.ui.bean.IfBankOfJointBean;
 import com.renxin.doctor.activity.ui.bean.JudgeIfTiedBean;
 import com.renxin.doctor.activity.ui.bean.LoanDetailBean;
+import com.renxin.doctor.activity.ui.bean.LoginResponse;
 import com.renxin.doctor.activity.ui.bean.MaxAmtBean;
 import com.renxin.doctor.activity.ui.bean.MessageBean;
+import com.renxin.doctor.activity.ui.bean.MessageCountBean;
 import com.renxin.doctor.activity.ui.bean.MyAccountInfoBean;
+import com.renxin.doctor.activity.ui.bean.MyLoanBean;
 import com.renxin.doctor.activity.ui.bean.OPenPaperBaseBean;
+import com.renxin.doctor.activity.ui.bean.OtherBean;
 import com.renxin.doctor.activity.ui.bean.PatientBean;
 import com.renxin.doctor.activity.ui.bean.PatientFamilyBean;
 import com.renxin.doctor.activity.ui.bean.RechargeBean;
 import com.renxin.doctor.activity.ui.bean.RepaymentHomeBean;
 import com.renxin.doctor.activity.ui.bean.RepaymentOffLineBean;
+import com.renxin.doctor.activity.ui.bean.ReusingBean;
 import com.renxin.doctor.activity.ui.bean.SupportBankBean;
 import com.renxin.doctor.activity.ui.bean_jht.AuthInfoBean;
-import com.renxin.doctor.activity.ui.bean_jht.SearchDrugBean;
-import com.renxin.doctor.activity.ui.bean_jht.HospitalBean;
-import com.renxin.doctor.activity.ui.bean_jht.WalletBean;
-import com.renxin.doctor.activity.config.HttpConfig;
-import com.renxin.doctor.activity.ui.bean.AddCoborrowerBean;
-import com.renxin.doctor.activity.ui.bean.ApplyUserBean;
-import com.renxin.doctor.activity.ui.bean.BankCardBean;
-import com.renxin.doctor.activity.ui.bean.BankTypeBean;
-import com.renxin.doctor.activity.ui.bean.ContributiveBean;
-import com.renxin.doctor.activity.ui.bean.DealInfoBean;
-import com.renxin.doctor.activity.ui.bean.IfBankOfJointBean;
-import com.renxin.doctor.activity.ui.bean.LoginResponse;
-import com.renxin.doctor.activity.ui.bean.MessageCountBean;
-import com.renxin.doctor.activity.ui.bean.MyLoanBean;
-import com.renxin.doctor.activity.ui.bean.OtherBean;
-import com.renxin.doctor.activity.ui.bean.ReusingBean;
 import com.renxin.doctor.activity.ui.bean_jht.BaseConfigBean;
+import com.renxin.doctor.activity.ui.bean_jht.CommPaperBean;
+import com.renxin.doctor.activity.ui.bean_jht.CommPaperInfoBean;
+import com.renxin.doctor.activity.ui.bean_jht.HospitalBean;
+import com.renxin.doctor.activity.ui.bean_jht.SearchDrugBean;
 import com.renxin.doctor.activity.ui.bean_jht.UploadImgBean;
 import com.renxin.doctor.activity.ui.bean_jht.UserBaseInfoBean;
 import com.renxin.doctor.activity.ui.bean_jht.VisitInfoBean;
+import com.renxin.doctor.activity.ui.bean_jht.WalletBean;
 
 import java.util.List;
 
@@ -205,6 +207,18 @@ public interface HttpAPI {
     //药材名称搜索
     @POST("searchgetmedicine")
     Observable<HttpResponse<List<SearchDrugBean>>> searchDrugName(@QueryMap Params params);
+
+    //常用方列表
+    @POST("oftenmed_list")
+    Observable<HttpResponse<List<CommPaperBean>>> getOftenmedList(@QueryMap Params params);
+
+    //常用方列表
+    @POST("often_medicinal")
+    Observable<HttpResponse<String>> addOftenmed(@QueryMap Params params);
+
+    //常用方详情
+    @POST("oftenmed_info")
+    Observable<HttpResponse<List<CommPaperInfoBean>>> getOftenmedInfo(@QueryMap Params params);
 
 
     //***************************************************

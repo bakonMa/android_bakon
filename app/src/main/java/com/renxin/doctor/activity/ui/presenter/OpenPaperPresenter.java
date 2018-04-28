@@ -7,6 +7,8 @@ import com.renxin.doctor.activity.data.response.HttpResponse;
 import com.renxin.doctor.activity.ui.base.BaseObserver;
 import com.renxin.doctor.activity.ui.bean.OPenPaperBaseBean;
 import com.renxin.doctor.activity.ui.bean_jht.BaseConfigBean;
+import com.renxin.doctor.activity.ui.bean_jht.CommPaperBean;
+import com.renxin.doctor.activity.ui.bean_jht.CommPaperInfoBean;
 import com.renxin.doctor.activity.ui.bean_jht.SearchDrugBean;
 import com.renxin.doctor.activity.ui.bean_jht.UploadImgBean;
 import com.renxin.doctor.activity.ui.contact.OpenPaperContact;
@@ -42,6 +44,9 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
     public static final int OPENPAPER_OK = 0x113;
     public static final int SEARCH_SKILL_OK = 0x114;
     public static final int SEARCH_DRUG_OK = 0x115;
+    public static final int GET_COMMPAPER_INFO_OK = 0x116;
+    public static final int GET_COMMPAPER_LIST_OK = 0x117;
+    public static final int ADD_COMMPAPER_OK = 0x118;
 
     public OpenPaperPresenter(OpenPaperContact.View mView) {
         this.mView = mView;
@@ -177,6 +182,78 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<List<SearchDrugBean>> personalBeanHttpResponse) {
                         mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, SEARCH_DRUG_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void searchDrugPaperById(int id) {
+        Params params = new Params();
+        params.put("id", id);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getOftenmedInfo(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null)
+                        mDialog.show();
+                }).subscribe(new BaseObserver<HttpResponse<List<CommPaperInfoBean>>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<List<CommPaperInfoBean>> personalBeanHttpResponse) {
+                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_COMMPAPER_INFO_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void getOftenmedList() {
+        Params params = new Params();
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getOftenmedList(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null)
+                        mDialog.show();
+                }).subscribe(new BaseObserver<HttpResponse<List<CommPaperBean>>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<List<CommPaperBean>> personalBeanHttpResponse) {
+                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_COMMPAPER_LIST_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void addOftenmed(Params params) {
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().addOftenmed(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null)
+                        mDialog.show();
+                }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
+                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, ADD_COMMPAPER_OK));
                     }
 
                     @Override

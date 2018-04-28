@@ -53,7 +53,7 @@ public class CommMessageActivity extends BaseActivity implements ChatMessageCont
     @BindView(R.id.tv_delete)
     TextView tvDelete;
 
-    @BindView(R.id.recycleview_message)
+    @BindView(R.id.recycleview)
     RecyclerView recycleview;
 
     @Inject

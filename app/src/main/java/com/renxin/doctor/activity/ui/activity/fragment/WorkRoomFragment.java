@@ -14,6 +14,7 @@ import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.injection.components.DaggerFragmentComponent;
 import com.renxin.doctor.activity.injection.modules.FragmentModule;
 import com.renxin.doctor.activity.nim.message.SessionHelper;
+import com.renxin.doctor.activity.ui.activity.home.CommUsePaperActivity;
 import com.renxin.doctor.activity.ui.activity.home.OpenPaperCameraActivity;
 import com.renxin.doctor.activity.ui.activity.home.OpenPaperOnlineActivity;
 import com.renxin.doctor.activity.ui.base.BaseFragment;
@@ -96,6 +97,9 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 break;
             case R.id.tv_online_paper://在线开方
                 startActivity(new Intent(actContext(), OpenPaperOnlineActivity.class));
+                break;
+            case R.id.tv_comm_paper://常用处方
+                startActivity(new Intent(actContext(), CommUsePaperActivity.class));
                 break;
         }
 

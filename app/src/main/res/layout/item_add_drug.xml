@@ -5,6 +5,8 @@
     android:layout_height="40dp"
     android:background="@drawable/selector_bg_tab"
     android:descendantFocusability="beforeDescendants"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:orientation="horizontal"
     android:paddingLeft="15dp"
     android:paddingRight="15dp">
@@ -28,14 +30,13 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:gravity="center"
         android:hint="用量"
         android:inputType="number"
         android:maxLength="4"
         android:textColor="@color/color_333"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:theme="@style/blackEditText" />
 
     <TextView
         android:id="@+id/tv_unit"
@@ -51,7 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        android:drawableRight="@drawable/icon_dian"
+        android:drawableRight="@drawable/icon_down"
         android:gravity="center"
         android:text="常规"
         android:textColor="@color/color_333"

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="66dp"
+    android:background="@drawable/selector_bg_tab"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <CheckBox
+        android:id="@+id/cb_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_papername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/cb_select"
+        android:layout_toStartOf="@+id/iv_right"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:paddingBottom="5dp"
+        android:paddingTop="10dp"
+        android:singleLine="true"
+        android:textColor="@color/color_333"
+        android:textSize="16sp"
+        tools:text="药名" />
+
+    <TextView
+        android:id="@+id/tv_paperremark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_papername"
+        android:layout_toEndOf="@+id/cb_select"
+        android:layout_toStartOf="@+id/iv_right"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/color_d6d6d6"
+        android:textSize="14sp"
+        tools:text="备注" />
+
+    <ImageView
+        android:id="@+id/iv_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/nim_arrow_right" />
+
+    <View
+        style="@style/line_gray_hor"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>
