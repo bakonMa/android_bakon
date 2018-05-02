@@ -8,6 +8,7 @@ import com.renxin.doctor.activity.ui.base.BasicProvider;
 import com.renxin.doctor.activity.ui.contact.PatientContact;
 import com.renxin.doctor.activity.ui.contact.LoginContact;
 import com.renxin.doctor.activity.ui.contact.MyLoanContact;
+import com.renxin.doctor.activity.ui.contact.WorkRoomContact;
 import com.renxin.doctor.activity.ui.presenter.MyLoanPresenter;
 import com.renxin.doctor.activity.ui.presenter.PatientPresenter;
 import com.renxin.doctor.activity.ui.presenter.RepaymentPresenter;
@@ -16,6 +17,7 @@ import com.renxin.doctor.activity.injection.scopes.PerFragment;
 import com.renxin.doctor.activity.ui.contact.PersonalContact;
 import com.renxin.doctor.activity.ui.contact.RepaymentContact;
 import com.renxin.doctor.activity.ui.presenter.PersonalPresenter;
+import com.renxin.doctor.activity.ui.presenter.WorkRoomPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -59,9 +61,14 @@ public final class FragmentModule {
         return new PersonalPresenter((PersonalContact.View) mView);
     }
 
+    @PerFragment
+    @Provides
+    public WorkRoomPresenter provideWorkRoomPresenter() {
+        return new WorkRoomPresenter((WorkRoomContact.View) mView);
+    }
+
 
     //********************************************************
-
 
 
     @PerFragment

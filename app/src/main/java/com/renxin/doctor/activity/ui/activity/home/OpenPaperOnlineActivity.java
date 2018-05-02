@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -16,6 +17,7 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.config.EventConfig;
@@ -25,17 +27,20 @@ import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
 import com.renxin.doctor.activity.injection.modules.ActivityModule;
 import com.renxin.doctor.activity.ui.activity.patient.PatientFamilyActivity;
 import com.renxin.doctor.activity.ui.activity.patient.PatientListActivity;
+import com.renxin.doctor.activity.ui.adapter.OPenPaperDrugAdapter;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.ui.bean.OPenPaperBaseBean;
 import com.renxin.doctor.activity.ui.bean.PatientFamilyBean;
+import com.renxin.doctor.activity.ui.bean_jht.DrugBean;
 import com.renxin.doctor.activity.ui.contact.OpenPaperContact;
 import com.renxin.doctor.activity.ui.presenter.OpenPaperPresenter;
 import com.renxin.doctor.activity.utils.SoftHideKeyBoardUtil;
-import com.renxin.doctor.activity.utils.ToastUtil;
+import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.utils.UIUtils;
 import com.renxin.doctor.activity.widget.EditTextlayout;
 import com.renxin.doctor.activity.widget.EditableLayout;
 import com.renxin.doctor.activity.widget.dialog.CommonDialog;
+import com.renxin.doctor.activity.widget.dialog.SavePaperDialog;
 import com.renxin.doctor.activity.widget.popupwindow.OnePopupWheel;
 import com.renxin.doctor.activity.widget.popupwindow.TwoPopupWheel;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
@@ -62,6 +67,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
 
     public static final int REQUEST_CODE_DOCADVICE = 1020;
     public static final int REQUEST_CODE_SEARCHSKILLNAME = 1021;
+    public static final int REQUEST_CODE_ADDDRUG = 1022;
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
     @BindView(R.id.scrollView)
@@ -106,6 +112,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     EditText etServerprice;
     @BindView(R.id.tv_skillname)
     TextView tvSkillname;
+    @BindView(R.id.tv_showall)
+    TextView tvShowall;
     @BindView(R.id.tv_next_step)
     TextView tvNextStep;
 
@@ -118,6 +126,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     private int daijianType = 0;
     private String membNo = "";//患者编号，选择患者才有
     private String docadviceStr = "";//医嘱
+    private ArrayList<DrugBean> drugBeans = new ArrayList<>();
+    private boolean isShowAll = false;//展开全部
 
     private OPenPaperBaseBean baseBean;
     private List<String> drugStoreList = new ArrayList<>();//药房
@@ -125,6 +135,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     private List<String> drugUseList = new ArrayList<>();//用法
     private List<String> frequencyList = new ArrayList<>();//用量
     private OnePopupWheel mPopupWheel;
+    private OPenPaperDrugAdapter adapter;
+    private SavePaperDialog savePaperDialog;
 
     //带有返回的startActivityForResult-仅限nim中使用 formParent=1
     public static void startResultActivity(Context context, int requestCode, int formParent, String membNo) {
@@ -142,15 +154,16 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     @Override
     protected void initView() {
         SoftHideKeyBoardUtil.assistActivity(this);
+        //来源
         formParent = getIntent().getIntExtra("formParent", 0);
         membNo = getIntent().getStringExtra("memb_no");
+
+        //初始基础数据
+        initBaseData();
+        //设置topbar
+        initToolbar();
         //聊天进来不能填写
         tv_editepatient.setVisibility(formParent == 0 ? View.VISIBLE : View.GONE);
-
-        initToolbar();
-        //获取基础数据
-        mPresenter.getOPenPaperBaseData();
-
         //性别
         rgSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -166,6 +179,32 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             }
         });
 
+        //添加的药材列表处理
+        adapter = new OPenPaperDrugAdapter(this, drugBeans, 3);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+//        adapter.bindToRecyclerView(recyclerview);
+    }
+
+    //初始base数据
+    private void initBaseData() {
+        baseBean = U.getOpenpapeBaseData();
+        //药房
+        for (OPenPaperBaseBean.StoreBean bean : baseBean.store) {
+            drugStoreList.add(bean.drug_store_name);
+        }
+        //剂型
+        for (OPenPaperBaseBean.CommBean bean : baseBean.drug_class) {
+            drugClassList.add(bean.name);
+        }
+        //用法
+        for (OPenPaperBaseBean.CommBean bean : baseBean.usage) {
+            drugUseList.add(bean.name);
+        }
+        //用量
+        for (OPenPaperBaseBean.CommBean bean : baseBean.frequency) {
+            frequencyList.add(bean.name);
+        }
     }
 
     //获取当前界面可用高度
@@ -185,8 +224,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     }
 
     @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugstore, R.id.et_drugclass,
-            R.id.tv_adddrug, R.id.tv_minus_one, R.id.tv_add_one, R.id.et_usetype,
-            R.id.tv_skillname, R.id.et_docadvice, R.id.tv_next_step})
+            R.id.tv_adddrug, R.id.tv_minus_one, R.id.tv_add_one, R.id.et_usetype, R.id.tv_showall,
+            R.id.tv_addcommpaper, R.id.tv_skillname, R.id.et_docadvice, R.id.tv_next_step})
     public void tabOnClick(View view) {
         switch (view.getId()) {
             case R.id.tv_addpatient://选择患者
@@ -196,13 +235,29 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                     intent.putExtra("memb_no", membNo);
                 } else {
                     intent.setClass(this, PatientListActivity.class);
-
                 }
                 intent.putExtra("formtype", 1);//来自 选择患者
                 startActivity(intent);
                 break;
             case R.id.tv_editepatient://编辑就诊人
                 writeJzInfo();
+                break;
+            case R.id.tv_addcommpaper://添加为常用处方
+                savePaperDialog = new SavePaperDialog(this, new SavePaperDialog.ClickListener() {
+                    @Override
+                    public void confirm(String name, String remark) {
+                        Params params = new Params();
+                        params.put("title", name);
+                        params.put("m_explain", remark);
+                        params.put("param", new Gson().toJson(drugBeans));
+                        mPresenter.addOftenmed(params);
+                        savePaperDialog.dismiss();
+                    }
+                });
+                savePaperDialog.show();
+                break;
+            case R.id.tv_showall://展开
+                setOPenStatus(!isShowAll);
                 break;
             case R.id.et_drugstore://药房
                 mPopupWheel = new OnePopupWheel(this, drugStoreList, "请选择药房", new OnePopupWheel.Listener() {
@@ -254,14 +309,23 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 break;
             case R.id.tv_adddrug://添加药材
                 Intent addDrugIntent = new Intent(this, AddDrugActivity.class);
-                addDrugIntent.putParcelableArrayListExtra("usetype", baseBean.drugremark);
-                startActivity(addDrugIntent);
+                addDrugIntent.putParcelableArrayListExtra("druglist", drugBeans);
+                addDrugIntent.putExtra("form", 1);//添加药材使用
+                startActivityForResult(addDrugIntent, REQUEST_CODE_ADDDRUG);
                 break;
             case R.id.tv_next_step://提交
                 checkData();
                 break;
         }
     }
+
+    //展开折叠
+    private void setOPenStatus(boolean b) {
+        isShowAll = b;
+        adapter.setIsShowAll(isShowAll);
+        tvShowall.setText(isShowAll ? "收起" : "展开");
+    }
+
 
     //要副加减
     private void editeDrugNum(boolean isAdd) {
@@ -307,37 +371,46 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     private void checkData() {
         if (TextUtils.isEmpty(etName.getEditText().getText())
                 || TextUtils.isEmpty(etAge.getEditText().getText())) {
-            ToastUtil.showShort("请填写就诊人信息");
+            commonDialog = new CommonDialog(this, "请填写就诊人信息");
+            commonDialog.show();
             return;
         }
         if (TextUtils.isEmpty(etDrugstore.getText())) {
-            ToastUtil.showShort("请选择药房");
+            commonDialog = new CommonDialog(this, "请选择药房");
+            commonDialog.show();
             return;
         }
         if (TextUtils.isEmpty(etDrugstore.getText())) {
-            ToastUtil.showShort("请选择剂型");
+            commonDialog = new CommonDialog(this, "请选择剂型");
+            commonDialog.show();
             return;
         }
-
 
         Params params = new Params();
         //患者编号
         if (!TextUtils.isEmpty(membNo)) {
             params.put("memb_no", membNo);
         }
-        //补充收费
-        if (!TextUtils.isEmpty(etServerprice.getText().toString().trim())) {
-            params.put("service_price", etServerprice.getText().toString().trim());
-        }
+
+        params.put("source", formParent == 0 ? 1 : 2);//来源：1：首页，2：聊天
         params.put("name", etName.getEditText().getText());
         params.put("sex", sexType);
         params.put("age", etAge.getEditText().getText());
         params.put("phone", etPhone.getEditText().getText());
+        params.put("icd10", skilNameCode);//主述及辩证型的icd10_code字段
         params.put("store_id", storeId);
+        params.put("param", new Gson().toJson(drugBeans));
         params.put("drug_class", drugClassId);
         params.put("boiled_type", daijianType);
-
-//        mPresenter.openPaperCamera(params);
+        params.put("drug_num", Integer.parseInt(etNum.getText().toString()));
+        params.put("usages", usagesId);
+        params.put("freq", freqId);
+        //补充收费
+        if (!TextUtils.isEmpty(etServerprice.getText().toString().trim())) {
+            params.put("service_price", etServerprice.getText().toString().trim());
+        }
+        params.put("doc_remark", docadviceStr);//医嘱
+        mPresenter.openPaperOnline(params);
     }
 
     @Override
@@ -361,27 +434,25 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     @Override
     public void onSuccess(Message message) {
         switch (message.what) {
-            case OpenPaperPresenter.GET_BASEDATA_0K://基础数据
-                baseBean = (OPenPaperBaseBean) message.obj;
-                //药房
-                for (OPenPaperBaseBean.StoreBean bean : baseBean.store) {
-                    drugStoreList.add(bean.drug_store_name);
-                }
-                //剂型
-                for (OPenPaperBaseBean.CommBean bean : baseBean.drug_class) {
-                    drugClassList.add(bean.name);
-                }
-                //用法
-                for (OPenPaperBaseBean.CommBean bean : baseBean.usage) {
-                    drugUseList.add(bean.name);
-                }
-                //用量
-                for (OPenPaperBaseBean.CommBean bean : baseBean.frequency) {
-                    frequencyList.add(bean.name);
+            case OpenPaperPresenter.OPENPAPER_CAMERA_OK://开方ok
+                if (formParent == 1) {//聊天开方
+                    setResult(RESULT_OK, new Intent());
+                    finish();
+                } else {//普通开方
+                    commonDialog = new CommonDialog(this, true, "处方已上传至药房", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            finish();
+                        }
+                    });
+                    commonDialog.show();
                 }
                 break;
-
-            case OpenPaperPresenter.OPENPAPER_OK://开方ok
+            case OpenPaperPresenter.ADD_COMMPAPER_OK:
+                commonDialog = new CommonDialog(this, "添加常用处方成功");
+                commonDialog.show();
+                break;
+            case OpenPaperPresenter.OPENPAPER_ONLINE_OK:
                 if (formParent == 1) {//聊天开方
                     setResult(RESULT_OK, new Intent());
                     finish();
@@ -422,11 +493,18 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             return;
         }
         switch (requestCode) {
+            case REQUEST_CODE_ADDDRUG://添加药材
+                drugBeans.clear();
+                drugBeans.addAll(data.getParcelableArrayListExtra("druglist"));
+                adapter.notifyDataSetChanged();
+                //默认折叠
+                setOPenStatus(false);
+                break;
             case REQUEST_CODE_DOCADVICE://医嘱
                 docadviceStr = data.getStringExtra("docadvice");
                 etDocadvice.setText(docadviceStr);
                 break;
-            case REQUEST_CODE_SEARCHSKILLNAME://搜索疾病名称
+            case REQUEST_CODE_SEARCHSKILLNAME://搜索疾病名称 主述及辩证型
                 String skilName = data.getStringExtra("name");
                 if (TextUtils.isEmpty(skilName)) {
                     skilNameCode = "";

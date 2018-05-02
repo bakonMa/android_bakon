@@ -12,7 +12,7 @@ public class CommPaperBean {
      * title : ceshi
      * m_explain : ceshi
      * title	string	名称
-       m_explain	string	备注
+     * m_explain	string	备注
      */
 
     public int id;

@@ -18,6 +18,8 @@ public interface SPConfig {
     String SP_NIM_ACCTOKEN = "acctoken";
 
     String SP_USERBEAN = "userbean";
+    //在线开方基础数据
+    String SP_OPENPAPER_BASEDATA = "openpaper_basedata";
     //消息提醒状态
     String SP_MESSAGE_STATUS = "message_status";
 

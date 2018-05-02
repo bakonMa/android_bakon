@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
@@ -21,6 +22,7 @@ import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
 import com.renxin.doctor.activity.injection.modules.ActivityModule;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.ui.bean_jht.CommPaperBean;
+import com.renxin.doctor.activity.ui.bean_jht.CommPaperInfoBean;
 import com.renxin.doctor.activity.ui.contact.OpenPaperContact;
 import com.renxin.doctor.activity.ui.presenter.OpenPaperPresenter;
 import com.renxin.doctor.activity.widget.dialog.CommonDialog;
@@ -43,6 +45,7 @@ import butterknife.OnClick;
  */
 public class CommUsePaperActivity extends BaseActivity implements OpenPaperContact.View {
     private final int REQUESR_CODE_ADD_COMMMEPAPER = 2020;
+    private final int REQUESR_CODE_UPDATA_COMMMEPAPER = 2021;
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
     @BindView(R.id.rlt_add)
@@ -59,8 +62,10 @@ public class CommUsePaperActivity extends BaseActivity implements OpenPaperConta
 
     private List<CommPaperBean> beans = new ArrayList<>();
     private BaseQuickAdapter adapter;
-    private int formType = 0;//来源
+    private int formType = 0;//来源 0：普通 1：开方进来选择
     private boolean isEdite = false;//是否是编辑状态
+    private CommonDialog commonDialog;
+    private int clickTempPos;
 
     @Override
     protected int provideRootLayout() {
@@ -73,8 +78,6 @@ public class CommUsePaperActivity extends BaseActivity implements OpenPaperConta
         formType = getIntent().getIntExtra("form", 0);
         //头部处理
         initToolbar();
-        rltAdd.setVisibility(formType == 0 ? View.VISIBLE : View.GONE);
-        tvAdd.setText("添加常用处方");
 
         //添加的药材列表处理
         adapter = new BaseQuickAdapter<CommPaperBean, BaseViewHolder>(R.layout.item_comm_usepaper, beans) {
@@ -98,7 +101,8 @@ public class CommUsePaperActivity extends BaseActivity implements OpenPaperConta
         recyclerview.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                clickTempPos = position;
+                mPresenter.searchDrugPaperById(beans.get(position).id);
             }
         });
 
@@ -130,6 +134,9 @@ public class CommUsePaperActivity extends BaseActivity implements OpenPaperConta
         if (formType == 0) {
             toolbarBuilder.setRightText("编辑", true, R.color.color_main);
         }
+
+        rltAdd.setVisibility(formType == 0 ? View.VISIBLE : View.GONE);
+        tvAdd.setText("添加常用处方");
     }
 
     //更新编辑状态
@@ -149,20 +156,20 @@ public class CommUsePaperActivity extends BaseActivity implements OpenPaperConta
                 startActivityForResult(intent, REQUESR_CODE_ADD_COMMMEPAPER);
                 break;
             case R.id.tv_delete://删除
-//                StringBuffer stringBuffer = new StringBuffer();
-//                for (CommMessageBean bean : commMessageBeanList) {
-//                    if (bean.isCheck) {
-//                        stringBuffer.append(bean.id).append(",");
-//                    }
-//                }
-//                if (!TextUtils.isEmpty(stringBuffer)) {
-//                    commonDialog = new CommonDialog(provideContext(), false, "确定删除选中的常用语？", btnview -> {
-//                        if (btnview.getId() == R.id.btn_ok) {
-//                            mPresenter.deluseful(stringBuffer.toString());
-//                        }
-//                    });
-//                    commonDialog.show();
-//                }
+                StringBuffer stringBuffer = new StringBuffer();
+                for (CommPaperBean bean : beans) {
+                    if (bean.isCheck) {
+                        stringBuffer.append(bean.id).append(",");
+                    }
+                }
+                if (!TextUtils.isEmpty(stringBuffer)) {
+                    commonDialog = new CommonDialog(provideContext(), false, "确定删除选中的常用语处方吗？", btnview -> {
+                        if (btnview.getId() == R.id.btn_ok) {
+                            mPresenter.delOftenmed(stringBuffer.toString());
+                        }
+                    });
+                    commonDialog.show();
+                }
                 break;
         }
     }
@@ -182,14 +189,33 @@ public class CommUsePaperActivity extends BaseActivity implements OpenPaperConta
             return;
         }
         switch (message.what) {
-            case OpenPaperPresenter.GET_COMMPAPER_LIST_OK://搜索药材列表
+            case OpenPaperPresenter.GET_COMMPAPER_LIST_OK://常用处方列表
                 beans.clear();
                 beans.addAll((List<CommPaperBean>) message.obj);
                 adapter.notifyDataSetChanged();
                 break;
+            case OpenPaperPresenter.DEL_COMMPAPER_OK://删除常用处方 成功
+                updataDelStatus();
+                mPresenter.getOftenmedList();
+                break;
+            case OpenPaperPresenter.GET_COMMPAPER_INFO_OK://获取常用处方详情 成功
+                Intent intent = new Intent();
+                if (formType == 0) {//进入详情，编辑
+                    intent.setClass(this, AddDrugActivity.class);
+                    intent.putExtra("form", 2);//编辑
+                    intent.putExtra("id", beans.get(clickTempPos).id);//id
+                    intent.putExtra("title", beans.get(clickTempPos).title);//title
+                    intent.putExtra("m_explain", beans.get(clickTempPos).m_explain);//explain
+                    intent.putParcelableArrayListExtra("commbean", (ArrayList<CommPaperInfoBean>) message.obj);
+                    startActivityForResult(intent, REQUESR_CODE_UPDATA_COMMMEPAPER);
+                } else if (formType == 1) {//返回添加药材
+                    intent.putParcelableArrayListExtra("commbean", (ArrayList<CommPaperInfoBean>) message.obj);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+
+                break;
         }
-
-
     }
 
     @Override
@@ -201,8 +227,9 @@ public class CommUsePaperActivity extends BaseActivity implements OpenPaperConta
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case REQUESR_CODE_ADD_COMMMEPAPER://添加药材 刷新
+            case REQUESR_CODE_UPDATA_COMMMEPAPER://修改药材 刷新
                 mPresenter.getOftenmedList();
                 break;
         }

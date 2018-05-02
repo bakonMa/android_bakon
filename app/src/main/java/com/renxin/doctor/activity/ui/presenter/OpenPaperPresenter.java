@@ -5,7 +5,6 @@ import com.renxin.doctor.activity.config.HttpConfig;
 import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.data.response.HttpResponse;
 import com.renxin.doctor.activity.ui.base.BaseObserver;
-import com.renxin.doctor.activity.ui.bean.OPenPaperBaseBean;
 import com.renxin.doctor.activity.ui.bean_jht.BaseConfigBean;
 import com.renxin.doctor.activity.ui.bean_jht.CommPaperBean;
 import com.renxin.doctor.activity.ui.bean_jht.CommPaperInfoBean;
@@ -41,12 +40,14 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
     public static final int GET_BASEDATA_0K = 0x110;
     public static final int UPLOADIMF_OK = 0x111;
     public static final int UPLOADIMF_ERROR = 0x112;
-    public static final int OPENPAPER_OK = 0x113;
+    public static final int OPENPAPER_CAMERA_OK = 0x113;
     public static final int SEARCH_SKILL_OK = 0x114;
     public static final int SEARCH_DRUG_OK = 0x115;
     public static final int GET_COMMPAPER_INFO_OK = 0x116;
     public static final int GET_COMMPAPER_LIST_OK = 0x117;
     public static final int ADD_COMMPAPER_OK = 0x118;
+    public static final int DEL_COMMPAPER_OK = 0x119;
+    public static final int OPENPAPER_ONLINE_OK = 0x120;
 
     public OpenPaperPresenter(OpenPaperContact.View mView) {
         this.mView = mView;
@@ -61,29 +62,29 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
         }
     }
 
-    @Override
-    public void getOPenPaperBaseData() {
-        Params params = new Params();
-        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
-                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getSomeadvisory(params))
-                .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mDialog != null)
-                        mDialog.show();
-                }).subscribe(new BaseObserver<HttpResponse<OPenPaperBaseBean>>(mDialog) {
-                    @Override
-                    public void onSuccess(HttpResponse<OPenPaperBaseBean> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_BASEDATA_0K));
-                    }
-
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-                        mView.onError(errorCode, errorMsg);
-                    }
-                });
-        mSubscription.add(subscription);
-    }
+//    @Override
+//    public void getOPenPaperBaseData() {
+//        Params params = new Params();
+//        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+//        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+//                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getSomeadvisory(params))
+//                .compose(mView.toLifecycle())
+//                .doOnSubscribe(() -> {
+//                    if (mDialog != null)
+//                        mDialog.show();
+//                }).subscribe(new BaseObserver<HttpResponse<OPenPaperBaseBean>>(mDialog) {
+//                    @Override
+//                    public void onSuccess(HttpResponse<OPenPaperBaseBean> personalBeanHttpResponse) {
+//                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_BASEDATA_0K));
+//                    }
+//
+//                    @Override
+//                    public void onError(String errorCode, String errorMsg) {
+//                        mView.onError(errorCode, errorMsg);
+//                    }
+//                });
+//        mSubscription.add(subscription);
+//    }
 
     @Override
     public void uploadImg(String path, String type) {
@@ -133,7 +134,30 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, OPENPAPER_OK));
+                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, OPENPAPER_CAMERA_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void openPaperOnline(Params params) {
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().lineExtraction(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null)
+                        mDialog.show();
+                }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
+                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, OPENPAPER_ONLINE_OK));
                     }
 
                     @Override
@@ -262,6 +286,32 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                     }
                 });
         mSubscription.add(subscription);
+    }
+
+    @Override
+    public void delOftenmed(String ids) {
+        Params params = new Params();
+        params.put("id", ids);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().delOftenmed(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null)
+                        mDialog.show();
+                }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
+                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, DEL_COMMPAPER_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+
     }
 
 }

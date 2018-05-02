@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@drawable/selector_bg_tab"
+    android:descendantFocusability="beforeDescendants"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="horizontal"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <TextView
+        android:id="@+id/tv_drugname"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="药名"
+        android:textColor="@color/color_333"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_num"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="药名"
+        android:textColor="@color/color_333"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_usertype"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:textColor="@color/color_333"
+        android:textSize="16sp"
+        tools:text="常规" />
+</LinearLayout>

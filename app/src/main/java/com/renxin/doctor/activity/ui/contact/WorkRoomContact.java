@@ -15,5 +15,7 @@ public interface WorkRoomContact {
 
     interface Presenter extends BasePresenter {
         void getHomeData();
+
+        void getOPenPaperBaseData();//开方基础数据
     }
 }

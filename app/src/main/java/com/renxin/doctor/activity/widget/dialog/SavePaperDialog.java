@@ -58,6 +58,13 @@ public class SavePaperDialog extends Dialog implements View.OnClickListener {
         dialogWindow.setAttributes(lp);
     }
 
+    //设置显示之前的内容
+    public void setEditeText(String title, String explain) {
+        etName.setText(TextUtils.isEmpty(title) ? "" : title);
+        etName.setSelection(etName.getText().length());
+        etRemark.setText(TextUtils.isEmpty(explain) ? "" : explain);
+        etRemark.setSelection(etRemark.getText().length());
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

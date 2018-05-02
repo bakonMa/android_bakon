@@ -3,18 +3,31 @@ package com.renxin.doctor.activity.ui.activity;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.renxin.doctor.activity.R;
+import com.renxin.doctor.activity.config.EventConfig;
+import com.renxin.doctor.activity.data.eventbus.Event;
+import com.renxin.doctor.activity.data.eventbus.EventBusUtil;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
+import com.renxin.doctor.activity.ui.bean_jht.H5JsonBean;
 import com.renxin.doctor.activity.utils.LogUtil;
+import com.renxin.doctor.activity.utils.ShareSDKUtils;
 import com.renxin.doctor.activity.widget.ProgressWebView;
+import com.renxin.doctor.activity.widget.popupwindow.SharePopupWindow;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
 import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 
@@ -43,7 +56,8 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
     //标题，url
     private String titleStr, urlStr;
     private int h5Type;//0：默认带头部导航栏 1：不带
-    
+    private SharePopupWindow sharePopupWindow;
+
     @Override
     protected int provideRootLayout() {
         return R.layout.activity_webview;
@@ -61,7 +75,7 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
         } else {
             idToolbar.setVisibility(View.GONE);
         }
-
+        wbWebview.addJavascriptInterface(new JSWebInterface(), "Android");
         wbWebview.loadUrl(urlStr);
     }
 
@@ -74,6 +88,7 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
     private void initToolbar() {
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle(TextUtils.isEmpty(titleStr) ? wbWebview.getTitle() : titleStr)
+                .setRightImg(R.drawable.icon_add_bank, true)
                 .setLeft(false)
                 .isShowClose(true)//是否显示close
                 .setStatuBar(R.color.white)
@@ -93,6 +108,14 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
                             finish();
                         }
                     }
+
+                    @Override
+                    public void rightClick() {
+                        //分享
+                        //获取share json数据
+//                        wbWebview.loadUrl("javascript:(function(){window.Android.jsEvent(document.getElementById('shareValue').value);})()");
+                        wbWebview.loadUrl("javascript:share_card()");
+                    }
                 }).bind();
     }
 
@@ -103,6 +126,9 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        wbWebview.removeJavascriptInterface("Android");
+        wbWebview.clearHistory();
+        wbWebview.removeAllViews();
         wbWebview.destroy();
     }
 
@@ -128,4 +154,54 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCome(Event event) {
+        if (event == null) {
+            return;
+        }
+        switch (event.getCode()) {
+            case EventConfig.EVENT_KEY_USERINFO://分享
+                H5JsonBean bean = (H5JsonBean) event.getData();
+                if (sharePopupWindow != null && sharePopupWindow.isShowing()) {
+                    return;
+                }
+                sharePopupWindow = new SharePopupWindow(actContext(), new SharePopupWindow.ShareOnClickListener() {
+                    @Override
+                    public void onItemClick(SHARE_MEDIA shareType) {
+                        ShareSDKUtils.share(WebViewActivity.this, shareType,
+                                bean.img_url, bean.link, bean.title, bean.desc, null);
+                    }
+                });
+                sharePopupWindow.showAtLocation(wbWebview, Gravity.BOTTOM, 0, 0);
+                break;
+        }
+    }
+
+
+    @Override
+    protected boolean useEventBus() {
+        return true;
+    }
+
+    /**
+     * JSWebInterface webview和H5交互使用
+     * 2018年05月02日15:34:46
+     */
+    public class JSWebInterface {
+        //JS需要调用的方法
+        @JavascriptInterface
+        public void jsEvent(String json) {//使用统一的方法名
+            LogUtil.d("jsEvent=" + json);
+            H5JsonBean bean = new Gson().fromJson(json, H5JsonBean.class);
+            if (bean == null) {
+                return;
+            }
+            switch (bean.jstype) {
+                case "share_card"://点击分享
+                    //线程问题
+                    EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_USERINFO, bean));
+                    break;
+            }
+        }
+    }
 }

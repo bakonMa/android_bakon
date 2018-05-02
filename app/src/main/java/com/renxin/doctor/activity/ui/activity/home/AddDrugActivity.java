@@ -1,6 +1,7 @@
 package com.renxin.doctor.activity.ui.activity.home;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +33,7 @@ import com.renxin.doctor.activity.ui.presenter.OpenPaperPresenter;
 import com.renxin.doctor.activity.utils.LogUtil;
 import com.renxin.doctor.activity.utils.RegexUtil;
 import com.renxin.doctor.activity.utils.SoftHideKeyBoardUtil;
+import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.utils.UIUtils;
 import com.renxin.doctor.activity.widget.dialog.CommonDialog;
 import com.renxin.doctor.activity.widget.dialog.SavePaperDialog;
@@ -55,6 +57,7 @@ import butterknife.OnTextChanged;
  * Create at 2018/4/26 下午6:15 by mayakun
  */
 public class AddDrugActivity extends BaseActivity implements OpenPaperContact.View {
+    private final int REQUEST_CODE_SHOOSE_COMMPAPER = 2030;//选择常用处方
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
@@ -64,41 +67,64 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
     ScrollView scrollView;
     @BindView(R.id.search_recycleview)
     RecyclerView searchRecycleview;
+    @BindView(R.id.tv_commpaper)
+    TextView tvCommpaper;
     @BindView(R.id.tv_totalmoney)
     TextView tvTotalmoney;
 
     @Inject
     OpenPaperPresenter mPresenter;
+    //编辑常用处方使用
+    private String title, mExplain;
+    private int id;
 
     private List<SearchDrugBean> searchSearchDrugBeans = new ArrayList<>();
     //最后使用的药材列表
-    private List<DrugBean> drugBeans = new ArrayList<>();
-    private List<OPenPaperBaseBean.CommBean> userTypeList = new ArrayList<>();
+    private ArrayList<DrugBean> drugBeans = new ArrayList<>();
     private List<String> userTypeListStr = new ArrayList<>();
     private BaseQuickAdapter adapterSearch, adapter;
     private OnePopupWheel mPopupWheel;
-    private int formtype = 0;//0：添加处方 1：在线开放
+    private int formtype = 0;//0：添加处方 1：在线开放 2：编辑处方
     private boolean hasError = false;//提交前检查是否有重复或者不可用药材
+    private SavePaperDialog savePaperDialog;//保存dialog
+    private ToolbarBuilder toolbarBuilder;
 
     @Override
     protected int provideRootLayout() {
         return R.layout.activity_add_drug;
     }
 
+    //煎法，sp中获取，处理数据
+    private void getBaseData() {
+        OPenPaperBaseBean oPenPaperBaseBean = U.getOpenpapeBaseData();
+        for (OPenPaperBaseBean.CommBean commBean : oPenPaperBaseBean.drugremark) {
+            userTypeListStr.add(commBean.name);
+        }
+        if (userTypeListStr == null || userTypeListStr.isEmpty()) {
+            userTypeListStr.add("常规");
+        }
+    }
+
     @Override
     protected void initView() {
         SoftHideKeyBoardUtil.assistActivity(this);
+        drugBeans = getIntent().getParcelableArrayListExtra("druglist");
+        formtype = getIntent().getIntExtra("form", 0);
+        id = getIntent().getIntExtra("id", 0);
+        title = getIntent().getStringExtra("title");
+        mExplain = getIntent().getStringExtra("m_explain");
+
+        //编辑常用处方时使用
+        ArrayList<CommPaperInfoBean> commbeans = getIntent().getParcelableArrayListExtra("commbean");
+        conversionDrugBean(commbeans);
+
+        //煎法 数据
+        getBaseData();
         //头部处理
         initToolbar();
-        //煎发
-        userTypeList = getIntent().getParcelableArrayListExtra("usetype");
-        if (userTypeList == null || userTypeList.isEmpty()) {
-            userTypeListStr.add("常规");
-        } else {
-            for (OPenPaperBaseBean.CommBean commBean : userTypeList) {
-                userTypeListStr.add(commBean.name);
-            }
-        }
+        //选择常用处方的时候显示，其他不显示
+        tvCommpaper.setVisibility(formtype == 1 ? View.VISIBLE : View.GONE);
+
         //添加的药材列表处理
         adapter = new BaseQuickAdapter<DrugBean, BaseViewHolder>(R.layout.item_add_drug, drugBeans) {
             @Override
@@ -174,6 +200,10 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                 }
             }
         });
+        if (!drugBeans.isEmpty()) {
+            //更新价格
+            updataTotalMoney();
+        }
 
         //搜索的药材列表处理
         adapterSearch = new BaseQuickAdapter<SearchDrugBean, BaseViewHolder>(R.layout.item_search_drug, searchSearchDrugBeans) {
@@ -280,15 +310,17 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                 adapter.notifyDataSetChanged();
                 tvTotalmoney.setText("预计：0元");
                 break;
-            case R.id.tv_commpaper:
-
+            case R.id.tv_commpaper://常用处方
+                Intent intent = new Intent(this, CommUsePaperActivity.class);
+                intent.putExtra("form", 1);//进入选择方子
+                startActivityForResult(intent, REQUEST_CODE_SHOOSE_COMMPAPER);
                 break;
         }
     }
 
     //头部处理
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
+        toolbarBuilder = ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("添加药材")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
@@ -303,13 +335,19 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                     @Override
                     public void rightClick() {
                         super.rightClick();
+                        //点击保存
                         clickSave();
                     }
                 }).bind();
+        //编辑状态，显示title
+        if (formtype == 2 && !TextUtils.isEmpty(title)) {
+            toolbarBuilder.setTitle(title);
+        }
     }
 
     //点击保存
     private CommonDialog commonDialog;
+
     private void clickSave() {
         if (hasError) {
             commonDialog = new CommonDialog(this, "处方中有重复或者不可用药材");
@@ -322,11 +360,27 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
             return;
         }
 
-        if (formtype == 0) {//普通 添加常用处方
-            SavePaperDialog savePaperDialog = new SavePaperDialog(this, new SavePaperDialog.ClickListener() {
+        if (formtype == 1) {//返回 在线开放
+            for (DrugBean bean : drugBeans) {
+                if (bean.drug_num <= 0){
+                    commonDialog = new CommonDialog(this, "请填写全部药材的用量");
+                    commonDialog.show();
+                    return;
+                }
+            }
+
+            Intent intent = new Intent();
+            intent.putParcelableArrayListExtra("druglist", drugBeans);
+            setResult(RESULT_OK, intent);
+            finish();
+        } else {
+            savePaperDialog = new SavePaperDialog(this, new SavePaperDialog.ClickListener() {
                 @Override
                 public void confirm(String name, String remark) {
                     Params params = new Params();
+                    if (formtype == 2) {
+                        params.put("id", id);
+                    }
                     params.put("title", name);
                     params.put("m_explain", remark);
                     params.put("param", new Gson().toJson(drugBeans));
@@ -334,8 +388,10 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                 }
             });
             savePaperDialog.show();
-        } else {
-
+            //编辑状态 显示原来的值
+            if (formtype == 2) {
+                savePaperDialog.setEditeText(title, mExplain);
+            }
         }
     }
 
@@ -387,8 +443,6 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                 finish();
                 break;
         }
-
-
     }
 
     @Override
@@ -396,6 +450,42 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
         CommonDialog commonDialog = new CommonDialog(this, errorMsg);
         commonDialog.show();
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_SHOOSE_COMMPAPER) {//选择常用处方 回调
+            if (null == data) {
+                return;
+            }
+            ArrayList<CommPaperInfoBean> commbeans = data.getParcelableArrayListExtra("commbean");
+            conversionDrugBean(commbeans);
+            //修改全局状态
+            hasError = false;
+            adapter.notifyDataSetChanged();
+            //更新价格
+            updataTotalMoney();
+        }
+    }
+
+    //把常用处方数据，转化为drugbean
+    private void conversionDrugBean(ArrayList<CommPaperInfoBean> commbeans) {
+        if (commbeans == null || commbeans.isEmpty()) {
+            return;
+        }
+        for (CommPaperInfoBean bean : commbeans) {
+            DrugBean tempBean = new DrugBean();
+            tempBean.drug_id = bean.id;
+            tempBean.name = bean.name;
+            tempBean.unit = bean.unit;
+            tempBean.price = bean.price;
+            tempBean.decoction = bean.decoction;
+            tempBean.use_flag = bean.use_flag;
+            tempBean.drug_num = bean.drug_num;
+            drugBeans.add(tempBean);
+        }
+    }
+
 
     @Override
     public Activity provideContext() {

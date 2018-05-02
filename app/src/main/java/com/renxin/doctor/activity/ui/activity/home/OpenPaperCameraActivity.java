@@ -41,6 +41,7 @@ import com.renxin.doctor.activity.utils.ImageUtil;
 import com.renxin.doctor.activity.utils.LogUtil;
 import com.renxin.doctor.activity.utils.SoftHideKeyBoardUtil;
 import com.renxin.doctor.activity.utils.ToastUtil;
+import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.utils.UriUtil;
 import com.renxin.doctor.activity.widget.EditTextlayout;
 import com.renxin.doctor.activity.widget.EditableLayout;
@@ -139,7 +140,6 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private OnePopupWheel mPopupWheel;
     private CameraPopupView cameraPopupView;
 
-
     //带有返回的startActivityForResult-仅限nim中使用 formParent=1
     public static void startResultActivity(Context context, int requestCode, int formParent, String membNo) {
         Intent intent = new Intent(context, OpenPaperCameraActivity.class);
@@ -158,13 +158,13 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         SoftHideKeyBoardUtil.assistActivity(this);
         formParent = getIntent().getIntExtra("formParent", 0);
         membNo = getIntent().getStringExtra("memb_no");
+
+        //初始基础数据
+        initBaseData();
+        //设置topbar
+        initToolbar();
         //聊天进来不能填写
         tv_editepatient.setVisibility(formParent == 0 ? View.VISIBLE : View.GONE);
-
-        initToolbar();
-        //获取基础数据
-        mPresenter.getOPenPaperBaseData();
-
         //性别
         rgSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -180,6 +180,19 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
             }
         });
 
+    }
+
+    //初始base数据
+    private void initBaseData() {
+        baseBean = U.getOpenpapeBaseData();
+        //药房
+        for (OPenPaperBaseBean.StoreBean bean : baseBean.store) {
+            drugStoreList.add(bean.drug_store_name);
+        }
+        //剂型
+        for (OPenPaperBaseBean.CommBean bean : baseBean.drug_class) {
+            drugClassList.add(bean.name);
+        }
     }
 
     //获取当前界面可用高度
@@ -208,7 +221,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         switch (view.getId()) {
             case R.id.tv_addpatient://选择患者
                 Intent intent = new Intent();
-                if(formParent == 1){
+                if (formParent == 1) {
                     intent.setClass(this, PatientFamilyActivity.class);
                     intent.putExtra("memb_no", membNo);
                 } else {
@@ -461,17 +474,6 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     @Override
     public void onSuccess(Message message) {
         switch (message.what) {
-            case OpenPaperPresenter.GET_BASEDATA_0K://基础数据
-                baseBean = (OPenPaperBaseBean) message.obj;
-                //药房
-                for (OPenPaperBaseBean.StoreBean bean : baseBean.store) {
-                    drugStoreList.add(bean.drug_store_name);
-                }
-                //剂型
-                for (OPenPaperBaseBean.CommBean bean : baseBean.drug_class) {
-                    drugClassList.add(bean.name);
-                }
-                break;
             case OpenPaperPresenter.UPLOADIMF_OK://上传成功
                 UploadImgBean uploadImgBean = (UploadImgBean) message.obj;
                 switch (currImg) {
@@ -507,7 +509,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 }
                 ToastUtil.showShort("上传失败，请重新选择");
                 break;
-            case OpenPaperPresenter.OPENPAPER_OK://开方ok
+            case OpenPaperPresenter.OPENPAPER_CAMERA_OK://开方ok
                 if (formParent == 1) {//聊天开方
                     setResult(RESULT_OK, new Intent());
                     finish();

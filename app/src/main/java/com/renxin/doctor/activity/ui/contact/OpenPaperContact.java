@@ -15,11 +15,11 @@ public interface OpenPaperContact {
     }
 
     interface Presenter extends BasePresenter {
-        void getOPenPaperBaseData();//开方基础数据
-
         void uploadImg(String path, String type);
 
         void openPaperCamera(Params params);//拍照开方
+
+        void openPaperOnline(Params params);//在线开方
 
         void searchSkillName(String name);//搜索疾病名称
 
@@ -30,6 +30,8 @@ public interface OpenPaperContact {
         void getOftenmedList();//常用处方列表
 
         void addOftenmed(Params params);//添加常用处方
+
+        void delOftenmed(String ids);//删除常用处方
 
 
     }

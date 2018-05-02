@@ -196,7 +196,11 @@ public interface HttpAPI {
     @POST("photo_extraction")
     Observable<HttpResponse<String>> photoExtraction(@QueryMap Params params);
 
-    //拍照开方
+    //在线开方
+    @POST("line_extraction")
+    Observable<HttpResponse<String>> lineExtraction(@QueryMap Params params);
+
+    //accid 换 memb_no
     @POST("getmemb_no")
     Observable<HttpResponse<OtherBean>> getMembNo(@QueryMap Params params);
 
@@ -212,9 +216,13 @@ public interface HttpAPI {
     @POST("oftenmed_list")
     Observable<HttpResponse<List<CommPaperBean>>> getOftenmedList(@QueryMap Params params);
 
-    //常用方列表
+    //添加常用方列表
     @POST("often_medicinal")
     Observable<HttpResponse<String>> addOftenmed(@QueryMap Params params);
+
+    //删除常用方列表
+    @POST("often_medicinal")
+    Observable<HttpResponse<String>> delOftenmed(@QueryMap Params params);
 
     //常用方详情
     @POST("oftenmed_info")

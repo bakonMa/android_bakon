@@ -20,6 +20,7 @@ import com.renxin.doctor.activity.ui.activity.home.OpenPaperOnlineActivity;
 import com.renxin.doctor.activity.ui.base.BaseFragment;
 import com.renxin.doctor.activity.ui.contact.WorkRoomContact;
 import com.renxin.doctor.activity.ui.nimview.RecentActivity;
+import com.renxin.doctor.activity.ui.presenter.WorkRoomPresenter;
 import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.utils.imageloader.BannerImageLoader;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -28,6 +29,8 @@ import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
 import java.util.Arrays;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -46,6 +49,9 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     @BindView(R.id.tv_notification)
     TextView tvNotification;
 
+    @Inject
+    WorkRoomPresenter mPresenter;
+
     @Override
     protected int provideRootLayout() {
         return R.layout.fragment_workroom2;
@@ -56,7 +62,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         DaggerFragmentComponent.builder()
                 .fragmentModule(new FragmentModule(this))
                 .applicationComponent(DocApplication.getAppComponent())
-                .build().inject(this);
+                .build()
+                .inject(this);
     }
 
     String[] images = {"http://t.388g.com/uploads/allimg/160711/5-160G10U313.jpg", "http://pic32.photophoto.cn/20140923/0005018399183460_b.jpg",
@@ -78,6 +85,10 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         banner.start();
 
         requestPermissions();
+
+        //请求数据
+        mPresenter.getOPenPaperBaseData();
+        mPresenter.getHomeData();
     }
 
     @OnClick({R.id.tv_add_patient, R.id.tv_online_paper, R.id.tv_camera_patient, R.id.tv_comm_paper,

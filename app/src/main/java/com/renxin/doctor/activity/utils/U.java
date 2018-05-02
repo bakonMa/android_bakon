@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.config.SPConfig;
 import com.renxin.doctor.activity.ui.bean.ConfigBean;
+import com.renxin.doctor.activity.ui.bean.OPenPaperBaseBean;
 import com.renxin.doctor.activity.ui.bean_jht.UserBaseInfoBean;
 
 /**
@@ -27,6 +28,21 @@ public class U {
             return null;
         } else {
             return new Gson().fromJson(json, UserBaseInfoBean.class);
+        }
+    }
+
+    //获取sp中 开方基础数据 持久化
+    public static void saveOpenpaperBaseData(String jsonBean) {
+        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_OPENPAPER_BASEDATA, jsonBean);
+    }
+
+    //获取sp中 开方基础数据 持久化
+    public static OPenPaperBaseBean getOpenpapeBaseData() {
+        String json = DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_OPENPAPER_BASEDATA, "");
+        if (TextUtils.isEmpty(json)) {
+            return null;
+        } else {
+            return new Gson().fromJson(json, OPenPaperBaseBean.class);
         }
     }
 

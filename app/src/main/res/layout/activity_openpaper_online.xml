@@ -167,11 +167,11 @@
                     android:background="@color/white"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
-                    android:text="请选择病名或证型"
                     android:paddingBottom="5dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
                     android:singleLine="true"
+                    android:text="请选择病名或证型"
                     android:textColor="@color/color_999"
                     android:textSize="16sp" />
 
@@ -263,11 +263,18 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white" />
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white" />
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -281,6 +288,7 @@
                     android:layout_marginRight="15dp" />
 
                 <TextView
+                    android:id="@+id/tv_showall"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_gravity="center"

@@ -92,13 +92,19 @@ public class ProgressWebView extends WebView implements OnKeyListener {
         setWebChromeClient(new MyWebChromeClient());
     }
 
+
+    @Override
+    public void loadUrl(String url) {
+        super.loadUrl(url);
+        loadUrlWithHeader(url);
+    }
+
     public void loadUrlWithHeader(String url) {
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("token", U.getToken());
         //添加header数据
         loadUrl(url, map);
     }
-
 
     private int isError = 0;
 
@@ -124,7 +130,6 @@ public class ProgressWebView extends WebView implements OnKeyListener {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-
             //加载失败
             if (errorCallback != null) {
                 errorCallback.onError(isError);
