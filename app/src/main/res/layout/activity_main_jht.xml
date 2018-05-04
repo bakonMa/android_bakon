@@ -16,46 +16,46 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:elevation="5dp"
         android:background="@color/white"
+        android:elevation="5dp"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <com.renxin.doctor.activity.widget.BottomBarItem
             android:id="@+id/tab_home"
             style="@style/home_botton_text"
-            app:iconDrawable="@drawable/tab_home_btn"
+            app:iconDrawable="@drawable/selector_tab_workroom"
             app:itemText="@string/home_workroom"
             app:itemTextSize="12sp"
             app:textColorNormal="@color/color_000"
-            app:textColorSelected="@color/color_4f9ef3" />
+            app:textColorSelected="@color/color_main" />
 
         <com.renxin.doctor.activity.widget.BottomBarItem
             android:id="@+id/tab_patient"
             style="@style/home_botton_text"
-            app:iconDrawable="@drawable/tab_home_btn"
+            app:iconDrawable="@drawable/selector_tab_patient"
             app:itemText="@string/home_patient"
             app:itemTextSize="12sp"
             app:textColorNormal="@color/color_000"
-            app:textColorSelected="@color/color_4f9ef3" />
+            app:textColorSelected="@color/color_main" />
 
         <com.renxin.doctor.activity.widget.BottomBarItem
             android:id="@+id/tab_find"
             style="@style/home_botton_text"
-            app:iconDrawable="@drawable/tab_home_btn"
+            app:iconDrawable="@drawable/selector_tab_find"
             app:itemText="@string/home_find"
             app:itemTextSize="12sp"
             app:textColorNormal="@color/color_000"
-            app:textColorSelected="@color/color_4f9ef3" />
+            app:textColorSelected="@color/color_main" />
 
         <com.renxin.doctor.activity.widget.BottomBarItem
             android:id="@+id/tab_me"
             style="@style/home_botton_text"
-            app:iconDrawable="@drawable/tab_home_btn"
+            app:iconDrawable="@drawable/selector_tab_me"
             app:itemText="@string/home_me"
             app:itemTextSize="12sp"
             app:textColorNormal="@color/color_000"
-            app:textColorSelected="@color/color_4f9ef3" />
+            app:textColorSelected="@color/color_main" />
 
 
     </LinearLayout>
