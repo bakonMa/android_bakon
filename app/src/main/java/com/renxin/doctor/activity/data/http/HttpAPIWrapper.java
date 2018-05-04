@@ -9,6 +9,7 @@ import com.renxin.doctor.activity.config.SPConfig;
 import com.renxin.doctor.activity.data.response.HttpResponse;
 import com.renxin.doctor.activity.ui.activity.login.LoginActivity;
 import com.renxin.doctor.activity.ui.bean.DownloadRespBean;
+import com.renxin.doctor.activity.utils.U;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -82,13 +83,13 @@ public final class HttpAPIWrapper {
                                 subscriber.onCompleted();
                             } else {//success
                                 if (baseResponse.code == null
-                                        || ApiException.ERROR_API_1001.equals(baseResponse.code)//未登录 1001
+                                        || ApiException.ERROR_API_1001.equals(baseResponse.code)
                                         || ApiException.ERROR_API_1002.equals(baseResponse.code)) {//sign错误 1002
                                     //显示异常msg
                                     subscriber.onError(new ApiException(baseResponse.code, baseResponse.msg));
                                     //TODO 清空token
-                                    //U.logout();
-                                    //表示Token失效--重新登录--成功跳HOME
+                                    U.logout();
+                                    //重新登录-成功跳HOME
                                     Intent intent = new Intent(DocApplication.getInstance(), LoginActivity.class);
                                     intent.putExtra("msg", baseResponse.msg);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

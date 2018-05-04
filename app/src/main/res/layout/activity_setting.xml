@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="新消息提醒"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="16sp" />
 
         <Switch

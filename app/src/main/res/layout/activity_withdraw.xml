@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="16sp"
             tools:text="建设银行" />
 
@@ -35,7 +35,7 @@
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/tv_cardbank"
             android:paddingLeft="30dp"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="12sp"
             tools:text="***************1234" />
 
@@ -63,7 +63,7 @@
             android:layout_alignBaseline="@+id/et_inputmoney"
             android:gravity="center"
             android:text="￥"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="16sp" />
 
         <EditText

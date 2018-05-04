@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:minWidth="80dp"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp"
         tools:text="科室" />
 
@@ -22,7 +22,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp"
         tools:text="" />
 
@@ -37,7 +37,7 @@
         android:gravity="center_vertical"
         android:hint="请输入"
         android:singleLine="true"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp"
         android:visibility="visible" />
 
@@ -51,7 +51,7 @@
         android:ellipsize="end"
         android:gravity="right"
         android:singleLine="true"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="14sp"
         tools:text="id_showtext" />
 

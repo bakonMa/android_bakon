@@ -65,6 +65,7 @@ public class CommUsePaperActivity extends BaseActivity implements OpenPaperConta
     private int formType = 0;//来源 0：普通 1：开方进来选择
     private boolean isEdite = false;//是否是编辑状态
     private CommonDialog commonDialog;
+    private int drugStoreId;//药房id
     private int clickTempPos;
 
     @Override
@@ -76,6 +77,7 @@ public class CommUsePaperActivity extends BaseActivity implements OpenPaperConta
     protected void initView() {
         //来源
         formType = getIntent().getIntExtra("form", 0);
+        drugStoreId = getIntent().getIntExtra("store_id", 0);
         //头部处理
         initToolbar();
 
@@ -101,8 +103,13 @@ public class CommUsePaperActivity extends BaseActivity implements OpenPaperConta
         recyclerview.addOnItemTouchListener(new OnItemClickListener() {
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
-                clickTempPos = position;
-                mPresenter.searchDrugPaperById(beans.get(position).id);
+                if (isEdite) {//编辑状态
+                    beans.get(position).isCheck = !beans.get(position).isCheck;
+                    adapter.notifyItemChanged(position);
+                } else {
+                    clickTempPos = position;
+                    mPresenter.searchDrugPaperById(drugStoreId, beans.get(position).id);
+                }
             }
         });
 
@@ -144,6 +151,12 @@ public class CommUsePaperActivity extends BaseActivity implements OpenPaperConta
         isEdite = !isEdite;
         toolbarBuilder.setRightText(isEdite ? "取消" : "编辑", true, R.color.color_main);
         tvDelete.setVisibility(isEdite ? View.VISIBLE : View.GONE);
+
+        if (isEdite == false) {//取消编辑状态
+            for (CommPaperBean bean : beans) {
+                bean.isCheck = false;
+            }
+        }
         adapter.notifyDataSetChanged();
     }
 

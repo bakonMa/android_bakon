@@ -5,11 +5,13 @@ import android.content.Context;
 import com.renxin.doctor.activity.injection.qualifiers.FragmentContext;
 import com.renxin.doctor.activity.ui.base.BaseView;
 import com.renxin.doctor.activity.ui.base.BasicProvider;
+import com.renxin.doctor.activity.ui.contact.OpenPaperContact;
 import com.renxin.doctor.activity.ui.contact.PatientContact;
 import com.renxin.doctor.activity.ui.contact.LoginContact;
 import com.renxin.doctor.activity.ui.contact.MyLoanContact;
 import com.renxin.doctor.activity.ui.contact.WorkRoomContact;
 import com.renxin.doctor.activity.ui.presenter.MyLoanPresenter;
+import com.renxin.doctor.activity.ui.presenter.OpenPaperPresenter;
 import com.renxin.doctor.activity.ui.presenter.PatientPresenter;
 import com.renxin.doctor.activity.ui.presenter.RepaymentPresenter;
 import com.renxin.doctor.activity.ui.presenter.LoginPresenter;
@@ -81,6 +83,12 @@ public final class FragmentModule {
     @Provides
     public PatientPresenter provideHomeLoanPresenter() {
         return new PatientPresenter((PatientContact.View) mView);
+    }
+
+    @PerFragment
+    @Provides
+    public OpenPaperPresenter provideOpenPaperPresenter() {
+        return new OpenPaperPresenter((OpenPaperContact.View) mView);
     }
 
 

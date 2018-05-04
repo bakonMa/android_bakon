@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp"
         tools:text="中国建设银行" />
 
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp"
         tools:text="***************7890" />
 

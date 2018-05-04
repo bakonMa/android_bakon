@@ -38,7 +38,6 @@ public class BaseConfigBean {
         public String category;
         public List<Skill> name;
 
-
         protected SkillsBean(Parcel in) {
             category = in.readString();
             name = in.createTypedArrayList(Skill.CREATOR);
@@ -88,10 +87,13 @@ public class BaseConfigBean {
             return itemType;
         }
 
+
         protected Skill(Parcel in) {
             id = in.readInt();
             name = in.readString();
+            icd10_code = in.readString();
             itemType = in.readInt();
+            isSelect = in.readByte() != 0;
         }
 
         @Override

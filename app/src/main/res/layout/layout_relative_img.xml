@@ -21,7 +21,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/id_image"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="14sp"
         tools:text="title" />
 
@@ -35,10 +35,8 @@
 
     <View
         android:id="@+id/id_line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
+        style="@style/line_gray_hor"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@color/color_line" />
+        android:layout_marginRight="15dp" />
 </RelativeLayout>

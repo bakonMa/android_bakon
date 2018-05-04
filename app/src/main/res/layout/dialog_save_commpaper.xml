@@ -28,7 +28,7 @@
         android:maxLength="20"
         android:paddingLeft="10dp"
         android:singleLine="true"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="15sp" />
 
     <TextView
@@ -53,7 +53,7 @@
         android:minHeight="30dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="15sp" />
 
     <LinearLayout

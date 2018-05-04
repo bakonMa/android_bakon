@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:minWidth="80dp"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp"
         tools:text="姓名" />
 
@@ -24,7 +24,7 @@
         android:background="@null"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="14sp"
         tools:hint="请输入姓名" />
 
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/id_tv_left"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="14sp"
         android:visibility="gone"
         tools:text="少时诵诗书" />

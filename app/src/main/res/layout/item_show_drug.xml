@@ -20,7 +20,7 @@
         android:gravity="center"
         android:singleLine="true"
         android:text="药名"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp" />
 
     <TextView
@@ -32,7 +32,7 @@
         android:gravity="center"
         android:singleLine="true"
         android:text="药名"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp" />
 
     <TextView
@@ -41,7 +41,7 @@
         android:layout_height="match_parent"
         android:layout_weight="2"
         android:gravity="center"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp"
         tools:text="常规" />
 </LinearLayout>

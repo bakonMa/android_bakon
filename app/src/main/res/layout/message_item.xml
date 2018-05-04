@@ -43,7 +43,7 @@
             android:lines="1"
             android:paddingLeft="10dp"
             android:text="系统有非常重要的消息通知您请…"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="15sp"/>
 
 

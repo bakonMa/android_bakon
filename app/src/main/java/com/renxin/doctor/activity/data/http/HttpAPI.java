@@ -36,6 +36,7 @@ import com.renxin.doctor.activity.ui.bean.ReusingBean;
 import com.renxin.doctor.activity.ui.bean.SupportBankBean;
 import com.renxin.doctor.activity.ui.bean_jht.AuthInfoBean;
 import com.renxin.doctor.activity.ui.bean_jht.BaseConfigBean;
+import com.renxin.doctor.activity.ui.bean_jht.CheckPaperBean;
 import com.renxin.doctor.activity.ui.bean_jht.CommPaperBean;
 import com.renxin.doctor.activity.ui.bean_jht.CommPaperInfoBean;
 import com.renxin.doctor.activity.ui.bean_jht.HospitalBean;
@@ -221,13 +222,20 @@ public interface HttpAPI {
     Observable<HttpResponse<String>> addOftenmed(@QueryMap Params params);
 
     //删除常用方列表
-    @POST("often_medicinal")
+    @POST("del_oftenmed")
     Observable<HttpResponse<String>> delOftenmed(@QueryMap Params params);
 
     //常用方详情
     @POST("oftenmed_info")
     Observable<HttpResponse<List<CommPaperInfoBean>>> getOftenmedInfo(@QueryMap Params params);
 
+    //医生发送自定义消息记录
+    @POST("addchatsendflow")
+    Observable<HttpResponse<String>> addChatRecord(@QueryMap Params params);
+
+    //常用方详情
+    @POST("my_checkextra")
+    Observable<HttpResponse<List<CheckPaperBean>>> getCheckPaperList(@QueryMap Params params);
 
     //***************************************************
     //发送修改验证码

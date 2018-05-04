@@ -74,6 +74,7 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
     private List<PatientFamilyBean.JiuzhenBean> jiuzhenBeans = new ArrayList<>();
     private BaseQuickAdapter mAdapter;
     private CommonDialog commonDialog;
+    private String im_accid;//选择就诊人时需要
 
     @Override
     protected int provideRootLayout() {
@@ -85,6 +86,7 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
         initToolbar();
         membNo = getIntent().getStringExtra("memb_no");
         formType = getIntent().getIntExtra("formtype", 0);
+        im_accid = getIntent().getStringExtra("im_accid");
 
         recycleview.setLayoutManager(new LinearLayoutManager(actContext()));
         mAdapter = new BaseQuickAdapter<PatientFamilyBean.JiuzhenBean, BaseViewHolder>(R.layout.item_jiuzhen, jiuzhenBeans) {
@@ -103,6 +105,7 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
                 if(formType == 1){
                     PatientFamilyBean.JiuzhenBean bean = jiuzhenBeans.get(position);
                     bean.id = membNo;//讨巧，后台需要的是患者的id
+                    bean.setIm_accid(im_accid);
                     EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_CHOOSE_PATIENT, bean));
                     finish();
                 }

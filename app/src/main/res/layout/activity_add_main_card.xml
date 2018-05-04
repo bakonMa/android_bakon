@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:text="开户银行"/>
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:layout_centerVertical="true"
             android:layout_marginLeft="105dp"
             android:hint="开户银行"/>

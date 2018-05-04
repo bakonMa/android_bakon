@@ -10,9 +10,9 @@
         android:id="@+id/id_ll_top"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="40dp"
-        android:background="@color/color_bg_main"
-        android:orientation="vertical">
+        android:background="@color/color_f6f6f6"
+        android:orientation="vertical"
+        android:paddingBottom="40dp">
 
         <com.youth.banner.Banner
             android:id="@+id/banner"
@@ -21,19 +21,20 @@
 
         <!--垂直跑马灯-->
         <LinearLayout
+            android:id="@+id/llt_shownotice"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@color/color_main"
             android:gravity="center"
-            android:visibility="gone"
             android:orientation="horizontal"
-            android:paddingLeft="15dp">
+            android:paddingLeft="15dp"
+            android:visibility="visible">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginRight="5dp"
-                android:background="@drawable/icon_setting" />
+                android:background="@drawable/icon_voice_white" />
 
             <TextView
                 android:id="@+id/tv_notification"
@@ -45,10 +46,10 @@
                 android:focusableInTouchMode="true"
                 android:gravity="center_vertical"
                 android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
                 android:singleLine="true"
                 android:text="这是一条消息这是一条消息这是一条消息这是一条消息这是一条消息这是一条消息"
                 android:textColor="@color/white"
-                android:textIsSelectable="true"
                 android:textSize="14dp" />
         </LinearLayout>
 
@@ -65,11 +66,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawablePadding="5dp"
-                android:drawableTop="@drawable/icon_camera"
+                android:drawableTop="@drawable/selector_add_patient_icon"
                 android:gravity="center"
                 android:padding="12dp"
                 android:text="添加患者"
-                android:textColor="@color/color_333"
+                android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
 
             <TextView
@@ -78,11 +79,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawablePadding="5dp"
-                android:drawableTop="@drawable/icon_camera"
+                android:drawableTop="@drawable/selector_online_icon"
                 android:gravity="center"
                 android:padding="12dp"
                 android:text="在线开方"
-                android:textColor="@color/color_333"
+                android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
 
             <TextView
@@ -91,11 +92,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawablePadding="5dp"
-                android:drawableTop="@drawable/icon_camera"
+                android:drawableTop="@drawable/selector_camera_icon"
                 android:gravity="center"
                 android:padding="12dp"
                 android:text="拍照开方"
-                android:textColor="@color/color_333"
+                android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
 
             <TextView
@@ -104,11 +105,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawablePadding="5dp"
-                android:drawableTop="@drawable/icon_camera"
+                android:drawableTop="@drawable/selector_commpaper_icon"
                 android:gravity="center"
                 android:padding="12dp"
                 android:text="常用处方"
-                android:textColor="@color/color_333"
+                android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -126,11 +127,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawablePadding="5dp"
-                android:drawableTop="@drawable/icon_camera"
+                android:drawableTop="@drawable/selector_askpaper_icon"
                 android:gravity="center"
                 android:padding="12dp"
                 android:text="问诊单"
-                android:textColor="@color/color_333"
+                android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
 
             <TextView
@@ -139,24 +140,24 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawablePadding="5dp"
-                android:drawableTop="@drawable/icon_camera"
+                android:drawableTop="@drawable/selector_followpaper_icon"
                 android:gravity="center"
                 android:padding="12dp"
                 android:text="随诊单"
-                android:textColor="@color/color_333"
+                android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
 
             <TextView
-                android:id="@+id/tv_camera"
+                android:id="@+id/tv_checkpaper"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawablePadding="5dp"
-                android:drawableTop="@drawable/icon_camera"
+                android:drawableTop="@drawable/selector_checkpaper_icon"
                 android:gravity="center"
                 android:padding="12dp"
                 android:text="审核开方"
-                android:textColor="@color/color_333"
+                android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
 
             <TextView
@@ -165,85 +166,80 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawablePadding="5dp"
-                android:drawableTop="@drawable/icon_camera"
+                android:drawableTop="@drawable/selector_notice_icon"
                 android:gravity="center"
                 android:padding="12dp"
                 android:text="公告"
-                android:textColor="@color/color_333"
+                android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
 
         </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/rlt_service"
             android:layout_width="match_parent"
             android:layout_height="68dp"
-            android:background="@color/white"
-            android:padding="15dp">
+            android:background="@drawable/selector_bg_tab"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
             <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/iv_service_img"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/icon_camera" />
+                android:background="@drawable/default_head" />
 
             <TextView
+                android:id="@+id/tv_service_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/imageView4"
-                android:layout_toStartOf="@+id/textView4"
+                android:layout_alignTop="@+id/iv_service_img"
+                android:layout_toEndOf="@+id/iv_service_img"
                 android:text="咨询客服"
-                android:textColor="@color/color_333"
+                android:textColor="@color/color_000"
                 android:textSize="14sp" />
 
             <TextView
+                android:id="@+id/tv_service_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@+id/imageView4"
-                android:layout_toStartOf="@+id/textView3"
+                android:layout_alignBottom="@+id/iv_service_img"
+                android:layout_toEndOf="@+id/iv_service_img"
                 android:text="最后一次的内容"
                 android:textColor="@color/color_d6d6d6"
                 android:textSize="12sp" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/tv_service_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/tv_service_name"
                 android:text="上午11：20"
                 android:textColor="@color/color_d6d6d6"
                 android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:text="有问题联系我"
-                android:textColor="@color/color_d6d6d6"
-                android:textSize="12sp" />
+            <View
+                style="@style/line_gray_hor"
+                android:layout_alignParentBottom="true" />
 
         </RelativeLayout>
-
 
         <com.renxin.doctor.activity.widget.RelativeWithImage
             android:id="@+id/id_history"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            app:leftIamge="@drawable/icon_recommend"
+            app:leftIamge="@drawable/icon_history"
             app:title="历史记录" />
 
         <com.renxin.doctor.activity.widget.RelativeWithImage
             android:id="@+id/id_notification"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             app:isShowLine="false"
-            app:leftIamge="@drawable/icon_aboutapp"
+            app:leftIamge="@drawable/icon_voice"
             app:title="消息通知" />
 
     </LinearLayout>

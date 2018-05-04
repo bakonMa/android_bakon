@@ -13,10 +13,10 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.ui.adapter.SkillExpandAdapter;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
-import com.renxin.doctor.activity.utils.ToastUtil;
-import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 import com.renxin.doctor.activity.ui.bean_jht.BaseConfigBean;
+import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
+import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class ChooseGoodAtActivity extends BaseActivity {
 
     private BaseQuickAdapter tagAdapter;
     private SkillExpandAdapter skillAdapter;
-    private List<BaseConfigBean.SkillsBean> skillList = new ArrayList<>();
+    private ArrayList<BaseConfigBean.SkillsBean> skillList = new ArrayList<>();
     private List<BaseConfigBean.Skill> showList = new ArrayList<>();
     private ArrayList<BaseConfigBean.Skill> selectBeans = new ArrayList<>();
 
@@ -52,6 +52,7 @@ public class ChooseGoodAtActivity extends BaseActivity {
     @Override
     protected void initView() {
         initToolbar();
+
         skillList = getIntent().getParcelableArrayListExtra("skills");
         for (BaseConfigBean.SkillsBean skillsBean : skillList) {
             showList.add(new BaseConfigBean.Skill(skillsBean.category, 1));
@@ -116,13 +117,12 @@ public class ChooseGoodAtActivity extends BaseActivity {
         });
     }
 
-
     //共同头部处理
     private void initToolbar() {
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("擅长疾病")
-                .setStatuBar(R.color.white)
                 .setRightText("保存", true, R.color.color_main)
+                .setStatuBar(R.color.white)
                 .setListener(new TitleOnclickListener() {
                     @Override
                     public void leftClick() {

@@ -26,7 +26,8 @@ public class FollowPaperAction extends BaseAction {
     public void onClick() {
         PaperH5Activity.startResultActivity(getActivity(),
                 makeRequestCode(RequestCode.SEND_FOLLOWPAPER),
-                0,
+                true,
+                PaperH5Activity.FORM_TYPE.H5_ASKPAPER,
                 UIUtils.getString(R.string.input_panel_followpaper),
                 H5Config.H5_FOLLOWPAPER
         );

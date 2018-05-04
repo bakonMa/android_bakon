@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="头像"
-                android:textColor="@color/color_333"
+                android:textColor="@color/color_000"
                 android:textSize="16sp" />
 
             <ImageView
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="认证"
-                android:textColor="@color/color_333"
+                android:textColor="@color/color_000"
                 android:textSize="16sp" />
 
             <TextView
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="完善资料"
-                android:textColor="@color/color_333"
+                android:textColor="@color/color_000"
                 android:textSize="16sp" />
 
 

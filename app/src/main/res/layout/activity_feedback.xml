@@ -24,7 +24,7 @@
             android:maxLength="500"
             android:minHeight="240dp"
             android:padding="15dp"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="14sp" />
 
         <TextView

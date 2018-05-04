@@ -132,14 +132,14 @@ public class ScheduleView extends View {
     private void drawText(Canvas canvas) {
         switch (currentIndex) {
             case 1:
-                textPaint.setColor(mContext.getResources().getColor(R.color.color_333));
+                textPaint.setColor(mContext.getResources().getColor(R.color.color_000));
                 canvas.drawText(texts[0], 0, baseTextY, textPaint);
                 textPaint.setColor(mContext.getResources().getColor(R.color.color_999));
                 canvas.drawText(texts[1], mWidth / 2 - twoTextWidth, baseTextY, textPaint);
                 canvas.drawText(texts[2], mWidth - twoTextWidth * 2 - 5, baseTextY, textPaint);
                 break;
             case 2:
-                textPaint.setColor(mContext.getResources().getColor(R.color.color_333));
+                textPaint.setColor(mContext.getResources().getColor(R.color.color_000));
                 canvas.drawText(texts[0], 0, baseTextY, textPaint);
                 canvas.drawText(texts[1], mWidth / 2 - twoTextWidth, baseTextY, textPaint);
                 textPaint.setColor(mContext.getResources().getColor(R.color.color_999));
@@ -147,7 +147,7 @@ public class ScheduleView extends View {
                 break;
             case 3:
             case 4:
-                textPaint.setColor(mContext.getResources().getColor(R.color.color_333));
+                textPaint.setColor(mContext.getResources().getColor(R.color.color_000));
                 canvas.drawText(texts[0], 0, baseTextY, textPaint);
                 canvas.drawText(texts[1], mWidth / 2 - twoTextWidth, baseTextY, textPaint);
                 canvas.drawText(texts[2], mWidth - twoTextWidth * 2 - 5, baseTextY, textPaint);

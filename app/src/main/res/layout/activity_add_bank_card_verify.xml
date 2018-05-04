@@ -31,7 +31,7 @@
             android:layout_height="50dp"
             android:gravity="center_vertical"
             android:text="验证码"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="14sp" />
 
         <EditText
@@ -45,7 +45,7 @@
             android:inputType="number"
             android:maxLength="6"
             android:paddingLeft="15dp"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textColorHint="@color/color_cacaca"
             android:textSize="16sp" />
 

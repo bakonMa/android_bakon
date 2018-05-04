@@ -39,6 +39,7 @@ import com.renxin.doctor.activity.nim.action.AskPaperAction;
 import com.renxin.doctor.activity.nim.action.CloseChatAction;
 import com.renxin.doctor.activity.nim.action.FollowPaperAction;
 import com.renxin.doctor.activity.nim.action.OpenPaperCameraAction;
+import com.renxin.doctor.activity.nim.action.OpenPaperOnlineAction;
 import com.renxin.doctor.activity.nim.action.PhotoAction;
 import com.renxin.doctor.activity.nim.action.QuickReplyAction;
 import com.renxin.doctor.activity.nim.message.extension.AskPaperAttachment;
@@ -147,6 +148,7 @@ public class SessionHelper {
             ArrayList<BaseAction> actions = new ArrayList<>();
             actions.add(new AskPaperAction());
             actions.add(new FollowPaperAction());
+            actions.add(new OpenPaperOnlineAction());
             actions.add(new OpenPaperCameraAction());
             actions.add(new QuickReplyAction());
             actions.add(new PhotoAction(0));

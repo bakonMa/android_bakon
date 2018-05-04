@@ -39,7 +39,7 @@
                 android:hint="请输入手机号"
                 android:inputType="number"
                 android:maxLength="11"
-                android:textColor="@color/color_333"
+                android:textColor="@color/color_000"
                 android:textColorHint="@color/color_cacaca"
                 android:textSize="16sp" />
 
@@ -79,7 +79,7 @@
                 android:hint="请输入验证码"
                 android:inputType="number"
                 android:maxLength="6"
-                android:textColor="@color/color_333"
+                android:textColor="@color/color_000"
                 android:textColorHint="@color/color_cacaca"
                 android:textSize="16sp" />
 
@@ -135,7 +135,7 @@
                 android:hint="6-20位数字或字母"
                 android:inputType="textPassword"
                 android:maxLength="20"
-                android:textColor="@color/color_333"
+                android:textColor="@color/color_000"
                 android:textColorHint="@color/color_cacaca"
                 android:textSize="16sp" />
 
@@ -183,7 +183,7 @@
                 android:hint="再次确认密码"
                 android:inputType="textPassword"
                 android:maxLength="20"
-                android:textColor="@color/color_333"
+                android:textColor="@color/color_000"
                 android:textColorHint="@color/color_cacaca"
                 android:textSize="16sp" />
 

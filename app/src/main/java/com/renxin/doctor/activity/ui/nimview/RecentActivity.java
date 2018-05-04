@@ -192,6 +192,7 @@ public class RecentActivity extends BaseActivity {
             @Override
             public void onItemClick(RecentContact recent) {
                 // 回调函数，以供打开会话窗口时传入定制化参数，或者做其他动作
+                LogUtil.d("accid=" + recent.getContactId());
                 switch (recent.getSessionType()) {
                     case P2P:
                         SessionHelper.startP2PSession(actContext(), recent.getContactId());
@@ -215,7 +216,7 @@ public class RecentActivity extends BaseActivity {
                     return "[问诊单]";
                 } else if (attachment instanceof FollowPaperAttachment) {//随诊单
                     return "[随诊单]";
-                }  else if (attachment instanceof OPenPaperAttachment) {//开方
+                } else if (attachment instanceof OPenPaperAttachment) {//开方
                     return "[处方已提交]";
                 } else if (attachment instanceof CloseChatAttachment) {//咨询结束
                     return "[咨询结束]";

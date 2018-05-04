@@ -1,7 +1,16 @@
 package com.renxin.doctor.activity.utils;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.net.Uri;
+import android.os.Environment;
+import android.text.TextUtils;
+import android.view.View;
+import android.webkit.WebView;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -115,13 +124,13 @@ public class FileUtil {
     }
 
 
-        /**
-         * 复制文件到指定目录
-         *
-         * @param is
-         * @param dirPath
-         * @param fileName
-         */
+    /**
+     * 复制文件到指定目录
+     *
+     * @param is
+     * @param dirPath
+     * @param fileName
+     */
     public static File inputStreamToFile(InputStream is, String dirPath, String fileName) {
         try {
             if (is != null) {
@@ -234,6 +243,70 @@ public class FileUtil {
         }
         LogUtil.d("Delete file----file is not exists----" + dirPath);
         return true;
+    }
+
+
+    /**
+     * webview 生成图片保存相册
+     *
+     * @param mWebView
+     */
+    public static void saveWebviewToImage(Context context, WebView mWebView) {
+        saveWebviewToImage(context, mWebView, "");
+    }
+
+    public static void saveWebviewToImage(Context context, WebView mWebView, String filename) {
+        /*
+        方法一
+        Picture picture = mWebView.capturePicture();
+        Bitmap longImage = Bitmap.createBitmap(picture.getWidth(), picture.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(longImage);
+        picture.draw(c);
+        */
+
+        // WebView 生成长图，也就是超过一屏的图片，代码中的 longImage 就是最后生成的长图
+        mWebView.measure(View.MeasureSpec.makeMeasureSpec(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+//        mWebView.layout(0, 0, mWebView.getMeasuredWidth(), mWebView.getMeasuredHeight());
+        mWebView.setDrawingCacheEnabled(true);
+        mWebView.buildDrawingCache();
+
+        Bitmap longImage = Bitmap.createBitmap(mWebView.getMeasuredWidth(), mWebView.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(longImage);  // 画布的宽高和 WebView 的网页保持一致
+        Paint paint = new Paint();
+        canvas.drawBitmap(longImage, 0, mWebView.getMeasuredHeight(), paint);
+        mWebView.draw(canvas);
+
+        //系统相册目录
+        String peicurePath = Environment.getExternalStorageDirectory()
+                + File.separator + Environment.DIRECTORY_DCIM
+                + File.separator + "Camera" + File.separator;
+
+        String fileName = TextUtils.isEmpty(filename) ? (System.currentTimeMillis() + ".jpg") : filename;
+        File file = new File(peicurePath, fileName);
+        LogUtil.d(peicurePath + fileName);
+        if (file.exists()) {
+            file.delete();
+        }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file.getAbsoluteFile());
+            if (fos != null) {
+                longImage.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                fos.close();
+                ToastUtil.showShort("保存成功");
+                //通知相册更新
+//                MediaStore.Images.Media.insertImage(context.getContentResolver(), longImage, fileName, null);
+                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                Uri uri = Uri.fromFile(file);
+                intent.setData(uri);
+                context.sendBroadcast(intent);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            ToastUtil.showShort("保存失败");
+        }
     }
 
 

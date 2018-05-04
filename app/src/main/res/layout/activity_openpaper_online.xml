@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -89,7 +89,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:text="性别"
-                        android:textColor="@color/color_333"
+                        android:textColor="@color/color_000"
                         android:textSize="16sp" />
 
                     <RadioGroup
@@ -157,7 +157,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
                     android:text="主述及辩证型"
-                    android:textColor="@color/color_333"
+                    android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
                 <TextView
@@ -206,7 +206,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="处方"
-                    android:textColor="@color/color_333"
+                    android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
                 <TextView
@@ -236,7 +236,7 @@
                     android:layout_weight="3"
                     android:gravity="center"
                     android:text="药名"
-                    android:textColor="@color/color_333"
+                    android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
                 <TextView
@@ -245,7 +245,7 @@
                     android:layout_weight="2"
                     android:gravity="center"
                     android:text="用量"
-                    android:textColor="@color/color_333"
+                    android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
                 <TextView
@@ -254,7 +254,7 @@
                     android:layout_weight="2"
                     android:gravity="center"
                     android:text="煎法"
-                    android:textColor="@color/color_333"
+                    android:textColor="@color/color_000"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -298,7 +298,7 @@
                     android:paddingLeft="50dp"
                     android:paddingRight="50dp"
                     android:text="展开"
-                    android:textColor="@color/color_333"
+                    android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
                 <TextView
@@ -351,7 +351,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:text="代煎"
-                    android:textColor="@color/color_333"
+                    android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
                 <RadioGroup
@@ -399,7 +399,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="共"
-                    android:textColor="@color/color_333"
+                    android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
                 <LinearLayout
@@ -435,7 +435,7 @@
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:text="1"
-                        android:textColor="@color/color_333"
+                        android:textColor="@color/color_000"
                         android:textSize="16sp" />
 
                     <TextView
@@ -453,7 +453,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="副"
-                    android:textColor="@color/color_333"
+                    android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
 
@@ -489,7 +489,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="开方补充收费"
-                    android:textColor="@color/color_333"
+                    android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
                 <EditText
@@ -509,7 +509,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="元"
-                    android:textColor="@color/color_333"
+                    android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
             </LinearLayout>

@@ -22,7 +22,7 @@
         android:gravity="center_vertical"
         android:singleLine="true"
         android:text="药名"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp" />
 
     <EditText
@@ -34,7 +34,7 @@
         android:hint="用量"
         android:inputType="number"
         android:maxLength="4"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp"
         android:theme="@style/blackEditText" />
 
@@ -44,7 +44,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="g"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp" />
 
     <TextView
@@ -55,6 +55,6 @@
         android:drawableRight="@drawable/icon_down"
         android:gravity="center"
         android:text="常规"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp" />
 </LinearLayout>

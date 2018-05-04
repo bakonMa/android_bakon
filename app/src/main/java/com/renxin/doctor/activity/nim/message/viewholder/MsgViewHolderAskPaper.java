@@ -48,12 +48,12 @@ public class MsgViewHolderAskPaper extends MsgViewHolderBase {
         //todo 修改id
         PaperH5Activity.startResultActivity(context,
                 RequestCode.SEND_ASKPAPER_INFO,
-                0,
+                true,
+                PaperH5Activity.FORM_TYPE.H5_ASKPAPER,
                 UIUtils.getString(R.string.input_panel_askpaper),
-                H5Config.H5_ASKPAPER_INFO + "1"
-//                H5Config.H5_ASKPAPER_INFO + attachment.getLinkID()
+//                H5Config.H5_ASKPAPER_INFO + "1"  //测试连接
+                H5Config.H5_ASKPAPER_INFO + attachment.getLinkID()
         );
-
     }
 
     @Override

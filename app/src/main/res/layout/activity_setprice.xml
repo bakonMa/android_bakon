@@ -15,7 +15,7 @@
         android:gravity="bottom"
         android:paddingLeft="15dp"
         android:text="资费说明："
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp" />
 
     <TextView
@@ -44,7 +44,7 @@
             android:layout_alignBaseline="@+id/et_firstprice"
             android:gravity="center"
             android:text="初诊"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="16sp" />
 
         <EditText
@@ -66,7 +66,7 @@
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:text="元"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="16sp" />
     </RelativeLayout>
 
@@ -84,7 +84,7 @@
             android:layout_alignBaseline="@+id/et_againprice"
             android:gravity="center"
             android:text="复诊"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="16sp" />
 
         <EditText
@@ -106,7 +106,7 @@
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:text="元"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="16sp" />
     </RelativeLayout>
 

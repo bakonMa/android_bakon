@@ -27,6 +27,7 @@ import com.renxin.doctor.activity.ui.activity.mine.wallet.DeleteBankCardActivity
 import com.renxin.doctor.activity.ui.activity.mine.wallet.MyBankCardActivity;
 import com.renxin.doctor.activity.ui.activity.mine.wallet.WalletActivity;
 import com.renxin.doctor.activity.ui.activity.mine.wallet.WithdrawActivity;
+import com.renxin.doctor.activity.ui.activity.patient.ChoosePatientActivity;
 import com.renxin.doctor.activity.ui.activity.patient.PatienHealthRecordActivity;
 import com.renxin.doctor.activity.ui.activity.patient.PatientFamilyActivity;
 import com.renxin.doctor.activity.ui.activity.patient.PatientListActivity;
@@ -34,6 +35,7 @@ import com.renxin.doctor.activity.ui.activity.patient.RemarkNameActivity;
 import com.renxin.doctor.activity.ui.activity.welcome.TranslucentActivity;
 import com.renxin.doctor.activity.ui.nimview.AddCommMessageActivity;
 import com.renxin.doctor.activity.ui.nimview.CommMessageActivity;
+import com.renxin.doctor.activity.ui.nimview.PaperH5Activity;
 
 import dagger.Component;
 
@@ -108,5 +110,9 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(AddDrugActivity addDrugActivity);
 
     void inject(CommUsePaperActivity commUsePaperActivity);
+
+    void inject(ChoosePatientActivity choosePatientActivity);
+
+    void inject(PaperH5Activity paperH5Activity);
 
 }

@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="应还总计："
             android:textSize="14sp"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="38dp"/>
         <TextView
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="14sp"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:layout_toRightOf="@+id/id_label2"
             android:layout_marginTop="38dp"/>
         <TextView
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:text="剩余应还："
             android:textSize="14sp"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="62dp"/>
         <TextView
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="14sp"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:layout_toRightOf="@+id/id_label2"
             android:layout_marginTop="62dp"/>
         <LinearLayout

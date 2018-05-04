@@ -9,7 +9,7 @@ import android.os.Parcelable;
  */
 public class UserBaseInfoBean implements Parcelable{
     /**
-     * name : 测试
+     * drug_name : 测试
      * sex : 0
      * header : https://jhtpub.oss-cn-shanghai.aliyuncs.com/app/header/20180327/5a49fc4051d6619a54b3071b3cdf338e.jpg
      * hospital : 安庆市第一人民医院

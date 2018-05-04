@@ -65,6 +65,7 @@
     <string name="input_panel_askpaper">问诊单</string>
     <string name="input_panel_followpaper">随诊单</string>
     <string name="input_panel_openpaper_camera">拍照开方</string>
+    <string name="input_panel_openpaper_online">在线开方</string>
     <string name="input_panel_image">照片</string>
     <string name="input_panel_camera">拍照</string>
     <string name="input_panel_quickreply">快速回复</string>

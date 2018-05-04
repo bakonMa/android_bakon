@@ -17,7 +17,7 @@
         android:layout_gravity="center_horizontal"
         android:singleLine="true"
         android:text="顾问邀请码"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp"/>
 
     <EditText
@@ -31,7 +31,7 @@
         android:hint="请输入顾问邀请码"
         android:inputType="number"
         android:maxLength="11"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textColorHint="@color/color_cacaca"
         android:textSize="16sp"/>
 

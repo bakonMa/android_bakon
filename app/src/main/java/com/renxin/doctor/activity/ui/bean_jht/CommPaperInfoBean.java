@@ -11,7 +11,7 @@ import android.os.Parcelable;
 public class CommPaperInfoBean implements Parcelable{
 
     /**
-     * name	string	药品名称
+     * drug_name	string	药品名称
      drug_num	int	用量
      decoction	string	煎法
      unit	string	单位

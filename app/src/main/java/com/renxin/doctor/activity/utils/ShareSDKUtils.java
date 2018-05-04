@@ -49,7 +49,7 @@ public class ShareSDKUtils {
         UMWeb web = new UMWeb(shareUrl);
         web.setTitle(TextUtils.isEmpty(shareTitle) ? UIUtils.getString(R.string.app_name) : shareTitle);//标题
         if (TextUtils.isEmpty(imgUrl)) {
-            web.setThumb(new UMImage(context, R.mipmap.logo_round));  //缩略图
+            web.setThumb(new UMImage(context, R.mipmap.logo));  //缩略图
         } else {
             web.setThumb(new UMImage(context, imgUrl));  //缩略图
         }

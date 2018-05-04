@@ -12,7 +12,6 @@
     <color name="color_main_gray">#9d845a</color>
     <color name="color_main_blue">#3F425A</color>
     <color name="color_bg_main">#fafafb</color>
-    <color name="color_line">#F7F7F7</color>
     <color name="color_line_2">#F2F2F2</color>
     <color name="color_button_disabled">#CCCCCC</color>
     <color name="color_popup_btn">#4F9EF3</color>
@@ -34,7 +33,7 @@
 
     <color name="welcome_tv_color">#7F7F7F</color>
 
-    <color name="color_333">#333333</color>
+    <color name="color_000">#000000</color>
     <color name="color_666">#666666</color>
     <color name="color_999">#999999</color>
     <color name="color_f0f0f0">#F0F0F0</color>
@@ -44,7 +43,7 @@
     <color name="color_444">#444444</color>
     <color name="color_ccc">#cccccc</color>
     <color name="color_5b6187">#5B6187</color>
-    
+
 
     <color name="color_f5f5f5">#F5F5F5</color>
     <color name="color_c1944c">#C1944C</color>
@@ -53,6 +52,7 @@
     <color name="color_c3c3c3">#c3c3c3</color>
     <color name="color_424242">#424242</color>
     <color name="color_dddddd">#dddddd</color>
+    <color name="color_line">#dad7d7</color>
     <color name="color_d6d6d6">#d6d6d6</color>
 
 
@@ -65,7 +65,6 @@
     <color name="color_main">#f5a623</color>
     <color name="color_ada293">#ada293</color>
     <color name="color_b6b6b6">#b6b6b6</color>
-
 
 
     <color name="red">#ff0000</color>

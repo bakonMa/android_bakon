@@ -8,7 +8,7 @@
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:paddingTop="8dp"
         tools:text="糖尿病" />
 

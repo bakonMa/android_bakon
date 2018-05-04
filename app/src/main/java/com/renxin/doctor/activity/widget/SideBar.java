@@ -68,7 +68,7 @@ public class SideBar extends View {
         int singleHeight = height / b.length;// 获取每一个字母的高度
 
         for (int i = 0; i < b.length; i++) {
-            paint.setColor(getResources().getColor(R.color.color_333));
+            paint.setColor(getResources().getColor(R.color.color_000));
             paint.setTypeface(Typeface.DEFAULT);
             paint.setAntiAlias(true);
             paint.setTextSize(UIUtils.dp2px(DocApplication.getInstance(), 12));

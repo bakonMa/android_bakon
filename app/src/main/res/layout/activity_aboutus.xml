@@ -16,7 +16,7 @@
         android:drawablePadding="5dp"
         android:drawableTop="@mipmap/logo"
         android:text="君和堂医生端"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp" />
 
     <com.renxin.doctor.activity.widget.RelativeWithText
@@ -54,7 +54,7 @@
         android:layout_marginBottom="10dp"
         android:gravity="center"
         android:text="上海暮春信息科技有限公司"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp" />
 
 </LinearLayout>

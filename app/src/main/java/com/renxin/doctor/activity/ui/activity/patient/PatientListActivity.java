@@ -92,6 +92,7 @@ public class PatientListActivity extends BaseActivity implements PatientContact.
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(actContext(), PatientFamilyActivity.class);
                 intent.putExtra("memb_no", dataList.get(position).memb_no);
+                intent.putExtra("im_accid", dataList.get(position).im_accid);
                 intent.putExtra("formtype", formType);//是否来自选择患者
                 startActivity(intent);
             }

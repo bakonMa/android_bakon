@@ -8,6 +8,8 @@ import com.netease.nim.uikit.business.contact.core.query.PinYin;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.auth.LoginInfo;
+import com.netease.nimlib.sdk.msg.MsgService;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.util.NIMUtil;
 import com.renxin.doctor.activity.nim.event.DocOnlineStateContentProvider;
 import com.renxin.doctor.activity.nim.message.SessionHelper;
@@ -96,7 +98,7 @@ public class NimManager {
             public void onSuccess(LoginInfo loginInfo) {
                 NimU.setNimAccount(loginInfo.getAccount());
                 NimU.setNimToken(loginInfo.getToken());
-                LogUtil.d("nimLogin onSuccess="+ loginInfo.toString());
+                LogUtil.d("nimLogin onSuccess=" + loginInfo.toString());
             }
 
             @Override
@@ -130,5 +132,23 @@ public class NimManager {
             return null;
         }
     }
+
+    /**
+     * 外部 公共发送消息
+     * @param imMessage
+     * @param isReSend 失败后是否自动重发
+     * @param requestCallback 结果回调
+     */
+    public static void sengChatMsg(IMMessage imMessage, boolean isReSend, RequestCallback<Void> requestCallback) {
+        if (imMessage == null) {
+            return;
+        }
+        if (requestCallback == null) {
+            NIMClient.getService(MsgService.class).sendMessage(imMessage, isReSend);
+        } else {
+            NIMClient.getService(MsgService.class).sendMessage(imMessage, isReSend).setCallback(requestCallback);
+        }
+    }
+
 
 }

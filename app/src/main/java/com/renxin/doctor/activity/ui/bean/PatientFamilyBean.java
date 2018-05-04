@@ -94,6 +94,17 @@ public class PatientFamilyBean {
         public int age;
         public int relationship;//就诊人与患者的关系 0：本人 1：父母 2：子女 3：其他亲属 4：其他
 
+        private String im_accid;//就诊人归属的患者的im_accid 业务是使用（自己添加，json中没有）
+        public String getIm_accid() {
+            return im_accid;
+        }
+        public void setIm_accid(String im_accid) {
+            this.im_accid = im_accid;
+        }
+
+
+
+
         protected JiuzhenBean(Parcel in) {
             id = in.readString();
             patient_name = in.readString();
@@ -101,6 +112,7 @@ public class PatientFamilyBean {
             sex = in.readInt();
             age = in.readInt();
             relationship = in.readInt();
+            im_accid = in.readString();
         }
 
         @Override
@@ -111,6 +123,7 @@ public class PatientFamilyBean {
             dest.writeInt(sex);
             dest.writeInt(age);
             dest.writeInt(relationship);
+            dest.writeString(im_accid);
         }
 
         @Override

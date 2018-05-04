@@ -89,7 +89,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:text="性别"
-                        android:textColor="@color/color_333"
+                        android:textColor="@color/color_000"
                         android:textSize="16sp" />
 
                     <RadioGroup
@@ -316,7 +316,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:text="代煎"
-                    android:textColor="@color/color_333"
+                    android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
                 <RadioGroup
@@ -364,7 +364,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="开方补充收费"
-                    android:textColor="@color/color_333"
+                    android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
                 <EditText
@@ -384,7 +384,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="元"
-                    android:textColor="@color/color_333"
+                    android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
             </LinearLayout>

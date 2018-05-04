@@ -6,6 +6,7 @@ import com.renxin.doctor.activity.injection.qualifiers.FragmentContext;
 import com.renxin.doctor.activity.ui.activity.fragment.FindFragment;
 import com.renxin.doctor.activity.ui.activity.fragment.PatientFragment;
 import com.renxin.doctor.activity.ui.activity.fragment.WorkRoomFragment;
+import com.renxin.doctor.activity.ui.activity.home.CheckPaperFragment;
 import com.renxin.doctor.activity.ui.activity.login.LoginFragment;
 import com.renxin.doctor.activity.injection.modules.FragmentModule;
 import com.renxin.doctor.activity.injection.scopes.PerFragment;
@@ -38,4 +39,6 @@ public interface FragmentComponent extends ApplicationComponent {
     void inject(MineFragment mineFragment);
 
     void inject(FindFragment findFragment);
+
+    void inject(CheckPaperFragment checkPaperFragment);
 }

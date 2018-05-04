@@ -10,7 +10,7 @@ public class SearchDrugBean {
 
     /**
      * id : 380
-     * name : 苍耳草
+     * drug_name : 苍耳草
      * price : 0.01
      * unit : g
      * spec : g

@@ -27,7 +27,7 @@
             app:iconDrawable="@drawable/tab_home_btn"
             app:itemText="@string/home_workroom"
             app:itemTextSize="12sp"
-            app:textColorNormal="@color/color_333"
+            app:textColorNormal="@color/color_000"
             app:textColorSelected="@color/color_4f9ef3" />
 
         <com.renxin.doctor.activity.widget.BottomBarItem
@@ -36,7 +36,7 @@
             app:iconDrawable="@drawable/tab_home_btn"
             app:itemText="@string/home_patient"
             app:itemTextSize="12sp"
-            app:textColorNormal="@color/color_333"
+            app:textColorNormal="@color/color_000"
             app:textColorSelected="@color/color_4f9ef3" />
 
         <com.renxin.doctor.activity.widget.BottomBarItem
@@ -45,7 +45,7 @@
             app:iconDrawable="@drawable/tab_home_btn"
             app:itemText="@string/home_find"
             app:itemTextSize="12sp"
-            app:textColorNormal="@color/color_333"
+            app:textColorNormal="@color/color_000"
             app:textColorSelected="@color/color_4f9ef3" />
 
         <com.renxin.doctor.activity.widget.BottomBarItem
@@ -54,7 +54,7 @@
             app:iconDrawable="@drawable/tab_home_btn"
             app:itemText="@string/home_me"
             app:itemTextSize="12sp"
-            app:textColorNormal="@color/color_333"
+            app:textColorNormal="@color/color_000"
             app:textColorSelected="@color/color_4f9ef3" />
 
 

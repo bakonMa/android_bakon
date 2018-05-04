@@ -25,6 +25,7 @@ import com.renxin.doctor.activity.data.eventbus.Event;
 import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
 import com.renxin.doctor.activity.injection.modules.ActivityModule;
+import com.renxin.doctor.activity.nim.NimU;
 import com.renxin.doctor.activity.ui.activity.patient.PatientFamilyActivity;
 import com.renxin.doctor.activity.ui.activity.patient.PatientListActivity;
 import com.renxin.doctor.activity.ui.adapter.OPenPaperDrugAdapter;
@@ -34,6 +35,7 @@ import com.renxin.doctor.activity.ui.bean.PatientFamilyBean;
 import com.renxin.doctor.activity.ui.bean_jht.DrugBean;
 import com.renxin.doctor.activity.ui.contact.OpenPaperContact;
 import com.renxin.doctor.activity.ui.presenter.OpenPaperPresenter;
+import com.renxin.doctor.activity.utils.Constant;
 import com.renxin.doctor.activity.utils.SoftHideKeyBoardUtil;
 import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.utils.UIUtils;
@@ -125,6 +127,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     private int sexType = 0;
     private int daijianType = 0;
     private String membNo = "";//患者编号，选择患者才有
+    private String pAccid = "";//患者云信 accid
     private String docadviceStr = "";//医嘱
     private ArrayList<DrugBean> drugBeans = new ArrayList<>();
     private boolean isShowAll = false;//展开全部
@@ -139,10 +142,11 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     private SavePaperDialog savePaperDialog;
 
     //带有返回的startActivityForResult-仅限nim中使用 formParent=1
-    public static void startResultActivity(Context context, int requestCode, int formParent, String membNo) {
+    public static void startResultActivity(Context context, int requestCode, int formParent, String p_accid, String membNo) {
         Intent intent = new Intent(context, OpenPaperOnlineActivity.class);
         intent.putExtra("formParent", formParent);
         intent.putExtra("memb_no", membNo);
+        intent.putExtra("p_accid", p_accid);
         ((Activity) context).startActivityForResult(intent, requestCode);
     }
 
@@ -156,7 +160,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         SoftHideKeyBoardUtil.assistActivity(this);
         //来源
         formParent = getIntent().getIntExtra("formParent", 0);
-        membNo = getIntent().getStringExtra("memb_no");
+        membNo = getIntent().getStringExtra("memb_no");//患者momb_no
+        pAccid = getIntent().getStringExtra("p_accid");//患者accid
 
         //初始基础数据
         initBaseData();
@@ -308,9 +313,17 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 startActivityForResult(intentDocAdvice, REQUEST_CODE_DOCADVICE);
                 break;
             case R.id.tv_adddrug://添加药材
+                //是否选择了药房
+                if (TextUtils.isEmpty(etDrugstore.getText())) {
+                    commonDialog = new CommonDialog(this, "请先选择药房");
+                    commonDialog.show();
+                    return;
+                }
+
                 Intent addDrugIntent = new Intent(this, AddDrugActivity.class);
                 addDrugIntent.putParcelableArrayListExtra("druglist", drugBeans);
                 addDrugIntent.putExtra("form", 1);//添加药材使用
+                addDrugIntent.putExtra("store_id", storeId);//药房id
                 startActivityForResult(addDrugIntent, REQUEST_CODE_ADDDRUG);
                 break;
             case R.id.tv_next_step://提交
@@ -346,6 +359,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         rbNan.setEnabled(true);
         rbNv.setEnabled(true);
         membNo = "";
+        pAccid = "";
         etName.setEditeText("");
         etAge.setEditeText("");
         etPhone.setEditeText("");
@@ -360,6 +374,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         etAge.setEditeText(bean.age > 0 ? (bean.age + "") : "");
         rgSex.check(bean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
         membNo = bean.id;
+        pAccid = bean.getIm_accid();//记录需要
         etName.setEditeEnable(false);
         etAge.setEditeEnable(false);
         etPhone.setEditeEnable(false);
@@ -380,8 +395,23 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             commonDialog.show();
             return;
         }
-        if (TextUtils.isEmpty(etDrugstore.getText())) {
+        if (TextUtils.isEmpty(etDrugClass.getText())) {
             commonDialog = new CommonDialog(this, "请选择剂型");
+            commonDialog.show();
+            return;
+        }
+        if (drugBeans == null || drugBeans.isEmpty()) {
+            commonDialog = new CommonDialog(this, "请添加药材");
+            commonDialog.show();
+            return;
+        }
+        if (TextUtils.isEmpty(etUsetype.getText())) {
+            commonDialog = new CommonDialog(this, "请选择用法用量");
+            commonDialog.show();
+            return;
+        }
+        if (TextUtils.isEmpty(docadviceStr)) {
+            commonDialog = new CommonDialog(this, "请填写医嘱");
             commonDialog.show();
             return;
         }
@@ -393,7 +423,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         }
 
         params.put("source", formParent == 0 ? 1 : 2);//来源：1：首页，2：聊天
-        params.put("name", etName.getEditText().getText());
+        params.put("drug_name", etName.getEditText().getText());
         params.put("sex", sexType);
         params.put("age", etAge.getEditText().getText());
         params.put("phone", etPhone.getEditText().getText());
@@ -411,6 +441,10 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         }
         params.put("doc_remark", docadviceStr);//医嘱
         mPresenter.openPaperOnline(params);
+        //可以拿到paccid 就记录，没有就不记录
+        if (!TextUtils.isEmpty(pAccid)) {
+            mPresenter.addChatRecord(NimU.getNimAccount(), pAccid, Constant.CHAT_RECORD_TYPE_3, formParent);
+        }
     }
 
     @Override
@@ -479,6 +513,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 PatientFamilyBean.JiuzhenBean bean = (PatientFamilyBean.JiuzhenBean) event.getData();
                 if (bean != null) {
                     chooseJzInfo(bean);
+
                 }
                 break;
         }
@@ -505,14 +540,14 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 etDocadvice.setText(docadviceStr);
                 break;
             case REQUEST_CODE_SEARCHSKILLNAME://搜索疾病名称 主述及辩证型
-                String skilName = data.getStringExtra("name");
+                String skilName = data.getStringExtra("drug_name");
                 if (TextUtils.isEmpty(skilName)) {
                     skilNameCode = "";
                     tvSkillname.setTextColor(UIUtils.getColor(R.color.color_999));
                     tvSkillname.setText("请选择病名或证型");
                 } else {
                     skilNameCode = data.getStringExtra("icd10_code");
-                    tvSkillname.setTextColor(UIUtils.getColor(R.color.color_333));
+                    tvSkillname.setTextColor(UIUtils.getColor(R.color.color_000));
                     tvSkillname.setText(skilName);
                 }
                 break;

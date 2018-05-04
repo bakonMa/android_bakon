@@ -19,7 +19,7 @@ import com.renxin.doctor.activity.utils.UIUtils;
 public class OpenPaperCameraAction extends BaseAction {
 
     public OpenPaperCameraAction() {
-        super(R.drawable.chat_askpaper, R.string.input_panel_openpaper_camera);
+        super(R.drawable.chat_openpaper_camera, R.string.input_panel_openpaper_camera);
     }
 
     @Override
@@ -27,6 +27,7 @@ public class OpenPaperCameraAction extends BaseAction {
         OpenPaperCameraActivity.startResultActivity(getActivity(),
                 makeRequestCode(RequestCode.SEND_OPENPAPER_CAMERA),
                 1,
+                getAccount(),
                 UserPreferences.getMembNoByAccid(getAccount()));
     }
 

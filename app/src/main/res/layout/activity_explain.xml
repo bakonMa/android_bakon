@@ -23,7 +23,7 @@
             android:maxLength="300"
             android:minHeight="160dp"
             android:padding="15dp"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="14sp" />
 
         <TextView

@@ -75,10 +75,8 @@ public class UserInfoActivity extends BaseActivity {
                     @Override
                     public void rightClick() {
                         super.rightClick();
-                        Intent intent = new Intent(actContext(), WebViewActivity.class);
-                        intent.putExtra("url", H5Config.H5_USERINFO);
-                        intent.putExtra("title", H5Config.H5_USERINFO_TITLE);
-                        startActivity(intent);
+                        //个人信息预览
+                        WebViewActivity.startAct(actContext(), true, WebViewActivity.WEB_TYPE.WEB_TYPE_MYINFO, H5Config.H5_USERINFO_TITLE, H5Config.H5_USERINFO);
                     }
                 }).bind();
     }
@@ -99,7 +97,6 @@ public class UserInfoActivity extends BaseActivity {
             case R.id.rlt_addinfo:
                 startActivity(new Intent(this, AddUseInfoActivity.class));
                 break;
-
         }
 
     }

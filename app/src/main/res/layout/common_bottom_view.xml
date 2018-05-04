@@ -19,6 +19,6 @@
         android:background="@color/white"
         android:gravity="center"
         android:text="取消"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp" />
 </LinearLayout>

@@ -109,10 +109,10 @@ public class StorageUtil {
     public static String getSystemImagePath() {
         if (Build.VERSION.SDK_INT > 7) {
             String picturePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-            return picturePath + "/nim/";
+            return picturePath + "/jht/";
         } else {
             String picturePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).getAbsolutePath();
-            return picturePath + "/nim/";
+            return picturePath + "/jht/";
         }
     }
 

@@ -27,7 +27,8 @@ public class AskPaperAction extends BaseAction {
     public void onClick() {
         PaperH5Activity.startResultActivity(getActivity(),
                 makeRequestCode(RequestCode.SEND_ASKPAPER),
-                0,
+                true,
+                PaperH5Activity.FORM_TYPE.H5_ASKPAPER,
                 UIUtils.getString(R.string.input_panel_askpaper),
                 H5Config.H5_ASKPAPER
         );

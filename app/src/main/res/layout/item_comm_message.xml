@@ -28,7 +28,7 @@
         android:layout_toRightOf="@id/cb_select"
         android:paddingBottom="10dp"
         android:paddingTop="10dp"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="16sp"
         tools:text="你那里不舒服，怎么了？" />
 

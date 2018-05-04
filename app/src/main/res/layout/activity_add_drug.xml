@@ -21,7 +21,7 @@
             android:layout_weight="3"
             android:gravity="center"
             android:text="药名"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="16sp" />
 
         <TextView
@@ -30,7 +30,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="用量"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="16sp" />
 
         <TextView
@@ -39,7 +39,7 @@
             android:layout_weight="2"
             android:gravity="center"
             android:text="煎法"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -95,7 +95,7 @@
                 android:gravity="center_vertical"
                 android:paddingLeft="15dp"
                 android:text="预计：0元"
-                android:textColor="@color/color_333"
+                android:textColor="@color/color_000"
                 android:textSize="16sp" />
         </LinearLayout>
 

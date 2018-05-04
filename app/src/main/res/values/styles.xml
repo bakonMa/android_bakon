@@ -86,17 +86,17 @@
     <style name="line_gray_hor">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>
-        <item name="android:background">@color/color_dddddd</item>
+        <item name="android:background">@color/color_line</item>
     </style>
     <!-- 横线 灰色 竖线-->
     <style name="line_gray_ver">
         <item name="android:layout_width">1dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/color_dddddd</item>
+        <item name="android:background">@color/color_line</item>
     </style>
 
     <style name="blackEditText" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/color_dddddd</item>
+        <item name="colorControlNormal">@color/color_line</item>
         <item name="colorControlActivated">@color/color_main</item>
     </style>
 

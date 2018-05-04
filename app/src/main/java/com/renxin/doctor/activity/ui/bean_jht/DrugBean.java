@@ -11,7 +11,7 @@ import android.os.Parcelable;
 public class DrugBean implements Parcelable{
     //添加药材使用
     public int drug_id;
-    public String name;
+    public String drug_name;
     public String unit;//单位
     public int drug_num;//用量
     public double price;//价格
@@ -23,7 +23,7 @@ public class DrugBean implements Parcelable{
 
     protected DrugBean(Parcel in) {
         drug_id = in.readInt();
-        name = in.readString();
+        drug_name = in.readString();
         unit = in.readString();
         drug_num = in.readInt();
         price = in.readDouble();
@@ -34,7 +34,7 @@ public class DrugBean implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(drug_id);
-        dest.writeString(name);
+        dest.writeString(drug_name);
         dest.writeString(unit);
         dest.writeInt(drug_num);
         dest.writeDouble(price);

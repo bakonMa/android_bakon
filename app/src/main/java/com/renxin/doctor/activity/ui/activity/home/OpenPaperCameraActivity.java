@@ -27,6 +27,7 @@ import com.renxin.doctor.activity.data.eventbus.Event;
 import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
 import com.renxin.doctor.activity.injection.modules.ActivityModule;
+import com.renxin.doctor.activity.nim.NimU;
 import com.renxin.doctor.activity.ui.activity.patient.PatientFamilyActivity;
 import com.renxin.doctor.activity.ui.activity.patient.PatientListActivity;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
@@ -133,6 +134,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private int sexType = 0;
     private int daijianType = 0;
     private String membNo = "";//患者编号，选择患者才有
+    private String pAccid = "";//患者云信 accid
 
     private OPenPaperBaseBean baseBean;
     private List<String> drugStoreList = new ArrayList<>();//药房
@@ -141,10 +143,11 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private CameraPopupView cameraPopupView;
 
     //带有返回的startActivityForResult-仅限nim中使用 formParent=1
-    public static void startResultActivity(Context context, int requestCode, int formParent, String membNo) {
+    public static void startResultActivity(Context context, int requestCode, int formParent, String p_accid, String membNo) {
         Intent intent = new Intent(context, OpenPaperCameraActivity.class);
         intent.putExtra("formParent", formParent);
         intent.putExtra("memb_no", membNo);
+        intent.putExtra("p_accid", p_accid);
         ((Activity) context).startActivityForResult(intent, requestCode);
     }
 
@@ -157,7 +160,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     protected void initView() {
         SoftHideKeyBoardUtil.assistActivity(this);
         formParent = getIntent().getIntExtra("formParent", 0);
-        membNo = getIntent().getStringExtra("memb_no");
+        membNo = getIntent().getStringExtra("memb_no");//患者momb_no
+        pAccid = getIntent().getStringExtra("p_accid");//患者accid
 
         //初始基础数据
         initBaseData();
@@ -298,6 +302,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         rbNan.setEnabled(true);
         rbNv.setEnabled(true);
         membNo = "";
+        pAccid = "";
         etName.setEditeText("");
         etAge.setEditeText("");
         etPhone.setEditeText("");
@@ -312,6 +317,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         etAge.setEditeText(bean.age > 0 ? (bean.age + "") : "");
         rgSex.check(bean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
         membNo = bean.id;
+        pAccid = bean.getIm_accid();
         etName.setEditeEnable(false);
         etAge.setEditeEnable(false);
         etPhone.setEditeEnable(false);
@@ -359,7 +365,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         if (!TextUtils.isEmpty(etServerprice.getText().toString().trim())) {
             params.put("service_price", etServerprice.getText().toString().trim());
         }
-        params.put("name", etName.getEditText().getText());
+        params.put("drug_name", etName.getEditText().getText());
         params.put("sex", sexType);
         params.put("age", etAge.getEditText().getText());
         params.put("phone", etPhone.getEditText().getText());
@@ -369,6 +375,10 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         params.put("boiled_type", daijianType);
 
         mPresenter.openPaperCamera(params);
+        //可以拿到paccid 就记录，没有就不记录
+        if (!TextUtils.isEmpty(pAccid)) {
+            mPresenter.addChatRecord(NimU.getNimAccount(), pAccid, Constant.CHAT_RECORD_TYPE_3, formParent);
+        }
     }
 
     //照相机公用file

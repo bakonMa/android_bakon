@@ -253,7 +253,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
 
         Params params = new Params();
         params.put("header", headImgURL);
-        params.put("name", etName.getEditText().getText());
+        params.put("drug_name", etName.getEditText().getText());
         params.put("sex", sexType);
         params.put("prov", provinceStr);
         params.put("city", cityStr);

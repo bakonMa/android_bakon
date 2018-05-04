@@ -92,7 +92,7 @@ public class SearchSkillNameActivity extends BaseActivity implements OpenPaperCo
             @Override
             public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent();
-                intent.putExtra("name", showBeans.get(position).name);
+                intent.putExtra("drug_name", showBeans.get(position).name);
                 intent.putExtra("icd10_code", showBeans.get(position).icd10_code);
                 setResult(RESULT_OK, intent);
                 finish();

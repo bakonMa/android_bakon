@@ -26,7 +26,7 @@ public class OPenPaperDrugAdapter extends BaseQuickAdapter<DrugBean, BaseViewHol
 
     @Override
     protected void convert(BaseViewHolder helper, DrugBean item) {
-        helper.setText(R.id.tv_drugname, item.name)
+        helper.setText(R.id.tv_drugname, item.drug_name)
                 .setText(R.id.tv_num, item.drug_num + item.unit)
                 .setText(R.id.tv_usertype, item.decoction);
     }

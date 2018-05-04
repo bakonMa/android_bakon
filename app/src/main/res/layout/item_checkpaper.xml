@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@drawable/selector_bg_tab"
+    android:padding="15dp">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/color_000"
+        android:textSize="14sp"
+        tools:text="李元芳     男    25随" />
+
+    <TextView
+        android:id="@+id/tv_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/tv_date"
+        android:textColor="@color/color_000"
+        android:textSize="14sp"
+        tools:text="18202199090" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/iv_rightarrow"
+        android:textColor="@color/color_000"
+        android:textSize="14sp"
+        tools:text="开方日期：2018年05月04日" />
+
+    <TextView
+        android:id="@+id/tv_checkstatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/iv_rightarrow"
+        android:textColor="@color/color_main"
+        android:textSize="14sp"
+        tools:text="待审核" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_toStartOf="@+id/iv_rightarrow"
+        android:src="@drawable/icon_camera" />
+
+    <ImageView
+        android:id="@+id/iv_rightarrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/icon_xuanze" />
+
+</RelativeLayout>

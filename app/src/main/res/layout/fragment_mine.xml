@@ -82,7 +82,7 @@
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:textColor="@color/color_333"
+                            android:textColor="@color/color_000"
                             android:textSize="16sp"
                             tools:text="马可波罗" />
 
@@ -92,7 +92,7 @@
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:textColor="@color/color_333"
+                            android:textColor="@color/color_000"
                             android:textSize="16sp"
                             tools:text="男" />
 
@@ -102,7 +102,7 @@
                             android:layout_height="0dp"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
-                            android:textColor="@color/color_333"
+                            android:textColor="@color/color_000"
                             android:textSize="16sp"
                             tools:text="瑞金医院 内科 主任" />
 

@@ -126,7 +126,7 @@
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:hint="请输入详细地址"
-                    android:textColor="@color/color_333"
+                    android:textColor="@color/color_000"
                     android:gravity="start"
                     android:maxLength="50"
                     android:padding="15dp"
@@ -167,7 +167,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:textColor="@color/color_333"
+                        android:textColor="@color/color_000"
                         android:text="是"/>
                     <RadioButton
                         android:id="@+id/id_rb_no"
@@ -181,7 +181,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textSize="14sp"
-                        android:textColor="@color/color_333"
+                        android:textColor="@color/color_000"
                         android:text="否"/>
                 </RadioGroup>
                 <RelativeLayout
@@ -195,7 +195,7 @@
                         android:layout_height="wrap_content"
                         android:text="是"
                         android:textSize="14sp"
-                        android:textColor="@color/color_333"
+                        android:textColor="@color/color_000"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="15dp"/>

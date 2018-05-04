@@ -1,5 +1,7 @@
 package com.renxin.doctor.activity.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -18,9 +20,11 @@ import com.renxin.doctor.activity.data.eventbus.Event;
 import com.renxin.doctor.activity.data.eventbus.EventBusUtil;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.ui.bean_jht.H5JsonBean;
+import com.renxin.doctor.activity.utils.FileUtil;
 import com.renxin.doctor.activity.utils.LogUtil;
 import com.renxin.doctor.activity.utils.ShareSDKUtils;
 import com.renxin.doctor.activity.widget.ProgressWebView;
+import com.renxin.doctor.activity.widget.popupwindow.MenuPopupView;
 import com.renxin.doctor.activity.widget.popupwindow.SharePopupWindow;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
 import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
@@ -42,6 +46,8 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
+    @BindView(R.id.id_img_right)
+    ImageView ivImgRight;
     @BindView(R.id.iv_error_image)
     ImageView ivErrorImage;
     @BindView(R.id.tv_error_text)
@@ -54,9 +60,20 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
     ProgressWebView wbWebview;
 
     //标题，url
-    private String titleStr, urlStr;
-    private int h5Type;//0：默认带头部导航栏 1：不带
+    private String titleStr, urlStr, webType;
+    private boolean hasTopBar;//默认带头部导航
     private SharePopupWindow sharePopupWindow;
+    private ToolbarBuilder toolbarBuilder;
+
+    //hasTopBar
+    public static void startAct(Context context, boolean hasTopBar, String webType, String titel, String url) {
+        Intent intent = new Intent(context, WebViewActivity.class);
+        intent.putExtra("hasTopBar", hasTopBar);//是否包含toolbar
+        intent.putExtra("webType", webType);//URL的类型，自己定义
+        intent.putExtra("title", titel);
+        intent.putExtra("url", url);
+        context.startActivity(intent);
+    }
 
     @Override
     protected int provideRootLayout() {
@@ -65,16 +82,24 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
 
     @Override
     protected void initView() {
-        h5Type = getIntent().getIntExtra("type", 0);
+        //是否包含toolbar
+        hasTopBar = getIntent().getBooleanExtra("hasTopBar", true);
         titleStr = getIntent().getStringExtra("title");
         urlStr = getIntent().getStringExtra("url");
+        webType = getIntent().getStringExtra("webType");
+
         LogUtil.d(urlStr);
         wbWebview.setErrorCallback(this);
-        if (h5Type == 0) {
+        //是否有导航头
+        if (hasTopBar) {
             initToolbar();
         } else {
             idToolbar.setVisibility(View.GONE);
+            ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
+                    .setStatuBar(R.color.white)
+                    .bind();
         }
+        //js and java 交互
         wbWebview.addJavascriptInterface(new JSWebInterface(), "Android");
         wbWebview.loadUrl(urlStr);
     }
@@ -86,11 +111,10 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
 
     //共同头部处理
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
+        toolbarBuilder = ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle(TextUtils.isEmpty(titleStr) ? wbWebview.getTitle() : titleStr)
-                .setRightImg(R.drawable.icon_add_bank, true)
                 .setLeft(false)
-                .isShowClose(true)//是否显示close
+                //.isShowClose(true)//是否显示close
                 .setStatuBar(R.color.white)
                 .setListener(new TitleOnclickListener() {
                     @Override
@@ -111,17 +135,45 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
 
                     @Override
                     public void rightClick() {
-                        //分享
-                        //获取share json数据
-//                        wbWebview.loadUrl("javascript:(function(){window.Android.jsEvent(document.getElementById('shareValue').value);})()");
-                        wbWebview.loadUrl("javascript:share_card()");
+                        switch (webType) {
+                            case WEB_TYPE.WEB_TYPE_MYCARD://我的卡片
+                                MenuPopupView popupView = new MenuPopupView(actContext(), new MenuPopupView.OnClickListener() {
+                                    @Override
+                                    public void onClicked(View view) {
+                                        switch (view.getId()) {
+                                            case R.id.tv_share:
+                                                //分享 获取share json数据
+                                                //wbWebview.loadUrl("javascript:(function(){window.Android.jsEvent(document.getElementById('shareValue').value);})()");
+                                                wbWebview.loadUrl("javascript:share_card()");
+                                                break;
+                                            case R.id.tv_save:
+                                                //webview 生成图片保存相册
+                                                FileUtil.saveWebviewToImage(actContext(), wbWebview);
+                                                break;
+                                        }
+                                    }
+                                });
+                                popupView.show(ivImgRight);
+                                break;
+                        }
+
                     }
                 }).bind();
+
+        //是否toolbar 显示其他控件
+        switch (webType) {
+            case WEB_TYPE.WEB_TYPE_MYCARD://我的卡片 右边显示分享
+                toolbarBuilder.setRightImg(R.drawable.icon_threepoint, true);
+                break;
+        }
+
     }
 
     @Override
     protected void setupActivityComponent() {
+
     }
+
 
     @Override
     protected void onDestroy() {
@@ -201,7 +253,23 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
                     //线程问题
                     EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_USERINFO, bean));
                     break;
+                case "close"://发现 书籍
+                    finish();
+                    break;
+                case "share_books"://发现 分享
+                    EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_H5_BOOKS_SHARE, bean));
+                    break;
             }
         }
     }
+
+    //进来的类型
+    public interface WEB_TYPE {
+        String WEB_TYPE_MYCARD = "web_type_mycard";//添加患者 我的卡片
+        String WEB_TYPE_MYINFO = "web_type_myinfo";//个人信息预览
+        String WEB_TYPE_BOOKS = "books";//发现 书籍
+        String WEB_TYPE_BAIKE = "baike";//发现 百科
+    }
+
+
 }

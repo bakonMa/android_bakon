@@ -27,7 +27,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="请选择地区"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="16sp" />
 
         <TextView
@@ -54,7 +54,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="省"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="16sp" />
 
         <TextView
@@ -64,7 +64,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="市"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="16sp" />
 
         <TextView
@@ -74,7 +74,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="区"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="16sp" />
 
     </LinearLayout>

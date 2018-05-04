@@ -5,5 +5,5 @@
     android:layout_width="match_parent"
     android:layout_height="36dp"
     android:gravity="center_vertical"
-    android:textColor="@color/color_333"
+    android:textColor="@color/color_000"
     tools:text="内科" />

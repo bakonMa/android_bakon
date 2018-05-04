@@ -19,7 +19,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="2dp"
         android:gravity="center"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="14sp"
         tools:text="@string/home_workroom" />
 

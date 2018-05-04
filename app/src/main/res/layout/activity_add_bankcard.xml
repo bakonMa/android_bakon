@@ -66,7 +66,7 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:text="如有任何疑问，请联系客服：400-888-9999。"
-        android:textColor="@color/color_333"
+        android:textColor="@color/color_000"
         android:textSize="10sp" />
 
 

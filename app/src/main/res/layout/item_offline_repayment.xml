@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="应还总计："
-                android:textColor="@color/color_333"
+                android:textColor="@color/color_000"
                 android:textSize="14sp" />
 
             <TextView
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/id_tv_label1"
                 android:text=""
-                android:textColor="@color/color_333"
+                android:textColor="@color/color_000"
                 android:textSize="14sp" />
 
             <TextView
@@ -79,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="剩余应还："
-                android:textColor="@color/color_333"
+                android:textColor="@color/color_000"
                 android:textSize="14sp" />
 
             <TextView
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/id_tv_label1"
                 android:text=""
-                android:textColor="@color/color_333"
+                android:textColor="@color/color_000"
                 android:textSize="14sp" />
         </LinearLayout>
 

@@ -16,5 +16,10 @@ public interface Constant {
     //就诊人与患者的关系
     String[] RELATION_TYPE = {"本人", "父母", "子女", "其他亲属", "其他"};
 
+    //发送自定义消息记录 1:问诊单 2:随诊单 3:开方
+    int CHAT_RECORD_TYPE_1 = 1;
+    int CHAT_RECORD_TYPE_2 = 2;
+    int CHAT_RECORD_TYPE_3 = 3;
+
 
 }

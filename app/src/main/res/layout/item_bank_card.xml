@@ -18,7 +18,7 @@
             android:layout_marginLeft="15dp"
             android:gravity="center_vertical"
             android:text="共借人"
-            android:textColor="@color/color_333"
+            android:textColor="@color/color_000"
             android:textSize="14sp" />
     </LinearLayout>
 
