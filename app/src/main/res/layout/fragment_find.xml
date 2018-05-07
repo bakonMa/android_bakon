@@ -29,6 +29,7 @@
         android:id="@+id/tv_policy"
         android:layout_width="match_parent"
         android:layout_height="44dp"
+        android:visibility="gone"
         app:isShowTab="false"
         app:titleT="政策追踪" />
 
@@ -37,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_marginBottom="10dp"
+        android:visibility="gone"
         app:isShowLineT="false"
         app:isShowTab="false"
         app:titleT="中医日常" />
@@ -45,6 +47,7 @@
         android:id="@+id/tv_classroom"
         android:layout_width="match_parent"
         android:layout_height="44dp"
+        android:visibility="gone"
         app:isShowLineT="false"
         app:isShowTab="false"
         app:titleT="培训与讲座" />

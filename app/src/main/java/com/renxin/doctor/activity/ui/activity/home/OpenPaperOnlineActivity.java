@@ -421,9 +421,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         if (!TextUtils.isEmpty(membNo)) {
             params.put("memb_no", membNo);
         }
-
         params.put("source", formParent == 0 ? 1 : 2);//来源：1：首页，2：聊天
-        params.put("drug_name", etName.getEditText().getText());
+        params.put("name", etName.getEditText().getText());
         params.put("sex", sexType);
         params.put("age", etAge.getEditText().getText());
         params.put("phone", etPhone.getEditText().getText());
@@ -441,10 +440,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         }
         params.put("doc_remark", docadviceStr);//医嘱
         mPresenter.openPaperOnline(params);
-        //可以拿到paccid 就记录，没有就不记录
-        if (!TextUtils.isEmpty(pAccid)) {
-            mPresenter.addChatRecord(NimU.getNimAccount(), pAccid, Constant.CHAT_RECORD_TYPE_3, formParent);
-        }
     }
 
     @Override
@@ -487,6 +482,11 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 commonDialog.show();
                 break;
             case OpenPaperPresenter.OPENPAPER_ONLINE_OK:
+                //可以拿到paccid 就记录，没有就不记录
+                if (!TextUtils.isEmpty(pAccid)) {
+                    mPresenter.addChatRecord(NimU.getNimAccount(), pAccid, Constant.CHAT_RECORD_TYPE_3, formParent);
+                }
+
                 if (formParent == 1) {//聊天开方
                     setResult(RESULT_OK, new Intent());
                     finish();
@@ -513,7 +513,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 PatientFamilyBean.JiuzhenBean bean = (PatientFamilyBean.JiuzhenBean) event.getData();
                 if (bean != null) {
                     chooseJzInfo(bean);
-
                 }
                 break;
         }

@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:background="@drawable/selector_bg_tab"
-    android:padding="15dp">
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="15dp">
 
     <TextView
         android:id="@+id/tv_name"
@@ -22,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
+        android:layout_marginBottom="15dp"
         android:layout_toStartOf="@+id/tv_date"
         android:textColor="@color/color_000"
         android:textSize="14sp"
@@ -32,6 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
         android:layout_toStartOf="@+id/iv_rightarrow"
         android:textColor="@color/color_000"
         android:textSize="14sp"
@@ -48,6 +52,7 @@
         tools:text="待审核" />
 
     <ImageView
+        android:id="@+id/iv_papertype"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_toStartOf="@+id/iv_rightarrow"
@@ -59,7 +64,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         android:src="@drawable/icon_xuanze" />
+
+    <View
+        style="@style/line_gray_hor"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

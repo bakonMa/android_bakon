@@ -30,6 +30,10 @@ public interface H5Config {
     //发现 书籍 百科
     String H5_BOOKS = BuildConfig.BASE_URL + "books/";
     String H5_BAIKE = BuildConfig.BASE_URL + "baike/";
+    //审核处方
+    String H5_CHECKPAPER = BuildConfig.BASE_URL + "check_extraction?id=";
+    //处方详情
+    String H5_PAPER_DETAIL = BuildConfig.BASE_URL + "extraction_info?id=";
 
     //*******************jht end**********************
 

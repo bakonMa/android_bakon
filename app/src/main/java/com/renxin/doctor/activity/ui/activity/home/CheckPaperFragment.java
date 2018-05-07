@@ -1,6 +1,7 @@
 package com.renxin.doctor.activity.ui.activity.home;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,14 +13,22 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.config.EventConfig;
+import com.renxin.doctor.activity.config.H5Config;
+import com.renxin.doctor.activity.data.eventbus.Event;
 import com.renxin.doctor.activity.injection.components.DaggerFragmentComponent;
 import com.renxin.doctor.activity.injection.modules.FragmentModule;
 import com.renxin.doctor.activity.ui.base.BaseFragment;
 import com.renxin.doctor.activity.ui.bean_jht.CheckPaperBean;
 import com.renxin.doctor.activity.ui.contact.OpenPaperContact;
+import com.renxin.doctor.activity.ui.nimview.PaperH5Activity;
 import com.renxin.doctor.activity.ui.presenter.OpenPaperPresenter;
-import com.renxin.doctor.activity.utils.ToastUtil;
+import com.renxin.doctor.activity.utils.UIUtils;
+import com.renxin.doctor.activity.widget.dialog.CommonDialog;
 import com.trello.rxlifecycle.LifecycleTransformer;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +85,13 @@ public class CheckPaperFragment extends BaseFragment implements OpenPaperContact
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter mAdapter, View view, int position) {
-                ToastUtil.showShort(checkPaperBeans.get(position).patient_name);
+                Intent intent = new Intent(actContext(), PaperH5Activity.class);
+                intent.putExtra("hasTopBar", true);//是否包含toolbar
+                intent.putExtra("webType", PaperH5Activity.FORM_TYPE.H5_CHECKPAPER);
+                intent.putExtra("title", UIUtils.getString(R.string.str_check_paper));
+                intent.putExtra("url", H5Config.H5_CHECKPAPER + checkPaperBeans.get(position).id);
+                intent.putExtra("checkid", checkPaperBeans.get(position).id);
+                startActivity(intent);
             }
         });
 //        recyvleview.setAdapter(mAdapter);
@@ -107,18 +122,35 @@ public class CheckPaperFragment extends BaseFragment implements OpenPaperContact
                 if (beans != null) {
                     checkPaperBeans.addAll(beans);
                 }
+                mAdapter.notifyDataSetChanged();
+
                 if (checkPaperBeans.isEmpty()) {
                     mAdapter.setEmptyView(R.layout.empty_view);
-                } else {
-                    mAdapter.notifyDataSetChanged();
                 }
                 break;
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCome(Event event) {
+        if (event != null) {
+            switch (event.getCode()) {
+                case EventConfig.EVENT_KEY_CHECKPAPER_OK://审核提交成功，刷新列表
+                    mPresenter.getCheckPaperList(type);
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return true;
+    }
+
     @Override
     public void onError(String errorCode, String errorMsg) {
-        ToastUtil.show(errorMsg);
+        CommonDialog commonDialog = new CommonDialog(getActivity(), errorMsg);
+        commonDialog.show();
     }
 
     @Override

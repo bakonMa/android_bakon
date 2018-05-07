@@ -311,7 +311,7 @@
                 android:paddingLeft="15dp">
 
                 <TextView
-                    android:id="@+id/tv_daijian"
+                    android:id="@+id/tv_temp"
                     android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
@@ -323,7 +323,7 @@
                     android:id="@+id/rg_daijian"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_toRightOf="@+id/tv_daijian"
+                    android:layout_toRightOf="@+id/tv_temp"
                     android:orientation="horizontal">
 
                     <RadioButton

@@ -19,8 +19,10 @@ public class CheckPaperBean {
 
     public int id;
     public String patient_name;
-    public int sex;
+    public int sex;//男：0、女：1
     public String age;
     public String phone;
     public String create_time;
+    public int presc_type;//1、手工开方；2、拍照开方
+
 }

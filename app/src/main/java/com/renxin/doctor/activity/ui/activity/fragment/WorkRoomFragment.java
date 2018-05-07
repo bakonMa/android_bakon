@@ -20,14 +20,19 @@ import com.renxin.doctor.activity.ui.activity.home.CheckPaperActivity;
 import com.renxin.doctor.activity.ui.activity.home.CommUsePaperActivity;
 import com.renxin.doctor.activity.ui.activity.home.OpenPaperCameraActivity;
 import com.renxin.doctor.activity.ui.activity.home.OpenPaperOnlineActivity;
+import com.renxin.doctor.activity.ui.activity.home.PaperHistoryActivity;
+import com.renxin.doctor.activity.ui.activity.mine.AuthStep1Activity;
+import com.renxin.doctor.activity.ui.activity.mine.UserNoticeActivity;
 import com.renxin.doctor.activity.ui.base.BaseFragment;
 import com.renxin.doctor.activity.ui.contact.WorkRoomContact;
 import com.renxin.doctor.activity.ui.nimview.PaperH5Activity;
 import com.renxin.doctor.activity.ui.nimview.RecentActivity;
 import com.renxin.doctor.activity.ui.presenter.WorkRoomPresenter;
 import com.renxin.doctor.activity.utils.ToastUtil;
+import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.utils.UIUtils;
 import com.renxin.doctor.activity.utils.imageloader.BannerImageLoader;
+import com.renxin.doctor.activity.widget.dialog.CommonDialog;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.youth.banner.Banner;
@@ -56,6 +61,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
 
     @Inject
     WorkRoomPresenter mPresenter;
+    private CommonDialog commonDialog;
 
     @Override
     protected int provideRootLayout() {
@@ -97,9 +103,26 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     }
 
     @OnClick({R.id.tv_add_patient, R.id.tv_online_paper, R.id.tv_camera_patient, R.id.tv_comm_paper,
-            R.id.tv_ask_paper, R.id.tv_flow_paper, R.id.tv_checkpaper, R.id.tv_notice, R.id.rlt_service,
-            R.id.id_history, R.id.id_notification})
+            R.id.tv_ask_paper, R.id.tv_flow_paper, R.id.tv_checkpaper, R.id.tv_notice})
     void btnOnClick(View view) {
+        //认证是否通过
+        if (!U.isHasAuthOK()) {
+            commonDialog = new CommonDialog(getActivity(),
+                    R.layout.dialog_auth,
+                    U.getAuthStatus() == 0 ? getString(R.string.str_autu_no) : getString(R.string.str_auth_ing),
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (view.getId() == R.id.btn_gotuauth) {
+                                startActivity(new Intent(getActivity(), AuthStep1Activity.class));
+                            }
+                        }
+                    });
+
+            commonDialog.show();
+            return;
+        }
+
         switch (view.getId()) {
             case R.id.tv_add_patient://添加患者
                 //个人卡片
@@ -130,18 +153,30 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
             case R.id.tv_checkpaper://审核开方
                 startActivity(new Intent(actContext(), CheckPaperActivity.class));
                 break;
+            case R.id.tv_notice://公告
+                startActivity(new Intent(actContext(), UserNoticeActivity.class));
+                break;
             case R.id.tv_comm_paper://常用处方
                 startActivity(new Intent(actContext(), CommUsePaperActivity.class));
                 break;
+        }
+
+    }
+
+    @OnClick({R.id.rlt_service, R.id.id_history, R.id.id_notification})
+    void unCheckBtnOnClick(View view) {
+        switch (view.getId()) {
             case R.id.rlt_service://客服
 //                NimUIKit.startP2PSession(actContext(), "3ef2e56a2f9476de092743cbd577a900", null);
                 SessionHelper.startP2PSession(actContext(), "3ef2e56a2f9476de092743cbd577a900");
+                break;
+            case R.id.id_history://历史处方
+                startActivity(new Intent(actContext(), PaperHistoryActivity.class));
                 break;
             case R.id.id_notification://消息通知
                 startActivity(new Intent(actContext(), RecentActivity.class));
                 break;
         }
-
     }
 
     @Override

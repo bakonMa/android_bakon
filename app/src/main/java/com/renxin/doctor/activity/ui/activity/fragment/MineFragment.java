@@ -15,28 +15,29 @@ import android.widget.TextView;
 
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.config.EventConfig;
 import com.renxin.doctor.activity.data.eventbus.Event;
+import com.renxin.doctor.activity.injection.components.DaggerFragmentComponent;
 import com.renxin.doctor.activity.injection.modules.FragmentModule;
 import com.renxin.doctor.activity.ui.activity.mine.AboutUsActivity;
+import com.renxin.doctor.activity.ui.activity.mine.AuthStep1Activity;
 import com.renxin.doctor.activity.ui.activity.mine.AuthStep3Activity;
 import com.renxin.doctor.activity.ui.activity.mine.SetPriceActivity;
 import com.renxin.doctor.activity.ui.activity.mine.SettingActivity;
 import com.renxin.doctor.activity.ui.activity.mine.UserInfoActivity;
+import com.renxin.doctor.activity.ui.activity.mine.wallet.WalletActivity;
+import com.renxin.doctor.activity.ui.base.BaseFragment;
 import com.renxin.doctor.activity.ui.bean.OtherBean;
+import com.renxin.doctor.activity.ui.bean_jht.UserBaseInfoBean;
+import com.renxin.doctor.activity.ui.contact.PersonalContact;
+import com.renxin.doctor.activity.ui.presenter.PersonalPresenter;
 import com.renxin.doctor.activity.utils.ImageUtil;
 import com.renxin.doctor.activity.utils.ShareSDKUtils;
 import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.utils.U;
+import com.renxin.doctor.activity.widget.RelativeWithImage;
 import com.renxin.doctor.activity.widget.popupwindow.SharePopupWindow;
 import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
-import com.renxin.doctor.activity.config.EventConfig;
-import com.renxin.doctor.activity.injection.components.DaggerFragmentComponent;
-import com.renxin.doctor.activity.ui.activity.mine.AuthStep1Activity;
-import com.renxin.doctor.activity.ui.activity.mine.wallet.WalletActivity;
-import com.renxin.doctor.activity.ui.base.BaseFragment;
-import com.renxin.doctor.activity.ui.bean_jht.UserBaseInfoBean;
-import com.renxin.doctor.activity.ui.contact.PersonalContact;
-import com.renxin.doctor.activity.ui.presenter.PersonalPresenter;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
@@ -77,6 +78,10 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
     TextView tvUserinfo;
     @BindView(R.id.llt_user_info)
     LinearLayout lltUserInfo;
+    @BindView(R.id.id_wallet)
+    RelativeWithImage idWallet;
+    @BindView(R.id.id_set_price)
+    RelativeWithImage idSetPrice;
 
     @Inject
     PersonalPresenter mPresenter;
@@ -165,23 +170,31 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
             case 0:
                 lltAuthStatus.setVisibility(View.VISIBLE);
                 lltUserInfo.setVisibility(View.GONE);
+                idWallet.setVisibility(View.GONE);
+                idSetPrice.setVisibility(View.GONE);
                 tvAuthstatus.setText(R.string.str_auth_0);
                 tvAuthmsg.setText(R.string.str_auth_msg_0);
                 break;
             case 1:
                 lltAuthStatus.setVisibility(View.VISIBLE);
                 lltUserInfo.setVisibility(View.GONE);
+                idWallet.setVisibility(View.GONE);
+                idSetPrice.setVisibility(View.GONE);
                 tvAuthstatus.setText(R.string.str_auth_1);
                 tvAuthmsg.setText(R.string.str_auth_msg_1);
                 break;
             case 2://请求个人资料
                 lltAuthStatus.setVisibility(View.GONE);
                 lltUserInfo.setVisibility(View.VISIBLE);
+                idWallet.setVisibility(View.VISIBLE);
+                idSetPrice.setVisibility(View.VISIBLE);
                 mPresenter.getUserBasicInfo();
                 break;
             case 3:
                 lltAuthStatus.setVisibility(View.VISIBLE);
                 lltUserInfo.setVisibility(View.GONE);
+                idWallet.setVisibility(View.GONE);
+                idSetPrice.setVisibility(View.GONE);
                 tvAuthstatus.setText(R.string.str_auth_3);
                 tvAuthmsg.setText(R.string.str_auth_msg_3);
                 break;

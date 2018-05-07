@@ -118,7 +118,7 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(getActivity()))
                 .setTitle("患者")
                 .setStatuBar(R.color.white)
-                .setRightImg(R.drawable.icon_add_main, true)
+//                .setRightImg(R.drawable.icon_add_main, true)
                 .blank()
                 .setLeft(false)
                 .setListener(new TitleOnclickListener() {

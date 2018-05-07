@@ -39,6 +39,14 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
         this.listener = listener;
     }
 
+    public CommonDialog(@NonNull Activity context, int layout, String title, View.OnClickListener listener) {
+        super(context, R.style.common_dialog);
+        this.mContext = context;
+        this.layout = layout;
+        this.titleStr = title;
+        this.listener = listener;
+    }
+
     public CommonDialog(@NonNull Activity context, boolean isSingelBtn, String titleStr, View.OnClickListener listener) {
         this(context, isSingelBtn, false, titleStr, listener);
     }
@@ -83,7 +91,16 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
                     ((TextView) layoutView.findViewById(R.id.dialog_title)).setText(titleStr);
                 }
                 break;
-
+            case R.layout.dialog_auth://普通 确定，取消   提示认证
+                layoutView = LayoutInflater.from(mContext).inflate(R.layout.dialog_common, null);
+                commEditext = layoutView.findViewById(R.id.dialog_content);
+                layoutView.findViewById(R.id.btn_no).setOnClickListener(this);
+                layoutView.findViewById(R.id.btn_ok).setOnClickListener(this);
+                //title
+                if (!TextUtils.isEmpty(titleStr)) {
+                    ((TextView) layoutView.findViewById(R.id.dialog_title)).setText(titleStr);
+                }
+                break;
         }
 
         setContentView(layoutView);

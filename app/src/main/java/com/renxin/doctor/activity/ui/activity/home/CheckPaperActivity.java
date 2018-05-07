@@ -111,7 +111,6 @@ public class CheckPaperActivity extends BaseActivity {
         });
         magicIndicator.setNavigator(commonNavigator);
 
-
         CommonViewpageFragmentAdapter viewPageAdapter = new CommonViewpageFragmentAdapter(getSupportFragmentManager(), fragmentList, titles);
         viewPager.setCurrentItem(0);
         viewPager.setOffscreenPageLimit(0);

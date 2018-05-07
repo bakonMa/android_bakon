@@ -52,6 +52,11 @@ public class U {
         return DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, "");
     }
 
+    //获取sp中认证状态 是否是认证通过状态  0：未认证 1：审核中；2：审核通过 3：审核失败
+    public static boolean isHasAuthOK() {
+        return DocApplication.getAppComponent().dataRepo().appSP().getInteger(SPConfig.SP_INT_SUTH_STATUS, 0) == 2;
+    }
+
     //获取sp中认证状态
     public static int getAuthStatus() {
         return DocApplication.getAppComponent().dataRepo().appSP().getInteger(SPConfig.SP_INT_SUTH_STATUS, 0);

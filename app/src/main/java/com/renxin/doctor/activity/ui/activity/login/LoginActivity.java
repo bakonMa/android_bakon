@@ -89,8 +89,8 @@ public class LoginActivity extends BaseActivity {
                 ClipPagerTitleView clipPagerTitleView = new ClipPagerTitleView(context);
                 clipPagerTitleView.setText(titles[index]);
                 clipPagerTitleView.setTextSize(UIUtils.sp2px(context, 16));
-                clipPagerTitleView.setTextColor(UIUtils.getColor(R.color.color_424242));
-                clipPagerTitleView.setClipColor(UIUtils.getColor(R.color.color_aa9c8b));
+                clipPagerTitleView.setTextColor(UIUtils.getColor(R.color.color_000));
+                clipPagerTitleView.setClipColor(UIUtils.getColor(R.color.color_main));
                 clipPagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -104,8 +104,8 @@ public class LoginActivity extends BaseActivity {
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator indicator = new LinePagerIndicator(context);
                 indicator.setMode(LinePagerIndicator.MODE_MATCH_EDGE);
-                indicator.setYOffset(UIUtil.dip2px(context, 1));
-                indicator.setColors(UIUtils.getColor(R.color.color_94887c));
+                indicator.setYOffset(UIUtil.dip2px(context, 0.5));
+                indicator.setColors(UIUtils.getColor(R.color.color_main));
                 return indicator;
             }
         });

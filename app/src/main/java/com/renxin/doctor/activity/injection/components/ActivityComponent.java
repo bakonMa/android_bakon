@@ -9,6 +9,7 @@ import com.renxin.doctor.activity.ui.activity.home.AddDrugActivity;
 import com.renxin.doctor.activity.ui.activity.home.CommUsePaperActivity;
 import com.renxin.doctor.activity.ui.activity.home.OpenPaperCameraActivity;
 import com.renxin.doctor.activity.ui.activity.home.OpenPaperOnlineActivity;
+import com.renxin.doctor.activity.ui.activity.home.PaperHistoryActivity;
 import com.renxin.doctor.activity.ui.activity.home.SearchSkillNameActivity;
 import com.renxin.doctor.activity.ui.activity.login.LoginActivity;
 import com.renxin.doctor.activity.ui.activity.login.RegisteActivity;
@@ -114,5 +115,7 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(ChoosePatientActivity choosePatientActivity);
 
     void inject(PaperH5Activity paperH5Activity);
+
+    void inject(PaperHistoryActivity paperHistoryActivity);
 
 }

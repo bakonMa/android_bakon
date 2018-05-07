@@ -1,14 +1,15 @@
 package com.renxin.doctor.activity.ui.presenter.present_jht;
 
-import com.renxin.doctor.activity.ui.base.BaseObserver;
-import com.renxin.doctor.activity.ui.bean_jht.WalletBean;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.config.HttpConfig;
 import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.data.response.HttpResponse;
+import com.renxin.doctor.activity.ui.base.BaseObserver;
+import com.renxin.doctor.activity.ui.base.BasePageBean;
 import com.renxin.doctor.activity.ui.bean.BankCardBean;
 import com.renxin.doctor.activity.ui.bean.BankTypeBean;
 import com.renxin.doctor.activity.ui.bean.DealDetailBean;
+import com.renxin.doctor.activity.ui.bean_jht.WalletBean;
 import com.renxin.doctor.activity.ui.contact.WalletContact;
 import com.renxin.doctor.activity.utils.M;
 import com.renxin.doctor.activity.widget.dialog.LoadingDialog;
@@ -32,6 +33,7 @@ public class WalletPresenter implements WalletContact.Presenter {
     public static final int ADD_BANKCARD_OK = 0x113;
     public static final int DELETE_BANKCARD_OK = 0x114;
     public static final int WITHDRAW_OK = 0x115;
+    public static final int GET_DEAL_LIST_OK = 0x116;
 
     private final WalletContact.View mView;
     private CompositeSubscription mSubscription;
@@ -213,10 +215,10 @@ public class WalletPresenter implements WalletContact.Presenter {
                 .doOnSubscribe(() -> {
                     if (mDialog != null) mDialog.show();
                 })
-                .subscribe(new BaseObserver<HttpResponse<List<DealDetailBean>>>(mDialog) {
+                .subscribe(new BaseObserver<HttpResponse<BasePageBean<DealDetailBean>>>(mDialog) {
                     @Override
-                    public void onSuccess(HttpResponse<List<DealDetailBean>> response) {
-                        mView.onSuccess(M.createMessage(response.data, WITHDRAW_OK));
+                    public void onSuccess(HttpResponse<BasePageBean<DealDetailBean>> response) {
+                        mView.onSuccess(M.createMessage(response.data, GET_DEAL_LIST_OK));
                     }
 
                     @Override

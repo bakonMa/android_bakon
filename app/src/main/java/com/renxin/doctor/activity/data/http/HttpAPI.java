@@ -2,6 +2,7 @@ package com.renxin.doctor.activity.data.http;
 
 import com.renxin.doctor.activity.config.HttpConfig;
 import com.renxin.doctor.activity.data.response.HttpResponse;
+import com.renxin.doctor.activity.ui.base.BasePageBean;
 import com.renxin.doctor.activity.ui.bean.AddCoborrowerBean;
 import com.renxin.doctor.activity.ui.bean.AppUpdateBean;
 import com.renxin.doctor.activity.ui.bean.ApplyInfoBean;
@@ -151,7 +152,7 @@ public interface HttpAPI {
 
     //解绑
     @POST("deal_flow")
-    Observable<HttpResponse<List<DealDetailBean>>> getDealFlow(@QueryMap Params params);
+    Observable<HttpResponse<BasePageBean<DealDetailBean>>> getDealFlow(@QueryMap Params params);
 
     //获取资费信息
     @POST("getvisit_info")
@@ -233,9 +234,17 @@ public interface HttpAPI {
     @POST("addchatsendflow")
     Observable<HttpResponse<String>> addChatRecord(@QueryMap Params params);
 
-    //常用方详情
+    //审核处方列表
     @POST("my_checkextra")
     Observable<HttpResponse<List<CheckPaperBean>>> getCheckPaperList(@QueryMap Params params);
+
+    //审核某个处方
+    @POST("check_extra")
+    Observable<HttpResponse<String>> checkPape(@QueryMap Params params);
+
+    //审核处方列表
+    @POST("my_historyextra")
+    Observable<HttpResponse<BasePageBean<CheckPaperBean>>> getPaperHistoryList(@QueryMap Params params);
 
     //***************************************************
     //发送修改验证码

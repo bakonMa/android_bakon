@@ -22,5 +22,6 @@ public interface EventConfig {
     int EVENT_KEY_CHAT_SELECT_COMMMSG = 0x115;//聊天，选择发送常用语
     int EVENT_KEY_H5_BOOKS_SHARE = 0x116;//书籍 分享
     int EVENT_KEY_CHOOSE_PATIENT = 0x117;//开方 选择患者
-    int EVENT_KEY_USERINFO= 0x118;//分享个人资料
+    int EVENT_KEY_USERINFO = 0x118;//分享个人资料
+    int EVENT_KEY_CHECKPAPER_OK = 0x119;//审核处方提交成功
 }

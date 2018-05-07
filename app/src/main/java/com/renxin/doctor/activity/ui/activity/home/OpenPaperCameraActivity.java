@@ -357,15 +357,12 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         }
 
         Params params = new Params();
+        params.put("source", formParent == 0 ? 1 : 2);//来源：1：首页，2：聊天
         //患者编号
         if (!TextUtils.isEmpty(membNo)) {
             params.put("memb_no", membNo);
         }
-        //补充收费
-        if (!TextUtils.isEmpty(etServerprice.getText().toString().trim())) {
-            params.put("service_price", etServerprice.getText().toString().trim());
-        }
-        params.put("drug_name", etName.getEditText().getText());
+        params.put("name", etName.getEditText().getText());
         params.put("sex", sexType);
         params.put("age", etAge.getEditText().getText());
         params.put("phone", etPhone.getEditText().getText());
@@ -373,12 +370,12 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         params.put("drug_class", drugClassId);
         params.put("img_url", imgPath.toString());
         params.put("boiled_type", daijianType);
+        //补充收费
+        if (!TextUtils.isEmpty(etServerprice.getText().toString().trim())) {
+            params.put("service_price", etServerprice.getText().toString().trim());
+        }
 
         mPresenter.openPaperCamera(params);
-        //可以拿到paccid 就记录，没有就不记录
-        if (!TextUtils.isEmpty(pAccid)) {
-            mPresenter.addChatRecord(NimU.getNimAccount(), pAccid, Constant.CHAT_RECORD_TYPE_3, formParent);
-        }
     }
 
     //照相机公用file
@@ -520,6 +517,11 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 ToastUtil.showShort("上传失败，请重新选择");
                 break;
             case OpenPaperPresenter.OPENPAPER_CAMERA_OK://开方ok
+                //可以拿到paccid 就记录，没有就不记录
+                if (!TextUtils.isEmpty(pAccid)) {
+                    mPresenter.addChatRecord(NimU.getNimAccount(), pAccid, Constant.CHAT_RECORD_TYPE_3, formParent);
+                }
+
                 if (formParent == 1) {//聊天开方
                     setResult(RESULT_OK, new Intent());
                     finish();

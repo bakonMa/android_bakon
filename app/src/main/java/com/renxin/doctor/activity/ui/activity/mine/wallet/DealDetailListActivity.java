@@ -11,16 +11,17 @@ import android.text.TextUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.renxin.doctor.activity.R;
-import com.renxin.doctor.activity.ui.bean.DealDetailBean;
-import com.renxin.doctor.activity.ui.contact.WalletContact;
-import com.renxin.doctor.activity.ui.presenter.present_jht.WalletPresenter;
-import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
 import com.renxin.doctor.activity.injection.modules.ActivityModule;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
+import com.renxin.doctor.activity.ui.base.BasePageBean;
+import com.renxin.doctor.activity.ui.bean.DealDetailBean;
+import com.renxin.doctor.activity.ui.contact.WalletContact;
+import com.renxin.doctor.activity.ui.presenter.present_jht.WalletPresenter;
 import com.renxin.doctor.activity.widget.dialog.CommonDialog;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
+import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
 import java.lang.ref.WeakReference;
@@ -46,7 +47,7 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
     WalletPresenter mPresenter;
 
     private List<DealDetailBean> bankCardBeans = new ArrayList<>();
-    private BaseQuickAdapter adapter;
+    private BaseQuickAdapter mAdapter;
     private int pageNum = 1;
 
     @Override
@@ -59,7 +60,7 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
         initToolbar();
 
         bankRecycleview.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new BaseQuickAdapter<DealDetailBean, BaseViewHolder>(R.layout.item_deal_detail, bankCardBeans) {
+        mAdapter = new BaseQuickAdapter<DealDetailBean, BaseViewHolder>(R.layout.item_deal_detail, bankCardBeans) {
             @Override
             protected void convert(BaseViewHolder helper, DealDetailBean item) {
                 helper.setText(R.id.tv_dealstr, TextUtils.isEmpty(item.deal_time) ? "" : item.deal_time)
@@ -67,15 +68,16 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
             }
 
         };
-        adapter.setEnableLoadMore(true);
-        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        mAdapter.setEnableLoadMore(true);
+        mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                mPresenter.getDealFlow(++pageNum);
+                mPresenter.getDealFlow(pageNum + 1);
             }
         }, bankRecycleview);
 
-        bankRecycleview.setAdapter(adapter);
+        bankRecycleview.setAdapter(mAdapter);
+
         mPresenter.getDealFlow(pageNum);
     }
 
@@ -106,19 +108,30 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
 
     @Override
     public void onSuccess(Message message) {
+        if (message == null) {
+            return;
+        }
         switch (message.what) {
-            case WalletPresenter.GET_BANKCARD_OK:
-                //todo 业务需要确定
-                //todo 业务需要确定
-                //todo 业务需要确定
-                //todo 业务需要确定
-                if (((List<DealDetailBean>) message.obj).isEmpty()) {
-                    adapter.loadMoreEnd();
-                } else {
-                    adapter.loadMoreComplete();
+            case WalletPresenter.GET_DEAL_LIST_OK:
+                if (pageNum == 1) {
+                    bankCardBeans.clear();
                 }
-                bankCardBeans.addAll((List<DealDetailBean>) message.obj);
-                adapter.notifyDataSetChanged();
+                BasePageBean<DealDetailBean> tempBean = (BasePageBean<DealDetailBean>) message.obj;
+                if (tempBean != null && tempBean.list != null) {
+                    bankCardBeans.addAll(tempBean.list);
+                    pageNum = tempBean.page;
+                }
+
+                mAdapter.notifyDataSetChanged();
+                if (bankCardBeans.isEmpty()) {
+                    mAdapter.setEmptyView(R.layout.empty_view);
+                } else {
+                    if (tempBean.is_last == 1) {//最后一页
+                        mAdapter.loadMoreEnd();
+                    } else {
+                        mAdapter.loadMoreComplete();
+                    }
+                }
                 break;
         }
     }

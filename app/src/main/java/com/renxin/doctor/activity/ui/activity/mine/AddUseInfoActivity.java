@@ -47,10 +47,10 @@ public class AddUseInfoActivity extends BaseActivity {
     @OnClick({R.id.et_notice, R.id.et_intro})
     public void btnOnClick(View view) {
         switch (view.getId()) {
-            case R.id.et_notice:
+            case R.id.et_notice://公告
                 startActivity(new Intent(this, UserNoticeActivity.class));
                 break;
-            case R.id.et_intro:
+            case R.id.et_intro://简介
                 startActivity(new Intent(this, UserExplainActivity.class));
                 break;
         }
