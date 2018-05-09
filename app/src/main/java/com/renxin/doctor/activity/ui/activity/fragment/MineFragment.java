@@ -27,7 +27,6 @@ import com.renxin.doctor.activity.ui.activity.mine.SettingActivity;
 import com.renxin.doctor.activity.ui.activity.mine.UserInfoActivity;
 import com.renxin.doctor.activity.ui.activity.mine.wallet.WalletActivity;
 import com.renxin.doctor.activity.ui.base.BaseFragment;
-import com.renxin.doctor.activity.ui.bean.OtherBean;
 import com.renxin.doctor.activity.ui.bean_jht.UserBaseInfoBean;
 import com.renxin.doctor.activity.ui.contact.PersonalContact;
 import com.renxin.doctor.activity.ui.presenter.PersonalPresenter;
@@ -113,10 +112,10 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
         idSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.getUserIdentifyStatus();
+                changeViewStatus(U.getAuthStatus());
             }
         });
-        mPresenter.getUserIdentifyStatus();
+        changeViewStatus(U.getAuthStatus());
     }
 
     @OnClick({R.id.llt_auth_status, R.id.llt_user_info, R.id.id_collect,
@@ -188,6 +187,7 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
                 lltUserInfo.setVisibility(View.VISIBLE);
                 idWallet.setVisibility(View.VISIBLE);
                 idSetPrice.setVisibility(View.VISIBLE);
+                //获取基本信息
                 mPresenter.getUserBasicInfo();
                 break;
             case 3:
@@ -210,17 +210,12 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
             return;
         }
         switch (message.what) {
-            case PersonalPresenter.GET_AUTH_STATUS://认证状态
-                OtherBean bean = (OtherBean) message.obj;
-                changeViewStatus(bean.status);
-                break;
             case PersonalPresenter.GET_USEBASE_INFO://个人基本资料
                 baseInfoBean = (UserBaseInfoBean) message.obj;
                 ImageUtil.showCircleImage(baseInfoBean.header, idIvHead);
-                tvUsername.setText(TextUtils.isEmpty(baseInfoBean.name) ? "" : baseInfoBean.name);
-                tvUsersex.setText(baseInfoBean.sex == 0 ? "男" : "女");
-                tvUserinfo.setText((TextUtils.isEmpty(baseInfoBean.hospital) ? "" : baseInfoBean.hospital + "  ") +
-                        (TextUtils.isEmpty(baseInfoBean.department) ? "" : baseInfoBean.department + "  ") +
+                tvUsername.setText((TextUtils.isEmpty(baseInfoBean.name) ? "" : (baseInfoBean.name + "  ")) + (baseInfoBean.sex == 0 ? "男" : "女"));
+                tvUsersex.setText(TextUtils.isEmpty(baseInfoBean.hospital) ? "" : baseInfoBean.hospital);
+                tvUserinfo.setText((TextUtils.isEmpty(baseInfoBean.department) ? "" : baseInfoBean.department + "  ") +
                         (TextUtils.isEmpty(baseInfoBean.title) ? "" : baseInfoBean.title));
                 break;
         }

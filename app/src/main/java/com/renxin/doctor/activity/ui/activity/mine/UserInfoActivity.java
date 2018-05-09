@@ -64,7 +64,7 @@ public class UserInfoActivity extends BaseActivity {
                 .setTitle("认证信息")
                 .setStatuBar(R.color.white)
                 .setLeft(false)
-                .setRightText("预览", true, R.color.color_999)
+                .setRightText("预览", true, R.color.color_main)
                 .setListener(new TitleOnclickListener() {
                     @Override
                     public void leftClick() {

@@ -212,7 +212,8 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
             return;
         }
         switch (event.getCode()) {
-            case EventConfig.EVENT_KEY_USERINFO://分享
+            case EventConfig.EVENT_KEY_USERINFO://我的信息卡片 分享
+            case EventConfig.EVENT_KEY_H5_BOOKS_SHARE://书籍分享
                 H5JsonBean bean = (H5JsonBean) event.getData();
                 if (sharePopupWindow != null && sharePopupWindow.isShowing()) {
                     return;
@@ -228,8 +229,7 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
                 break;
         }
     }
-
-
+    
     @Override
     protected boolean useEventBus() {
         return true;

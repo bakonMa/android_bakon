@@ -7,7 +7,6 @@ import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.widget.EditText;
@@ -39,15 +38,12 @@ import com.renxin.doctor.activity.ui.contact.OpenPaperContact;
 import com.renxin.doctor.activity.ui.presenter.OpenPaperPresenter;
 import com.renxin.doctor.activity.utils.Constant;
 import com.renxin.doctor.activity.utils.LogUtil;
-import com.renxin.doctor.activity.utils.ShareSDKUtils;
 import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.utils.UIUtils;
 import com.renxin.doctor.activity.widget.ProgressWebView;
-import com.renxin.doctor.activity.widget.popupwindow.SharePopupWindow;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
 import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
-import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -186,17 +182,8 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
             return;
         }
         switch (event.getCode()) {
-            case EventConfig.EVENT_KEY_H5_BOOKS_SHARE://书籍分享
-                H5JsonBean bean = (H5JsonBean) event.getData();
-                SharePopupWindow sharePopupWindow = new SharePopupWindow(actContext(), new SharePopupWindow.ShareOnClickListener() {
-                    @Override
-                    public void onItemClick(SHARE_MEDIA shareType) {
-                        ShareSDKUtils.share(PaperH5Activity.this, shareType,
-                                bean.img_url, bean.link, bean.title, bean.desc, null);
-                    }
-                });
-                sharePopupWindow.showAtLocation(wbWebview, Gravity.BOTTOM, 0, 0);
-                break;
+//            case EventConfig.EVENT_KEY_H5_BOOKS_SHARE://书籍分享
+//                break;
         }
     }
 

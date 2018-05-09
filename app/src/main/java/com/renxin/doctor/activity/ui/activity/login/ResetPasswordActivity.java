@@ -5,6 +5,7 @@ import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -42,7 +43,7 @@ import rx.functions.Action0;
 import rx.functions.Func1;
 
 /**
- * ResetPasswordActivity 修改密码
+ * ResetPasswordActivity 修改密码/忘记密码  一套
  * Create at 2018/4/13 下午4:27 by mayakun
  */
 public class ResetPasswordActivity extends BaseActivity implements LoginContact.View {
@@ -82,6 +83,7 @@ public class ResetPasswordActivity extends BaseActivity implements LoginContact.
      */
     private int time = 60;//每次验证请求需要间隔60S
     private Subscription subscription;
+    private String title;
 
     @Override
     protected int provideRootLayout() {
@@ -90,8 +92,12 @@ public class ResetPasswordActivity extends BaseActivity implements LoginContact.
 
     @Override
     protected void initView() {
+        title = getIntent().getStringExtra("title");
+        if(TextUtils.isEmpty(title)){
+            title = "修改密码";
+        }
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
-                .setTitle("修改密码")
+                .setTitle(title)
                 .setStatuBar(R.color.white)
                 .setLeft(false)
                 .setListener(new TitleOnclickListener() {
@@ -104,8 +110,8 @@ public class ResetPasswordActivity extends BaseActivity implements LoginContact.
                 .bind();
     }
 
-    @OnClick({R.id.btn_resetpwd, R.id.tv_sendcode,
-            R.id.iv_code_clean, R.id.iv_phone_clean, R.id.iv_pwd_clean, R.id.iv_sec_pwd_clean,
+    @OnClick({R.id.btn_resetpwd, R.id.tv_sendcode, R.id.iv_code_clean,
+            R.id.iv_phone_clean, R.id.iv_pwd_clean, R.id.iv_sec_pwd_clean,
             R.id.iv_pwd_eye, R.id.iv_sec_pwd_eye})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -133,6 +139,7 @@ public class ResetPasswordActivity extends BaseActivity implements LoginContact.
                 break;
             case R.id.iv_sec_pwd_clean://密码清除
                 etSecPassword.setText("");
+                break;
             case R.id.iv_pwd_eye://密码可视状态
                 ivPwdEye.setSelected(!ivPwdEye.isSelected());
                 etPassword.setTransformationMethod(ivPwdEye.isSelected() ? HideReturnsTransformationMethod.getInstance() : PasswordTransformationMethod.getInstance());

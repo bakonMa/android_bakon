@@ -25,17 +25,14 @@
         android:background="@color/white"
         android:gravity="center"
         android:paddingBottom="10dp"
-        android:text="累计收入(元)"
+        android:text="余额(元)"
         android:textColor="@color/color_424242"
         android:textSize="11sp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:paddingBottom="15dp"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/tv_hidemoney"
@@ -44,6 +41,9 @@
             android:drawableLeft="@drawable/selector_eye"
             android:drawablePadding="5dp"
             android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="15dp"
             android:text="隐藏金额"
             android:textColor="@color/color_main"
             android:textSize="14sp" />
@@ -56,6 +56,9 @@
             android:drawableLeft="@drawable/icon_withdraw"
             android:drawablePadding="5dp"
             android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="15dp"
             android:text="提现"
             android:textColor="@color/color_main"
             android:textSize="14sp" />

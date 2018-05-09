@@ -28,9 +28,9 @@ public class Badger {
     }
 
     public static void updateBadgerCount(final int unreadCount) {
-        if (!support) {
-            return; // O版本及以上不再支持
-        }
+//        if (!support) {
+//            return; // O版本及以上不再支持
+//        }
 
         if (handler == null) {
             handler = Handlers.sharedInstance().newHandler("Badger");

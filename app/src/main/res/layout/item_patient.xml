@@ -33,6 +33,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:textColor="@color/color_main"
         android:textSize="12sp"
         tools:text="患者1name" />

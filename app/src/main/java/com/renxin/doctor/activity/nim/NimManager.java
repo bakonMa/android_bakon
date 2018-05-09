@@ -134,7 +134,7 @@ public class NimManager {
     }
 
     /**
-     * 外部 公共发送消息
+     * 外部 公共发送消息 统一发送消息
      * @param imMessage
      * @param isReSend 失败后是否自动重发
      * @param requestCallback 结果回调

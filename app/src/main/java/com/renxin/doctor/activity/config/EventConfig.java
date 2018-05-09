@@ -24,4 +24,7 @@ public interface EventConfig {
     int EVENT_KEY_CHOOSE_PATIENT = 0x117;//开方 选择患者
     int EVENT_KEY_USERINFO = 0x118;//分享个人资料
     int EVENT_KEY_CHECKPAPER_OK = 0x119;//审核处方提交成功
+
+    int EVENT_KEY_UPDATE_NOTICE = 0x120;//公告修改成功
+    int EVENT_KEY_UPDATE_EXPLAIN = 0x121;//简介修改成功
 }

@@ -96,17 +96,19 @@ public class LoginPresenter implements LoginContact.Presenter {
                 })
                 .subscribe(new BaseObserver<HttpResponse<LoginResponse>>(mdialog) {
                     @Override
-                    public void onSuccess(HttpResponse<LoginResponse> loginResponseHttpResponse) {
+                    public void onSuccess(HttpResponse<LoginResponse> response) {
                         //保存token
                         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_PHONE, phone);
-                        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, loginResponseHttpResponse.data.token);
+                        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, response.data.token);
+                        //客服accid
+                        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_SERVICE_ACCID, response.data.service);
                         //nim的accid，acctoken
-                        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCID, loginResponseHttpResponse.data.accid);
-                        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCTOKEN, loginResponseHttpResponse.data.acctoken);
+                        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCID, response.data.accid);
+                        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCTOKEN, response.data.acctoken);
                         //nim手动登录
                         NimManager.getInstance(DocApplication.getInstance()).nimLogin();
 
-                        mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, LOGIN_SUCCESS));
+                        mView.onSuccess(M.createMessage(response.data, LOGIN_SUCCESS));
                     }
 
                     @Override

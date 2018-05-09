@@ -153,7 +153,7 @@ public class WithdrawActivity extends BaseActivity implements WalletContact.View
     public void onSuccess(Message message) {
         switch (message.what) {
             case WalletPresenter.WITHDRAW_OK:
-                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_AUTH_STATUS));
+                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_WITHRAW_OK));
                 ToastUtil.showShort("提现请求已发送成功");
                 finish();
                 break;

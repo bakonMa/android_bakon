@@ -21,6 +21,7 @@ import com.renxin.doctor.activity.data.eventbus.Event;
 import com.renxin.doctor.activity.data.eventbus.EventBusUtil;
 import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
 import com.renxin.doctor.activity.injection.modules.ActivityModule;
+import com.renxin.doctor.activity.nim.message.SessionHelper;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.ui.bean.PatientFamilyBean;
 import com.renxin.doctor.activity.ui.contact.PatientContact;
@@ -64,6 +65,8 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
     EditableLayout etPrice;
     @BindView(R.id.recycleview)
     RecyclerView recycleview;
+    @BindView(R.id.tv_gotochat)
+    TextView tvGotochat;
 
     @Inject
     PatientPresenter mPresenter;
@@ -87,6 +90,8 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
         membNo = getIntent().getStringExtra("memb_no");
         formType = getIntent().getIntExtra("formtype", 0);
         im_accid = getIntent().getStringExtra("im_accid");
+        //进入咨询
+        tvGotochat.setVisibility(formType == 1 ? View.GONE : View.VISIBLE);
 
         recycleview.setLayoutManager(new LinearLayoutManager(actContext()));
         mAdapter = new BaseQuickAdapter<PatientFamilyBean.JiuzhenBean, BaseViewHolder>(R.layout.item_jiuzhen, jiuzhenBeans) {
@@ -135,14 +140,17 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
 
     private String tempPrice;
 
-    @OnClick({R.id.et_price, R.id.rlt_head})
+    @OnClick({R.id.et_price, R.id.rlt_head, R.id.tv_gotochat})
     public void btnOnClick(View view) {
         //选择患者时不能修改其他都行
         if(formType == 1){
             return;
         }
         switch (view.getId()) {
-            case R.id.rlt_head://设置备注
+            case R.id.tv_gotochat://进入聊天
+                SessionHelper.startP2PSession(actContext(), im_accid);
+                break;
+                case R.id.rlt_head://设置备注
                 Intent intent = new Intent(this, RemarkNameActivity.class);
                 intent.putExtra("patientinfo", bean.patientinfo);
                 startActivityForResult(intent, REQUEST_CODE_REMARKNAME);

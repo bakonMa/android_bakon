@@ -14,8 +14,10 @@ public interface WorkRoomContact {
     }
 
     interface Presenter extends BasePresenter {
-        void getHomeData();
-
+        void getUserIdentifyStatus();
+        void getRedPointStatus();
+        void getHomeBanner();
         void getOPenPaperBaseData();//开方基础数据
+        void updataToken();//为了保持登录态，和安全性，更新token
     }
 }

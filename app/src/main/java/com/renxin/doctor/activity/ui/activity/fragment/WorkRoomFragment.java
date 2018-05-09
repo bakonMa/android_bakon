@@ -4,14 +4,31 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
+import com.netease.nim.uikit.common.badger.Badger;
+import com.netease.nim.uikit.common.util.sys.TimeUtil;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.msg.MessageBuilder;
+import com.netease.nimlib.sdk.msg.MsgService;
+import com.netease.nimlib.sdk.msg.MsgServiceObserve;
+import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum;
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
+import com.netease.nimlib.sdk.msg.model.CustomMessageConfig;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.renxin.doctor.activity.BuildConfig;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.config.H5Config;
+import com.renxin.doctor.activity.config.SPConfig;
 import com.renxin.doctor.activity.injection.components.DaggerFragmentComponent;
 import com.renxin.doctor.activity.injection.modules.FragmentModule;
 import com.renxin.doctor.activity.nim.message.SessionHelper;
@@ -24,10 +41,12 @@ import com.renxin.doctor.activity.ui.activity.home.PaperHistoryActivity;
 import com.renxin.doctor.activity.ui.activity.mine.AuthStep1Activity;
 import com.renxin.doctor.activity.ui.activity.mine.UserNoticeActivity;
 import com.renxin.doctor.activity.ui.base.BaseFragment;
+import com.renxin.doctor.activity.ui.bean.BannerBean;
 import com.renxin.doctor.activity.ui.contact.WorkRoomContact;
 import com.renxin.doctor.activity.ui.nimview.PaperH5Activity;
 import com.renxin.doctor.activity.ui.nimview.RecentActivity;
 import com.renxin.doctor.activity.ui.presenter.WorkRoomPresenter;
+import com.renxin.doctor.activity.utils.ImageUtil;
 import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.utils.UIUtils;
@@ -38,7 +57,8 @@ import com.trello.rxlifecycle.LifecycleTransformer;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -54,14 +74,29 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
 
     @BindView(R.id.id_ll_top)
     LinearLayout idLlTop;
+    @BindView(R.id.llt_shownotice)
+    LinearLayout lltShownotice;
     @BindView(R.id.banner)
     Banner banner;
+    @BindView(R.id.iv_service_img)
+    ImageView ivServiceImg;
+    @BindView(R.id.tv_service_name)
+    TextView tvServiceName;
+    @BindView(R.id.tv_service_message)
+    TextView tvServiceMessage;
+    @BindView(R.id.tv_service_num)
+    TextView tvServiceNum;
+    @BindView(R.id.tv_service_time)
+    TextView tvServiceTime;
     @BindView(R.id.tv_notification)
     TextView tvNotification;
 
     @Inject
     WorkRoomPresenter mPresenter;
     private CommonDialog commonDialog;
+    private List<BannerBean> bannerBeans = new ArrayList<>();
+    private List<String> imgUrl = new ArrayList<>();
+
 
     @Override
     protected int provideRootLayout() {
@@ -77,29 +112,152 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 .inject(this);
     }
 
-    String[] images = {"http://t.388g.com/uploads/allimg/160711/5-160G10U313.jpg", "http://pic32.photophoto.cn/20140923/0005018399183460_b.jpg",
-            "http://pic.sc.chinaz.com/files/pic/pic9/201804/zzpic11253.jpg", "http://pics.sc.chinaz.com/files/pic/pic9/201804/bpic6452.jpg"};
-
     @Override
     protected void initView() {
+        //设置图片集合
+        requestPermissions();
+        //Banner初始化
+        initBanner();
+        //客服 初始化
+        initService();
+
+        //请求数据
+        mPresenter.updataToken();//更新token
+        mPresenter.getUserIdentifyStatus();//认证状态
+        mPresenter.getOPenPaperBaseData();//开方基础数据
+        mPresenter.getRedPointStatus();//红点状态
+
+        //首页Banner数据
+        mPresenter.getHomeBanner();
+    }
+
+    //客服accid
+    private String accid;
+
+    private void initService() {
+        //获取客服accid
+        accid = DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_SERVICE_ACCID);
+//        accid = "851b6313ba321b719d861aa658c7f5a5";
+        accid = "753166d9bce4d2c7c4c30b520c647d4c";
+
+        //客服个人资料
+        String serviceName = UserInfoHelper.getUserDisplayName(accid);
+        //name
+        tvServiceName.setText(TextUtils.isEmpty(serviceName) ? "咨询客服" : serviceName);
+        //head img
+        ImageUtil.showCircleImage(UserInfoHelper.getUserHeadImg(accid), ivServiceImg);
+        //第一次展示聊天数据（需要主动去取）
+        firstShowSeverMessage();
+        //最近联系人列表变化观察者
+        NIMClient.getService(MsgServiceObserve.class).observeRecentContact(messageObserver, true);
+        NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(messageReceiverObserver, true);
+    }
+
+    //第一次打开读取客服资料
+    private void firstShowSeverMessage() {
+        // 查询最近联系人列表数据
+        NIMClient.getService(MsgService.class).queryRecentContacts().setCallback(new RequestCallback<List<RecentContact>>() {
+            @Override
+            public void onSuccess(List<RecentContact> recentContacts) {
+                // 初次加载，更新离线的消息中是否有@我的消息
+                for (RecentContact loadedRecent : recentContacts) {
+                    if (loadedRecent.getSessionType() == SessionTypeEnum.P2P
+                            && loadedRecent.getContactId().equals(accid)) {
+//                        //客服个人资料
+//                        String serviceName = UserInfoHelper.getUserDisplayName(accid);
+//                        //name
+//                        tvServiceName.setText(TextUtils.isEmpty(serviceName) ? "咨询客服" : serviceName);
+//                        //head img
+//                        ImageUtil.showCircleImage(UserInfoHelper.getUserHeadImg(accid), ivServiceImg);
+                        //显示客服最后一天消息
+                        showLastMessage(loadedRecent);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailed(int i) {
+
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+            }
+        });
+    }
+
+    //最近联系人列表变化观察者
+    Observer<List<RecentContact>> messageObserver = new Observer<List<RecentContact>>() {
+        @Override
+        public void onEvent(List<RecentContact> recentContacts) {
+            for (RecentContact loadedRecent : recentContacts) {
+                if (loadedRecent.getSessionType() == SessionTypeEnum.P2P
+                        && loadedRecent.getContactId().equals(accid)) {
+                    //显示客服最后一天消息
+                    showLastMessage(loadedRecent);
+                }
+                //未读消息数处理
+                //TODO
+                // 方式二：直接从SDK读取（相对慢）
+                int unreadNum = NIMClient.getService(MsgService.class).getTotalUnreadCount();
+                Badger.updateBadgerCount(unreadNum);
+            }
+        }
+    };
+    //监听在线消息中是否有@我
+    private Observer<List<IMMessage>> messageReceiverObserver = new Observer<List<IMMessage>>() {
+        @Override
+        public void onEvent(List<IMMessage> imMessages) {
+            if (imMessages != null) {
+                for (IMMessage imMessage : imMessages) {
+                    //第一条消息，自动回复一条，tip
+//                    if (imMessage.getAttachment() instanceof FirstMessageAttachment) {
+                    if (imMessage.getContent().equals("123456789")) {
+                        tvServiceMessage.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                IMMessage msg = MessageBuilder.createTipMessage(imMessage.getFromAccount(), SessionTypeEnum.P2P);
+                                msg.setContent("请给患者发送问诊单或者随诊单，待患者填写完成，详细了解患者的情况");
+                                CustomMessageConfig config = new CustomMessageConfig();
+                                config.enablePush = false; // 不推送
+                                config.enableUnreadCount = false; // 消息不计入未读
+                                // 消息发送状态设置为success
+                                msg.setStatus(MsgStatusEnum.success);
+                                msg.setConfig(config);
+                                // 保存消息到本地数据库，但不发送到服务器
+                                NIMClient.getService(MsgService.class).saveMessageToLocal(msg, true);
+                            }
+                        }, 2000);
+                    }
+
+                    break;
+
+                }
+            }
+        }
+    };
+
+    //显示客服最后一条消息
+    private void showLastMessage(RecentContact loadedRecent) {
+        tvServiceMessage.setText(loadedRecent.getContent());
+        tvServiceTime.setText(TimeUtil.getTimeShowString(loadedRecent.getTime(), true));
+        tvServiceNum.setVisibility(loadedRecent.getUnreadCount() > 0 ? View.VISIBLE : View.GONE);
+
+        if (loadedRecent.getUnreadCount() > 0) {
+            tvServiceNum.setText(loadedRecent.getUnreadCount() > 99 ? "99+" : loadedRecent.getUnreadCount() + "");
+        }
+    }
+
+    //初始化banner
+    private void initBanner() {
         //设置图片加载器
         banner.setImageLoader(new BannerImageLoader());
-        //设置图片集合
-        banner.setImages(Arrays.asList(images));
         //设置自动轮播，默认为true
         banner.isAutoPlay(true);
         //设置轮播时间
         banner.setDelayTime(3000);
         //设置指示器位置（当banner模式中有指示器时）
         banner.setIndicatorGravity(BannerConfig.CENTER);
-        //banner设置方法全部调用完毕时最后调用
-        banner.start();
-
-        requestPermissions();
-
-        //请求数据
-        mPresenter.getOPenPaperBaseData();
-        mPresenter.getHomeData();
     }
 
     @OnClick({R.id.tv_add_patient, R.id.tv_online_paper, R.id.tv_camera_patient, R.id.tv_comm_paper,
@@ -168,7 +326,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         switch (view.getId()) {
             case R.id.rlt_service://客服
 //                NimUIKit.startP2PSession(actContext(), "3ef2e56a2f9476de092743cbd577a900", null);
-                SessionHelper.startP2PSession(actContext(), "3ef2e56a2f9476de092743cbd577a900");
+//                SessionHelper.startP2PSession(actContext(), "3ef2e56a2f9476de092743cbd577a900");
+                SessionHelper.startP2PSession(actContext(), accid);
                 break;
             case R.id.id_history://历史处方
                 startActivity(new Intent(actContext(), PaperHistoryActivity.class));
@@ -181,6 +340,36 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
 
     @Override
     public void onSuccess(Message message) {
+        if (message == null) {
+            return;
+        }
+        switch (message.what) {
+            case WorkRoomPresenter.GET_AUTH_STATUS://认证状态
+                lltShownotice.setVisibility(U.getAuthStatus() == 2 ? View.GONE : View.VISIBLE);
+                switch (U.getAuthStatus()) {//0：未认证 1：审核中；2：审核通过 3：审核失败
+                    case 0://未认证
+                        tvNotification.setText("您还未认证，认证通过后可以体验更过优质服务！");
+                        break;
+                    case 1:
+                        tvNotification.setText("您的认证信息正在审核中，请耐心等待，认证通过后可以体验更过优质服务！");
+                        break;
+                    case 3:
+                        tvNotification.setText("您的认证未通过，请重新认证，认证通过后可以体验更过优质服务！");
+                        break;
+                }
+                break;
+            case WorkRoomPresenter.GET_BANNER_OK:
+                imgUrl.clear();
+                bannerBeans.clear();
+                bannerBeans = (List<BannerBean>) message.obj;
+                for (BannerBean bannerBean : bannerBeans) {
+                    imgUrl.add(bannerBean.img_url);
+                }
+                banner.setImages(imgUrl);
+                //banner设置方法全部调用完毕时最后调用
+                banner.start();
+                break;
+        }
 
     }
 
@@ -199,6 +388,12 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         return bindToLifecycle();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        //注销监听
+        NIMClient.getService(MsgServiceObserve.class).observeRecentContact(messageObserver, true);
+    }
 
     private void requestPermissions() {
         RxPermissions rxPermissions = new RxPermissions(getActivity());

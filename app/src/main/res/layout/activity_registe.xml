@@ -222,7 +222,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:button="@drawable/selector_checkbox"
-                android:checked="true" />
+                android:checked="false" />
 
             <TextView
                 android:id="@+id/tv_agreement"

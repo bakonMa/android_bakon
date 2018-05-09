@@ -46,6 +46,10 @@ public class U {
         }
     }
 
+    //更新sp中本系统token
+    public static void updateToken(String newToken) {
+        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, newToken);
+    }
 
     //获取sp中本系统token
     public static String getToken() {
@@ -65,6 +69,16 @@ public class U {
     //获取sp中认证状态 认证状态 0：未认证 1：审核中；2：审核通过 3：审核失败
     public static void setAuthStatus(int status) {
         DocApplication.getAppComponent().dataRepo().appSP().setInteger(SPConfig.SP_INT_SUTH_STATUS, status);
+    }
+
+    //首页 审核处方 红点
+    public static void setRedPointExt(int status) {
+        DocApplication.getAppComponent().dataRepo().appSP().setInteger(SPConfig.SP_REDPOINT_EXT, status);
+    }
+
+    //首页 添加患者 红点
+    public static void setRedPointFir(int status) {
+        DocApplication.getAppComponent().dataRepo().appSP().setInteger(SPConfig.SP_REDPOINT_FIR, status);
     }
 
     /**
@@ -87,7 +101,7 @@ public class U {
     }
 
 
-    //获取sp中 设置消息提醒flag
+    //退出登录 清掉数据
     public static void logout() {
         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_STR_TOKEN, "");
         //nim 的accid，acctoken

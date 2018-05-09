@@ -23,7 +23,7 @@
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/icon_share_wx" />
+                android:background="@drawable/icon_share_wxcircle" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                 android:layout_height="42dp"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/icon_share_wxcircle" />
+                android:background="@drawable/icon_share_wx" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:ellipsize="end"
                 android:gravity="center"
                 android:lines="1"
-                android:text="微信"
+                android:text="微信好友"
                 android:textColor="@color/color_999"
                 android:textSize="12sp" />
         </LinearLayout>

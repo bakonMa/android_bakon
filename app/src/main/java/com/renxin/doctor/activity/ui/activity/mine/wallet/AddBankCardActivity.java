@@ -80,39 +80,38 @@ public class AddBankCardActivity extends BaseActivity implements WalletContact.V
                 .setTitle("添加银行卡")
                 .setStatuBar(R.color.white)
                 .setLeft(false)
-                .setRightText("保存", true, R.color.color_999)
                 .setListener(new TitleOnclickListener() {
                     @Override
                     public void leftClick() {
                         super.leftClick();
                         finish();
                     }
-
-                    @Override
-                    public void rightClick() {
-                        super.rightClick();
-                        checkInput();
-                    }
                 }).bind();
     }
 
-
-    @OnClick({R.id.et_bankname})
+    @OnClick({R.id.et_bankname, R.id.tv_save})
     public void btnOnClick(View view) {
-        OnePopupWheel mPopupWheel = new OnePopupWheel(this, bankStrList, "请选择银行", new OnePopupWheel.Listener() {
-            @Override
-            public void completed(int position) {
-                if (bankStrList.isEmpty()) {
-                    ToastUtil.showShort("服务器异常，请返回重试");
-                    return;
-                }
-                bankID = bankTypeBeans.get(position).id;
-                etBankname.setText(bankStrList.get(position));
-            }
-        });
-        mPopupWheel.show(lltRootview);
+        switch (view.getId()) {
+            case R.id.et_bankname:
+                OnePopupWheel mPopupWheel = new OnePopupWheel(this, bankStrList, "请选择银行", new OnePopupWheel.Listener() {
+                    @Override
+                    public void completed(int position) {
+                        if (bankStrList.isEmpty()) {
+                            ToastUtil.showShort("服务器异常，请返回重试");
+                            return;
+                        }
+                        bankID = bankTypeBeans.get(position).id;
+                        etBankname.setText(bankStrList.get(position));
+                    }
+                });
+                mPopupWheel.show(lltRootview);
+                break;
+            case R.id.tv_save:
+                //保存
+                checkInput();
+                break;
+        }
     }
-
 
     @Override
     protected void setupActivityComponent() {

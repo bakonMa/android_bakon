@@ -17,7 +17,11 @@
         <com.youth.banner.Banner
             android:id="@+id/banner"
             android:layout_width="match_parent"
-            android:layout_height="188dp" />
+            android:layout_height="200dp"
+            app:image_scale_type="fit_xy"
+            app:indicator_height="8dp"
+            app:indicator_margin="3dp"
+            app:indicator_width="8dp" />
 
         <!--垂直跑马灯-->
         <LinearLayout
@@ -27,8 +31,7 @@
             android:background="@color/color_main"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingLeft="15dp"
-            android:visibility="visible">
+            android:paddingLeft="15dp">
 
             <ImageView
                 android:layout_width="20dp"
@@ -197,6 +200,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/iv_service_img"
                 android:layout_toEndOf="@+id/iv_service_img"
+                android:layout_toStartOf="@+id/tv_service_time"
+                android:singleLine="true"
                 android:text="咨询客服"
                 android:textColor="@color/color_000"
                 android:textSize="14sp" />
@@ -208,7 +213,7 @@
                 android:layout_alignBottom="@+id/iv_service_img"
                 android:layout_toEndOf="@+id/iv_service_img"
                 android:text="最后一次的内容"
-                android:textColor="@color/color_d6d6d6"
+                android:textColor="@color/color_666"
                 android:textSize="12sp" />
 
             <TextView
@@ -217,9 +222,22 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignTop="@+id/tv_service_name"
-                android:text="上午11：20"
+                tools:text="上午11：20"
                 android:textColor="@color/color_d6d6d6"
                 android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_service_num"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignBottom="@+id/iv_service_img"
+                android:background="@drawable/red_point"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="gone"
+                tools:text="19" />
 
             <View
                 style="@style/line_gray_hor"

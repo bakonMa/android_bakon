@@ -10,18 +10,17 @@ import com.renxin.doctor.activity.ui.bean.ApplyUserBean;
 import com.renxin.doctor.activity.ui.bean.BankBean;
 import com.renxin.doctor.activity.ui.bean.BankCardBean;
 import com.renxin.doctor.activity.ui.bean.BankTypeBean;
+import com.renxin.doctor.activity.ui.bean.BannerBean;
 import com.renxin.doctor.activity.ui.bean.CommMessageBean;
 import com.renxin.doctor.activity.ui.bean.ConfigBean;
 import com.renxin.doctor.activity.ui.bean.ContributiveBean;
 import com.renxin.doctor.activity.ui.bean.DealDetailBean;
 import com.renxin.doctor.activity.ui.bean.DealInfoBean;
-import com.renxin.doctor.activity.ui.bean.HomeLoanBean;
 import com.renxin.doctor.activity.ui.bean.HouseInfoResponse;
 import com.renxin.doctor.activity.ui.bean.IfBankOfJointBean;
 import com.renxin.doctor.activity.ui.bean.JudgeIfTiedBean;
 import com.renxin.doctor.activity.ui.bean.LoanDetailBean;
 import com.renxin.doctor.activity.ui.bean.LoginResponse;
-import com.renxin.doctor.activity.ui.bean.MaxAmtBean;
 import com.renxin.doctor.activity.ui.bean.MessageBean;
 import com.renxin.doctor.activity.ui.bean.MessageCountBean;
 import com.renxin.doctor.activity.ui.bean.MyAccountInfoBean;
@@ -44,7 +43,6 @@ import com.renxin.doctor.activity.ui.bean_jht.HospitalBean;
 import com.renxin.doctor.activity.ui.bean_jht.SearchDrugBean;
 import com.renxin.doctor.activity.ui.bean_jht.UploadImgBean;
 import com.renxin.doctor.activity.ui.bean_jht.UserBaseInfoBean;
-import com.renxin.doctor.activity.ui.bean_jht.VisitInfoBean;
 import com.renxin.doctor.activity.ui.bean_jht.WalletBean;
 
 import java.util.List;
@@ -102,6 +100,10 @@ public interface HttpAPI {
     @POST("getUserIdentifyStatus")
     Observable<HttpResponse<OtherBean>> getUserIdentifyStatus(@QueryMap Params params);
 
+    //获取首页红点状态
+    @POST("dot_status")
+    Observable<HttpResponse<OtherBean>> getHomeRedPointStatus(@QueryMap Params params);
+
     //获取个人中心资料，认证时的资料
     @GET("getUserBasicInfo")
     Observable<HttpResponse<UserBaseInfoBean>> getUserBasicInfo(@QueryMap Params params);
@@ -142,6 +144,10 @@ public interface HttpAPI {
     @POST("getBank")
     Observable<HttpResponse<List<BankTypeBean>>> getBankType(@QueryMap Params params);
 
+    //提现
+    @POST("exmoney_submit")
+    Observable<HttpResponse<String>> exmoneySubmit(@QueryMap Params params);
+
     //添加银行卡
     @POST("useraddbank")
     Observable<HttpResponse<String>> useraddbank(@QueryMap Params params);
@@ -150,13 +156,9 @@ public interface HttpAPI {
     @POST("userdel_bank")
     Observable<HttpResponse<String>> deleteBankCard(@QueryMap Params params);
 
-    //解绑
+    //交易详情
     @POST("deal_flow")
     Observable<HttpResponse<BasePageBean<DealDetailBean>>> getDealFlow(@QueryMap Params params);
-
-    //获取资费信息
-    @POST("getvisit_info")
-    Observable<HttpResponse<VisitInfoBean>> getVisitInfo(@QueryMap Params params);
 
     //设置资费信息
     @POST("visitcost_set")
@@ -193,6 +195,14 @@ public interface HttpAPI {
     //开方基础数据
     @POST("getsomeadvisory")
     Observable<HttpResponse<OPenPaperBaseBean>> getSomeadvisory(@QueryMap Params params);
+
+    //首页 banner
+    @POST("get_homebanner")
+    Observable<HttpResponse<List<BannerBean>>> getHomeBanner(@QueryMap Params params);
+
+    //更新token
+    @POST("updateToken")
+    Observable<HttpResponse<OtherBean>> updateToken(@QueryMap Params params);
 
     //拍照开方
     @POST("photo_extraction")
@@ -246,7 +256,30 @@ public interface HttpAPI {
     @POST("my_historyextra")
     Observable<HttpResponse<BasePageBean<CheckPaperBean>>> getPaperHistoryList(@QueryMap Params params);
 
+
+
+
+
+
+
+
+
+
+
     //***************************************************
+    //***************************************************
+    //***************************************************
+    //***************************************************
+    //***************************************************
+    //***************************************************
+    //***************************************************
+    //***************************************************
+    //***************************************************
+    //***************************************************
+    //***************************************************
+    //***************************************************
+
+
     //发送修改验证码
     @POST("customerApp/userCenter/sendTradeCode")
     Observable<HttpResponse<String>> sendTradeCode(@Body Params params);
@@ -287,10 +320,6 @@ public interface HttpAPI {
     @POST("customerApp/loanApply/insertUserHouseByAPP")
     Observable<HttpResponse<HouseInfoResponse>> commitHouseInfo(@Body Params params);
 
-    //获取是否有未完成订单
-    @GET("customerApp/loanApply/applyJudge")
-    Observable<HttpResponse<HomeLoanBean>> applyStatus();
-
     //获取客户申请三步骤资料
     @GET("customerApp/userCenter/userInfo")
     Observable<HttpResponse<ApplyInfoBean>> getApplyInfo();
@@ -315,15 +344,9 @@ public interface HttpAPI {
     @POST("customerApp/repayment/pwdRecharge")
     Observable<HttpResponse<RechargeBean>> pwdRecharge(@Body Params params);
 
-    //确认充值
-    @POST("customerApp/repayment/rechargeConfirm")
-    Observable<HttpResponse<String>> recharegeConfirm(@Body Params params);
-
-    //密码 提现
     @POST("customerApp/repayment/pwdWithDraw")
     Observable<HttpResponse<String>> pwdWithDraw(@Body Params params);
 
-    //验证码提现
     @POST("customerApp/repayment/smsWithDraw")
     Observable<HttpResponse<String>> smsWithDraw(@Body Params params);
 
@@ -331,7 +354,6 @@ public interface HttpAPI {
     @POST("customerApp/repayment/smsRecharge")
     Observable<HttpResponse<String>> smsRecharge(@Body Params params);
 
-    //充值/提现验证方式查询
     @GET("customerApp/repayment/selectVerificationMethod")
     Observable<HttpResponse<OtherBean>> selectVerificationMethod(@QueryMap Params params);
 
@@ -339,13 +361,8 @@ public interface HttpAPI {
     @GET("customerApp/repayment/getRechargeSmsVerifyCode")
     Observable<HttpResponse<String>> getRechargeSmsVerifyCode(@QueryMap Params params);
 
-    //提现 获取验证码
     @GET("customerApp/repayment/getWithdrawSmsVerifyCode")
     Observable<HttpResponse<String>> getWithdrawSmsVerifyCode(@QueryMap Params params);
-
-    //获取首页最大金额
-    @GET("customerApp/loanApply/dataConfig/getMaxAmt")
-    Observable<HttpResponse<MaxAmtBean>> getMAxAmt();
 
     //提交借款金额
     @POST("customerApp/loanApply/loanApply")

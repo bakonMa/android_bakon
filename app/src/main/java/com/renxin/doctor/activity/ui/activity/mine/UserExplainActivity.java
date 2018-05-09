@@ -12,6 +12,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.config.EventConfig;
+import com.renxin.doctor.activity.data.eventbus.Event;
+import com.renxin.doctor.activity.data.eventbus.EventBusUtil;
 import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
 import com.renxin.doctor.activity.injection.modules.ActivityModule;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
@@ -70,7 +73,7 @@ public class UserExplainActivity extends BaseActivity implements PersonalContact
                 .setTitle("简介")
                 .setStatuBar(R.color.white)
                 .setLeft(false)
-                .setRightText("保存", true, R.color.color_999)
+                .setRightText("保存", true, R.color.color_main)
                 .setListener(new TitleOnclickListener() {
                     @Override
                     public void leftClick() {
@@ -117,6 +120,8 @@ public class UserExplainActivity extends BaseActivity implements PersonalContact
         //修改后保存
         baseInfoBean.my_explain = edContent.getText().toString().trim();
         U.saveUserInfo(new Gson().toJson(baseInfoBean));
+        //完善资料 刷新数据
+        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_UPDATE_EXPLAIN));
         ToastUtil.showShort("保存成功");
         finish();
     }

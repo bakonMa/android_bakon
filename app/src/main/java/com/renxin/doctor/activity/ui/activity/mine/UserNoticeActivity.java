@@ -13,6 +13,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.config.EventConfig;
+import com.renxin.doctor.activity.data.eventbus.Event;
+import com.renxin.doctor.activity.data.eventbus.EventBusUtil;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.utils.U;
@@ -73,7 +76,7 @@ public class UserNoticeActivity extends BaseActivity implements PersonalContact.
                 .setTitle("公告")
                 .setStatuBar(R.color.white)
                 .setLeft(false)
-                .setRightText("保存", true, R.color.color_999)
+                .setRightText("保存", true, R.color.color_main)
                 .setListener(new TitleOnclickListener() {
                     @Override
                     public void leftClick() {
@@ -139,6 +142,8 @@ public class UserNoticeActivity extends BaseActivity implements PersonalContact.
         //修改后保存
         baseInfoBean.notice = edContent.getText().toString().trim();
         U.saveUserInfo(new Gson().toJson(baseInfoBean));
+        //完善资料 刷新数据
+        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_UPDATE_NOTICE));
         ToastUtil.showShort("保存成功");
         finish();
     }

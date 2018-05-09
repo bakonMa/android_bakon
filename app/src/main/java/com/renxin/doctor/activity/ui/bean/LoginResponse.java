@@ -15,5 +15,6 @@ public class LoginResponse {
     public String token;
     public String accid;
     public String acctoken;
+    public String service;//客服accid
 
 }

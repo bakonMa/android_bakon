@@ -30,10 +30,13 @@ import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.RequestCallbackWrapper;
 import com.netease.nimlib.sdk.ResponseCode;
+import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
+import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
+import com.netease.nimlib.sdk.msg.model.CustomMessageConfig;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
@@ -53,6 +56,7 @@ import com.renxin.doctor.activity.nim.message.extension.SnapChatAttachment;
 import com.renxin.doctor.activity.nim.message.extension.StickerAttachment;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.utils.LogUtil;
+import com.renxin.doctor.activity.widget.RelativeWithImage;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
 import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 
@@ -79,6 +83,8 @@ public class RecentActivity extends BaseActivity {
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
+    @BindView(R.id.tv_system_message)
+    RelativeWithImage sytemMessage;
     @BindView(R.id.recent_recyclerview)
     RecyclerView recyclerView;
 
@@ -105,6 +111,7 @@ public class RecentActivity extends BaseActivity {
         initToolbar();
         //nim手动登录
         NimManager.getInstance(DocApplication.getInstance()).nimLogin();
+
         initMessageList();
         requestMessages(true);
         registerObservers(true);
@@ -474,6 +481,12 @@ public class RecentActivity extends BaseActivity {
         public void onEvent(List<IMMessage> imMessages) {
             if (imMessages != null) {
                 for (IMMessage imMessage : imMessages) {
+                    //第一条消息，自动回复一条，tip
+//                    if (imMessage.getAttachment() instanceof FirstMessageAttachment) {
+//                    if (imMessage.getContent().equals("123456789")) {
+//                        firstMessageReply(imMessage.getFromAccount());
+//                    }
+                    //@我
                     if (!TeamMemberAitHelper.isAitMessage(imMessage)) {
                         continue;
                     }
@@ -487,6 +500,21 @@ public class RecentActivity extends BaseActivity {
             }
         }
     };
+
+    //收到患者的第一天消息，自动回复
+    private void firstMessageReply(String accid) {
+        IMMessage msg = MessageBuilder.createTipMessage(accid, SessionTypeEnum.P2P);
+        msg.setContent("请给患者发送问诊单或者随诊单，待患者填写完成，详细了解患者的情况");
+        CustomMessageConfig config = new CustomMessageConfig();
+        config.enablePush = false; // 不推送
+        config.enableUnreadCount = false; // 消息不计入未读
+        // 消息发送状态设置为success
+        msg.setStatus(MsgStatusEnum.success);
+        msg.setConfig(config);
+        // 保存消息到本地数据库，但不发送到服务器
+        NIMClient.getService(MsgService.class).saveMessageToLocal(msg, true);
+//      NimManager.sengChatMsg(msg, true, null);
+    }
 
 
     private void addTag(RecentContact recent, long tag) {
@@ -757,17 +785,6 @@ public class RecentActivity extends BaseActivity {
         });
 
     }
-//
-//    @OnClick({R.id.tv_reset_password, R.id.tv_logout})
-//    public void onViewClicked(View view) {
-//        switch (view.getId()) {
-//            case R.id.tv_reset_password:
-//                startActivity(new Intent(this, ResetPasswordActivity.class));
-//                break;
-//            case R.id.tv_logout:
-//                break;
-//        }
-//    }
 
     @Override
     protected void setupActivityComponent() {

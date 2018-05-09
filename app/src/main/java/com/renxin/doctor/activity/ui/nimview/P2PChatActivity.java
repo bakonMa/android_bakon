@@ -20,9 +20,7 @@ import com.netease.nim.uikit.business.session.constant.Extras;
 import com.netease.nim.uikit.business.session.fragment.MessageFragment;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.impl.NimUIKitImpl;
-import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
-import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
@@ -45,7 +43,7 @@ import java.util.Set;
  * P2PChatActivity  定制p2p单聊
  * Create at 2018/4/17 下午3:24 by mayakun
  */
-public class P2PChatActivity extends BaseMessageActivity implements BaseView{
+public class P2PChatActivity extends BaseMessageActivity implements BaseView {
 
     private Toolbar idToolbar;
     private ToolbarBuilder toolbarBuilder;
@@ -72,9 +70,12 @@ public class P2PChatActivity extends BaseMessageActivity implements BaseView{
         commonPresenter.getMembNo(getIntent().getStringExtra(Extras.EXTRA_ACCOUNT));
         // 单聊特例话数据，包括个人信息，
         setTitleText();//这里才拿到数据
-        displayOnlineState();
         registerObservers(true);
-        registerOnlineStateChangeListener(true);
+
+        //显示在线状态
+        //displayOnlineState();
+        //对方在线状态监听 这哪是不需要
+        //registerOnlineStateChangeListener(true);
     }
 
     @Override
@@ -91,7 +92,7 @@ public class P2PChatActivity extends BaseMessageActivity implements BaseView{
 //                .setTitle("")//这时候还拿不到数据
                 .setLeft(false)
                 .setStatuBar(R.color.white)
-                .setRightText("健康档案", true, R.color.color_main)
+//                .setRightText("健康档案", true, R.color.color_main)
                 .setListener(new TitleOnclickListener() {
                     @Override
                     public void leftClick() {
@@ -128,7 +129,7 @@ public class P2PChatActivity extends BaseMessageActivity implements BaseView{
         if (!NimUIKitImpl.enableOnlineState()) {
             return;
         }
-        String detailContent = NimUIKitImpl.getOnlineStateContentProvider().getDetailDisplay(sessionId);
+//        String detailContent = NimUIKitImpl.getOnlineStateContentProvider().getDetailDisplay(sessionId);
 //        ToastUtil.show("online 状态变化了=" + detailContent);
 //        LogUtil.d("logcat", detailContent);
 //        setSubTitle(detailContent);
@@ -147,7 +148,8 @@ public class P2PChatActivity extends BaseMessageActivity implements BaseView{
         } else {
             unregisterUserInfoObserver();
         }
-        NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(commandObserver, register);
+        //显示对方正在输入。。。的监听 暂时关闭
+        //NIMClient.getService(MsgServiceObserve.class).observeCustomNotification(commandObserver, register);
         NimUIKit.getContactChangedObservable().registerObserver(friendDataChangedObserver, register);
     }
 
@@ -248,7 +250,7 @@ public class P2PChatActivity extends BaseMessageActivity implements BaseView{
     protected void onDestroy() {
         super.onDestroy();
         registerObservers(false);
-        registerOnlineStateChangeListener(false);
+//        registerOnlineStateChangeListener(false);
         commonPresenter.unsubscribe();
     }
 
@@ -269,7 +271,7 @@ public class P2PChatActivity extends BaseMessageActivity implements BaseView{
         if (message == null) {
             return;
         }
-        switch (message.what){
+        switch (message.what) {
             case CommonPresenter.GET_MOMBNO_OK://获取memb_no
                 LogUtil.d("memb_no=" + message.obj.toString());
                 break;

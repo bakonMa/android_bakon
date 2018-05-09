@@ -67,6 +67,8 @@ public class LoginFragment extends BaseFragment implements LoginContact.View {
     ImageView ivPwdEye;
     @BindView(R.id.btn_login)
     Button btnLogin;
+    @BindView(R.id.tv_frogetpwd)
+    TextView tvFrogetpwd;
     @BindView(R.id.tv_registe)
     TextView tvRegiste;
 
@@ -78,7 +80,7 @@ public class LoginFragment extends BaseFragment implements LoginContact.View {
      */
     private int time = 60;//每次验证请求需要间隔60S
     private Subscription subscription;
-    private int type = 0;
+    private int type = 0;//0：验证码 1：密码
 
     //根据type，构造fragment
     public static LoginFragment newInstance(int type) {
@@ -99,13 +101,19 @@ public class LoginFragment extends BaseFragment implements LoginContact.View {
         type = getArguments().getInt("type", 0);
         lltCode.setVisibility(type == 0 ? View.VISIBLE : View.GONE);
         lltPassword.setVisibility(type == 1 ? View.VISIBLE : View.GONE);
+        tvFrogetpwd.setVisibility(type == 1 ? View.VISIBLE : View.GONE);
     }
 
-    @OnClick({R.id.tv_registe, R.id.btn_login, R.id.tv_sendcode,
+    @OnClick({R.id.tv_registe, R.id.tv_frogetpwd, R.id.btn_login, R.id.tv_sendcode,
             R.id.iv_code_clean, R.id.iv_phone_clean, R.id.iv_pwd_clean,
             R.id.iv_pwd_eye})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.tv_frogetpwd://忘记密码
+                Intent intent = new Intent(actContext(), ResetPasswordActivity.class);
+                intent.putExtra("title", "忘记密码");
+                startActivity(intent);
+                break;
             case R.id.tv_registe://注册
                 startActivity(new Intent(actContext(), RegisteActivity.class));
                 break;

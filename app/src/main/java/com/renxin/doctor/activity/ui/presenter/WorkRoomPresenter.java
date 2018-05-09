@@ -6,10 +6,16 @@ import com.renxin.doctor.activity.config.HttpConfig;
 import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.data.response.HttpResponse;
 import com.renxin.doctor.activity.ui.base.BaseObserver;
+import com.renxin.doctor.activity.ui.bean.BannerBean;
 import com.renxin.doctor.activity.ui.bean.OPenPaperBaseBean;
+import com.renxin.doctor.activity.ui.bean.OtherBean;
 import com.renxin.doctor.activity.ui.contact.WorkRoomContact;
+import com.renxin.doctor.activity.utils.LogUtil;
+import com.renxin.doctor.activity.utils.M;
 import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.widget.dialog.LoadingDialog;
+
+import java.util.List;
 
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
@@ -28,6 +34,8 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
 
     public static final int GET_BASEDATA_0K = 0x110;
     public static final int UPLOADIMF_OK = 0x111;
+    public static final int GET_AUTH_STATUS = 0x112;
+    public static final int GET_BANNER_OK = 0x113;
 
     public WorkRoomPresenter(WorkRoomContact.View mView) {
         this.mView = mView;
@@ -43,28 +51,75 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
     }
 
     @Override
-    public void getHomeData() {
-//        Params params = new Params();
-//        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-//        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
-//                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getSomeadvisory(params))
-//                .compose(mView.toLifecycle())
-//                .doOnSubscribe(() -> {
-//                    if (mDialog != null)
-//                        mDialog.show();
-//                }).subscribe(new BaseObserver<HttpResponse<OPenPaperBaseBean>>(mDialog) {
-//                    @Override
-//                    public void onSuccess(HttpResponse<OPenPaperBaseBean> personalBeanHttpResponse) {
-//
-//                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_BASEDATA_0K));
-//                    }
-//
-//                    @Override
-//                    public void onError(String errorCode, String errorMsg) {
-//                        mView.onError(errorCode, errorMsg);
-//                    }
-//                });
-//        mSubscription.add(subscription);
+    public void getUserIdentifyStatus() {
+        Params params = new Params();
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getUserIdentifyStatus(params))
+                .compose(mView.toLifecycle())
+                .subscribe(new BaseObserver<HttpResponse<OtherBean>>(null) {
+                    @Override
+                    public void onSuccess(HttpResponse<OtherBean> resultResponse) {
+                        U.setAuthStatus(resultResponse.data.status);
+                        mView.onSuccess(M.createMessage(resultResponse.data, GET_AUTH_STATUS));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void getRedPointStatus() {
+        Params params = new Params();
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getHomeRedPointStatus(params))
+                .compose(mView.toLifecycle())
+                .subscribe(new BaseObserver<HttpResponse<OtherBean>>(null) {
+                    @Override
+                    public void onSuccess(HttpResponse<OtherBean> resultResponse) {
+                        //审方
+                        U.setRedPointExt(resultResponse.data.ext_status);
+                        //患者添加
+                        U.setRedPointFir(resultResponse.data.fri_status);
+                        //TODO 红点状态
+                        mView.onSuccess(M.createMessage(resultResponse.data, GET_AUTH_STATUS));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void getHomeBanner() {
+        Params params = new Params();
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getHomeBanner(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null)
+                        mDialog.show();
+                }).subscribe(new BaseObserver<HttpResponse<List<BannerBean>>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<List<BannerBean>> personalBeanHttpResponse) {
+                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_BANNER_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
     }
 
     //开方基础数据
@@ -85,6 +140,33 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
                     @Override
                     public void onError(String errorCode, String errorMsg) {
                         mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    //更新token
+    @Override
+    public void updataToken() {
+        Params params = new Params();
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().updateToken(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null)
+                        mDialog.show();
+                }).subscribe(new BaseObserver<HttpResponse<OtherBean>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<OtherBean> response) {
+                        U.updateToken(response.data.token);
+                        LogUtil.d("updataToken success:");
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+//                        mView.onError(errorCode, errorMsg);
+                        LogUtil.d("updataToken error:" + errorMsg);
                     }
                 });
         mSubscription.add(subscription);

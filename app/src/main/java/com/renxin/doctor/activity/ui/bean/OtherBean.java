@@ -10,6 +10,12 @@ public class OtherBean {
     public int status;
     //accid 获取memb_no 使用
     public String memb_no;
+    //更新token使用
+    public String token;
+
+    //首页红点 使用
+    public int ext_status;//审核开方红点 1:有 0：无
+    public int fri_status;//新患者好友红点 1:有 0：无
 
 
 }

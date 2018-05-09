@@ -179,13 +179,13 @@ public class WalletPresenter implements WalletContact.Presenter {
     }
 
     @Override
-    public void witdraw(int bound_bank_id, String exmoney_submit) {
+    public void witdraw(int bound_bank_id, String money) {
         Params params = new Params();
         params.put("bound_bank_id", bound_bank_id);
-        params.put("exmoney_submit", exmoney_submit);
+        params.put("money", money);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
         Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
-                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().deleteBankCard(params))
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().exmoneySubmit(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null) mDialog.show();

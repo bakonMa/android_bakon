@@ -94,7 +94,18 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycleview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tv_gotochat"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/selector_bg_button_login"
+        android:gravity="center"
+        android:text="进入咨询"
+        android:textColor="@color/white" />
 
 
 </LinearLayout>

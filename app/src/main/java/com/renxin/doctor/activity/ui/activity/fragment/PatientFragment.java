@@ -90,6 +90,7 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 Intent intent = new Intent(actContext(), PatientFamilyActivity.class);
                 intent.putExtra("memb_no", dataList.get(position).memb_no);
+                intent.putExtra("im_accid", dataList.get(position).im_accid);
                 startActivity(intent);
             }
         });
@@ -116,7 +117,7 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
 
     private void initToolBar() {
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(getActivity()))
-                .setTitle("患者")
+                .setTitle("患者列表")
                 .setStatuBar(R.color.white)
 //                .setRightImg(R.drawable.icon_add_main, true)
                 .blank()

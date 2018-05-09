@@ -20,7 +20,7 @@ public interface H5Config {
     String H5_USERCARD_TITLE = "个人名片";
     //个人资料 预览
     String H5_USERINFO = BuildConfig.BASE_URL + "web_userinfo/";
-    String H5_USERINFO_TITLE = "个人相信预览";
+    String H5_USERINFO_TITLE = "个人信息预览";
     //问诊单
     String H5_ASKPAPER = BuildConfig.BASE_URL + "web_edit_inquiry/";
     String H5_ASKPAPER_INFO = BuildConfig.BASE_URL + "web_inquiryinfo?id=";

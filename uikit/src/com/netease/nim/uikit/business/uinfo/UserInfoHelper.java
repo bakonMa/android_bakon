@@ -24,7 +24,7 @@ public class UserInfoHelper {
     }
 
     /**
-     * @param account 用户帐号
+     * @param account 用户帐号 备注昵称
      * @return
      */
     public static String getUserDisplayName(String account) {
@@ -39,6 +39,19 @@ public class UserInfoHelper {
                 return account;
             }
         }
+    }
+    /**
+     * @param account 用户头像
+     * @return
+     */
+    public static String getUserHeadImg(String account) {
+            UserInfo userInfo = NimUIKit.getUserInfoProvider().getUserInfo(account);
+            if (userInfo != null && !TextUtils.isEmpty(userInfo.getAvatar())) {
+                return userInfo.getAvatar();
+            } else {
+                return "";
+            }
+
     }
 
     // 获取用户原本的昵称

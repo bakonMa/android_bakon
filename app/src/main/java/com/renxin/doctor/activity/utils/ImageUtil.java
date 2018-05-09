@@ -30,7 +30,6 @@ public class ImageUtil {
                 .load(url)
                 .placeholder(R.mipmap.logo)
                 .error(R.mipmap.logo)
-                .centerCrop()
                 .into(imageView);
     }
 

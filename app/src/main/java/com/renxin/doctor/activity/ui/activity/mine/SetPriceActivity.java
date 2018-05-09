@@ -8,19 +8,21 @@ import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.renxin.doctor.activity.R;
-import com.renxin.doctor.activity.utils.RegexUtil;
-import com.renxin.doctor.activity.utils.ToastUtil;
-import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
 import com.renxin.doctor.activity.injection.modules.ActivityModule;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
-import com.renxin.doctor.activity.ui.bean_jht.VisitInfoBean;
+import com.renxin.doctor.activity.ui.bean_jht.UserBaseInfoBean;
 import com.renxin.doctor.activity.ui.contact.PersonalContact;
 import com.renxin.doctor.activity.ui.presenter.PersonalPresenter;
+import com.renxin.doctor.activity.utils.RegexUtil;
+import com.renxin.doctor.activity.utils.ToastUtil;
+import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.widget.dialog.CommonDialog;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
+import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
 import java.lang.ref.WeakReference;
@@ -46,7 +48,7 @@ public class SetPriceActivity extends BaseActivity implements PersonalContact.Vi
 
     @Inject
     PersonalPresenter mPresenter;
-    private VisitInfoBean bean;
+    private UserBaseInfoBean bean;
 
     @Override
     protected int provideRootLayout() {
@@ -56,7 +58,15 @@ public class SetPriceActivity extends BaseActivity implements PersonalContact.Vi
     @Override
     protected void initView() {
         initToolbar();
-        mPresenter.getVisitInfo();
+        //读取sp中持久化
+        bean = U.getUserInfo();
+        if (bean != null) {
+            tvTopicinfo.setText("\u3000\u3000" + bean.fee_explain);
+            etFirstprice.setText(TextUtils.isEmpty(bean.first_diagnose) ? "0.00" : bean.first_diagnose);
+            etFirstprice.setSelection(etFirstprice.getText().length());
+            etAgainprice.setText(TextUtils.isEmpty(bean.second_diagnose) ? "0.00" : bean.second_diagnose);
+            etAgainprice.setSelection(etAgainprice.getText().length());
+        }
     }
 
     //共同头部处理
@@ -110,18 +120,11 @@ public class SetPriceActivity extends BaseActivity implements PersonalContact.Vi
     public void onSuccess(Message message) {
         if (message != null) {
             switch (message.what) {
-                case PersonalPresenter.GET_VISITINFO_OK:
-                    bean = (VisitInfoBean) message.obj;
-                    if (bean != null) {
-                        tvTopicinfo.setText("\u3000\u3000" + bean.fee_explain);
-                        etFirstprice.setText(TextUtils.isEmpty(bean.first_diagnose) ? "0.00" : bean.first_diagnose);
-                        etFirstprice.setSelection(etFirstprice.getText().length());
-                        etAgainprice.setText(TextUtils.isEmpty(bean.second_diagnose) ? "0.00" : bean.second_diagnose);
-                        etAgainprice.setSelection(etAgainprice.getText().length());
-
-                    }
-                    break;
                 case PersonalPresenter.SET_VISITINFO_OK:
+                    bean.first_diagnose = RegexUtil.formatDoubleMoney(etFirstprice.getText().toString().trim());
+                    bean.second_diagnose = RegexUtil.formatDoubleMoney(etAgainprice.getText().toString().trim());
+                    //修改sp本地数据
+                    U.saveUserInfo(new Gson().toJson(bean));
                     ToastUtil.showShort("资费设置成功");
                     finish();
                     break;

@@ -14,6 +14,7 @@ public interface SPConfig {
     String SP_STR_TOKEN = "token";
     String SP_INT_SUTH_STATUS = "auth_status";
     String SP_STR_PHONE = "phone";
+    String SP_SERVICE_ACCID = "service_accid";
     String SP_NIM_ACCID = "accid";
     String SP_NIM_ACCTOKEN = "acctoken";
 
@@ -22,7 +23,10 @@ public interface SPConfig {
     String SP_OPENPAPER_BASEDATA = "openpaper_basedata";
     //消息提醒状态
     String SP_MESSAGE_STATUS = "message_status";
-
+    //红点-审核处方
+    String SP_REDPOINT_EXT = "redpoint_ext";
+    //红点-添加患者
+    String SP_REDPOINT_FIR = "redpoint_fir";
 
 
     int GENERAL_SP_MODE = Context.MODE_PRIVATE;

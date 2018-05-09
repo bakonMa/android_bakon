@@ -157,7 +157,7 @@ public class SessionHelper {
 //            actions.add(new TipAction());
 
             p2pCustomization.actions = actions;
-            p2pCustomization.withSticker = true;//显示表情为 true，不显示表情为 false（可自定义表情图）
+            p2pCustomization.withSticker = false;//显示表情为 true，不显示表情为 false（可自定义表情图）
 
             // 定制ActionBar右边的按钮，可以加多个
 //            ArrayList<SessionCustomization.OptionsButton> buttons = new ArrayList<>();

@@ -154,6 +154,7 @@
 -keep class com.renxin.doctor.activity.ui.bean.** {*;}
 -keep class com.renxin.doctor.activity.data.response.** {*;}
 -keep class com.renxin.doctor.activity.greendao.gen.** {*;}
+-keep class com.renxin.doctor.activity.widget.popupwindow.** {*;}#地区 内部bean
 
 # -----------------------------------END---------------------------------
 

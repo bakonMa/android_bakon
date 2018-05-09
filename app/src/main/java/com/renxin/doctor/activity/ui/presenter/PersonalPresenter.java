@@ -6,13 +6,11 @@ import com.renxin.doctor.activity.config.HttpConfig;
 import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.data.response.HttpResponse;
 import com.renxin.doctor.activity.ui.base.BaseObserver;
-import com.renxin.doctor.activity.ui.bean.OtherBean;
-import com.renxin.doctor.activity.utils.ToastUtil;
-import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.ui.bean_jht.UserBaseInfoBean;
-import com.renxin.doctor.activity.ui.bean_jht.VisitInfoBean;
 import com.renxin.doctor.activity.ui.contact.PersonalContact;
 import com.renxin.doctor.activity.utils.M;
+import com.renxin.doctor.activity.utils.ToastUtil;
+import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.widget.dialog.LoadingDialog;
 
 import rx.Subscription;
@@ -30,7 +28,6 @@ public class PersonalPresenter implements PersonalContact.Presenter {
     private LoadingDialog mDialog;
 
     public static final int GET_USEBASE_INFO = 0x110;
-    public static final int GET_AUTH_STATUS = 0x111;
     public static final int ADD_USER_BASEINFO = 0x112;
     public static final int GET_VISITINFO_OK = 0x113;
     public static final int SET_VISITINFO_OK = 0x114;
@@ -77,31 +74,6 @@ public class PersonalPresenter implements PersonalContact.Presenter {
         compositeSubscription.add(subscription);
     }
 
-    @Override
-    public void getUserIdentifyStatus() {
-        Params params = new Params();
-        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
-                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getUserIdentifyStatus(params))
-                .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mDialog != null) mDialog.show();
-                })
-                .subscribe(new BaseObserver<HttpResponse<OtherBean>>(mDialog) {
-                    @Override
-                    public void onSuccess(HttpResponse<OtherBean> resultResponse) {
-                        U.setAuthStatus(resultResponse.data.status);
-                        mView.onSuccess(M.createMessage(resultResponse.data, GET_AUTH_STATUS));
-                    }
-
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-                        mView.onError(errorCode, errorMsg);
-                    }
-                });
-        compositeSubscription.add(subscription);
-    }
-
     //个人公告和简介的提交
     @Override
     public void addUserbasic(String content, int type) {
@@ -120,30 +92,6 @@ public class PersonalPresenter implements PersonalContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<String> resultResponse) {
                         mView.onSuccess(M.createMessage(resultResponse.data, ADD_USER_BASEINFO));
-                    }
-
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-                        mView.onError(errorCode, errorMsg);
-                    }
-                });
-        compositeSubscription.add(subscription);
-    }
-    //资费信息
-    @Override
-    public void getVisitInfo() {
-        Params params = new Params();
-        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
-                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getVisitInfo(params))
-                .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mDialog != null) mDialog.show();
-                })
-                .subscribe(new BaseObserver<HttpResponse<VisitInfoBean>>(mDialog) {
-                    @Override
-                    public void onSuccess(HttpResponse<VisitInfoBean> resultResponse) {
-                        mView.onSuccess(M.createMessage(resultResponse.data, GET_VISITINFO_OK));
                     }
 
                     @Override

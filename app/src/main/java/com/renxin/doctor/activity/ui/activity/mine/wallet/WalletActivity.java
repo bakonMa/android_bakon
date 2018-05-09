@@ -209,7 +209,8 @@ public class WalletActivity extends BaseActivity implements WalletContact.View {
                     mPresenter.userBankList();
                     break;
                 case EventConfig.EVENT_KEY_WITHRAW_OK://提现成功
-                    finish();
+                    mPresenter.getWallet();
+//                    finish();
                     break;
             }
         }
