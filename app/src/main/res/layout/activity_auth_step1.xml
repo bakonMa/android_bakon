@@ -78,7 +78,7 @@
                         android:layout_height="80dp"
                         android:layout_marginLeft="32dp"
                         android:scaleType="centerInside"
-                        android:src="@drawable/sample_idcard" />
+                        android:src="@drawable/sample_head" />
 
                 </LinearLayout>
 

@@ -16,6 +16,7 @@ public class OtherBean {
     //首页红点 使用
     public int ext_status;//审核开方红点 1:有 0：无
     public int fri_status;//新患者好友红点 1:有 0：无
+    public int sys_status;//系统消息红点 1:有 0：无
 
 
 }

@@ -64,7 +64,7 @@ public class SharePopupWindow extends PopupWindow {
             }
         });
         //微信朋友圈
-        view.findViewById(R.id.rl_popup_share_wechat_moments).setOnClickListener(v -> {
+        view.findViewById(R.id.rl_popup_share_wechat_circle).setOnClickListener(v -> {
             dismiss();
             if (shareOnClickListener != null) {
                 shareOnClickListener.onItemClick(SHARE_MEDIA.WEIXIN_CIRCLE);

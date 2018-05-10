@@ -9,10 +9,12 @@ public class DealDetailBean {
 
 
     /**
-     * money : 100
-     * deal_time : 2018-03-28
+     * "money": "5",
+     "deal_time": "2018-05-09",
+     "type": "提现"
      */
 
+    public String type;
     public String money;
     public String deal_time;
 }

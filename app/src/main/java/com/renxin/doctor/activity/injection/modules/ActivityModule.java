@@ -16,6 +16,7 @@ import com.renxin.doctor.activity.ui.contact.ChatMessageContact;
 import com.renxin.doctor.activity.ui.contact.CoborrowerHistoryContact;
 import com.renxin.doctor.activity.ui.contact.DemoContact;
 import com.renxin.doctor.activity.ui.contact.FeedBackContact;
+import com.renxin.doctor.activity.ui.contact.FindContact;
 import com.renxin.doctor.activity.ui.contact.OpenPaperContact;
 import com.renxin.doctor.activity.ui.contact.PatientContact;
 import com.renxin.doctor.activity.ui.contact.HomeRepaymentContact;
@@ -66,6 +67,7 @@ import com.renxin.doctor.activity.ui.presenter.TradePwdPresenter;
 import com.renxin.doctor.activity.ui.presenter.TranslucentPresenter;
 import com.renxin.doctor.activity.ui.presenter.WebviewPresenter;
 import com.renxin.doctor.activity.ui.presenter.present_jht.AuthPresenter;
+import com.renxin.doctor.activity.ui.presenter.present_jht.FindPresenter;
 import com.renxin.doctor.activity.ui.presenter.present_jht.WalletPresenter;
 import com.renxin.doctor.activity.ui.presenter.HouseInfoPresenter;
 
@@ -122,7 +124,20 @@ public final class ActivityModule {
         return new OpenPaperPresenter((OpenPaperContact.View) mView);
     }
 
+    @PerActivity
+    @Provides
+    public FindPresenter provideFindPresenter() {
+        return new FindPresenter((FindContact.View) mView);
+    }
 
+
+    /**********************JHT end ***********************/
+    /**********************JHT end ***********************/
+    /**********************JHT end ***********************/
+    /**********************JHT end ***********************/
+    /**********************JHT end ***********************/
+    /**********************JHT end ***********************/
+    /**********************JHT end ***********************/
     /**********************JHT end ***********************/
 
 

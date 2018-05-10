@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
-import com.netease.nim.uikit.common.badger.Badger;
 import com.netease.nim.uikit.common.util.sys.TimeUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
@@ -27,8 +26,11 @@ import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.renxin.doctor.activity.BuildConfig;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.config.EventConfig;
 import com.renxin.doctor.activity.config.H5Config;
 import com.renxin.doctor.activity.config.SPConfig;
+import com.renxin.doctor.activity.data.eventbus.Event;
+import com.renxin.doctor.activity.data.eventbus.EventBusUtil;
 import com.renxin.doctor.activity.injection.components.DaggerFragmentComponent;
 import com.renxin.doctor.activity.injection.modules.FragmentModule;
 import com.renxin.doctor.activity.nim.message.SessionHelper;
@@ -56,6 +58,10 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerListener;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +96,12 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     TextView tvServiceTime;
     @BindView(R.id.tv_notification)
     TextView tvNotification;
+    @BindView(R.id.tv_checkredpoint)
+    TextView tvCheckredpoint;//审核处方-红点
+    @BindView(R.id.tv_chatunreadnum)
+    TextView tvChatunreadnum;//消息通知-数字红点
+    @BindView(R.id.tv_chatredpoint)
+    TextView tvChatReadPoint;//消息通知-红点
 
     @Inject
     WorkRoomPresenter mPresenter;
@@ -118,17 +130,16 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         requestPermissions();
         //Banner初始化
         initBanner();
-        //客服 初始化
-        initService();
 
         //请求数据
         mPresenter.updataToken();//更新token
         mPresenter.getUserIdentifyStatus();//认证状态
         mPresenter.getOPenPaperBaseData();//开方基础数据
         mPresenter.getRedPointStatus();//红点状态
-
         //首页Banner数据
         mPresenter.getHomeBanner();
+        //客服 初始化
+        initService();
     }
 
     //客服accid
@@ -140,17 +151,36 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
 //        accid = "851b6313ba321b719d861aa658c7f5a5";
         accid = "753166d9bce4d2c7c4c30b520c647d4c";
 
-        //客服个人资料
-        String serviceName = UserInfoHelper.getUserDisplayName(accid);
-        //name
-        tvServiceName.setText(TextUtils.isEmpty(serviceName) ? "咨询客服" : serviceName);
-        //head img
-        ImageUtil.showCircleImage(UserInfoHelper.getUserHeadImg(accid), ivServiceImg);
-        //第一次展示聊天数据（需要主动去取）
-        firstShowSeverMessage();
         //最近联系人列表变化观察者
         NIMClient.getService(MsgServiceObserve.class).observeRecentContact(messageObserver, true);
         NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(messageReceiverObserver, true);
+
+        //第一次主动 发起
+        firstShowSeverMessage();//第一次展示聊天数据（需要主动去取）
+        showServide();//客服数据
+//        chatMessageShowNum();//[消息通知]是否显示数字
+        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME));//通知【工作室】 是否显示红点
+    }
+
+    /**
+     * [消息通知]是否显示数字
+     * 没有未读消息，是否有系统消息
+     */
+    private void chatMessageShowNum() {
+        int unreadNum = NIMClient.getService(MsgService.class).getTotalUnreadCount();
+        if (unreadNum > 99) {
+            unreadNum = 99;
+        } else if (unreadNum < 0) {
+            unreadNum = 0;
+        }
+        if (unreadNum > 0) {
+            tvChatunreadnum.setText(unreadNum + "");
+            tvChatunreadnum.setVisibility(View.VISIBLE);
+            tvChatReadPoint.setVisibility(View.GONE);
+        } else {
+            tvChatunreadnum.setVisibility(View.GONE);
+            tvChatReadPoint.setVisibility(U.getRedPointSys() > 0 ? View.VISIBLE : View.GONE);
+        }
     }
 
     //第一次打开读取客服资料
@@ -163,13 +193,9 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 for (RecentContact loadedRecent : recentContacts) {
                     if (loadedRecent.getSessionType() == SessionTypeEnum.P2P
                             && loadedRecent.getContactId().equals(accid)) {
-//                        //客服个人资料
-//                        String serviceName = UserInfoHelper.getUserDisplayName(accid);
-//                        //name
-//                        tvServiceName.setText(TextUtils.isEmpty(serviceName) ? "咨询客服" : serviceName);
-//                        //head img
-//                        ImageUtil.showCircleImage(UserInfoHelper.getUserHeadImg(accid), ivServiceImg);
-                        //显示客服最后一天消息
+                        //防止 客服数据变化
+                        //showServide();
+                        //显示客服最后一条消息
                         showLastMessage(loadedRecent);
                     }
                 }
@@ -186,6 +212,16 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         });
     }
 
+    //显示客服数据
+    private void showServide() {
+        //客服个人资料
+        String serviceName = UserInfoHelper.getUserDisplayName(accid);
+        //name
+        tvServiceName.setText(TextUtils.isEmpty(serviceName) ? "咨询客服" : serviceName);
+        //head img
+        ImageUtil.showCircleImage(UserInfoHelper.getUserHeadImg(accid), ivServiceImg);
+    }
+
     //最近联系人列表变化观察者
     Observer<List<RecentContact>> messageObserver = new Observer<List<RecentContact>>() {
         @Override
@@ -196,15 +232,14 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                     //显示客服最后一天消息
                     showLastMessage(loadedRecent);
                 }
-                //未读消息数处理
-                //TODO
-                // 方式二：直接从SDK读取（相对慢）
-                int unreadNum = NIMClient.getService(MsgService.class).getTotalUnreadCount();
-                Badger.updateBadgerCount(unreadNum);
             }
+            //TODO
+            //未读消息数处理
+            chatMessageShowNum();//[消息通知]是否显示数字
+            EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME));//通知【工作室是否显示红点】和 logo角标处理
         }
     };
-    //监听在线消息中是否有@我
+    //监听在线消息中是否有 患者第一条消息 自动回复
     private Observer<List<IMMessage>> messageReceiverObserver = new Observer<List<IMMessage>>() {
         @Override
         public void onEvent(List<IMMessage> imMessages) {
@@ -229,9 +264,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                             }
                         }, 2000);
                     }
-
                     break;
-
                 }
             }
         }
@@ -258,6 +291,21 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         banner.setDelayTime(3000);
         //设置指示器位置（当banner模式中有指示器时）
         banner.setIndicatorGravity(BannerConfig.CENTER);
+        banner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                //URL为空不跳转
+                if (TextUtils.isEmpty(bannerBeans.get(position).url)) {
+                    return;
+                }
+                //Banner点击 跳转
+                WebViewActivity.startAct(actContext(),
+                        true,
+                        WebViewActivity.WEB_TYPE.WEB_TYPE_BANNER,
+                        "",
+                        bannerBeans.get(position).url);
+            }
+        });
     }
 
     @OnClick({R.id.tv_add_patient, R.id.tv_online_paper, R.id.tv_camera_patient, R.id.tv_comm_paper,
@@ -338,6 +386,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         }
     }
 
+
     @Override
     public void onSuccess(Message message) {
         if (message == null) {
@@ -376,6 +425,27 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     @Override
     public void onError(String errorCode, String errorMsg) {
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCome(Event event) {
+        if (event == null) {
+            return;
+        }
+        switch (event.getCode()) {
+            case EventConfig.EVENT_KEY_REDPOINT_HOME_CHECK://红点 审核处方
+                //是否有审核处方
+                tvCheckredpoint.setVisibility(U.getRedPointExt() > 0 ? View.VISIBLE : View.GONE);
+                break;
+            case EventConfig.EVENT_KEY_REDPOINT_HOME_SYSMSG://消息通知 未读消息数和系统消息红点
+                chatMessageShowNum();
+                break;
+        }
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return true;
     }
 
     @Override

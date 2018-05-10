@@ -365,16 +365,16 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
             commonDialog.show();
             return;
         }
+        //药材用量
+        for (DrugBean bean : drugBeans) {
+            if (bean.drug_num <= 0) {
+                commonDialog = new CommonDialog(this, "请填写全部药材的用量");
+                commonDialog.show();
+                return;
+            }
+        }
 
         if (formtype == 1) {//返回 在线开放
-            for (DrugBean bean : drugBeans) {
-                if (bean.drug_num <= 0) {
-                    commonDialog = new CommonDialog(this, "请填写全部药材的用量");
-                    commonDialog.show();
-                    return;
-                }
-            }
-
             Intent intent = new Intent();
             intent.putParcelableArrayListExtra("druglist", drugBeans);
             setResult(RESULT_OK, intent);

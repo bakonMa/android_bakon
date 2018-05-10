@@ -10,32 +10,6 @@
         android:background="@color/white"
         android:gravity="center"
         android:orientation="horizontal">
-        <!--朋友圈-->
-        <LinearLayout
-            android:id="@+id/rl_popup_share_wechat_moments"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/icon_share_wxcircle" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:ellipsize="end"
-                android:gravity="center"
-                android:lines="1"
-                android:text="朋友圈"
-                android:textColor="@color/color_999"
-                android:textSize="12sp" />
-        </LinearLayout>
         <!--微信好友-->
         <LinearLayout
             android:id="@+id/rl_popup_share_wechat"
@@ -48,7 +22,6 @@
             <ImageView
                 android:layout_width="42dp"
                 android:layout_height="42dp"
-                android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/icon_share_wx" />
 
@@ -60,6 +33,33 @@
                 android:gravity="center"
                 android:lines="1"
                 android:text="微信好友"
+                android:textColor="@color/color_999"
+                android:textSize="12sp" />
+        </LinearLayout>
+        <!--朋友圈-->
+        <LinearLayout
+            android:id="@+id/rl_popup_share_wechat_circle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/icon_share_wxcircle" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                android:text="微信朋友圈"
                 android:textColor="@color/color_999"
                 android:textSize="12sp" />
         </LinearLayout>

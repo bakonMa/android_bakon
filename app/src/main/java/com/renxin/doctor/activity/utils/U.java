@@ -71,14 +71,33 @@ public class U {
         DocApplication.getAppComponent().dataRepo().appSP().setInteger(SPConfig.SP_INT_SUTH_STATUS, status);
     }
 
-    //首页 审核处方 红点
+    //首页 审核处方 set红点
     public static void setRedPointExt(int status) {
         DocApplication.getAppComponent().dataRepo().appSP().setInteger(SPConfig.SP_REDPOINT_EXT, status);
     }
 
-    //首页 添加患者 红点
+    //首页 审核处方 get红点
+    public static int getRedPointExt() {
+        return DocApplication.getAppComponent().dataRepo().appSP().getInteger(SPConfig.SP_REDPOINT_EXT, 0);
+    }
+
+    //首页 系统消息 set红点
+    public static void setRedPointSys(int status) {
+        DocApplication.getAppComponent().dataRepo().appSP().setInteger(SPConfig.SP_REDPOINT_SYS, status);
+    }
+
+    //首页 系统消息 get红点
+    public static int getRedPointSys() {
+        return DocApplication.getAppComponent().dataRepo().appSP().getInteger(SPConfig.SP_REDPOINT_SYS, 0);
+    }//首页 添加患者 set红点
+
     public static void setRedPointFir(int status) {
         DocApplication.getAppComponent().dataRepo().appSP().setInteger(SPConfig.SP_REDPOINT_FIR, status);
+    }
+
+    //首页 添加患者 get红点
+    public static int getRedPointFir() {
+        return DocApplication.getAppComponent().dataRepo().appSP().getInteger(SPConfig.SP_REDPOINT_FIR, 0);
     }
 
     /**

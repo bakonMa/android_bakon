@@ -48,9 +48,9 @@ public class Badger {
                 }
 
                 boolean res = ShortcutBadger.applyCount(NimUIKit.getContext(), badgerCount);
-                if (!res) {
-                    support = false; // 如果失败就不要再使用了!
-                }
+//                if (!res) {
+//                    support = false; // 如果失败就不要再使用了!
+//                }
                 Log.i(TAG, "update badger count " + (res ? "success" : "failed"));
             }
         }, 200);

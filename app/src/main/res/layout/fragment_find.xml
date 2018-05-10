@@ -8,48 +8,36 @@
 
     <include layout="@layout/base_toolbar" />
 
-    <com.renxin.doctor.activity.widget.RelativeWithText
+    <com.renxin.doctor.activity.widget.RelativeWithImage
         android:id="@+id/tv_books"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        app:isShowTab="false"
-        app:titleT="经典书籍" />
+        app:leftIamge="@drawable/icon_books"
+        app:title="经典书籍" />
 
-    <com.renxin.doctor.activity.widget.RelativeWithText
+    <com.renxin.doctor.activity.widget.RelativeWithImage
         android:id="@+id/tv_encyclopedia"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_marginBottom="10dp"
-        app:isShowLineT="false"
-        app:isShowTab="false"
-        app:titleT="中医百科" />
+        app:isShowLine="false"
+        app:leftIamge="@drawable/icon_baike"
+        app:title="中医百科" />
 
-
-    <com.renxin.doctor.activity.widget.RelativeWithText
-        android:id="@+id/tv_policy"
+    <com.renxin.doctor.activity.widget.RelativeWithImage
+        android:id="@+id/tv_guildnews"
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:visibility="gone"
-        app:isShowTab="false"
-        app:titleT="政策追踪" />
+        app:leftIamge="@drawable/icon_guild"
+        app:title="行业追踪" />
 
-    <com.renxin.doctor.activity.widget.RelativeWithText
-        android:id="@+id/tv_daywork"
+    <com.renxin.doctor.activity.widget.RelativeWithImage
+        android:id="@+id/tv_healtheducation"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:layout_marginBottom="10dp"
-        android:visibility="gone"
-        app:isShowLineT="false"
-        app:isShowTab="false"
-        app:titleT="中医日常" />
-
-    <com.renxin.doctor.activity.widget.RelativeWithText
-        android:id="@+id/tv_classroom"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:visibility="gone"
-        app:isShowLineT="false"
-        app:isShowTab="false"
-        app:titleT="培训与讲座" />
+        app:isShowLine="false"
+        app:leftIamge="@drawable/icon_health_edu"
+        app:title="健康教育" />
 
 </LinearLayout>

@@ -166,16 +166,21 @@ public class BottomBarItem extends LinearLayout {
             mTvUnread.setVisibility(GONE);
         } else if (unreadNum <= unreadNumThreshold) {
             mTvUnread.setVisibility(VISIBLE);
+            mTvRedPoint.setVisibility(GONE);
             mTvUnread.setText(String.valueOf(unreadNum));
         } else {
             mTvUnread.setVisibility(VISIBLE);
+            mTvRedPoint.setVisibility(GONE);
             mTvUnread.setText(String.format(Locale.CHINA, "%d+", unreadNumThreshold));
         }
     }
 
     //红点
     public void showNotify() {
+        //红点显示
         mTvRedPoint.setVisibility(VISIBLE);
+        //数字隐藏
+        mTvUnread.setVisibility(GONE);
     }
 
     public void hideNotify() {

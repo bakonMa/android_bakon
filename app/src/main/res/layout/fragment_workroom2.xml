@@ -150,18 +150,35 @@
                 android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/tv_checkpaper"
+
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawablePadding="5dp"
-                android:drawableTop="@drawable/selector_checkpaper_icon"
-                android:gravity="center"
-                android:padding="12dp"
-                android:text="审核开方"
-                android:textColor="@drawable/selector_textcolor_blackmain"
-                android:textSize="14sp" />
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tv_checkpaper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
+                    android:drawableTop="@drawable/selector_checkpaper_icon"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:text="审核开方"
+                    android:textColor="@drawable/selector_textcolor_blackmain"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_checkredpoint"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="12dp"
+                    android:background="@drawable/shape_red_point"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
+
 
             <TextView
                 android:id="@+id/tv_notice"
@@ -202,9 +219,9 @@
                 android:layout_toEndOf="@+id/iv_service_img"
                 android:layout_toStartOf="@+id/tv_service_time"
                 android:singleLine="true"
-                android:text="咨询客服"
                 android:textColor="@color/color_000"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:text="咨询客服" />
 
             <TextView
                 android:id="@+id/tv_service_message"
@@ -212,9 +229,12 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/iv_service_img"
                 android:layout_toEndOf="@+id/iv_service_img"
-                android:text="最后一次的内容"
+                android:layout_toStartOf="@+id/tv_service_num"
+                android:ellipsize="end"
+                android:singleLine="true"
                 android:textColor="@color/color_666"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:text="最后一次的内容" />
 
             <TextView
                 android:id="@+id/tv_service_time"
@@ -222,16 +242,16 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignTop="@+id/tv_service_name"
-                tools:text="上午11：20"
                 android:textColor="@color/color_d6d6d6"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:text="上午11：20" />
 
             <TextView
                 android:id="@+id/tv_service_num"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_alignParentRight="true"
                 android:layout_alignBottom="@+id/iv_service_img"
+                android:layout_alignParentRight="true"
                 android:background="@drawable/red_point"
                 android:gravity="center"
                 android:textColor="@color/white"
@@ -250,15 +270,69 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             app:leftIamge="@drawable/icon_history"
-            app:title="历史记录" />
+            app:title="历史处方" />
 
-        <com.renxin.doctor.activity.widget.RelativeWithImage
+        <RelativeLayout
             android:id="@+id/id_notification"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            app:isShowLine="false"
-            app:leftIamge="@drawable/icon_voice"
-            app:title="消息通知" />
+            android:background="@drawable/selector_bg_tab">
+
+            <ImageView
+                android:id="@+id/id_image"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/icon_voice"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/id_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/id_image"
+                android:text="消息通知"
+                android:textColor="@color/color_000"
+                android:textSize="14sp" />
+            <!--红点和数字-->
+            <TextView
+                android:id="@+id/tv_chatunreadnum"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/id_title"
+                android:background="@drawable/shape_red_point"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                android:visibility="gone" />
+            <!--红点-->
+            <TextView
+                android:id="@+id/tv_chatredpoint"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/id_title"
+                android:background="@drawable/shape_red_point"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="6sp"
+                android:visibility="gone" />
+
+            <ImageView
+                android:layout_width="4.7dp"
+                android:layout_height="8.4dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/icon_xuanze" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 </ScrollView>

@@ -25,6 +25,8 @@ public interface SPConfig {
     String SP_MESSAGE_STATUS = "message_status";
     //红点-审核处方
     String SP_REDPOINT_EXT = "redpoint_ext";
+    //红点-系统消息
+    String SP_REDPOINT_SYS = "redpoint_sys";
     //红点-添加患者
     String SP_REDPOINT_FIR = "redpoint_fir";
 

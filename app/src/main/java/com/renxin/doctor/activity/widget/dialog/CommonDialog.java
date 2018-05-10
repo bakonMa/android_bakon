@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.renxin.doctor.activity.R;
+import com.renxin.doctor.activity.utils.UIUtils;
 
 
 /**
@@ -33,10 +34,7 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
     private View.OnClickListener listener;
 
     public CommonDialog(@NonNull Activity context, int layout, View.OnClickListener listener) {
-        super(context, R.style.common_dialog);
-        this.mContext = context;
-        this.layout = layout;
-        this.listener = listener;
+        this(context, layout, "", listener);
     }
 
     public CommonDialog(@NonNull Activity context, int layout, String title, View.OnClickListener listener) {
@@ -51,6 +49,10 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
         this(context, isSingelBtn, false, titleStr, listener);
     }
 
+    public CommonDialog(@NonNull Activity context, String titleStr) {
+        this(context, true, titleStr, null);
+    }
+
     //是否显示输入框
     public CommonDialog(@NonNull Activity context, boolean isSingelBtn, boolean isInput, String titleStr, View.OnClickListener listener) {
         super(context, R.style.common_dialog);
@@ -62,9 +64,6 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
         this.listener = listener;
     }
 
-    public CommonDialog(@NonNull Activity context, String titleStr) {
-        this(context, true, titleStr, null);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,11 +90,22 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
                     ((TextView) layoutView.findViewById(R.id.dialog_title)).setText(titleStr);
                 }
                 break;
-            case R.layout.dialog_auth://普通 确定，取消   提示认证
-                layoutView = LayoutInflater.from(mContext).inflate(R.layout.dialog_common, null);
-                commEditext = layoutView.findViewById(R.id.dialog_content);
-                layoutView.findViewById(R.id.btn_no).setOnClickListener(this);
-                layoutView.findViewById(R.id.btn_ok).setOnClickListener(this);
+            case R.layout.dialog_auth:// 提示认证
+                layoutView = LayoutInflater.from(mContext).inflate(R.layout.dialog_auth, null);
+                //title
+                if (!TextUtils.isEmpty(titleStr)) {
+                    ((TextView) layoutView.findViewById(R.id.dialog_title)).setText(titleStr);
+                }
+                TextView noBtn = layoutView.findViewById(R.id.btn_no);
+                noBtn.setOnClickListener(this);
+                TextView okBtn = layoutView.findViewById(R.id.btn_gotuauth);
+                okBtn.setOnClickListener(this);
+                //未认证 显示"去认证"， 认证中 不显示
+                if (UIUtils.getString(R.string.str_autu_no).equals(titleStr)) {//未认证
+                    okBtn.setText("确定");
+                    noBtn.setVisibility(View.GONE);
+                    okBtn.setId(0);//改变id 不需要点击跳转
+                }
                 //title
                 if (!TextUtils.isEmpty(titleStr)) {
                     ((TextView) layoutView.findViewById(R.id.dialog_title)).setText(titleStr);

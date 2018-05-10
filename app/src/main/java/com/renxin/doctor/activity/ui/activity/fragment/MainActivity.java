@@ -4,9 +4,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
+import com.netease.nim.uikit.common.badger.Badger;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.msg.MsgService;
 import com.renxin.doctor.activity.R;
+import com.renxin.doctor.activity.config.EventConfig;
+import com.renxin.doctor.activity.data.eventbus.Event;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
+import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.widget.BottomBarItem;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.HashMap;
 
@@ -34,10 +43,10 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        tabHome.setUnreadNum(100);
-        tabPatient.setUnreadNum(10);
-        tabFind.showNotify();
-        tabMe.showNotify();
+//        tabHome.setUnreadNum(100);
+//        tabPatient.setUnreadNum(10);
+//        tabFind.showNotify();
+//        tabMe.showNotify();
 
 //        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //        transaction.add(fragment对象);
@@ -149,9 +158,43 @@ public class MainActivity extends BaseActivity {
         tabMe.setStatus(currTag == R.id.tab_me);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCome(Event event) {
+        if (event == null) {
+            return;
+        }
+        switch (event.getCode()) {
+            case EventConfig.EVENT_KEY_REDPOINT_HOME://底部红点 工作室
+                //是否有审核处方
+                int checkPaperNum = U.getRedPointExt();
+                //是否有系统消息
+                int systemMsgNum = U.getRedPointSys();
+                //未读消息数
+                int unReadMsgNum = NIMClient.getService(MsgService.class).getTotalUnreadCount();
+                //logo 角标 未读消息数
+                Badger.updateBadgerCount(unReadMsgNum);
+                //tab  是否显示红点
+                if (checkPaperNum > 0 || systemMsgNum > 0 || unReadMsgNum > 0) {
+                    tabHome.showNotify();
+                } else {
+                    tabHome.hideNotify();
+                }
+                break;
+            case EventConfig.EVENT_KEY_REDPOINT_PATIENT://底部红点 患者
+                //是否有审核处方
+                int newFirNum = U.getRedPointFir();
+                if (newFirNum > 0) {
+                    tabPatient.showNotify();
+                } else {
+                    tabPatient.hideNotify();
+                }
+                break;
+        }
+    }
+
     @Override
     protected boolean useEventBus() {
-        return false;
+        return true;
     }
 
     @Override

@@ -2,7 +2,10 @@ package com.renxin.doctor.activity.ui.presenter;
 
 import com.google.gson.Gson;
 import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.config.EventConfig;
 import com.renxin.doctor.activity.config.HttpConfig;
+import com.renxin.doctor.activity.data.eventbus.Event;
+import com.renxin.doctor.activity.data.eventbus.EventBusUtil;
 import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.data.response.HttpResponse;
 import com.renxin.doctor.activity.ui.base.BaseObserver;
@@ -84,15 +87,23 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
                     public void onSuccess(HttpResponse<OtherBean> resultResponse) {
                         //审方
                         U.setRedPointExt(resultResponse.data.ext_status);
+                        //系统消息
+                        U.setRedPointSys(resultResponse.data.sys_status);
                         //患者添加
                         U.setRedPointFir(resultResponse.data.fri_status);
-                        //TODO 红点状态
-                        mView.onSuccess(M.createMessage(resultResponse.data, GET_AUTH_STATUS));
+                        //TODO 红点状态红点是否显示
+                        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME));
+                        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME_CHECK));
+                        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME_SYSMSG));
+                        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_PATIENT));
+
+//                        mView.onSuccess(M.createMessage(resultResponse.data, GET_AUTH_STATUS));
                     }
 
                     @Override
                     public void onError(String errorCode, String errorMsg) {
-                        mView.onError(errorCode, errorMsg);
+                        LogUtil.d("getRedPointStatus errorMsg:" + errorMsg);
+//                        mView.onError(errorCode, errorMsg);
                     }
                 });
         mSubscription.add(subscription);

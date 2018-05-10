@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.netease.nim.uikit.api.NimUIKit;
@@ -30,13 +31,10 @@ import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.RequestCallbackWrapper;
 import com.netease.nimlib.sdk.ResponseCode;
-import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
-import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
-import com.netease.nimlib.sdk.msg.model.CustomMessageConfig;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.QueryDirectionEnum;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
@@ -44,6 +42,9 @@ import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.config.EventConfig;
+import com.renxin.doctor.activity.data.eventbus.Event;
+import com.renxin.doctor.activity.data.eventbus.EventBusUtil;
 import com.renxin.doctor.activity.nim.NimManager;
 import com.renxin.doctor.activity.nim.message.SessionHelper;
 import com.renxin.doctor.activity.nim.message.extension.AskPaperAttachment;
@@ -56,7 +57,8 @@ import com.renxin.doctor.activity.nim.message.extension.SnapChatAttachment;
 import com.renxin.doctor.activity.nim.message.extension.StickerAttachment;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.utils.LogUtil;
-import com.renxin.doctor.activity.widget.RelativeWithImage;
+import com.renxin.doctor.activity.utils.ToastUtil;
+import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
 import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 
@@ -71,6 +73,7 @@ import java.util.Map;
 import java.util.Set;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 import static com.netease.nim.uikit.business.recent.RecentContactsFragment.RECENT_TAG_STICKY;
@@ -83,8 +86,8 @@ public class RecentActivity extends BaseActivity {
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
-    @BindView(R.id.tv_system_message)
-    RelativeWithImage sytemMessage;
+    @BindView(R.id.tv_systemredpoint)
+    TextView tvSystemredpoint;
     @BindView(R.id.recent_recyclerview)
     RecyclerView recyclerView;
 
@@ -109,6 +112,8 @@ public class RecentActivity extends BaseActivity {
     @Override
     protected void initView() {
         initToolbar();
+        //系统消息 红点是否显示
+        tvSystemredpoint.setVisibility(U.getRedPointSys() > 0 ? View.VISIBLE : View.GONE);
         //nim手动登录
         NimManager.getInstance(DocApplication.getInstance()).nimLogin();
 
@@ -134,11 +139,21 @@ public class RecentActivity extends BaseActivity {
                 }).bind();
     }
 
-    private void notifyDataSetChanged() {
-        adapter.notifyDataSetChanged();
-//        boolean empty = items.isEmpty() && msgLoaded;
-//        emptyBg.setVisibility(empty ? View.VISIBLE : View.GONE);
-//        emptyHint.setHint("还没有会话，在通讯录中找个人聊聊吧！");
+    @OnClick({R.id.tv_system_message})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_system_message:
+                //系统消息点击后，红点消失
+                U.setRedPointSys(0);
+                tvSystemredpoint.setVisibility(View.GONE);
+                //通知 系统消息红点消失 和 tab 红点状态
+                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME));
+                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME_SYSMSG));
+
+                ToastUtil.showShort("进入系统消息");
+//                startActivity(new Intent(this, ResetPasswordActivity.class));
+                break;
+        }
     }
 
     @Override
@@ -147,6 +162,14 @@ public class RecentActivity extends BaseActivity {
         registerObservers(false);
         registerDropCompletedListener(false);
         registerOnlineStateChangeListener(false);
+    }
+
+    private void notifyDataSetChanged() {
+        adapter.notifyDataSetChanged();
+        //显示空页面 todo
+//        boolean empty = items.isEmpty() && msgLoaded;
+//        emptyBg.setVisibility(empty ? View.VISIBLE : View.GONE);
+//        emptyHint.setHint("还没有会话，在通讯录中找个人聊聊吧！");
     }
 
     /**
@@ -481,11 +504,6 @@ public class RecentActivity extends BaseActivity {
         public void onEvent(List<IMMessage> imMessages) {
             if (imMessages != null) {
                 for (IMMessage imMessage : imMessages) {
-                    //第一条消息，自动回复一条，tip
-//                    if (imMessage.getAttachment() instanceof FirstMessageAttachment) {
-//                    if (imMessage.getContent().equals("123456789")) {
-//                        firstMessageReply(imMessage.getFromAccount());
-//                    }
                     //@我
                     if (!TeamMemberAitHelper.isAitMessage(imMessage)) {
                         continue;
@@ -500,22 +518,6 @@ public class RecentActivity extends BaseActivity {
             }
         }
     };
-
-    //收到患者的第一天消息，自动回复
-    private void firstMessageReply(String accid) {
-        IMMessage msg = MessageBuilder.createTipMessage(accid, SessionTypeEnum.P2P);
-        msg.setContent("请给患者发送问诊单或者随诊单，待患者填写完成，详细了解患者的情况");
-        CustomMessageConfig config = new CustomMessageConfig();
-        config.enablePush = false; // 不推送
-        config.enableUnreadCount = false; // 消息不计入未读
-        // 消息发送状态设置为success
-        msg.setStatus(MsgStatusEnum.success);
-        msg.setConfig(config);
-        // 保存消息到本地数据库，但不发送到服务器
-        NIMClient.getService(MsgService.class).saveMessageToLocal(msg, true);
-//      NimManager.sengChatMsg(msg, true, null);
-    }
-
 
     private void addTag(RecentContact recent, long tag) {
         tag = recent.getTag() | tag;
@@ -594,7 +596,6 @@ public class RecentActivity extends BaseActivity {
             for (RecentContact r : items) {
                 unreadNum += r.getUnreadCount();
             }
-
             // 方式二：直接从SDK读取（相对慢）
             //int unreadNum = NIMClient.getService(MsgService.class).getTotalUnreadCount();
             if (callback != null) {

@@ -2,14 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_f6f6f6"
     android:orientation="vertical">
 
     <include layout="@layout/base_toolbar" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycleview"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/id_swipe"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/color_f6f6f6" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@drawable/selector_bg_tab"
+    android:paddingBottom="15dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="15dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@+id/iv_image"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/color_000"
+        android:textSize="16sp"
+        tools:text="新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题" />
+
+    <TextView
+        android:id="@+id/tv_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/iv_image"
+        android:layout_toStartOf="@+id/iv_image"
+        android:ellipsize="none"
+        android:maxLines="2"
+        android:textColor="@color/color_000"
+        android:textSize="11sp"
+        tools:text="新闻简介新闻简介新闻简介新闻简介新闻简介新闻简介新闻简介新闻简介新闻简介新闻简介新闻简介" />
+
+    <ImageView
+        android:id="@+id/iv_image"
+        android:layout_width="100dp"
+        android:layout_height="65dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/nim_default_img"
+        android:textColor="@color/color_000"
+        android:textSize="16sp" />
+
+</RelativeLayout>

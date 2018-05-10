@@ -27,4 +27,9 @@ public interface EventConfig {
 
     int EVENT_KEY_UPDATE_NOTICE = 0x120;//公告修改成功
     int EVENT_KEY_UPDATE_EXPLAIN = 0x121;//简介修改成功
+    //home tab 红点
+    int EVENT_KEY_REDPOINT_HOME = 0x122;//首页 工作室 红点
+    int EVENT_KEY_REDPOINT_HOME_CHECK = 0x123;//首页 工作室 审核处方红点
+    int EVENT_KEY_REDPOINT_HOME_SYSMSG = 0x124;//首页 工作室 系统消息红点
+    int EVENT_KEY_REDPOINT_PATIENT = 0x125;//首页 患者 红点
 }

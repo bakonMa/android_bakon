@@ -1,4 +1,4 @@
-package com.renxin.doctor.activity.ui.activity.mine.wallet;
+package com.renxin.doctor.activity.ui.activity.find;
 
 import android.app.Activity;
 import android.os.Message;
@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -15,11 +16,13 @@ import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
 import com.renxin.doctor.activity.injection.modules.ActivityModule;
+import com.renxin.doctor.activity.ui.activity.WebViewActivity;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.ui.base.BasePageBean;
-import com.renxin.doctor.activity.ui.bean.DealDetailBean;
-import com.renxin.doctor.activity.ui.contact.WalletContact;
-import com.renxin.doctor.activity.ui.presenter.present_jht.WalletPresenter;
+import com.renxin.doctor.activity.ui.bean.NewsInfoBean;
+import com.renxin.doctor.activity.ui.contact.FindContact;
+import com.renxin.doctor.activity.ui.presenter.present_jht.FindPresenter;
+import com.renxin.doctor.activity.utils.ImageUtil;
 import com.renxin.doctor.activity.widget.dialog.CommonDialog;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
 import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
@@ -34,10 +37,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 /**
- * GuildNewsListActivity 交易明细
- * Create at 2018/4/11 下午6:50 by mayakun
+ * GuildNewsListActivity 行业追踪
+ * Create at 2018/5/10 上午10:27 by mayakun
  */
-public class DealDetailListActivity extends BaseActivity implements WalletContact.View {
+public class GuildNewsListActivity extends BaseActivity implements FindContact.View {
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
@@ -47,11 +50,12 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
     RecyclerView recycleview;
 
     @Inject
-    WalletPresenter mPresenter;
+    FindPresenter mPresenter;
 
-    private List<DealDetailBean> dealDetailBeans = new ArrayList<>();
+    private List<NewsInfoBean> dealDetailBeans = new ArrayList<>();
     private BaseQuickAdapter mAdapter;
     private int pageNum = 1;
+    private int type = 0;//资讯分类：0行业追踪 1健康教育
 
     @Override
     protected int provideRootLayout() {
@@ -60,6 +64,7 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
 
     @Override
     protected void initView() {
+        type = getIntent().getIntExtra("type", 0);
         initToolbar();
 
         //下拉刷新
@@ -69,39 +74,51 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
             public void onRefresh() {
                 //刷新数据
                 pageNum = 1;
-                mPresenter.getDealFlow(pageNum);
+                mPresenter.getNewsList(type, pageNum);
             }
         });
 
         recycleview.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new BaseQuickAdapter<DealDetailBean, BaseViewHolder>(R.layout.item_deal_detail, dealDetailBeans) {
+        mAdapter = new BaseQuickAdapter<NewsInfoBean, BaseViewHolder>(R.layout.item_news_info, dealDetailBeans) {
             @Override
-            protected void convert(BaseViewHolder helper, DealDetailBean item) {
-                String montyType = "提现".equals(item.type) ? "-" : "+";
-                helper.setText(R.id.tv_dealtype, TextUtils.isEmpty(item.type) ? "" : item.type)
-                        .setText(R.id.tv_date, TextUtils.isEmpty(item.deal_time) ? "" : item.deal_time)
-                        .setText(R.id.tv_money, TextUtils.isEmpty(item.money) ? "" : (montyType + item.money));
+            protected void convert(BaseViewHolder helper, NewsInfoBean item) {
+                helper.setText(R.id.tv_title, TextUtils.isEmpty(item.title) ? "" : item.title)
+                        .setText(R.id.tv_des, TextUtils.isEmpty(item.description) ? "" : item.description);
+
+                ImageUtil.showImage(item.thumbnail, helper.getView(R.id.iv_image));
             }
         };
-
+        //加载更多
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                mPresenter.getDealFlow(pageNum + 1);
+                mPresenter.getNewsList(type, pageNum + 1);
             }
         }, recycleview);
+        //item点击
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                WebViewActivity.startAct(actContext(),
+                        true,
+                        WebViewActivity.WEB_TYPE.WEB_TYPE_NEWS,
+                        dealDetailBeans.get(position).title,
+                        dealDetailBeans.get(position).url
+                );
+            }
+        });
 
         recycleview.setAdapter(mAdapter);
-        
+
         //请求数据
         idSwipe.setRefreshing(true);
-        mPresenter.getDealFlow(pageNum);
+        mPresenter.getNewsList(type, pageNum);
     }
 
     //获取当前界面可用高度
     private void initToolbar() {
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
-                .setTitle("交易明细")
+                .setTitle(type == 0 ? "行业追踪" : "健康教育")
                 .setStatuBar(R.color.white)
                 .setLeft(false)
                 .setListener(new TitleOnclickListener() {
@@ -112,7 +129,6 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
                     }
                 }).bind();
     }
-
 
     @Override
     protected void setupActivityComponent() {
@@ -129,12 +145,12 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
             return;
         }
         switch (message.what) {
-            case WalletPresenter.GET_DEAL_LIST_OK:
+            case FindPresenter.GET_NEWS_OK:
                 if (idSwipe.isRefreshing()) {
                     idSwipe.setRefreshing(false);
                 }
 
-                BasePageBean<DealDetailBean> tempBean = (BasePageBean<DealDetailBean>) message.obj;
+                BasePageBean<NewsInfoBean> tempBean = (BasePageBean<NewsInfoBean>) message.obj;
                 if (tempBean != null && tempBean.list != null) {
                     pageNum = tempBean.page;
                     //第一页 情况

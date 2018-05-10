@@ -113,7 +113,7 @@ public class AuthStep4Activity extends BaseActivity implements AuthContact.View 
                 tvOrganization.setText(TextUtils.isEmpty(bean.organization) ? "" : bean.organization);
                 tvLabType.setText(TextUtils.isEmpty(bean.department) ? "" : bean.department);
                 tvTitle.setText(TextUtils.isEmpty(bean.title) ? "" : bean.title);
-                ImageUtil.showImage(bean.header, ivImg1);
+                ImageUtil.showImage(bean.id_card_photo, ivImg1);
                 ImageUtil.showImage(bean.profession_photo, ivImg2);
                 ImageUtil.showImage(bean.qalification_photo, ivImg3);
                 break;

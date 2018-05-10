@@ -207,15 +207,12 @@ public class WalletPresenter implements WalletContact.Presenter {
     @Override
     public void getDealFlow(int pageNum) {
         Params params = new Params();
-        params.put("pageNum", pageNum);
+        params.put("page", pageNum);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
         Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getDealFlow(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mDialog != null) mDialog.show();
-                })
-                .subscribe(new BaseObserver<HttpResponse<BasePageBean<DealDetailBean>>>(mDialog) {
+                .subscribe(new BaseObserver<HttpResponse<BasePageBean<DealDetailBean>>>(null) {
                     @Override
                     public void onSuccess(HttpResponse<BasePageBean<DealDetailBean>> response) {
                         mView.onSuccess(M.createMessage(response.data, GET_DEAL_LIST_OK));

@@ -25,6 +25,7 @@ import com.renxin.doctor.activity.ui.bean.MessageBean;
 import com.renxin.doctor.activity.ui.bean.MessageCountBean;
 import com.renxin.doctor.activity.ui.bean.MyAccountInfoBean;
 import com.renxin.doctor.activity.ui.bean.MyLoanBean;
+import com.renxin.doctor.activity.ui.bean.NewsInfoBean;
 import com.renxin.doctor.activity.ui.bean.OPenPaperBaseBean;
 import com.renxin.doctor.activity.ui.bean.OtherBean;
 import com.renxin.doctor.activity.ui.bean.PatientBean;
@@ -198,7 +199,11 @@ public interface HttpAPI {
 
     //首页 banner
     @POST("get_homebanner")
-    Observable<HttpResponse<List<BannerBean>>> getHomeBanner(@QueryMap Params params);
+    Observable<HttpResponse<List<BannerBean>>> getHomeBanner(@Body Params params);
+
+    //发现 行业追踪，健康教育
+    @POST("infolist")
+    Observable<HttpResponse<BasePageBean<NewsInfoBean>>> getNewslist(@Body Params params);
 
     //更新token
     @POST("updateToken")

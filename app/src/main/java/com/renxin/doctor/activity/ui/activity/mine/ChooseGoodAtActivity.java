@@ -121,6 +121,7 @@ public class ChooseGoodAtActivity extends BaseActivity {
     private void initToolbar() {
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("擅长疾病")
+                .setLeft(false)
                 .setRightText("保存", true, R.color.color_main)
                 .setStatuBar(R.color.white)
                 .setListener(new TitleOnclickListener() {

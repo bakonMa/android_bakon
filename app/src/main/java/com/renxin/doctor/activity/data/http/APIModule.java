@@ -1,5 +1,6 @@
 package com.renxin.doctor.activity.data.http;
 
+import com.google.gson.Gson;
 import com.renxin.doctor.activity.BuildConfig;
 import com.renxin.doctor.activity.config.SPConfig;
 import com.renxin.doctor.activity.data.localdata.SharePreferencesWrapper;
@@ -23,7 +24,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * @author: ZhaoYun
  * @date: 2017/11/1
- * @project: customer-android-2th
  * @detail:
  */
 @Module
@@ -98,7 +98,7 @@ public final class APIModule {
         builder.client(okHttpClient)
                 .baseUrl(HttpConfig.BASE_URL)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create());
+                .addConverterFactory(GsonConverterFactory.create(new Gson()));
         return builder.build();
     }
 

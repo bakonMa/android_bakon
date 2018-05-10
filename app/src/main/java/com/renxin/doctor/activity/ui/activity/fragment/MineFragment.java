@@ -165,6 +165,9 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
     //根据认证状态，修改UI
     //状态值，0：未认证 1：审核中；2：审核通过 3：审核失败
     private void changeViewStatus(int status) {
+        if (idSwipe.isRefreshing()) {
+            idSwipe.setRefreshing(false);
+        }
         switch (status) {
             case 0:
                 lltAuthStatus.setVisibility(View.VISIBLE);
@@ -224,6 +227,7 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
 
     @Override
     public void onError(String errorCode, String errorMsg) {
+        //下来刷新关闭
         if (idSwipe.isRefreshing()) {
             idSwipe.setRefreshing(false);
         }

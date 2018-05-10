@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,17 +16,17 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.config.EventConfig;
 import com.renxin.doctor.activity.data.eventbus.Event;
+import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
+import com.renxin.doctor.activity.injection.modules.ActivityModule;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.ui.bean.BankCardBean;
 import com.renxin.doctor.activity.ui.contact.WalletContact;
 import com.renxin.doctor.activity.ui.presenter.present_jht.WalletPresenter;
 import com.renxin.doctor.activity.widget.dialog.CommonDialog;
-import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
-import com.renxin.doctor.activity.config.EventConfig;
-import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
-import com.renxin.doctor.activity.injection.modules.ActivityModule;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
+import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -47,6 +48,8 @@ public class MyBankCardActivity extends BaseActivity implements WalletContact.Vi
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
+    @BindView(R.id.id_swipe)
+    SwipeRefreshLayout idSwipe;
     @BindView(R.id.recycleview)
     RecyclerView bankRecycleview;
 
@@ -66,6 +69,16 @@ public class MyBankCardActivity extends BaseActivity implements WalletContact.Vi
     protected void initView() {
         type = getIntent().getIntExtra("type", 0);
         initToolbar();
+
+        //下拉刷新
+        idSwipe.setColorSchemeColors(getResources().getColor(R.color.color_main));
+        idSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //刷新数据
+                mPresenter.userBankList();
+            }
+        });
 
         bankRecycleview.setLayoutManager(new LinearLayoutManager(this));
         adapter = new BaseQuickAdapter<BankCardBean, BaseViewHolder>(R.layout.item_bankcard, bankCardBeans) {
@@ -135,6 +148,9 @@ public class MyBankCardActivity extends BaseActivity implements WalletContact.Vi
     public void onSuccess(Message message) {
         switch (message.what) {
             case WalletPresenter.GET_BANKCARD_OK:
+                if (idSwipe.isRefreshing()) {
+                    idSwipe.setRefreshing(false);
+                }
                 bankCardBeans.clear();
                 bankCardBeans.addAll((List<BankCardBean>) message.obj);
                 adapter.notifyDataSetChanged();
