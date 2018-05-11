@@ -10,11 +10,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.util.sys.TimeUtil;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.StatusCode;
+import com.netease.nimlib.sdk.auth.AuthServiceObserver;
 import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.MsgServiceObserve;
@@ -33,13 +36,16 @@ import com.renxin.doctor.activity.data.eventbus.Event;
 import com.renxin.doctor.activity.data.eventbus.EventBusUtil;
 import com.renxin.doctor.activity.injection.components.DaggerFragmentComponent;
 import com.renxin.doctor.activity.injection.modules.FragmentModule;
+import com.renxin.doctor.activity.nim.NimManager;
 import com.renxin.doctor.activity.nim.message.SessionHelper;
+import com.renxin.doctor.activity.nim.message.extension.FirstMessageAttachment;
 import com.renxin.doctor.activity.ui.activity.WebViewActivity;
 import com.renxin.doctor.activity.ui.activity.home.CheckPaperActivity;
 import com.renxin.doctor.activity.ui.activity.home.CommUsePaperActivity;
 import com.renxin.doctor.activity.ui.activity.home.OpenPaperCameraActivity;
 import com.renxin.doctor.activity.ui.activity.home.OpenPaperOnlineActivity;
 import com.renxin.doctor.activity.ui.activity.home.PaperHistoryActivity;
+import com.renxin.doctor.activity.ui.activity.login.LoginActivity;
 import com.renxin.doctor.activity.ui.activity.mine.AuthStep1Activity;
 import com.renxin.doctor.activity.ui.activity.mine.UserNoticeActivity;
 import com.renxin.doctor.activity.ui.base.BaseFragment;
@@ -49,6 +55,7 @@ import com.renxin.doctor.activity.ui.nimview.PaperH5Activity;
 import com.renxin.doctor.activity.ui.nimview.RecentActivity;
 import com.renxin.doctor.activity.ui.presenter.WorkRoomPresenter;
 import com.renxin.doctor.activity.utils.ImageUtil;
+import com.renxin.doctor.activity.utils.LogUtil;
 import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.utils.UIUtils;
@@ -109,6 +116,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     private List<BannerBean> bannerBeans = new ArrayList<>();
     private List<String> imgUrl = new ArrayList<>();
 
+    //客服accid
+    private String accid;
 
     @Override
     protected int provideRootLayout() {
@@ -126,6 +135,10 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
 
     @Override
     protected void initView() {
+        //nim手动登录
+        NimManager.getInstance(DocApplication.getInstance()).nimLogin();
+        //获取客服accid login接口获得
+        accid = DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_SERVICE_ACCID);
         //设置图片集合
         requestPermissions();
         //Banner初始化
@@ -138,53 +151,45 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         mPresenter.getRedPointStatus();//红点状态
         //首页Banner数据
         mPresenter.getHomeBanner();
-        //客服 初始化
-        initService();
+
+        //登录状态监听 nim互踢
+        NIMClient.getService(AuthServiceObserver.class).observeOnlineStatus(new Observer<StatusCode>() {
+            public void onEvent(StatusCode status) {
+                LogUtil.d("observeOnlineStatus = " + status);
+                if (status.wontAutoLogin()) {
+                    // 被踢出、账号被禁用、密码错误等情况，自动登录失败，需要返回到登录界面进行重新登录操作
+                    LogUtil.d("observeOnlineStatus :你被踢下线了");
+                    //重新登录
+                    EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_NIM_LOGOUT));
+                } else if (status == StatusCode.UNLOGIN) {
+                    //未登录就等一下
+                    NimManager.getInstance(DocApplication.getInstance()).nimLogin();
+                } else if (status == StatusCode.LOGINED) {
+                    //登录成功 初始化service
+                    EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_NIM_LOGIN));
+                }
+            }
+        }, true);
     }
 
-    //客服accid
-    private String accid;
-
+    //登录成功后初始化 客服数据
     private void initService() {
-        //获取客服accid
-        accid = DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_SERVICE_ACCID);
-//        accid = "851b6313ba321b719d861aa658c7f5a5";
+        //测试
+        // accid = "851b6313ba321b719d861aa658c7f5a5";
         accid = "753166d9bce4d2c7c4c30b520c647d4c";
-
         //最近联系人列表变化观察者
         NIMClient.getService(MsgServiceObserve.class).observeRecentContact(messageObserver, true);
         NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(messageReceiverObserver, true);
 
         //第一次主动 发起
-        firstShowSeverMessage();//第一次展示聊天数据（需要主动去取）
-        showServide();//客服数据
-//        chatMessageShowNum();//[消息通知]是否显示数字
+        showServiceInfo();//客服资料数据
+        showLastServiceMessage();//最后一条消息内容
+        showAllUnreadMessageNum();//[消息通知]是否显示数字 和 系统消息红点
         EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME));//通知【工作室】 是否显示红点
     }
 
-    /**
-     * [消息通知]是否显示数字
-     * 没有未读消息，是否有系统消息
-     */
-    private void chatMessageShowNum() {
-        int unreadNum = NIMClient.getService(MsgService.class).getTotalUnreadCount();
-        if (unreadNum > 99) {
-            unreadNum = 99;
-        } else if (unreadNum < 0) {
-            unreadNum = 0;
-        }
-        if (unreadNum > 0) {
-            tvChatunreadnum.setText(unreadNum + "");
-            tvChatunreadnum.setVisibility(View.VISIBLE);
-            tvChatReadPoint.setVisibility(View.GONE);
-        } else {
-            tvChatunreadnum.setVisibility(View.GONE);
-            tvChatReadPoint.setVisibility(U.getRedPointSys() > 0 ? View.VISIBLE : View.GONE);
-        }
-    }
-
-    //第一次打开读取客服资料
-    private void firstShowSeverMessage() {
+    //最后一条消息内容
+    private void showLastServiceMessage() {
         // 查询最近联系人列表数据
         NIMClient.getService(MsgService.class).queryRecentContacts().setCallback(new RequestCallback<List<RecentContact>>() {
             @Override
@@ -193,8 +198,6 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 for (RecentContact loadedRecent : recentContacts) {
                     if (loadedRecent.getSessionType() == SessionTypeEnum.P2P
                             && loadedRecent.getContactId().equals(accid)) {
-                        //防止 客服数据变化
-                        //showServide();
                         //显示客服最后一条消息
                         showLastMessage(loadedRecent);
                     }
@@ -213,13 +216,34 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     }
 
     //显示客服数据
-    private void showServide() {
+    private void showServiceInfo() {
         //客服个人资料
         String serviceName = UserInfoHelper.getUserDisplayName(accid);
         //name
         tvServiceName.setText(TextUtils.isEmpty(serviceName) ? "咨询客服" : serviceName);
         //head img
         ImageUtil.showCircleImage(UserInfoHelper.getUserHeadImg(accid), ivServiceImg);
+    }
+
+    /**
+     * [消息通知]是否显示数字 和 系统消息红点
+     * ps：优先未读消息数字心事显示
+     */
+    private void showAllUnreadMessageNum() {
+        int unreadNum = NIMClient.getService(MsgService.class).getTotalUnreadCount();
+        if (unreadNum > 99) {
+            unreadNum = 99;
+        } else if (unreadNum < 0) {
+            unreadNum = 0;
+        }
+        if (unreadNum > 0) {
+            tvChatunreadnum.setText(unreadNum + "");
+            tvChatunreadnum.setVisibility(View.VISIBLE);
+            tvChatReadPoint.setVisibility(View.GONE);
+        } else {
+            tvChatunreadnum.setVisibility(View.GONE);
+            tvChatReadPoint.setVisibility(U.getRedPointSys() > 0 ? View.VISIBLE : View.GONE);
+        }
     }
 
     //最近联系人列表变化观察者
@@ -229,14 +253,14 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
             for (RecentContact loadedRecent : recentContacts) {
                 if (loadedRecent.getSessionType() == SessionTypeEnum.P2P
                         && loadedRecent.getContactId().equals(accid)) {
-                    //显示客服最后一天消息
-                    showLastMessage(loadedRecent);
+                    //显示客服最后一条消息
+                    EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_SERVICE_MESSAGE, loadedRecent));
                 }
             }
-            //TODO
-            //未读消息数处理
-            chatMessageShowNum();//[消息通知]是否显示数字
-            EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME));//通知【工作室是否显示红点】和 logo角标处理
+            //工作室内部红点 未读消息数和系统消息红点
+            EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME_SYSMSG));
+            //通知【工作室是否显示红点】和 logo角标处理
+            EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME));
         }
     };
     //监听在线消息中是否有 患者第一条消息 自动回复
@@ -246,8 +270,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
             if (imMessages != null) {
                 for (IMMessage imMessage : imMessages) {
                     //第一条消息，自动回复一条，tip
-//                    if (imMessage.getAttachment() instanceof FirstMessageAttachment) {
-                    if (imMessage.getContent().equals("123456789")) {
+                    if (imMessage.getAttachment() instanceof FirstMessageAttachment) {
+//                    if (imMessage.getContent().equals("123456789")) {//测试
                         tvServiceMessage.postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -433,12 +457,33 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
             return;
         }
         switch (event.getCode()) {
+            case EventConfig.EVENT_KEY_NIM_LOGIN://nim 登录成功
+                //客服 初始化
+                initService();
+                break;
             case EventConfig.EVENT_KEY_REDPOINT_HOME_CHECK://红点 审核处方
                 //是否有审核处方
                 tvCheckredpoint.setVisibility(U.getRedPointExt() > 0 ? View.VISIBLE : View.GONE);
                 break;
             case EventConfig.EVENT_KEY_REDPOINT_HOME_SYSMSG://消息通知 未读消息数和系统消息红点
-                chatMessageShowNum();
+                showAllUnreadMessageNum();
+                break;
+            case EventConfig.EVENT_KEY_SERVICE_MESSAGE://客服数据 变化
+                showLastMessage((RecentContact) event.getData());
+                break;
+            case EventConfig.EVENT_KEY_NIM_LOGOUT://踢掉 进入登录画面
+                U.logout();
+                NimUIKit.logout();
+                Activity currAct = DocApplication.getAppComponent().mgrRepo().actMgr().currentActivity().get();
+                commonDialog = new CommonDialog(currAct, true, "该账户在其他终端登录，注意账号信息安全", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //关闭所有activity
+                        DocApplication.getAppComponent().mgrRepo().actMgr().finishAllActivity();
+                        startActivity(new Intent(DocApplication.getInstance(), LoginActivity.class));
+                    }
+                });
+                commonDialog.show();
                 break;
         }
     }

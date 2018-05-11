@@ -1,5 +1,6 @@
 package com.renxin.doctor.activity.ui.presenter;
 
+import com.netease.nim.uikit.api.NimUIKit;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.config.HttpConfig;
 import com.renxin.doctor.activity.config.SPConfig;
@@ -142,7 +143,7 @@ public class LoginPresenter implements LoginContact.Presenter {
                         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCID, loginResponseHttpResponse.data.accid);
                         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_NIM_ACCTOKEN, loginResponseHttpResponse.data.acctoken);
                         //nim手动登录
-                        NimManager.getInstance(DocApplication.getInstance()).nimLogin();
+//                        NimManager.getInstance(DocApplication.getInstance()).nimLogin();
 
                         mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, REGISTE_SUCCESS));
                     }
@@ -170,6 +171,8 @@ public class LoginPresenter implements LoginContact.Presenter {
                     public void onSuccess(HttpResponse<String> loginResponseHttpResponse) {
                         //清空本地数据
                         U.logout();
+                        //im logout
+                        NimUIKit.logout();
                         mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, LOGOUT_SUCCESS));
                     }
 

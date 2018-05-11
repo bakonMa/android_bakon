@@ -91,13 +91,17 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
                         U.setRedPointSys(resultResponse.data.sys_status);
                         //患者添加
                         U.setRedPointFir(resultResponse.data.fri_status);
-                        //TODO 红点状态红点是否显示
-                        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME));
-                        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME_CHECK));
-                        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME_SYSMSG));
-                        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_PATIENT));
 
-//                        mView.onSuccess(M.createMessage(resultResponse.data, GET_AUTH_STATUS));
+                        //审核处方 红点
+                        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME_CHECK));
+                        //患者 红点
+                        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_PATIENT));
+                        //【工作室】红点,logo红点
+                        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME));
+                        //系统消息 红点
+                        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME_SYSMSG));
+                        //不需要前台处理
+                        //mView.onSuccess(M.createMessage(resultResponse.data, GET_AUTH_STATUS));
                     }
 
                     @Override

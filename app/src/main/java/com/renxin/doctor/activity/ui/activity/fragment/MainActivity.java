@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.netease.nim.uikit.common.badger.Badger;
 import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.StatusCode;
 import com.netease.nimlib.sdk.msg.MsgService;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.config.EventConfig;
@@ -170,7 +171,10 @@ public class MainActivity extends BaseActivity {
                 //是否有系统消息
                 int systemMsgNum = U.getRedPointSys();
                 //未读消息数
-                int unReadMsgNum = NIMClient.getService(MsgService.class).getTotalUnreadCount();
+                int unReadMsgNum = 0;
+                if (NIMClient.getStatus() == StatusCode.LOGINED) {
+                    unReadMsgNum = NIMClient.getService(MsgService.class).getTotalUnreadCount();
+                }
                 //logo 角标 未读消息数
                 Badger.updateBadgerCount(unReadMsgNum);
                 //tab  是否显示红点

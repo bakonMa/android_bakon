@@ -39,7 +39,6 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
 
     private LoadingDialog mDialog;
 
-    public static final int GET_BASEDATA_0K = 0x110;
     public static final int UPLOADIMF_OK = 0x111;
     public static final int UPLOADIMF_ERROR = 0x112;
     public static final int OPENPAPER_CAMERA_OK = 0x113;

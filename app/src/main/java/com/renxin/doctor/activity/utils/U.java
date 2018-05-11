@@ -132,11 +132,16 @@ public class U {
         DocApplication.getAppComponent().dataRepo().appSP().setInteger(SPConfig.SP_INT_SUTH_STATUS, 0);
         //用户信息
         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_INT_SUTH_STATUS, "");
+        //审方 红点
+        U.setRedPointExt(0);
+        //系统消息 红点
+        U.setRedPointSys(0);
+        //患者添加 红点
+        U.setRedPointFir(0);
     }
 
     //每页的size
     public static final int PAGE_SIZE = 15;
-
 
 //    //交易状态
 //    public final static HashMap<String, String> DEAL_STATUS = new HashMap<>();

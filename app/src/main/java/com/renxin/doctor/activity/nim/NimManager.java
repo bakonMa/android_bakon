@@ -104,7 +104,6 @@ public class NimManager {
             @Override
             public void onFailed(int i) {
                 LogUtil.d("nimLogin onFailed i=" + i);
-
             }
 
             @Override
@@ -115,7 +114,6 @@ public class NimManager {
         });
 
     }
-
 
     // 如果已经存在用户登录信息，返回LoginInfo，否则返回null即可
     private LoginInfo getLoginInfo() {
@@ -149,6 +147,5 @@ public class NimManager {
             NIMClient.getService(MsgService.class).sendMessage(imMessage, isReSend).setCallback(requestCallback);
         }
     }
-
 
 }

@@ -6,12 +6,7 @@ package com.renxin.doctor.activity.config;
  */
 
 public interface EventConfig {
-    int REFRESH_PERSONAL = 0x111;//刷新个人中心数据
-    int REQUEST_HOMELOAN = 0x113;//未登录状态下点击申请，登录成功后对借款首页逻辑处理
-    int REFRESH_MAX_AMT = 0x114; //刷新借款主页最大额度接口
-    int REFRESH_ORDER = 0x120;//刷新订单列表
     int REFRESH_APK_DOWNLOAD_PROGRESS = 0x121; //刷新Apk安装包的下载进度
-    int REFRESH_MESSAGE_RED_POINT = 0x122; //取消【我】消息红点
 
 
     //*********************jht**********************
@@ -32,4 +27,9 @@ public interface EventConfig {
     int EVENT_KEY_REDPOINT_HOME_CHECK = 0x123;//首页 工作室 审核处方红点
     int EVENT_KEY_REDPOINT_HOME_SYSMSG = 0x124;//首页 工作室 系统消息红点
     int EVENT_KEY_REDPOINT_PATIENT = 0x125;//首页 患者 红点
+
+
+    int EVENT_KEY_SERVICE_MESSAGE = 0x126;//客服消息
+    int EVENT_KEY_NIM_LOGIN = 0x127;//云信im登录成功
+    int EVENT_KEY_NIM_LOGOUT = 0x128;//云信im被踢，进入登录画面
 }
