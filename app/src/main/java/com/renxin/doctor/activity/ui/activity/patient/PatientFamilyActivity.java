@@ -107,7 +107,7 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //选择患者
-                if(formType == 1){
+                if (formType == 1) {
                     PatientFamilyBean.JiuzhenBean bean = jiuzhenBeans.get(position);
                     bean.id = membNo;//讨巧，后台需要的是患者的id
                     bean.setIm_accid(im_accid);
@@ -143,14 +143,14 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
     @OnClick({R.id.et_price, R.id.rlt_head, R.id.tv_gotochat})
     public void btnOnClick(View view) {
         //选择患者时不能修改其他都行
-        if(formType == 1){
+        if (formType == 1) {
             return;
         }
         switch (view.getId()) {
             case R.id.tv_gotochat://进入聊天
                 SessionHelper.startP2PSession(actContext(), im_accid);
                 break;
-                case R.id.rlt_head://设置备注
+            case R.id.rlt_head://设置备注
                 Intent intent = new Intent(this, RemarkNameActivity.class);
                 intent.putExtra("patientinfo", bean.patientinfo);
                 startActivityForResult(intent, REQUEST_CODE_REMARKNAME);

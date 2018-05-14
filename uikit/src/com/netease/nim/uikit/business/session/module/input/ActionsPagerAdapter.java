@@ -57,7 +57,7 @@ public class ActionsPagerAdapter extends PagerAdapter {
                 }
             });
         } else {
-            gridView.setNumColumns(actions.size());
+            gridView.setNumColumns(4);
 
             container.post(new Runnable() {
                 @Override

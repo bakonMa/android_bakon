@@ -99,23 +99,27 @@ public class SessionHelper {
         // 注册消息撤回监听器
         registerMsgRevokeObserver();
 
-        NimUIKit.setCommonP2PSessionCustomization(getP2pCustomization());
+//        NimUIKit.setCommonP2PSessionCustomization(getP2pCustomization());
 
         NimUIKit.setRecentCustomization(getRecentCustomization());
     }
 
     public static void startP2PSession(Context context, String account) {
-        startP2PSession(context, account, null);
+        startP2PSession(context, account, null, false);
     }
 
-    public static void startP2PSession(Context context, String account, IMMessage anchor) {
+    public static void startP2PSession(Context context, String account, boolean isService) {
+        startP2PSession(context, account, null, isService);
+    }
+
+    public static void startP2PSession(Context context, String account, IMMessage anchor, boolean isService) {
         if (!DocCache.getAccount().equals(account)) {
             if (NimUIKit.getRobotInfoProvider().getRobotByAccount(account) != null) {
                 NimUIKit.startChatting(context, account, SessionTypeEnum.P2P, null, anchor);
             } else {
 //                NimUIKit.startP2PSession(context, account, anchor);
                 //p2p聊天
-                P2PChatActivity.start(context, account, getP2pCustomization(), null);
+                P2PChatActivity.start(context, account, isService ? getServiceP2pCustomization() : getP2pCustomization(), null);
             }
         } else {
             NimUIKit.startChatting(context, account, SessionTypeEnum.P2P, null, anchor);
@@ -181,6 +185,34 @@ public class SessionHelper {
 //            buttons.add(cloudMsgButton);
 //            buttons.add(infoButton);
 //            p2pCustomization.buttons = buttons;
+        }
+
+        return p2pCustomization;
+    }
+
+    // 定制化单聊界面。客服的
+    private static SessionCustomization getServiceP2pCustomization() {
+        if (p2pCustomization == null) {
+            p2pCustomization = new SessionCustomization() {
+                // 由于需要Activity Result， 所以重载该函数。
+                @Override
+                public void onActivityResult(final Activity activity, int requestCode, int resultCode, Intent data) {
+                    super.onActivityResult(activity, requestCode, resultCode, data);
+                }
+
+                @Override
+                public MsgAttachment createStickerAttachment(String category, String item) {
+                    return new StickerAttachment(category, item);
+                }
+            };
+
+            // 定制加号点开后可以包含的操作， 客服只有图片
+            ArrayList<BaseAction> actions = new ArrayList<>();
+            actions.add(new PhotoAction(0));
+            actions.add(new PhotoAction(1));
+
+            p2pCustomization.actions = actions;
+            p2pCustomization.withSticker = false;//显示表情为 true，不显示表情为 false（可自定义表情图）
         }
 
         return p2pCustomization;

@@ -402,7 +402,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
             case R.id.rlt_service://客服
 //                NimUIKit.startP2PSession(actContext(), "3ef2e56a2f9476de092743cbd577a900", null);
 //                SessionHelper.startP2PSession(actContext(), "3ef2e56a2f9476de092743cbd577a900");
-                SessionHelper.startP2PSession(actContext(), accid);
+                SessionHelper.startP2PSession(actContext(), accid, true);
                 break;
             case R.id.id_history://历史处方
                 startActivity(new Intent(actContext(), PaperHistoryActivity.class));
