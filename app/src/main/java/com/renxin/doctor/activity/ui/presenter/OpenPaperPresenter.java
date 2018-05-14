@@ -6,6 +6,7 @@ import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.data.response.HttpResponse;
 import com.renxin.doctor.activity.ui.base.BaseObserver;
 import com.renxin.doctor.activity.ui.base.BasePageBean;
+import com.renxin.doctor.activity.ui.bean.OnlinePaperBackBean;
 import com.renxin.doctor.activity.ui.bean_jht.BaseConfigBean;
 import com.renxin.doctor.activity.ui.bean_jht.CheckPaperBean;
 import com.renxin.doctor.activity.ui.bean_jht.CommPaperBean;
@@ -135,10 +136,10 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                 .doOnSubscribe(() -> {
                     if (mDialog != null)
                         mDialog.show();
-                }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                }).subscribe(new BaseObserver<HttpResponse<OnlinePaperBackBean>>(mDialog) {
                     @Override
-                    public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, OPENPAPER_ONLINE_OK));
+                    public void onSuccess(HttpResponse<OnlinePaperBackBean> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, OPENPAPER_ONLINE_OK));
                     }
 
                     @Override

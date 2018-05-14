@@ -27,6 +27,7 @@ import com.renxin.doctor.activity.ui.bean.MyAccountInfoBean;
 import com.renxin.doctor.activity.ui.bean.MyLoanBean;
 import com.renxin.doctor.activity.ui.bean.NewsInfoBean;
 import com.renxin.doctor.activity.ui.bean.OPenPaperBaseBean;
+import com.renxin.doctor.activity.ui.bean.OnlinePaperBackBean;
 import com.renxin.doctor.activity.ui.bean.OtherBean;
 import com.renxin.doctor.activity.ui.bean.PatientBean;
 import com.renxin.doctor.activity.ui.bean.PatientFamilyBean;
@@ -219,7 +220,7 @@ public interface HttpAPI {
 
     //在线开方
     @POST("line_extraction")
-    Observable<HttpResponse<String>> lineExtraction(@QueryMap Params params);
+    Observable<HttpResponse<OnlinePaperBackBean>> lineExtraction(@QueryMap Params params);
 
     //accid 换 memb_no
     @POST("getmemb_no")

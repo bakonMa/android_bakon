@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:background="@drawable/selector_bg_tab"
-    android:paddingBottom="15dp"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
     android:paddingTop="15dp">
@@ -13,24 +12,26 @@
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/iv_image"
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@color/color_000"
         android:textSize="16sp"
-        tools:text="新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题新闻标题" />
+        tools:text="新闻标" />
 
     <TextView
         android:id="@+id/tv_des"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/iv_image"
+        android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/iv_image"
         android:ellipsize="none"
-        android:maxLines="2"
+        android:lines="2"
         android:textColor="@color/color_000"
-        android:textSize="11sp"
-        tools:text="新闻简介新闻简介新闻简介新闻简介新闻简介新闻简介新闻简介新闻简介新闻简介新闻简介新闻简介" />
+        android:textSize="12sp"
+        tools:text="闻简介新闻简介新闻简介新闻简介" />
 
     <ImageView
         android:id="@+id/iv_image"
@@ -42,5 +43,9 @@
         android:src="@drawable/nim_default_img"
         android:textColor="@color/color_000"
         android:textSize="16sp" />
+
+    <View
+        style="@style/line_gray_hor"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

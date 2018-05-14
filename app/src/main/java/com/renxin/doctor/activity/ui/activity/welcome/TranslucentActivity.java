@@ -61,7 +61,7 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
             finish();
         } else {
             // todo 测试
-            DocApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.FIRST_ENTER, true);
+//            DocApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.FIRST_ENTER, true);
             //版本检查
             mPresenter.checkVersion();
         }

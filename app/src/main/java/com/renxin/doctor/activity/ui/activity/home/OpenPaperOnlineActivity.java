@@ -31,6 +31,7 @@ import com.renxin.doctor.activity.ui.activity.patient.PatientListActivity;
 import com.renxin.doctor.activity.ui.adapter.OPenPaperDrugAdapter;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.ui.bean.OPenPaperBaseBean;
+import com.renxin.doctor.activity.ui.bean.OnlinePaperBackBean;
 import com.renxin.doctor.activity.ui.bean.PatientFamilyBean;
 import com.renxin.doctor.activity.ui.bean_jht.DrugBean;
 import com.renxin.doctor.activity.ui.contact.OpenPaperContact;
@@ -123,7 +124,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     OpenPaperPresenter mPresenter;
 
     private int formParent = 0;//是否来自聊天(0 默认不是 1：聊天)
-    private int storeId, drugClassId, usagesId, freqId;//药房id，剂型id，用法id，用量id
+    private int storeId = -1;//药房id
+    private int drugClassId, usagesId, freqId;//剂型id，用法id，用量id
     private int sexType = 0;
     private int daijianType = 0;
     private String membNo = "";//患者编号，选择患者才有
@@ -265,14 +267,20 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 setOPenStatus(!isShowAll);
                 break;
             case R.id.et_drugstore://药房
-                mPopupWheel = new OnePopupWheel(this, drugStoreList, "请选择药房", new OnePopupWheel.Listener() {
-                    @Override
-                    public void completed(int position) {
-                        storeId = baseBean.store.get(position).drug_store_id;
-                        etDrugstore.setText(drugStoreList.get(position));
-                    }
-                });
-                mPopupWheel.show(scrollView);
+                //是否选过了药房 切换药房 要提醒
+                if (TextUtils.isEmpty(etDrugstore.getText())) {
+                    chooseDrugStore();
+                } else {
+                    commonDialog = new CommonDialog(this, false, "切换药房会导致药品信息变更，\n是否确定切换药房？", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (view.getId() == R.id.btn_ok) {
+                                chooseDrugStore();
+                            }
+                        }
+                    });
+                    commonDialog.show();
+                }
                 break;
             case R.id.et_drugclass://剂型
                 mPopupWheel = new OnePopupWheel(this, drugClassList, "请选择剂型", new OnePopupWheel.Listener() {
@@ -332,13 +340,30 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         }
     }
 
+    //打开选择药房
+    private void chooseDrugStore() {
+        mPopupWheel = new OnePopupWheel(this, drugStoreList, "请选择药房", new OnePopupWheel.Listener() {
+            @Override
+            public void completed(int position) {
+                storeId = baseBean.store.get(position).drug_store_id;
+                etDrugstore.setText(drugStoreList.get(position));
+            }
+        });
+        mPopupWheel.show(scrollView);
+    }
+
     //展开折叠
     private void setOPenStatus(boolean b) {
         isShowAll = b;
-        adapter.setIsShowAll(isShowAll);
-        tvShowall.setText(isShowAll ? "收起" : "展开");
+        if (drugBeans.isEmpty()) {
+            tvShowall.setVisibility(View.GONE);
+        } else {
+            tvShowall.setVisibility(View.VISIBLE);
+            adapter.setIsShowAll(isShowAll);
+            tvShowall.setSelected(isShowAll);
+            tvShowall.setText(isShowAll ? "收起" : "展开");
+        }
     }
-
 
     //要副加减
     private void editeDrugNum(boolean isAdd) {
@@ -481,24 +506,38 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 commonDialog = new CommonDialog(this, "添加常用处方成功");
                 commonDialog.show();
                 break;
-            case OpenPaperPresenter.OPENPAPER_ONLINE_OK:
-                //可以拿到paccid 就记录，没有就不记录
-                if (!TextUtils.isEmpty(pAccid)) {
-                    mPresenter.addChatRecord(NimU.getNimAccount(), pAccid, Constant.CHAT_RECORD_TYPE_3, formParent);
-                }
+            case OpenPaperPresenter.OPENPAPER_ONLINE_OK://提交后
+                OnlinePaperBackBean bean = (OnlinePaperBackBean) message.obj;
+                if (bean == null) {//data为空  说明提交成功
+                    //可以拿到paccid 就记录，没有就不记录
+                    if (!TextUtils.isEmpty(pAccid)) {
+                        mPresenter.addChatRecord(NimU.getNimAccount(), pAccid, Constant.CHAT_RECORD_TYPE_3, formParent);
+                    }
 
-                if (formParent == 1) {//聊天开方
-                    setResult(RESULT_OK, new Intent());
-                    finish();
-                } else {//普通开方
-                    commonDialog = new CommonDialog(this, true, "处方已上传至药房", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            finish();
-                        }
-                    });
+                    if (formParent == 1) {//聊天开方
+                        setResult(RESULT_OK, new Intent());
+                        finish();
+                    } else {//普通开方
+                        commonDialog = new CommonDialog(this, true, "处方已上传至药房", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                finish();
+                            }
+                        });
+                        commonDialog.show();
+                    }
+                } else {//药物和药房 有不匹配，处理返回的数据
+                    //status为-4时返回处方中不能用的药品param，其他状态未定义
+                    if (bean.status == -4) {
+                        drugBeans.clear();
+                        drugBeans.addAll(bean.param);
+                        adapter.notifyDataSetChanged();
+                    }
+                    commonDialog = new CommonDialog(this, "药房缺少药材，请修改处方");
                     commonDialog.show();
                 }
+
+
                 break;
         }
     }

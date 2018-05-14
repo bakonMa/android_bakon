@@ -28,8 +28,8 @@ public class ImageUtil {
         }
         GlideApp.with(imageView.getContext())
                 .load(url)
-                .placeholder(R.mipmap.logo)
-                .error(R.mipmap.logo)
+                .placeholder(R.drawable.nim_default_img)
+                .error(R.drawable.nim_default_img)
                 .into(imageView);
     }
 

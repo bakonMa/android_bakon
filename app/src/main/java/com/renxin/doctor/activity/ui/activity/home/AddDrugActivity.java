@@ -335,7 +335,19 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                     @Override
                     public void leftClick() {
                         super.leftClick();
-                        finish();
+                        if (formtype == 1 || drugBeans.isEmpty()) {//开方，或者空数据 直接返回
+                            finish();
+                        } else {// 常用处方 返回提醒保存
+                            commonDialog = new CommonDialog(AddDrugActivity.this, false, "您尚未保存是否退出？", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (view.getId() == R.id.btn_ok) {
+                                        finish();
+                                    }
+                                }
+                            });
+                            commonDialog.show();
+                        }
                     }
 
                     @Override

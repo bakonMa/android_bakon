@@ -107,7 +107,7 @@ public class ChooseDocAdviceActivity extends BaseActivity {
                 .setTitle("医嘱")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
-                .setRightText("保存", true, R.color.color_999)
+                .setRightText("保存", true, R.color.color_main)
                 .setListener(new TitleOnclickListener() {
                     @Override
                     public void leftClick() {
