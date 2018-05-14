@@ -39,11 +39,12 @@ public interface H5Config {
     //用户协议
     String H5_AGREEMENT = BuildConfig.BASE_URL + "static/agreement.html";
     String H5_AGREEMENT_TITLE = "用户协议";
-
     //审核处方
     String H5_CHECKPAPER = BuildConfig.BASE_URL + "check_extraction?id=";
     //处方详情
     String H5_PAPER_DETAIL = BuildConfig.BASE_URL + "extraction_info?id=";
+    //系统消息
+    String H5_SYSTEM_MSG = BuildConfig.BASE_URL + "msgInfo?id=";
 
     //*******************jht end**********************
 

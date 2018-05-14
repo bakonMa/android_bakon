@@ -321,6 +321,9 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CODE_CHOOSEPATIENT_ASKPAPER://问诊单 选择患者
+                if (data == null) {
+                    return;
+                }
                 //发送问诊单
                 AskPaperAttachment customAttachment = new AskPaperAttachment(TextUtils.isEmpty(askPapertypeID) ? "0" : askPapertypeID);
                 IMMessage askPaperMessage = MessageBuilder.createCustomMessage(
@@ -338,6 +341,9 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
                 finish();
                 break;
             case REQUEST_CODE_CHOOSEPATIENT_FOLLOWPAPER://随诊单 选择患者
+                if (data == null) {
+                    return;
+                }
                 //发送随诊单
                 FollowPaperAttachment attachment = new FollowPaperAttachment();
                 IMMessage message = MessageBuilder.createCustomMessage(

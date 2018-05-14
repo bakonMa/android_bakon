@@ -12,6 +12,7 @@ import com.renxin.doctor.activity.ui.activity.home.OpenPaperCameraActivity;
 import com.renxin.doctor.activity.ui.activity.home.OpenPaperOnlineActivity;
 import com.renxin.doctor.activity.ui.activity.home.PaperHistoryActivity;
 import com.renxin.doctor.activity.ui.activity.home.SearchSkillNameActivity;
+import com.renxin.doctor.activity.ui.activity.home.SystemMsgListActivity;
 import com.renxin.doctor.activity.ui.activity.login.LoginActivity;
 import com.renxin.doctor.activity.ui.activity.login.RegisteActivity;
 import com.renxin.doctor.activity.ui.activity.login.ResetPasswordActivity;
@@ -120,5 +121,7 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(PaperHistoryActivity paperHistoryActivity);
 
     void inject(GuildNewsListActivity guildNewsListActivity);
+
+    void inject(SystemMsgListActivity systemMsgListActivity);
 
 }

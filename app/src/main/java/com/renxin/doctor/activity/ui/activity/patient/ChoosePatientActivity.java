@@ -129,6 +129,7 @@ public class ChoosePatientActivity extends BaseActivity implements PatientContac
     private void initToolBar() {
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("发送给患者")
+                .setLeft(false)
                 .setStatuBar(R.color.white)
                 .setListener(new TitleOnclickListener() {
                     @Override

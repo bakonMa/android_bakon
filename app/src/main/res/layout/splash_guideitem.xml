@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -42,16 +43,15 @@
         android:layout_marginBottom="108dp"/>
     <TextView
         android:id="@+id/id_btn_enter"
-        android:layout_width="129dp"
-        android:layout_height="36dp"
-        android:text="立即体验"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        tools:text="立即体验"
         android:gravity="center"
         android:clickable="true"
         android:textSize="14sp"
         android:textColor="@color/white"
-        android:background="@drawable/selector_bg_splash_button"
+        android:background="@color/transparent"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
-        android:layout_marginBottom="56dp"/>
+        android:visibility="gone"/>
 </RelativeLayout>

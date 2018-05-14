@@ -1,19 +1,20 @@
 package com.renxin.doctor.activity.ui.presenter;
 
-import android.content.pm.PackageManager;
 import android.os.SystemClock;
 
-import com.renxin.doctor.activity.config.SPConfig;
-import com.renxin.doctor.activity.data.http.Params;
-import com.renxin.doctor.activity.ui.base.BaseObserver;
-import com.renxin.doctor.activity.ui.contact.SettingContract;
+import com.renxin.doctor.activity.BuildConfig;
 import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.config.HttpConfig;
+import com.renxin.doctor.activity.config.SPConfig;
 import com.renxin.doctor.activity.data.http.HttpAPIWrapper;
+import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.data.response.HttpResponse;
+import com.renxin.doctor.activity.ui.base.BaseObserver;
 import com.renxin.doctor.activity.ui.bean.AppUpdateBean;
-import com.renxin.doctor.activity.widget.dialog.LoadingDialog;
 import com.renxin.doctor.activity.ui.bean.OtherBean;
+import com.renxin.doctor.activity.ui.contact.SettingContract;
 import com.renxin.doctor.activity.utils.M;
+import com.renxin.doctor.activity.widget.dialog.LoadingDialog;
 
 import javax.inject.Inject;
 
@@ -79,8 +80,11 @@ public class SettingPresenter implements SettingContract.Presenter {
 
     @Override
     public void checkUpdate() {
+        Params params = new Params();
+        params.put("version_code", BuildConfig.VERSION_CODE);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
         Subscription subscription =
-                DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().appUpdateCheck(4)
+                DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().appUpdateCheck(params)
                         .compose(HttpAPIWrapper.SCHEDULERS_TRANSFORMER())
                         .compose(mView.toLifecycle())
                         .doOnSubscribe(() -> {
@@ -91,34 +95,18 @@ public class SettingPresenter implements SettingContract.Presenter {
                             public void onSuccess(HttpResponse<AppUpdateBean> resultResponse) {
                                 //请求成功，有结果
                                 if (resultResponse.data != null) {
-                                    String netVersion = resultResponse.data.version;
-                                    String netMinVersion = resultResponse.data.minVersion;
-                                    String nowVersion;
-                                    try {
-                                        nowVersion = mView.provideContext().getPackageManager().getPackageInfo(mView.provideContext().getPackageName(), PackageManager.GET_ACTIVITIES).versionName;
-                                    } catch (PackageManager.NameNotFoundException e) {
-                                        nowVersion = "1.0";
-                                        e.printStackTrace();
-                                    }
-
-                                    int netVersionNum = Integer.parseInt(netVersion.replaceAll("\\.", ""));
-                                    int minVersionNum = Integer.parseInt(netMinVersion.replaceAll("\\.", ""));
-                                    int nowVersionNum = Integer.parseInt(nowVersion.replaceAll("\\.", ""));
-
-                                    boolean isForce = resultResponse.data.forceUpdate == 1 || nowVersionNum < minVersionNum;
+                                    int netVersionCode = resultResponse.data.version_code;
+                                    boolean isForce = resultResponse.data.isforced == 1;
 
                                     //检查成功，更新检查成功后得到的当前时间和是否强制更新(强制更新标示符以及最低版本)
-
                                     DocApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.SP_BOOL_LASTCHECK_FORCEUPDATE_NAME, isForce);
                                     DocApplication.getAppComponent().dataRepo().appSP().setLong(SPConfig.SP_LONG_LASTCHECKUPDATE_TIME_NAME, SystemClock.currentThreadTimeMillis());
 
                                     //手机中版本大于等于网络中请求到的版本
-                                    if (nowVersionNum >= netVersionNum) {
+                                    if (BuildConfig.VERSION_CODE >= netVersionCode) {
                                         //提示已是最新版本
                                         mView.onError("", "已是最新版本");
                                     } else {
-                                        //开启对话框
-                                        resultResponse.data.forceUpdate = isForce ? 1 : 0;
                                         mView.onSuccess(M.createMessage(resultResponse.data, SETTING_CHECK_UPDATE_STATUS));
                                     }
                                 }

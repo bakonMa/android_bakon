@@ -35,6 +35,7 @@ import com.renxin.doctor.activity.ui.bean.RepaymentHomeBean;
 import com.renxin.doctor.activity.ui.bean.RepaymentOffLineBean;
 import com.renxin.doctor.activity.ui.bean.ReusingBean;
 import com.renxin.doctor.activity.ui.bean.SupportBankBean;
+import com.renxin.doctor.activity.ui.bean.SystemMsgBean;
 import com.renxin.doctor.activity.ui.bean_jht.AuthInfoBean;
 import com.renxin.doctor.activity.ui.bean_jht.BaseConfigBean;
 import com.renxin.doctor.activity.ui.bean_jht.CheckPaperBean;
@@ -56,7 +57,6 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
@@ -205,6 +205,10 @@ public interface HttpAPI {
     @POST("infolist")
     Observable<HttpResponse<BasePageBean<NewsInfoBean>>> getNewslist(@Body Params params);
 
+    //发现 行业追踪，健康教育
+    @POST("msgList")
+    Observable<HttpResponse<BasePageBean<SystemMsgBean>>> getSystemMsglist(@Body Params params);
+
     //更新token
     @POST("updateToken")
     Observable<HttpResponse<OtherBean>> updateToken(@QueryMap Params params);
@@ -220,6 +224,10 @@ public interface HttpAPI {
     //accid 换 memb_no
     @POST("getmemb_no")
     Observable<HttpResponse<OtherBean>> getMembNo(@QueryMap Params params);
+
+    //绑定信鸽token
+    @POST("binding_token")
+    Observable<HttpResponse<String>> bindXGToken(@Body Params params);
 
     //疾病名称搜索
     @POST("searchicd10")
@@ -243,7 +251,7 @@ public interface HttpAPI {
 
     //常用方详情
     @POST("oftenmed_info")
-    Observable<HttpResponse<List<CommPaperInfoBean>>> getOftenmedInfo(@QueryMap Params params);
+    Observable<HttpResponse<List<CommPaperInfoBean>>> getOftenmedInfo(@Body Params params);
 
     //医生发送自定义消息记录
     @POST("addchatsendflow")
@@ -261,16 +269,14 @@ public interface HttpAPI {
     @POST("my_historyextra")
     Observable<HttpResponse<BasePageBean<CheckPaperBean>>> getPaperHistoryList(@QueryMap Params params);
 
+    //检查App更新
+    @POST("getVersion")
+    Observable<HttpResponse<AppUpdateBean>> appUpdateCheck(@Body Params params);
 
-
-
-
-
-
-
-
-
-
+    //下载Apk文件
+    @GET
+    @Streaming
+    Observable<ResponseBody> downloadApk(@Url String url, @Header(HttpConfig.HTTP_HEADER_DOWNLOAD_APK) String identifier);
     //***************************************************
     //***************************************************
     //***************************************************
@@ -457,15 +463,6 @@ public interface HttpAPI {
     //设置绑卡时交易密码
     @POST("customerApp/userCenter/bindCardSetTradePwd")
     Observable<HttpResponse<String>> bindCardSetTradePwd(@Body Params params);
-
-    //检查App更新
-    @GET("customerApp/clientVersion/search")
-    Observable<HttpResponse<AppUpdateBean>> appUpdateCheck(@Query("type") int type);
-
-    //下载Apk文件
-    @GET
-    @Streaming
-    Observable<ResponseBody> downloadApk(@Url String url, @Header(HttpConfig.HTTP_HEADER_DOWNLOAD_APK) String identifier);
 
     //绑卡时判断是否有交易密码
     @GET("customerApp/userCenter/bindCardTradePwdStatus")

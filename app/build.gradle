@@ -11,11 +11,17 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true //dex分包
-//        ndk {
-//            //设置支持的SO库架构 一般而言，取你所有的库支持的构架的`交集`
-//            //abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
-//            abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
-//        }
+        ndk {
+            //设置支持的SO库架构 一般而言，取你所有的库支持的构架的`交集`
+            //abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64', 'mips', 'mips64'
+            abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+            //信鸽推送
+            manifestPlaceholders = [
+                    XG_ACCESS_ID : "2100291473",
+                    XG_ACCESS_KEY: "AT43LK65VM3M",
+            ]
+
+        }
 
         aaptOptions {//检查是否修改过文件后缀
             cruncherEnabled = false
@@ -26,10 +32,6 @@ android {
 
     signingConfigs {
 //        keytool -list -v -keystore /Users/mayakun/Downloads/mayakun-file/jht/jht_doc.keystore
-//        MD5:  88:0E:48:C1:1E:72:25:A6:CB:92:F3:D6:BC:79:85:DA
-//        SHA1: 8B:77:64:D0:73:56:E8:26:F6:35:8A:99:2E:FF:AB:FF:5F:25:C0:B9
-//        SHA256: 21:2D:F5:67:27:75:80:96:81:01:78:63:52:D1:4C:42:B1:A6:60:53:F0:F5:22:E3:97:8A:FE:42:CC:FC:E0:13
-
         release {
 //            storeFile file("./src/jht_doc.keystore")
 //            storePassword "jht2018"//key pwd
@@ -177,6 +179,15 @@ dependencies {
     implementation "org.greenrobot:greendao:$greendao_version"
     //数据库加密 ***保留***
     //implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
+
+    //信鸽
+    //信鸽jar
+    implementation 'com.tencent.xinge:xinge:3.2.3-release'
+    //wup包
+    implementation 'com.tencent.wup:wup:1.0.0.E-release'
+    //mid包
+    implementation 'com.tencent.mid:mid:4.0.6-release'
+
 }
 
 

@@ -48,7 +48,7 @@ public class SplashIndicator extends View {
         itemPaint = new Paint();
         itemPaint.setAntiAlias(true);
         itemPaint.setStyle(Paint.Style.FILL);
-        itemPaint.setColor(getContext().getResources().getColor(R.color.indicator_selected_color));
+        itemPaint.setColor(getContext().getResources().getColor(R.color.color_main));
         setBackgroundResource(R.drawable.bg_indicator);
     }
 
@@ -91,8 +91,8 @@ public class SplashIndicator extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawRoundRect(new RectF(mIndex * itemWidth + mOffsetX, 0, (mIndex + 1) * itemWidth + mOffsetX, mHeight)
-                , UIUtils.dp2px(getContext(),1.0f)
-                , UIUtils.dp2px(getContext(),1.0f)
+                , UIUtils.dp2px(getContext(), 1.0f)
+                , UIUtils.dp2px(getContext(), 1.0f)
                 , itemPaint);
     }
 

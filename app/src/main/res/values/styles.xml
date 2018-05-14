@@ -11,7 +11,7 @@
     <style name="SplashAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <!--<icategoryname="android:windowIsTranslucent">true</item>-->
-        <item name="android:windowBackground">@drawable/bg_1</item>
+        <item name="android:windowBackground">@drawable/splash</item>
         <item name="windowNoTitle">true</item>
     </style>
 

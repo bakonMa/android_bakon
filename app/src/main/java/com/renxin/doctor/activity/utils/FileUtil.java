@@ -281,10 +281,12 @@ public class FileUtil {
         String peicurePath = Environment.getExternalStorageDirectory()
                 + File.separator + Environment.DIRECTORY_DCIM
                 + File.separator + "Camera" + File.separator;
-
+        //确定目录是否存在
+        createDirByPath(peicurePath);
         String fileName = TextUtils.isEmpty(filename) ? (System.currentTimeMillis() + ".jpg") : filename;
         File file = new File(peicurePath, fileName);
         LogUtil.d(peicurePath + fileName);
+
         if (file.exists()) {
             file.delete();
         }

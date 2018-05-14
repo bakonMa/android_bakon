@@ -86,22 +86,22 @@ public class AppUpdateDialog extends Dialog implements View.OnClickListener {
         pb_progress = view.findViewById(R.id.pb_progress);
 
         iv_close.setOnClickListener(this);
-        iv_close.setVisibility(appUpdateBean.forceUpdate == 1 ? GONE : VISIBLE);
-        tv_version.setText("V" + (appUpdateBean.version == null ? "1.0" : appUpdateBean.version));
-        tv_updatelog.setText(appUpdateBean.updateContent == null ? "" : appUpdateBean.updateContent);
+        iv_close.setVisibility(appUpdateBean.isforced == 1 ? GONE : VISIBLE);
+        tv_version.setText("V" + (appUpdateBean.current_version == null ? "1.0" : appUpdateBean.current_version));
+        tv_updatelog.setText(appUpdateBean.comments == null ? "" : appUpdateBean.comments);
         tv_updatelog.setMovementMethod(ScrollingMovementMethod.getInstance());
-        if (TextUtils.isEmpty(appUpdateBean.updateContent)) {
+        if (TextUtils.isEmpty(appUpdateBean.comments)) {
             tv_updatelog.setVisibility(GONE);
         }
         tv_update.setOnClickListener(this);
 
         setCanceledOnTouchOutside(false);
-        setCancelable(appUpdateBean.forceUpdate == 0);
+        setCancelable(appUpdateBean.isforced == 0);
         setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
                 if (keyCode == KEYCODE_BACK && cancelListener != null) {
-                    cancelListener.onCanceled(appUpdateBean.forceUpdate == 1);
+                    cancelListener.onCanceled(appUpdateBean.isforced == 1);
                 }
                 return false;
             }
@@ -116,13 +116,13 @@ public class AppUpdateDialog extends Dialog implements View.OnClickListener {
                     dismiss();
                 }
                 if (cancelListener != null) {
-                    cancelListener.onCanceled(appUpdateBean.forceUpdate == 1);
+                    cancelListener.onCanceled(appUpdateBean.isforced == 1);
                 }
                 break;
 
             case R.id.tv_update:
                 if (startDownloadingListener != null) {
-                    startDownloadingListener.startDownloading(appUpdateBean.downloadUrl, appUpdateBean.validateCode, appUpdateBean.forceUpdate == 1);
+                    startDownloadingListener.startDownloading(appUpdateBean.down_url, appUpdateBean.md5code, appUpdateBean.isforced == 1);
                 }
                 break;
 
@@ -131,19 +131,19 @@ public class AppUpdateDialog extends Dialog implements View.OnClickListener {
         }
     }
 
-    public void setProgress(int progress){
+    public void setProgress(int progress) {
         pb_progress.setProgress(progress);
     }
 
-    public void setUpdateText(String updateText){
+    public void setUpdateText(String updateText) {
         tv_update.setText(updateText);
     }
 
-    public void switchViewState(boolean isProgressing){
-        if (isProgressing){
+    public void switchViewState(boolean isProgressing) {
+        if (isProgressing) {
             fl_progress.setVisibility(VISIBLE);
             tv_update.setVisibility(GONE);
-        }else {
+        } else {
             fl_progress.setVisibility(GONE);
             tv_update.setVisibility(VISIBLE);
         }

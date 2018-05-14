@@ -28,8 +28,10 @@ public interface EventConfig {
     int EVENT_KEY_REDPOINT_HOME_SYSMSG = 0x124;//首页 工作室 系统消息红点
     int EVENT_KEY_REDPOINT_PATIENT = 0x125;//首页 患者 红点
 
-
     int EVENT_KEY_SERVICE_MESSAGE = 0x126;//客服消息
     int EVENT_KEY_NIM_LOGIN = 0x127;//云信im登录成功
     int EVENT_KEY_NIM_LOGOUT = 0x128;//云信im被踢，进入登录画面
+
+    int EVENT_KEY_XG_BINDTOKEN= 0x129;//后台绑定信鸽token
+
 }

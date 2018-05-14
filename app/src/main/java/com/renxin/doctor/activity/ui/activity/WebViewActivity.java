@@ -273,6 +273,7 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
         String WEB_TYPE_PRODUCT_INFO = "productinfo";//产品说明
         String WEB_TYPE_AGREEMENT = "agreement";//用户协议
         String WEB_TYPE_NEWS = "news";//发现 行业追踪，健康教育
+        String WEB_TYPE_SYSTEMMSG = "system_msg";//系统消息
         String WEB_TYPE_BANNER = "banner";//首页 banner
     }
 

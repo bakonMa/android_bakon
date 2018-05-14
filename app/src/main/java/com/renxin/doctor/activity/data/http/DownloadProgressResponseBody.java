@@ -18,6 +18,7 @@ import okio.Okio;
 import okio.Source;
 
 /**
+ * 下载apk 进度
  * Created by zhaoyun on 2018/1/12.
  */
 public class DownloadProgressResponseBody extends ResponseBody {
@@ -70,7 +71,7 @@ public class DownloadProgressResponseBody extends ResponseBody {
                     downloadProgressBean.bytesRead = totalBytesRead;
                     downloadProgressBean.contentLength = responseBody.contentLength();
                     downloadProgressBean.done = bytesRead == -1;
-                    EventBusUtil.sendEvent(new Event<DownloadProgressBean>(EventConfig.REFRESH_APK_DOWNLOAD_PROGRESS , downloadProgressBean));
+                    EventBusUtil.sendEvent(new Event(EventConfig.REFRESH_APK_DOWNLOAD_PROGRESS , downloadProgressBean));
                 }
 
                 return bytesRead;

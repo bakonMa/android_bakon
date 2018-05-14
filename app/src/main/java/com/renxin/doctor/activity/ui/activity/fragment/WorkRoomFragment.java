@@ -39,6 +39,7 @@ import com.renxin.doctor.activity.injection.modules.FragmentModule;
 import com.renxin.doctor.activity.nim.NimManager;
 import com.renxin.doctor.activity.nim.message.SessionHelper;
 import com.renxin.doctor.activity.nim.message.extension.FirstMessageAttachment;
+import com.renxin.doctor.activity.receiver.XGInitManager;
 import com.renxin.doctor.activity.ui.activity.WebViewActivity;
 import com.renxin.doctor.activity.ui.activity.home.CheckPaperActivity;
 import com.renxin.doctor.activity.ui.activity.home.CommUsePaperActivity;
@@ -137,6 +138,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     protected void initView() {
         //nim手动登录
         NimManager.getInstance(DocApplication.getInstance()).nimLogin();
+        //信鸽注册
+        XGInitManager.getInstance(DocApplication.getInstance()).registerXG();
         //获取客服accid login接口获得
         accid = DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_SERVICE_ACCID);
         //设置图片集合
@@ -484,6 +487,9 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                     }
                 });
                 commonDialog.show();
+                break;
+            case EventConfig.EVENT_KEY_XG_BINDTOKEN://绑定信鸽token
+                mPresenter.bindXGToken(event.getData().toString());
                 break;
         }
     }

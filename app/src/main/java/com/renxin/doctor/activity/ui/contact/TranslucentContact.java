@@ -13,17 +13,19 @@ public interface TranslucentContact {
 
     interface View extends BaseView<Presenter> {
         void jumpToMain();
+
         void showUpdateDialog(AppUpdateBean appUpdateBean);
-        void apkDownloadSuccess(String localApkPath , String sourceMD5);
+
+        void apkDownloadSuccess(String localApkPath, String sourceMD5);
+
         void apkDownloadFailed(Throwable throwable);
     }
 
-    interface Presenter extends BasePresenter{
-        void subscribe();
-        void downloadApk(String downloadUrl , String destLocaLPath , String sourceMD5 , boolean force);
-        void cancelDownload();
-        void getRepayment();
+    interface Presenter extends BasePresenter {
+        void downloadApk(String downloadUrl, String destLocaLPath, String sourceMD5, boolean force);
 
-        void getBaseCinfig();
+        void cancelDownload();
+
+        void checkVersion();
     }
 }

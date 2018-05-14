@@ -32,8 +32,10 @@ public class CommonPresenter implements BasePresenter {
     public static final int GET_MOMBNO_OK = 0x110;
 
     public CommonPresenter(BaseView view) {
-        this.mView = view;
-        mDialog = new LoadingDialog(view.provideContext());
+        if (view != null) {
+            this.mView = view;
+            mDialog = new LoadingDialog(view.provideContext());
+        }
         compositeSubscription = new CompositeSubscription();
     }
 

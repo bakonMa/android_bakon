@@ -1,5 +1,6 @@
 package com.renxin.doctor.activity.ui.nimview;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -55,9 +56,9 @@ import com.renxin.doctor.activity.nim.message.extension.GuessAttachment;
 import com.renxin.doctor.activity.nim.message.extension.OPenPaperAttachment;
 import com.renxin.doctor.activity.nim.message.extension.SnapChatAttachment;
 import com.renxin.doctor.activity.nim.message.extension.StickerAttachment;
+import com.renxin.doctor.activity.ui.activity.home.SystemMsgListActivity;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.utils.LogUtil;
-import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
 import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
@@ -150,8 +151,7 @@ public class RecentActivity extends BaseActivity {
                 EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME));
                 EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME_SYSMSG));
 
-                ToastUtil.showShort("进入系统消息");
-//                startActivity(new Intent(this, ResetPasswordActivity.class));
+                startActivity(new Intent(this, SystemMsgListActivity.class));
                 break;
         }
     }

@@ -38,6 +38,7 @@ import com.renxin.doctor.activity.ui.contact.TradePwdContact;
 import com.renxin.doctor.activity.ui.contact.TranslucentContact;
 import com.renxin.doctor.activity.ui.contact.WalletContact;
 import com.renxin.doctor.activity.ui.contact.WebViewContact;
+import com.renxin.doctor.activity.ui.contact.WorkRoomContact;
 import com.renxin.doctor.activity.ui.presenter.AddBankCardVerifyPresenter;
 import com.renxin.doctor.activity.ui.presenter.AddCoborrowerPresenter;
 import com.renxin.doctor.activity.ui.presenter.AddMainCardPresenter;
@@ -66,6 +67,7 @@ import com.renxin.doctor.activity.ui.presenter.SupportBankPresenter;
 import com.renxin.doctor.activity.ui.presenter.TradePwdPresenter;
 import com.renxin.doctor.activity.ui.presenter.TranslucentPresenter;
 import com.renxin.doctor.activity.ui.presenter.WebviewPresenter;
+import com.renxin.doctor.activity.ui.presenter.WorkRoomPresenter;
 import com.renxin.doctor.activity.ui.presenter.present_jht.AuthPresenter;
 import com.renxin.doctor.activity.ui.presenter.present_jht.FindPresenter;
 import com.renxin.doctor.activity.ui.presenter.present_jht.WalletPresenter;
@@ -128,6 +130,12 @@ public final class ActivityModule {
     @Provides
     public FindPresenter provideFindPresenter() {
         return new FindPresenter((FindContact.View) mView);
+    }
+
+    @PerActivity
+    @Provides
+    public WorkRoomPresenter provideWorkRoomPresenter() {
+        return new WorkRoomPresenter((WorkRoomContact.View) mView);
     }
 
 

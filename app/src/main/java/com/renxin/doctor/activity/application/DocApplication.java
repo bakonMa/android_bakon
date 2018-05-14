@@ -11,6 +11,7 @@ import com.renxin.doctor.activity.injection.components.DaggerApplicationComponen
 import com.renxin.doctor.activity.injection.modules.ApplicationModule;
 import com.renxin.doctor.activity.manager.ManagerRepository;
 import com.renxin.doctor.activity.nim.NimManager;
+import com.renxin.doctor.activity.receiver.XGInitManager;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.umeng.commonsdk.UMConfigure;
@@ -47,6 +48,8 @@ public class DocApplication extends Application {
         mApplicationComponent.inject(this);
         //网易云IM 初始化
         NimManager.getInstance(this);
+        //信鸽推送 初始化
+        XGInitManager.getInstance(this);
         //内存泄漏检测
         refWatcher = setupLeakCanary();
         //db 初始化

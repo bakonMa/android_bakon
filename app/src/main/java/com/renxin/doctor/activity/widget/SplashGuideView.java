@@ -50,7 +50,31 @@ public class SplashGuideView extends LinearLayout {
                 public void onClick(View view) {
                     DocApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.FIRST_ENTER, false);
                     context.startActivity(new Intent(context, TranslucentActivity.class));
-                    ((SplashActivity)context).finish();
+                    ((SplashActivity) context).finish();
+                }
+            });
+        }
+
+    }
+
+    public SplashGuideView(Context context, int resId, boolean isShowButton) {
+        super(context);
+        View view = LayoutInflater.from(context).inflate(R.layout.splash_guideitem, this, true);
+        ButterKnife.bind(view);
+        if (resId > 0) {
+            ivGuide.setBackgroundResource(resId);
+        }
+        idTv1.setVisibility(VISIBLE);
+        idTv2.setVisibility(VISIBLE);
+        idTv3.setVisibility(VISIBLE);
+        if (isShowButton) {
+            idBtnEnter.setVisibility(VISIBLE);
+            idBtnEnter.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DocApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.FIRST_ENTER, false);
+                    context.startActivity(new Intent(context, TranslucentActivity.class));
+                    ((SplashActivity) context).finish();
                 }
             });
         }

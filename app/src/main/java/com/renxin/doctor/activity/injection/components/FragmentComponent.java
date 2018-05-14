@@ -41,4 +41,5 @@ public interface FragmentComponent extends ApplicationComponent {
     void inject(FindFragment findFragment);
 
     void inject(CheckPaperFragment checkPaperFragment);
+
 }

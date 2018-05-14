@@ -61,22 +61,12 @@ public class PatientListActivity extends BaseActivity implements PatientContact.
     private int formType = 0;//是否来自选择患者(0 默认不是 1：选择患者)
     private PatientAdapter mAdapter;
     private List<PatientBean> dataList = new ArrayList<>();
-
-    @Override
-    protected void setupActivityComponent() {
-        DaggerActivityComponent.builder()
-                .activityModule(new ActivityModule(this))
-                .applicationComponent(DocApplication.getAppComponent())
-                .build()
-                .inject(this);
-    }
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     protected int provideRootLayout() {
         return R.layout.fragment_patient;
     }
-
-    private LinearLayoutManager mLayoutManager;
 
     @Override
     protected void initView() {
@@ -86,7 +76,9 @@ public class PatientListActivity extends BaseActivity implements PatientContact.
         recycleView.setLayoutManager(mLayoutManager = new LinearLayoutManager(actContext()));
         mAdapter = new PatientAdapter(actContext(), dataList);
         recycleView.addItemDecoration(new StickyRecyclerHeadersDecoration(mAdapter));
+
         recycleView.setAdapter(mAdapter);
+
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -181,5 +173,13 @@ public class PatientListActivity extends BaseActivity implements PatientContact.
         return bindToLifecycle();
     }
 
+    @Override
+    protected void setupActivityComponent() {
+        DaggerActivityComponent.builder()
+                .activityModule(new ActivityModule(this))
+                .applicationComponent(DocApplication.getAppComponent())
+                .build()
+                .inject(this);
+    }
 
 }

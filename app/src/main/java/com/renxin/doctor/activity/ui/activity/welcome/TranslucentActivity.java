@@ -9,12 +9,16 @@ import android.os.Message;
 import com.renxin.doctor.activity.BuildConfig;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.config.EventConfig;
 import com.renxin.doctor.activity.config.SPConfig;
 import com.renxin.doctor.activity.data.eventbus.Event;
+import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
+import com.renxin.doctor.activity.injection.modules.ActivityModule;
 import com.renxin.doctor.activity.ui.activity.fragment.MainActivity;
+import com.renxin.doctor.activity.ui.activity.login.LoginActivity;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.ui.bean.AppUpdateBean;
-import com.renxin.doctor.activity.ui.bean.RepaymentHomeBean;
+import com.renxin.doctor.activity.ui.bean.DownloadProgressBean;
 import com.renxin.doctor.activity.ui.contact.TranslucentContact;
 import com.renxin.doctor.activity.ui.presenter.TranslucentPresenter;
 import com.renxin.doctor.activity.utils.ActivityUtil;
@@ -22,11 +26,6 @@ import com.renxin.doctor.activity.utils.MD5Util;
 import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.widget.dialog.AppUpdateDialog;
-import com.renxin.doctor.activity.config.EventConfig;
-import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
-import com.renxin.doctor.activity.injection.modules.ActivityModule;
-import com.renxin.doctor.activity.ui.activity.login.LoginActivity;
-import com.renxin.doctor.activity.ui.bean.DownloadProgressBean;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
@@ -56,13 +55,15 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
 
     @Override
     protected void initView() {
-//        checkFirstEnter();
-        if (U.isNoToken()) {
-            startActivity(new Intent(this, LoginActivity.class));
+        if (DocApplication.getAppComponent().dataRepo().appSP().getBoolean(SPConfig.FIRST_ENTER, true)) {
+            Intent intent = new Intent(this, SplashActivity.class);
+            startActivity(intent);
             finish();
         } else {
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
+            // todo 测试
+            DocApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.FIRST_ENTER, true);
+            //版本检查
+            mPresenter.checkVersion();
         }
     }
 
@@ -86,6 +87,11 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
     }
 
     @Override
+    protected boolean useEventBus() {
+        return true;
+    }
+
+    @Override
     protected void setupActivityComponent() {
         DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
@@ -94,43 +100,24 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
                 .inject(this);
     }
 
-    private void checkFirstEnter() {
-        if (DocApplication.getAppComponent().dataRepo().appSP().getBoolean(SPConfig.FIRST_ENTER, true)) {
-            Intent intent = new Intent(this, SplashActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            //初始配置数据
-            mPresenter.getBaseCinfig();
-            //todo 判断是否有token
-//            if (StringUtils.isEmpty(CustomerApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""))) {
-//                Observable.timer(1000, TimeUnit.MILLISECONDS)
-//                        .subscribe(aLong -> {
-//                            startActivity(new Intent(TranslucentActivity.this, HomeLoanActivity.class));
-//                            finish();
-//                        });
-//
-//            } else {
-//                mPresenter.getRepayment();
-//            }
-            //检测是否更新
-            mPresenter.subscribe();
-        }
-    }
-
     @Override
     public void jumpToMain() {
-        startActivity(new Intent(TranslucentActivity.this, MainActivity.class));
-        finish();
+        if (U.isNoToken()) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        } else {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
     }
 
     @Override
     public void showUpdateDialog(AppUpdateBean appUpdateBean) {
         AppUpdateDialog.StartDownloadingListener startDownloadingListener = (downloadUrl, netMD5, force) -> {
-            RxPermissions rxPermissions = new RxPermissions(TranslucentActivity.this);
+            RxPermissions rxPermissions = new RxPermissions(this);
             rxPermissions.setLogging(BuildConfig.DEBUG);
             rxPermissions
-                    .request(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    .request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     .subscribe(aBoolean -> {
                         if (aBoolean) {
                             String apkDirPath;
@@ -143,12 +130,15 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
                             if (!apkDir.exists()) {
                                 apkDir.mkdirs();
                             }
-                            File apkFile = new File(apkDir, getPackageName() + ".apk");
+                            File apkFile = new File(apkDir,  getPackageName()+ ".apk");
+                            //已存在，校验md5
                             if (apkFile.exists()) {
                                 String localMD5 = MD5Util.md5(apkFile);
+                                //md5相同，直接安装
                                 if (localMD5.equals(netMD5)) {
                                     ActivityUtil.installApk(TranslucentActivity.this, apkFile, getPackageName() + ".fileprovider");
                                 } else {
+                                    //不同删除apk 重新下载
                                     apkFile.delete();
                                     if (appUpdateDialog != null) {
                                         appUpdateDialog.setProgress(0);
@@ -209,32 +199,18 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-//        startActivity(new Intent(TranslucentActivity.this, HomeLoanActivity.class));
         finish();
     }
 
     @Override
     public void onSuccess(Message message) {
+        if (message == null) {
+            return;
+        }
         switch (message.what) {
-            case TranslucentPresenter.REPAYMENT:
-                RepaymentHomeBean repaymentHomeBean = (RepaymentHomeBean) message.obj;
-                if (repaymentHomeBean == null) {
-//                    startActivity(new Intent(this, HomeLoanActivity.class));
-                    finish();
-                    return;
-                }
-                if (repaymentHomeBean.isRepaymentStatus()) {
-//                    startActivity(new Intent(this, HomeRepaymentActivity.class));
-                } else {
-//                    startActivity(new Intent(this, HomeLoanActivity.class));
-                }
-                finish();
-                break;
-
             case TranslucentPresenter.CHECK_UPDATE:
                 showUpdateDialog((AppUpdateBean) message.obj);
                 break;
-
             default:
                 break;
         }

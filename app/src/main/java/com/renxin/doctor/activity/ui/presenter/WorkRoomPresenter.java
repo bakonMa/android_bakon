@@ -9,9 +9,11 @@ import com.renxin.doctor.activity.data.eventbus.EventBusUtil;
 import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.data.response.HttpResponse;
 import com.renxin.doctor.activity.ui.base.BaseObserver;
+import com.renxin.doctor.activity.ui.base.BasePageBean;
 import com.renxin.doctor.activity.ui.bean.BannerBean;
 import com.renxin.doctor.activity.ui.bean.OPenPaperBaseBean;
 import com.renxin.doctor.activity.ui.bean.OtherBean;
+import com.renxin.doctor.activity.ui.bean.SystemMsgBean;
 import com.renxin.doctor.activity.ui.contact.WorkRoomContact;
 import com.renxin.doctor.activity.utils.LogUtil;
 import com.renxin.doctor.activity.utils.M;
@@ -39,6 +41,7 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
     public static final int UPLOADIMF_OK = 0x111;
     public static final int GET_AUTH_STATUS = 0x112;
     public static final int GET_BANNER_OK = 0x113;
+    public static final int GET_SYSTEMMSG_LIST_OK = 0x114;
 
     public WorkRoomPresenter(WorkRoomContact.View mView) {
         this.mView = mView;
@@ -182,6 +185,51 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
                     public void onError(String errorCode, String errorMsg) {
 //                        mView.onError(errorCode, errorMsg);
                         LogUtil.d("updataToken error:" + errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    //后天绑定信鸽token
+    @Override
+    public void bindXGToken(String xgToken) {
+        Params params = new Params();
+        params.put("c_token", xgToken);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().bindXGToken(params))
+                .subscribe(new BaseObserver<HttpResponse<String>>(null) {
+                    @Override
+                    public void onSuccess(HttpResponse<String> httpResponse) {
+                        LogUtil.d("bingXGToken OK");
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        LogUtil.d("bingXGToken onError" + errorMsg);
+                    }
+
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void getSystemMsgList(int page) {
+        Params params = new Params();
+        params.put("page", page);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getSystemMsglist(params))
+                .compose(mView.toLifecycle())
+                .subscribe(new BaseObserver<HttpResponse<BasePageBean<SystemMsgBean>>>(null) {
+                    @Override
+                    public void onSuccess(HttpResponse<BasePageBean<SystemMsgBean>> response) {
+                        mView.onSuccess(M.createMessage(response.data, GET_SYSTEMMSG_LIST_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
                     }
                 });
         mSubscription.add(subscription);
