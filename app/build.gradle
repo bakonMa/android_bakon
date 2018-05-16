@@ -188,6 +188,9 @@ dependencies {
     //mid包
     implementation 'com.tencent.mid:mid:4.0.6-release'
 
+    //bugly
+    implementation 'com.tencent.bugly:crashreport:latest.release'
+
 }
 
 

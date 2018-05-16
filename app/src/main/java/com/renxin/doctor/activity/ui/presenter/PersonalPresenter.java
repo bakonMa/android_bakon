@@ -6,6 +6,7 @@ import com.renxin.doctor.activity.config.HttpConfig;
 import com.renxin.doctor.activity.data.http.Params;
 import com.renxin.doctor.activity.data.response.HttpResponse;
 import com.renxin.doctor.activity.ui.base.BaseObserver;
+import com.renxin.doctor.activity.ui.bean.OtherBean;
 import com.renxin.doctor.activity.ui.bean_jht.UserBaseInfoBean;
 import com.renxin.doctor.activity.ui.contact.PersonalContact;
 import com.renxin.doctor.activity.utils.M;
@@ -31,6 +32,7 @@ public class PersonalPresenter implements PersonalContact.Presenter {
     public static final int ADD_USER_BASEINFO = 0x112;
     public static final int GET_VISITINFO_OK = 0x113;
     public static final int SET_VISITINFO_OK = 0x114;
+    public static final int GET_AUTH_STATUS = 0x115;
 
     public PersonalPresenter(PersonalContact.View mView) {
         this.mView = mView;
@@ -46,6 +48,28 @@ public class PersonalPresenter implements PersonalContact.Presenter {
         if (!compositeSubscription.isUnsubscribed()) {
             compositeSubscription.unsubscribe();
         }
+    }
+
+    @Override
+    public void getUserIdentifyStatus() {
+        Params params = new Params();
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getUserIdentifyStatus(params))
+                .compose(mView.toLifecycle())
+                .subscribe(new BaseObserver<HttpResponse<OtherBean>>(null) {
+                    @Override
+                    public void onSuccess(HttpResponse<OtherBean> resultResponse) {
+                        U.setAuthStatus(resultResponse.data.status);
+                        mView.onSuccess(M.createMessage(resultResponse.data, GET_AUTH_STATUS));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        compositeSubscription.add(subscription);
     }
 
     @Override

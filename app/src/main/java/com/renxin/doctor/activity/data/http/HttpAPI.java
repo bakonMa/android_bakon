@@ -98,17 +98,21 @@ public interface HttpAPI {
     @POST("updatePwd")
     Observable<HttpResponse<String>> updatePwd(@Body Params params);
 
+    //是否接收推送消息设置
+    @POST("set_pushstatus")
+    Observable<HttpResponse<String>> setPushStatus(@Body Params params);
+
     //获取认证状态
     @POST("getUserIdentifyStatus")
-    Observable<HttpResponse<OtherBean>> getUserIdentifyStatus(@QueryMap Params params);
+    Observable<HttpResponse<OtherBean>> getUserIdentifyStatus(@Body Params params);
 
     //获取首页红点状态
     @POST("dot_status")
-    Observable<HttpResponse<OtherBean>> getHomeRedPointStatus(@QueryMap Params params);
+    Observable<HttpResponse<OtherBean>> getHomeRedPointStatus(@Body Params params);
 
     //获取个人中心资料，认证时的资料
-    @GET("getUserBasicInfo")
-    Observable<HttpResponse<UserBaseInfoBean>> getUserBasicInfo(@QueryMap Params params);
+    @POST("getUserBasicInfo")
+    Observable<HttpResponse<UserBaseInfoBean>> getUserBasicInfo(@Body Params params);
 
     //获取科室、职称、擅长等信息
     @GET("getDpAndTitles")
@@ -116,87 +120,87 @@ public interface HttpAPI {
 
     //获取省市 医院列表
     @POST("getHospital")
-    Observable<HttpResponse<List<HospitalBean>>> getHospital(@QueryMap Params params);
+    Observable<HttpResponse<List<HospitalBean>>> getHospital(@Body Params params);
 
     //认证信息提交1
     @POST("userIdentify")
-    Observable<HttpResponse<String>> userIdentify(@QueryMap Params params);
+    Observable<HttpResponse<String>> userIdentify(@Body Params params);
 
     //认证信息提交1
     @POST("userIdentifyNext")
-    Observable<HttpResponse<String>> userIdentifyNext(@QueryMap Params params);
+    Observable<HttpResponse<String>> userIdentifyNext(@Body Params params);
 
     //获取认证信息提交
     @POST("getUserIdentify")
-    Observable<HttpResponse<AuthInfoBean>> getUserIdentify(@QueryMap Params params);
+    Observable<HttpResponse<AuthInfoBean>> getUserIdentify(@Body Params params);
 
     //个人公告和简介的提交
     @POST("add_userbasic")
-    Observable<HttpResponse<String>> addUserbasic(@QueryMap Params params);
+    Observable<HttpResponse<String>> addUserbasic(@Body Params params);
 
     //钱包首页
     @POST("wallet_home")
-    Observable<HttpResponse<WalletBean>> getWallet(@QueryMap Params params);
+    Observable<HttpResponse<WalletBean>> getWallet(@Body Params params);
 
     //我的银行卡
     @POST("userbanklist")
-    Observable<HttpResponse<List<BankCardBean>>> userbanklist(@QueryMap Params params);
+    Observable<HttpResponse<List<BankCardBean>>> userbanklist(@Body Params params);
 
     //银行列表
-    @POST("getBank")
+    @GET("getBank")
     Observable<HttpResponse<List<BankTypeBean>>> getBankType(@QueryMap Params params);
 
     //提现
     @POST("exmoney_submit")
-    Observable<HttpResponse<String>> exmoneySubmit(@QueryMap Params params);
+    Observable<HttpResponse<String>> exmoneySubmit(@Body Params params);
 
     //添加银行卡
     @POST("useraddbank")
-    Observable<HttpResponse<String>> useraddbank(@QueryMap Params params);
+    Observable<HttpResponse<String>> useraddbank(@Body Params params);
 
     //解绑
     @POST("userdel_bank")
-    Observable<HttpResponse<String>> deleteBankCard(@QueryMap Params params);
+    Observable<HttpResponse<String>> deleteBankCard(@Body Params params);
 
     //交易详情
     @POST("deal_flow")
-    Observable<HttpResponse<BasePageBean<DealDetailBean>>> getDealFlow(@QueryMap Params params);
+    Observable<HttpResponse<BasePageBean<DealDetailBean>>> getDealFlow(@Body Params params);
 
     //设置资费信息
     @POST("visitcost_set")
-    Observable<HttpResponse<String>> setVisitPrice(@QueryMap Params params);
+    Observable<HttpResponse<String>> setVisitPrice(@Body Params params);
 
     //用户获取常用语
     @POST("getuseful")
-    Observable<HttpResponse<List<CommMessageBean>>> getuseful(@QueryMap Params params);
+    Observable<HttpResponse<List<CommMessageBean>>> getuseful(@Body Params params);
 
     //添加常用语
     @POST("adduseful")
-    Observable<HttpResponse<String>> adduseful(@QueryMap Params params);
+    Observable<HttpResponse<String>> adduseful(@Body Params params);
 
     //删除常用语
     @POST("deluseful")
-    Observable<HttpResponse<String>> deluseful(@QueryMap Params params);
+    Observable<HttpResponse<String>> deluseful(@Body Params params);
 
     //患者列表
     @POST("getpatientlist")
-    Observable<HttpResponse<List<PatientBean>>> getpatientlist(@QueryMap Params params);
+    Observable<HttpResponse<List<PatientBean>>> getpatientlist(@Body Params params);
 
     //患者详情 和就诊人列表
     @POST("getpatientinfo")
-    Observable<HttpResponse<PatientFamilyBean>> getpatientinfo(@QueryMap Params params);
+    Observable<HttpResponse<PatientFamilyBean>> getpatientinfo(@Body Params params);
 
     //设置患者备注
     @POST("set_remarkname")
-    Observable<HttpResponse<String>> setRemarkName(@QueryMap Params params);
+    Observable<HttpResponse<String>> setRemarkName(@Body Params params);
 
     //设置咨询价格
     @POST("set_advisoryfee")
-    Observable<HttpResponse<String>> setAdvisoryfee(@QueryMap Params params);
+    Observable<HttpResponse<String>> setAdvisoryfee(@Body Params params);
 
     //开方基础数据
     @POST("getsomeadvisory")
-    Observable<HttpResponse<OPenPaperBaseBean>> getSomeadvisory(@QueryMap Params params);
+    Observable<HttpResponse<OPenPaperBaseBean>> getSomeadvisory(@Body Params params);
 
     //首页 banner
     @POST("get_homebanner")
@@ -212,7 +216,7 @@ public interface HttpAPI {
 
     //更新token
     @POST("updateToken")
-    Observable<HttpResponse<OtherBean>> updateToken(@QueryMap Params params);
+    Observable<HttpResponse<OtherBean>> updateToken(@Body Params params);
 
     //拍照开方
     @POST("photo_extraction")
@@ -224,7 +228,7 @@ public interface HttpAPI {
 
     //accid 换 memb_no
     @POST("getmemb_no")
-    Observable<HttpResponse<OtherBean>> getMembNo(@QueryMap Params params);
+    Observable<HttpResponse<OtherBean>> getMembNo(@Body Params params);
 
     //绑定信鸽token
     @POST("binding_token")
@@ -232,23 +236,23 @@ public interface HttpAPI {
 
     //疾病名称搜索
     @POST("searchicd10")
-    Observable<HttpResponse<List<BaseConfigBean.Skill>>> searchSkillName(@QueryMap Params params);
+    Observable<HttpResponse<List<BaseConfigBean.Skill>>> searchSkillName(@Body Params params);
 
     //药材名称搜索
     @POST("searchgetmedicine")
-    Observable<HttpResponse<List<SearchDrugBean>>> searchDrugName(@QueryMap Params params);
+    Observable<HttpResponse<List<SearchDrugBean>>> searchDrugName(@Body Params params);
 
     //常用方列表
     @POST("oftenmed_list")
-    Observable<HttpResponse<List<CommPaperBean>>> getOftenmedList(@QueryMap Params params);
+    Observable<HttpResponse<List<CommPaperBean>>> getOftenmedList(@Body Params params);
 
     //添加常用方列表
     @POST("often_medicinal")
-    Observable<HttpResponse<String>> addOftenmed(@QueryMap Params params);
+    Observable<HttpResponse<String>> addOftenmed(@Body Params params);
 
     //删除常用方列表
     @POST("del_oftenmed")
-    Observable<HttpResponse<String>> delOftenmed(@QueryMap Params params);
+    Observable<HttpResponse<String>> delOftenmed(@Body Params params);
 
     //常用方详情
     @POST("oftenmed_info")
@@ -256,19 +260,19 @@ public interface HttpAPI {
 
     //医生发送自定义消息记录
     @POST("addchatsendflow")
-    Observable<HttpResponse<String>> addChatRecord(@QueryMap Params params);
+    Observable<HttpResponse<String>> addChatRecord(@Body Params params);
 
     //审核处方列表
     @POST("my_checkextra")
-    Observable<HttpResponse<List<CheckPaperBean>>> getCheckPaperList(@QueryMap Params params);
+    Observable<HttpResponse<List<CheckPaperBean>>> getCheckPaperList(@Body Params params);
 
     //审核某个处方
     @POST("check_extra")
-    Observable<HttpResponse<String>> checkPape(@QueryMap Params params);
+    Observable<HttpResponse<String>> checkPape(@Body Params params);
 
     //审核处方列表
     @POST("my_historyextra")
-    Observable<HttpResponse<BasePageBean<CheckPaperBean>>> getPaperHistoryList(@QueryMap Params params);
+    Observable<HttpResponse<BasePageBean<CheckPaperBean>>> getPaperHistoryList(@Body Params params);
 
     //检查App更新
     @POST("getVersion")

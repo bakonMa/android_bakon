@@ -15,6 +15,7 @@ import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
 import com.renxin.doctor.activity.injection.modules.ActivityModule;
+import com.renxin.doctor.activity.nim.NimManager;
 import com.renxin.doctor.activity.ui.activity.login.LoginActivity;
 import com.renxin.doctor.activity.ui.activity.login.ResetPasswordActivity;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
@@ -50,6 +51,7 @@ public class SettingActivity extends BaseActivity implements LoginContact.View {
 
     @Inject
     LoginPresenter mPresenter;
+    private boolean pushStatus;
 
     @Override
     protected int provideRootLayout() {
@@ -59,15 +61,16 @@ public class SettingActivity extends BaseActivity implements LoginContact.View {
     @Override
     protected void initView() {
         initToolbar();
+        pushStatus = U.getMessageStatus();
         //消息提醒
-        stChangeFlag.setChecked(U.getMessageStatus());
+        stChangeFlag.setChecked(pushStatus);
         stChangeFlag.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 U.setMessageStatus(b);
+                mPresenter.setPushStatus(b ? 1 : 0);
             }
         });
-
     }
 
     //共同头部处理
@@ -96,7 +99,7 @@ public class SettingActivity extends BaseActivity implements LoginContact.View {
                     @Override
                     public void onClick(View view) {
                         if (view.getId() == R.id.btn_ok) {
-//                            mPresenter.loginOut();
+//                            mPresenter.logout();
                             U.logout();
                             NIMClient.getService(AuthService.class).logout();
                             Intent intent = new Intent(DocApplication.getInstance(), LoginActivity.class);
@@ -122,15 +125,22 @@ public class SettingActivity extends BaseActivity implements LoginContact.View {
 
     @Override
     public void onSuccess(Message message) {
-        if (message.what == LoginPresenter.LOGOUT_SUCCESS) {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
+        if (message == null) {
+            return;
+        }
+        switch (message.what) {
+            case LoginPresenter.SETPUSHSTATIS_SUCCESS://设置提醒状态
+                NimManager.setPushStatus(U.getMessageStatus());
+               break;
         }
     }
 
     @Override
     public void onError(String errorCode, String errorMsg) {
         ToastUtil.show(errorMsg);
+        //只有一个请求 就不做多余的判断了，请求失败 恢复原来的状态
+        stChangeFlag.setChecked(pushStatus);
+        U.setMessageStatus(pushStatus);
     }
 
     @Override

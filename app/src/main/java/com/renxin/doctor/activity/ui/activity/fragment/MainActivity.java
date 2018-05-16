@@ -1,23 +1,30 @@
 package com.renxin.doctor.activity.ui.activity.fragment;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.netease.nim.uikit.common.badger.Badger;
 import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.NimIntent;
 import com.netease.nimlib.sdk.StatusCode;
 import com.netease.nimlib.sdk.msg.MsgService;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.config.EventConfig;
 import com.renxin.doctor.activity.data.eventbus.Event;
+import com.renxin.doctor.activity.nim.NimU;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
+import com.renxin.doctor.activity.ui.nimview.RecentActivity;
 import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.widget.BottomBarItem;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -36,6 +43,7 @@ public class MainActivity extends BaseActivity {
 
     private HashMap<Integer, Fragment> mFragmentMap = new HashMap<>();
     private int currTag = 0;
+    private static boolean firstEnter = true; // app是否应打开过
 
     @Override
     protected int provideRootLayout() {
@@ -44,17 +52,46 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-//        tabHome.setUnreadNum(100);
-//        tabPatient.setUnreadNum(10);
-//        tabFind.showNotify();
-//        tabMe.showNotify();
-
 //        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //        transaction.add(fragment对象);
 //        transaction.addToBackStack(null);
 //        transaction.commit();
 
         switchFrgment(R.id.tab_home);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //处理intent 分发进入不同activity
+        if (firstEnter) {
+            routeIntent();
+            firstEnter = false;
+        }
+    }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        //处理intent 分发进入不同activity
+        routeIntent();
+    }
+
+    //是否是云信 点击notification 进来的
+    private void routeIntent() {
+        if (!TextUtils.isEmpty(NimU.getNimAccount())) {
+            // 已经登录过了，处理过来的请求
+            Intent intent = getIntent();
+            if (intent != null) {
+                if (intent.hasExtra(NimIntent.EXTRA_NOTIFY_CONTENT)) {//是否是云信 点击notification 进来的
+                    ArrayList<IMMessage> messages = (ArrayList<IMMessage>) intent.getSerializableExtra(NimIntent.EXTRA_NOTIFY_CONTENT);
+                    if (messages != null) {
+                        startActivity(new Intent(this, RecentActivity.class));
+                    }
+                }
+            }
+        }
     }
 
 

@@ -1,5 +1,6 @@
 package com.renxin.doctor.activity.ui.nimview;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.renxin.doctor.activity.BuildConfig;
 import com.renxin.doctor.activity.R;
 import com.renxin.doctor.activity.ui.base.BaseView;
 import com.renxin.doctor.activity.ui.presenter.CommonPresenter;
@@ -33,6 +35,7 @@ import com.renxin.doctor.activity.utils.StatusBarUtil;
 import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
 import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
 import java.lang.ref.WeakReference;
@@ -66,6 +69,9 @@ public class P2PChatActivity extends BaseMessageActivity implements BaseView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //请求权限
+        requestPermissions();
+
         commonPresenter = new CommonPresenter(this);
         commonPresenter.getMembNo(getIntent().getStringExtra(Extras.EXTRA_ACCOUNT));
         // 单聊特例话数据，包括个人信息，
@@ -252,6 +258,33 @@ public class P2PChatActivity extends BaseMessageActivity implements BaseView {
         registerObservers(false);
 //        registerOnlineStateChangeListener(false);
         commonPresenter.unsubscribe();
+    }
+
+    //录音权限
+    private void requestPermissions() {
+        RxPermissions rxPermissions = new RxPermissions(this);
+        rxPermissions.setLogging(BuildConfig.DEBUG);
+        rxPermissions
+                .request(new String[]{Manifest.permission.RECORD_AUDIO})
+                .subscribe(new rx.Observer<Boolean>() {
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        if (!aBoolean) {
+                            ToastUtil.show("请求语音权限失败");
+                        }
+                    }
+
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                });
     }
 
     @Override

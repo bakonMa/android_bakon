@@ -97,7 +97,7 @@
 
     <style name="blackEditText" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/color_line</item>
-        <item name="colorControlActivated">@color/color_main</item>
+        <item name="colorControlActivated">@color/color_line</item>
     </style>
 
 

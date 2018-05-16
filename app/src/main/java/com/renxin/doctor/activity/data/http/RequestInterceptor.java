@@ -26,6 +26,7 @@ public class RequestInterceptor implements Interceptor {
 //        } else {
             request = chain.request()
                     .newBuilder()
+                    .header("content-type", "application/json; charset=UTF-8")
                     .header("OS", HttpConfig.HTTP_HEADER_OS)
                     .header("APPVERSION", BuildConfig.VERSION_NAME)
                     .header("APPVERSION_CODE", BuildConfig.VERSION_CODE + "")

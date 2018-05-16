@@ -33,12 +33,15 @@ import com.netease.nim.uikit.impl.provider.DefaultContactProvider;
 import com.netease.nim.uikit.impl.provider.DefaultUserInfoProvider;
 import com.netease.nim.uikit.support.glide.ImageLoaderKit;
 import com.netease.nimlib.sdk.AbortableFuture;
+import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.auth.LoginInfo;
 import com.netease.nimlib.sdk.chatroom.model.EnterChatRoomResultData;
+import com.netease.nimlib.sdk.msg.MsgService;
 import com.netease.nimlib.sdk.msg.attachment.MsgAttachment;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.netease.nimlib.sdk.msg.model.RecentContact;
 
 import java.util.Set;
 
@@ -588,4 +591,33 @@ public class NimUIKit {
     public static boolean isEarPhoneModeEnable() {
         return NimUIKitImpl.getEarPhoneModeEnable();
     }
+
+
+    /**
+     * 2018年05月15日15:32:43 bakon 添加
+     * 删除会话
+     * 从最近联系人列表中删除一项。
+     * 调用这个接口删除数据后，不会引发观察者通知。
+     *
+     * @param recent 待删除的最近联系人项
+     */
+    public static void deleteRecentContact(RecentContact recent) {
+        NIMClient.getService(MsgService.class).deleteRecentContact(recent);
+    }
+
+    /**
+     * 2018年05月15日15:32:43 bakon 添加
+     * 删除会话
+     * 删除最近联系人记录。
+     * 调用该接口后，会触发{@link MsgServiceObserve#observeRecentContactDeleted(Observer, boolean)}通知
+     *
+     * @param account
+     * @param sessionType
+     */
+    public static void deleteRecentContact2(String account) {
+        // 以P2P类型为例
+        NIMClient.getService(MsgService.class).deleteRecentContact2(account, SessionTypeEnum.P2P);
+    }
+
+
 }

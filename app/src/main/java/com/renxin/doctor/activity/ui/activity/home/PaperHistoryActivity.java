@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -49,6 +50,8 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
+    @BindView(R.id.id_swipe)
+    SwipeRefreshLayout idSwipe;
     @BindView(R.id.recycleview)
     RecyclerView recyvleview;
     @BindView(R.id.tv_serch)
@@ -62,7 +65,6 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
     private int pageNum = 1;
     private String searchStr = "";
 
-
     @Override
     protected int provideRootLayout() {
         return R.layout.activity_paper_history;
@@ -71,6 +73,17 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
     @Override
     protected void initView() {
         initToolbar();
+
+        //下拉刷新
+        idSwipe.setColorSchemeColors(getResources().getColor(R.color.color_main));
+        idSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //刷新数据
+                pageNum = 1;
+                mPresenter.getPaperHistoryList(pageNum, tvSerch.getText().toString().trim());
+            }
+        });
 
         recyvleview.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new BaseQuickAdapter<CheckPaperBean, BaseViewHolder>(R.layout.item_checkpaper, checkPaperBeans) {
@@ -83,9 +96,6 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
                         .setGone(R.id.tv_checkstatus, false);
             }
         };
-
-        mAdapter.setEnableLoadMore(true);
-        recyvleview.setAdapter(mAdapter);
 
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -106,6 +116,8 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
                 startActivity(intent);
             }
         });
+
+        recyvleview.setAdapter(mAdapter);
 
         tvSerch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -152,6 +164,9 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
 
     @Override
     public void onSuccess(Message message) {
+        if (idSwipe.isRefreshing()) {
+            idSwipe.setRefreshing(false);
+        }
         if (message == null) {
             return;
         }
@@ -162,19 +177,24 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
                 }
                 BasePageBean<CheckPaperBean> beans = (BasePageBean<CheckPaperBean>) message.obj;
                 if (beans != null && beans.list != null) {
+                    pageNum = beans.page;
+                    //第一页 情况
+                    if (pageNum == 1) {
+                        checkPaperBeans.clear();
+                    }
                     checkPaperBeans.addAll(beans.list);
-                    pageNum = beans.page;//页码
-                }
-                mAdapter.notifyDataSetChanged();
+                    mAdapter.notifyDataSetChanged();
 
-                if (checkPaperBeans.isEmpty()) {
-                    mAdapter.setEmptyView(R.layout.empty_view);
-                } else {
                     if (beans.is_last == 1) {//最后一页
                         mAdapter.loadMoreEnd();
                     } else {
                         mAdapter.loadMoreComplete();
                     }
+                }
+                mAdapter.notifyDataSetChanged();
+
+                if (checkPaperBeans.isEmpty()) {
+                    mAdapter.setEmptyView(R.layout.empty_view);
                 }
                 break;
         }

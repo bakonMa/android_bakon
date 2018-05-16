@@ -18,9 +18,9 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
+        android:background="@drawable/shape_stroke_bg_10"
         android:drawableLeft="@drawable/nim_actionbar_search_dark_icon"
         android:drawablePadding="5dp"
-        android:background="@drawable/shape_stroke_bg_10"
         android:gravity="center_vertical"
         android:hint="患者姓名、联系电话"
         android:imeOptions="actionSearch"
@@ -29,9 +29,15 @@
         android:singleLine="true"
         android:textSize="16sp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycleview"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/id_swipe"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

@@ -70,7 +70,7 @@
                         android:id="@+id/iv_img1"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:background="@drawable/img_default_1"
+                        android:background="@drawable/img_default_2"
                         android:scaleType="centerCrop" />
 
                     <ImageView

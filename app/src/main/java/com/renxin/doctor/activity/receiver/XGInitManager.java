@@ -42,6 +42,32 @@ public class XGInitManager {
         XGPushManager.setTag(context, BuildConfig.VERSION_NAME);
         //开启debug日志数据
         XGPushConfig.enableDebug(context, BuildConfig.DEBUG);
+
+        //自定义通知
+//        XGCustomPushNotificationBuilder build = new XGCustomPushNotificationBuilder();
+//        build.setSound(
+//                RingtoneManager.getActualDefaultRingtoneUri(
+//                        context, RingtoneManager.TYPE_ALARM)) // 设置声音
+//                .setDefaults(Notification.DEFAULT_VIBRATE) // 振动
+//                .setFlags(Notification.FLAG_NO_CLEAR); // 是否可清除
+//        // 设置自定义通知layout,通知背景等可以在layout里设置
+//        build.setLayoutId(R.layout.layout_notification);
+//        // 设置自定义通知内容id
+//        build.setLayoutTextId(R.id.ssid);
+//        // 设置自定义通知标题id
+//        build.setLayoutTitleId(R.id.title);
+//        // 设置自定义通知图片id
+//        build.setLayoutIconId(R.id.icon);
+//        // 设置自定义通知图片资源
+//        build.setLayoutIconDrawableId(R.mipmap.logo);
+//        // 设置状态栏的通知小图标
+//        build.setIcon(R.drawable.ic_launcher);
+//        // 设置时间id
+//        build.setLayoutTimeId(R.id.time);
+//        // 若不设定以上自定义layout，又想简单指定通知栏图片资源
+//        build.setNotificationLargeIcon(R.drawable.tenda_icon);
+//
+//        XGPushManager.setDefaultNotificationBuilder(context, build);
     }
 
     //约定使用手机号注册
@@ -66,4 +92,6 @@ public class XGInitManager {
             });
         }
     }
+
+
 }

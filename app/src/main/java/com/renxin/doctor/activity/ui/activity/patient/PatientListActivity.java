@@ -91,21 +91,19 @@ public class PatientListActivity extends BaseActivity implements PatientContact.
         });
 
         //是否显示侧边快捷栏
-        if (sideBar.getVisibility() == View.VISIBLE) {
-            sideBar.setTextView(indicator);
-            sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
-                @Override
-                public void onTouchingLetterChanged(String s, int offsetY) {
-                    int position = mAdapter.getPositionForSection(s.charAt(0));
-                    indicator.setText(s);
+        sideBar.setTextView(indicator);
+        sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
+            @Override
+            public void onTouchingLetterChanged(String s, int offsetY) {
+                int position = mAdapter.getPositionForSection(s.charAt(0));
+                indicator.setText(s);
 //                if (offsetY > indicator.getHeight() / 2 && offsetY + indicator.getHeight() / 2 < sideBar.getHeight())
 //                    indicator.setTranslationY(offsetY - indicator.getHeight() / 2 + sideBar.getTop());
-                    if (position != -1) {
-                        mLayoutManager.scrollToPositionWithOffset(position, 0);
-                    }
+                if (position != -1) {
+                    mLayoutManager.scrollToPositionWithOffset(position, 0);
                 }
-            });
-        }
+            }
+        });
 
         mPresenter.getpatientlist();
     }
@@ -137,6 +135,7 @@ public class PatientListActivity extends BaseActivity implements PatientContact.
                     dataList.addAll(beans);
                     mAdapter.notifyDataSetChanged();
                 }
+                sideBar.setVisibility(dataList.isEmpty() ? View.GONE : View.VISIBLE);
                 break;
         }
     }

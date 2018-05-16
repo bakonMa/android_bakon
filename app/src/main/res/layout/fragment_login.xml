@@ -39,6 +39,7 @@
                 android:maxLength="11"
                 android:textColor="@color/color_000"
                 android:textColorHint="@color/color_cacaca"
+                android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="16sp" />
 
             <ImageView
@@ -80,6 +81,7 @@
                 android:maxLength="6"
                 android:textColor="@color/color_000"
                 android:textColorHint="@color/color_cacaca"
+                android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="16sp" />
 
             <ImageView
@@ -134,6 +136,7 @@
                 android:maxLength="20"
                 android:textColor="@color/color_000"
                 android:textColorHint="@color/color_cacaca"
+                android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="16sp" />
 
             <ImageView
@@ -150,7 +153,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/selector_bg_checkbox" />
+                android:src="@drawable/selector_bg_eye" />
 
         </LinearLayout>
 
@@ -169,9 +172,9 @@
                 android:gravity="center"
                 android:paddingLeft="22dp"
                 android:text="忘记密码"
-                android:visibility="gone"
                 android:textColor="@color/color_d6d6d6"
-                android:textSize="12dp" />
+                android:textSize="12dp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_registe"

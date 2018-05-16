@@ -16,17 +16,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.renxin.doctor.activity.R;
+import com.renxin.doctor.activity.application.DocApplication;
+import com.renxin.doctor.activity.config.H5Config;
+import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
+import com.renxin.doctor.activity.injection.modules.ActivityModule;
+import com.renxin.doctor.activity.ui.activity.WebViewActivity;
 import com.renxin.doctor.activity.ui.activity.fragment.MainActivity;
 import com.renxin.doctor.activity.ui.base.BaseActivity;
 import com.renxin.doctor.activity.ui.contact.LoginContact;
 import com.renxin.doctor.activity.ui.presenter.LoginPresenter;
 import com.renxin.doctor.activity.utils.ToastUtil;
 import com.renxin.doctor.activity.widget.dialog.CommonDialog;
-import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
-import com.renxin.doctor.activity.application.DocApplication;
-import com.renxin.doctor.activity.injection.components.DaggerActivityComponent;
-import com.renxin.doctor.activity.injection.modules.ActivityModule;
 import com.renxin.doctor.activity.widget.toolbar.TitleOnclickListener;
+import com.renxin.doctor.activity.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
 import java.lang.ref.WeakReference;
@@ -153,7 +155,11 @@ public class RegisteActivity extends BaseActivity implements LoginContact.View {
                 etSecPassword.setSelection(etSecPassword.getText().length());
                 break;
             case R.id.tv_agreement://用户协议
-                ToastUtil.show("进入用户协议");
+                WebViewActivity.startAct(actContext(),
+                        true,
+                        WebViewActivity.WEB_TYPE.WEB_TYPE_AGREEMENT,
+                        H5Config.H5_AGREEMENT_TITLE,
+                        H5Config.H5_AGREEMENT);
                 break;
         }
     }
@@ -198,6 +204,7 @@ public class RegisteActivity extends BaseActivity implements LoginContact.View {
 
     //展示确定dialog
     private CommonDialog commonDialog;
+
     private void showDialog(String title) {
         if (commonDialog != null) {
             commonDialog.dismiss();

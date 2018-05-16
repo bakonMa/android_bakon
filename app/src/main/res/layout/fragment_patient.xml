@@ -11,11 +11,17 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyvleview"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/id_swipe"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/color_f6f6f6" />
+            android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyvleview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_f6f6f6" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <com.renxin.doctor.activity.widget.SideBar
             android:id="@+id/sideBar"

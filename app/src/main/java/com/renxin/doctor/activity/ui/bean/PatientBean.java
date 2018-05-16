@@ -25,19 +25,23 @@ public class PatientBean implements Comparable<PatientBean> {
     public String im_accid;
     public String remark_name;
     public String memb_class;
+    public int is_new;//是否是新添加的 显示红点 1：新患者 0：老患者
 
     @Override
     public int compareTo(@NonNull PatientBean bean) {
-        String string = CharacterParser.getInstance().getSelling(TextUtils.isEmpty(bean.remark_name) ? bean.nick_name : bean.remark_name);
+        //当前对象
+        String string = CharacterParser.getInstance().getSelling(TextUtils.isEmpty(nick_name) ? "" : nick_name);
         if (CharacterParser.getInstance().getInitials(string).equals("#")) {
             return 1;
         }
         char[] chars = string.toCharArray();
-        String antherString = CharacterParser.getInstance().getSelling(TextUtils.isEmpty(bean.remark_name) ? bean.nick_name : bean.remark_name);
+        //当前bean
+        String antherString = CharacterParser.getInstance().getSelling(TextUtils.isEmpty(bean.nick_name) ? "" : bean.nick_name);
         if (CharacterParser.getInstance().getInitials(antherString).equals("#")) {
             return -1;
         }
         char[] anotherChars = antherString.toCharArray();
+
         int length = chars.length > anotherChars.length ? anotherChars.length : chars.length;
         for (int i = 0; i < length; i++) {
             if (chars[i] < anotherChars[i]) {

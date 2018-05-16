@@ -75,6 +75,7 @@ public class SessionHelper {
     private static final int ACTION_CLEAR_MESSAGE = 2;
 
     private static SessionCustomization p2pCustomization;
+    private static SessionCustomization serviceP2pCustomization;
     private static RecentCustomization recentCustomization;
 
     private static NIMPopupMenu popupMenu;
@@ -99,7 +100,7 @@ public class SessionHelper {
         // 注册消息撤回监听器
         registerMsgRevokeObserver();
 
-//        NimUIKit.setCommonP2PSessionCustomization(getP2pCustomization());
+        NimUIKit.setCommonP2PSessionCustomization(getP2pCustomization());
 
         NimUIKit.setRecentCustomization(getRecentCustomization());
     }
@@ -192,8 +193,8 @@ public class SessionHelper {
 
     // 定制化单聊界面。客服的
     private static SessionCustomization getServiceP2pCustomization() {
-        if (p2pCustomization == null) {
-            p2pCustomization = new SessionCustomization() {
+        if (serviceP2pCustomization == null) {
+            serviceP2pCustomization = new SessionCustomization() {
                 // 由于需要Activity Result， 所以重载该函数。
                 @Override
                 public void onActivityResult(final Activity activity, int requestCode, int resultCode, Intent data) {
@@ -211,11 +212,11 @@ public class SessionHelper {
             actions.add(new PhotoAction(0));
             actions.add(new PhotoAction(1));
 
-            p2pCustomization.actions = actions;
-            p2pCustomization.withSticker = false;//显示表情为 true，不显示表情为 false（可自定义表情图）
+            serviceP2pCustomization.actions = actions;
+            serviceP2pCustomization.withSticker = false;//显示表情为 true，不显示表情为 false（可自定义表情图）
         }
 
-        return p2pCustomization;
+        return serviceP2pCustomization;
     }
 
 

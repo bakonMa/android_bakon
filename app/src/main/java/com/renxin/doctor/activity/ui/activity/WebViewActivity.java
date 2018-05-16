@@ -89,6 +89,7 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
         webType = getIntent().getStringExtra("webType");
 
         LogUtil.d(urlStr);
+//        urlStr = "http://www.123qwesfasdf.com/";
         wbWebview.setErrorCallback(this);
         //是否有导航头
         if (hasTopBar) {

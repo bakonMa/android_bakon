@@ -7,9 +7,9 @@
 
     <include layout="@layout/base_toolbar" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
         <LinearLayout
             android:id="@+id/llt_web"
@@ -114,7 +114,7 @@
             </LinearLayout>
         </LinearLayout>
 
-    </ScrollView>
+    <!--</ScrollView>-->
 
     <RelativeLayout
         android:id="@+id/rlt_error"

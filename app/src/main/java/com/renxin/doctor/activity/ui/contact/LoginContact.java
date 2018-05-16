@@ -17,9 +17,11 @@ public interface LoginContact {
 
         void login(String phone, String code, int type);
 
-        void loginOut();
         void regist(String phone, String pwd, String code);
+
         void restPwd(String phone, String code, String pwd);
+
+        void setPushStatus(int status);
 
 
     }

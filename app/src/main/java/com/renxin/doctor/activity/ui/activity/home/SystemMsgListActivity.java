@@ -140,15 +140,14 @@ public class SystemMsgListActivity extends BaseActivity implements WorkRoomConta
 
     @Override
     public void onSuccess(Message message) {
+        if (idSwipe.isRefreshing()) {
+            idSwipe.setRefreshing(false);
+        }
         if (message == null) {
             return;
         }
         switch (message.what) {
             case WorkRoomPresenter.GET_SYSTEMMSG_LIST_OK:
-                if (idSwipe.isRefreshing()) {
-                    idSwipe.setRefreshing(false);
-                }
-
                 BasePageBean<SystemMsgBean> tempBean = (BasePageBean<SystemMsgBean>) message.obj;
                 if (tempBean != null && tempBean.list != null) {
                     pageNum = tempBean.page;

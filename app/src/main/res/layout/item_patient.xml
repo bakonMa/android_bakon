@@ -15,6 +15,15 @@
         android:background="@drawable/default_head" />
 
     <TextView
+        android:id="@+id/tv_redpoint"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_alignRight="@+id/iv_headerimg"
+        android:layout_alignTop="@+id/iv_headerimg"
+        android:background="@drawable/shape_red_point"
+        android:visibility="gone" />
+
+    <TextView
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,8 +39,8 @@
         android:id="@+id/tv_from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textColor="@color/color_main"
@@ -42,5 +51,5 @@
     <View
         android:id="@+id/bottom_line"
         style="@style/line_gray_hor"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

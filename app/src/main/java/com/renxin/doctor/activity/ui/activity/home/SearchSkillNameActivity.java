@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -35,6 +36,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 /**
  * SearchSkillNameActivity 搜索疾病名称
@@ -99,6 +101,16 @@ public class SearchSkillNameActivity extends BaseActivity implements OpenPaperCo
             }
         });
     }
+
+    @OnTextChanged(value = R.id.et_searchcontent, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    void afterContentChanged(Editable s) {
+        if (s.length() < 2) {
+            return;
+        }
+        //自动搜索
+        mPresenter.searchSkillName(etSearchcontent.getText().toString().trim());
+    }
+
 
     @OnClick({R.id.tv_cancle})
     void btnOnClick(View view) {

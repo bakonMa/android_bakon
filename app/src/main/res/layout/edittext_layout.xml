@@ -23,6 +23,7 @@
         android:layout_toRightOf="@+id/id_tv_left"
         android:background="@null"
         android:ellipsize="end"
+        android:textCursorDrawable="@drawable/color_cursor"
         android:singleLine="true"
         android:textColor="@color/color_000"
         android:textSize="14sp"
@@ -57,7 +58,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="40dp"
-        android:background="@drawable/selector_bg_checkbox"
+        android:background="@drawable/selector_bg_eye"
         android:button="@null"
         android:checked="false"
         android:visibility="gone" />

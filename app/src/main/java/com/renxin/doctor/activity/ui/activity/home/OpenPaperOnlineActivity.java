@@ -415,6 +415,11 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             commonDialog.show();
             return;
         }
+        if (TextUtils.isEmpty(skilNameCode)) {
+            commonDialog = new CommonDialog(this, "请选择主述及辩证型");
+            commonDialog.show();
+            return;
+        }
         if (TextUtils.isEmpty(etDrugstore.getText())) {
             commonDialog = new CommonDialog(this, "请选择药房");
             commonDialog.show();
@@ -536,8 +541,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                     commonDialog = new CommonDialog(this, "药房缺少药材，请修改处方");
                     commonDialog.show();
                 }
-
-
                 break;
         }
     }
@@ -557,6 +560,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         }
     }
 
+    //主述及辩证型
     private String skilNameCode;
 
     @Override
@@ -582,7 +586,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 if (TextUtils.isEmpty(skilName)) {
                     skilNameCode = "";
                     tvSkillname.setTextColor(UIUtils.getColor(R.color.color_999));
-                    tvSkillname.setText("请选择病名或证型");
+                    tvSkillname.setText("");
                 } else {
                     skilNameCode = data.getStringExtra("icd10_code");
                     tvSkillname.setTextColor(UIUtils.getColor(R.color.color_000));

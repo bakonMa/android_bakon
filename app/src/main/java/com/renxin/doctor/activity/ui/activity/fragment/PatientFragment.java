@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -31,6 +32,7 @@ import com.trello.rxlifecycle.LifecycleTransformer;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -48,6 +50,8 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
     Toolbar idToolbar;
     @BindView(R.id.recyvleview)
     RecyclerView recycleView;
+    @BindView(R.id.id_swipe)
+    SwipeRefreshLayout idSwipe;
     @BindView(R.id.sideBar)
     SideBar sideBar;
     @BindView(R.id.indicator)
@@ -79,6 +83,15 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
     @Override
     protected void initView() {
         initToolBar();
+        //下拉刷新
+        idSwipe.setColorSchemeColors(getResources().getColor(R.color.color_main));
+        idSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //刷新数据
+                mPresenter.getpatientlist();
+            }
+        });
 
         recycleView.setLayoutManager(mLayoutManager = new LinearLayoutManager(actContext()));
         mAdapter = new PatientAdapter(actContext(), dataList);
@@ -96,23 +109,33 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
         });
 
         //是否显示侧边快捷栏
-        if (sideBar.getVisibility() == View.VISIBLE) {
-            sideBar.setTextView(indicator);
-            sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
-                @Override
-                public void onTouchingLetterChanged(String s, int offsetY) {
-                    int position = mAdapter.getPositionForSection(s.charAt(0));
-                    indicator.setText(s);
+        sideBar.setTextView(indicator);
+        sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
+            @Override
+            public void onTouchingLetterChanged(String s, int offsetY) {
+                int position = mAdapter.getPositionForSection(s.charAt(0));
+                indicator.setText(s);
 //                if (offsetY > indicator.getHeight() / 2 && offsetY + indicator.getHeight() / 2 < sideBar.getHeight())
 //                    indicator.setTranslationY(offsetY - indicator.getHeight() / 2 + sideBar.getTop());
-                    if (position != -1) {
-                        mLayoutManager.scrollToPositionWithOffset(position, 0);
-                    }
+                if (position != -1) {
+                    mLayoutManager.scrollToPositionWithOffset(position, 0);
                 }
-            });
-        }
+            }
+        });
 
         mPresenter.getpatientlist();
+    }
+
+    /**
+     * fragment 是否隐藏
+     * @param hidden false 前台显示 true 隐藏
+     */
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            mPresenter.getpatientlist();
+        }
     }
 
     private void initToolBar() {
@@ -134,6 +157,9 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
 
     @Override
     public void onSuccess(Message message) {
+        if (idSwipe.isRefreshing()) {
+            idSwipe.setRefreshing(false);
+        }
         if (message == null) {
             return;
         }
@@ -143,8 +169,10 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
                 if (beans != null) {
                     dataList.clear();
                     dataList.addAll(beans);
+                    Collections.sort(dataList);
                     mAdapter.notifyDataSetChanged();
                 }
+                sideBar.setVisibility(dataList.isEmpty() ? View.GONE : View.VISIBLE);
                 break;
         }
     }
@@ -154,7 +182,6 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
         CommonDialog commonDialog = new CommonDialog(getActivity(), errorMsg);
         commonDialog.show();
     }
-
 
     @Override
     public Activity provideContext() {

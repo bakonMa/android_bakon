@@ -150,26 +150,11 @@
             android:layout_height="50dp"
             android:background="@color/color_dddddd"
             android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_guahao"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="1dp"
-                android:layout_weight="1"
-                android:background="@color/white"
-                android:gravity="clip_vertical|center"
-                android:lineSpacingExtra="5dp"
-                android:text="0.00\n(网)挂号收入"
-                android:textColor="@color/color_000"
-                android:textSize="11sp" />
-
             <TextView
                 android:id="@+id/tv_wenzhen"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="1dp"
-                android:layout_marginTop="1dp"
+                android:layout_margin="1dp"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:gravity="clip_vertical|center"
@@ -182,7 +167,9 @@
                 android:id="@+id/tv_chufang"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_margin="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginRight="1dp"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:gravity="clip_vertical|center"

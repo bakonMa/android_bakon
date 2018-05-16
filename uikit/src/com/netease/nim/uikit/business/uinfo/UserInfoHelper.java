@@ -24,7 +24,7 @@ public class UserInfoHelper {
     }
 
     /**
-     * @param account 用户帐号 备注昵称
+     * @param account 用户帐号 备注昵称（优先备注）
      * @return
      */
     public static String getUserDisplayName(String account) {

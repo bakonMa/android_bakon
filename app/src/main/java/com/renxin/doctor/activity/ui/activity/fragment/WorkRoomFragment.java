@@ -51,6 +51,7 @@ import com.renxin.doctor.activity.ui.activity.mine.AuthStep1Activity;
 import com.renxin.doctor.activity.ui.activity.mine.UserNoticeActivity;
 import com.renxin.doctor.activity.ui.base.BaseFragment;
 import com.renxin.doctor.activity.ui.bean.BannerBean;
+import com.renxin.doctor.activity.ui.bean.OtherBean;
 import com.renxin.doctor.activity.ui.contact.WorkRoomContact;
 import com.renxin.doctor.activity.ui.nimview.PaperH5Activity;
 import com.renxin.doctor.activity.ui.nimview.RecentActivity;
@@ -136,14 +137,16 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
 
     @Override
     protected void initView() {
+        //请求权限
+        requestPermissions();
+
         //nim手动登录
         NimManager.getInstance(DocApplication.getInstance()).nimLogin();
         //信鸽注册
         XGInitManager.getInstance(DocApplication.getInstance()).registerXG();
         //获取客服accid login接口获得
         accid = DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_SERVICE_ACCID);
-        //设置图片集合
-        requestPermissions();
+
         //Banner初始化
         initBanner();
 
@@ -175,11 +178,25 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         }, true);
     }
 
+
+    /**
+     * fragment 是否隐藏
+     * @param hidden false 前台显示 true 隐藏
+     */
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            mPresenter.getUserIdentifyStatus();//认证状态
+            mPresenter.getRedPointStatus();//红点状态
+        }
+    }
+
     //登录成功后初始化 客服数据
     private void initService() {
         //测试
         // accid = "851b6313ba321b719d861aa658c7f5a5";
-        accid = "753166d9bce4d2c7c4c30b520c647d4c";
+//        accid = "753166d9bce4d2c7c4c30b520c647d4c";
         //最近联系人列表变化观察者
         NIMClient.getService(MsgServiceObserve.class).observeRecentContact(messageObserver, true);
         NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(messageReceiverObserver, true);
@@ -424,13 +441,14 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 lltShownotice.setVisibility(U.getAuthStatus() == 2 ? View.GONE : View.VISIBLE);
                 switch (U.getAuthStatus()) {//0：未认证 1：审核中；2：审核通过 3：审核失败
                     case 0://未认证
-                        tvNotification.setText("您还未认证，认证通过后可以体验更过优质服务！");
+                        tvNotification.setText("您尚未认证，认证后可获取更多权限！");
                         break;
-                    case 1:
-                        tvNotification.setText("您的认证信息正在审核中，请耐心等待，认证通过后可以体验更过优质服务！");
+                    case 1://审核中
+                        tvNotification.setText("您的认证信息正在审核中，请耐心等待！");
                         break;
-                    case 3:
-                        tvNotification.setText("您的认证未通过，请重新认证，认证通过后可以体验更过优质服务！");
+                    case 3://审核失败
+                        OtherBean bean = (OtherBean) message.obj;
+                        tvNotification.setText(TextUtils.isEmpty(bean.fail_msg) ? "您的认证信息未通过，请重新认证！" : bean.fail_msg);
                         break;
                 }
                 break;
@@ -460,18 +478,19 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
             return;
         }
         switch (event.getCode()) {
-            case EventConfig.EVENT_KEY_NIM_LOGIN://nim 登录成功
-                //客服 初始化
-                initService();
-                break;
             case EventConfig.EVENT_KEY_REDPOINT_HOME_CHECK://红点 审核处方
                 //是否有审核处方
                 tvCheckredpoint.setVisibility(U.getRedPointExt() > 0 ? View.VISIBLE : View.GONE);
+                break;
+            case EventConfig.EVENT_KEY_NIM_LOGIN://nim 登录成功
+                //客服 初始化
+                initService();
                 break;
             case EventConfig.EVENT_KEY_REDPOINT_HOME_SYSMSG://消息通知 未读消息数和系统消息红点
                 showAllUnreadMessageNum();
                 break;
             case EventConfig.EVENT_KEY_SERVICE_MESSAGE://客服数据 变化
+                showServiceInfo();
                 showLastMessage((RecentContact) event.getData());
                 break;
             case EventConfig.EVENT_KEY_NIM_LOGOUT://踢掉 进入登录画面
@@ -516,6 +535,18 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         NIMClient.getService(MsgServiceObserve.class).observeRecentContact(messageObserver, true);
     }
 
+    /**
+     * 下面的代码很关键,没有下面的代码会出现切换tab的时候重影现象：
+     *
+     * @param menuVisible
+     */
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        if (this.getView() != null)
+            this.getView().setVisibility(menuVisible ? View.VISIBLE : View.GONE);
+    }
+
     private void requestPermissions() {
         RxPermissions rxPermissions = new RxPermissions(getActivity());
         rxPermissions.setLogging(BuildConfig.DEBUG);
@@ -525,7 +556,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                     @Override
                     public void onNext(Boolean aBoolean) {
                         if (!aBoolean) {
-                            ToastUtil.show("请求权限失败");
+                            ToastUtil.show("请求录音权限失败");
                         }
                     }
 

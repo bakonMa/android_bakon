@@ -14,7 +14,7 @@ import com.netease.nimlib.sdk.mixpush.MixPushConfig;
 import com.netease.nimlib.sdk.msg.MessageNotifierCustomization;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.renxin.doctor.activity.R;
-import com.renxin.doctor.activity.ui.nimview.RecentActivity;
+import com.renxin.doctor.activity.ui.activity.fragment.MainActivity;
 import com.renxin.doctor.activity.utils.UIUtils;
 
 import java.io.IOException;
@@ -71,7 +71,7 @@ class NimSDKOptionConfig {
         options.enableTeamMsgAck = false;
 
         // 配置第三方推送
-        options.mixPushConfig = buildMixPushConfig();
+//        options.mixPushConfig = buildMixPushConfig();
 
         // 云信私有化配置项
         configServerAddress(options);
@@ -142,8 +142,8 @@ class NimSDKOptionConfig {
         StatusBarNotificationConfig config = new StatusBarNotificationConfig();
         //todo 注意修改
         //通知设置，点击通知需要跳转到的界面
-        config.notificationEntrance = RecentActivity.class;
-        config.notificationSmallIconId = R.drawable.ic_stat_notify_msg;//小图标，必须透明
+        config.notificationEntrance = MainActivity.class;
+        config.notificationSmallIconId = R.drawable.icon_notify_smallicon;//小图标，必须透明
         config.notificationColor = DocCache.getContext().getResources().getColor(R.color.color_main);
         // 通知铃声的uri字符串
 //        config.notificationSound = "android.resource://com.netease.nim.demo/raw/msg";

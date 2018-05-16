@@ -624,6 +624,7 @@ public class InputPanel implements IEmoticonSelectedListener, IAudioRecordCallba
      * ****************************** 语音 ***********************************
      */
     private void initAudioRecordButton() {
+
         audioRecordBtn.setOnTouchListener(new View.OnTouchListener() {
 
             @Override

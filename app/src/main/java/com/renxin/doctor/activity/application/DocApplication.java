@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.renxin.doctor.activity.BuildConfig;
 import com.renxin.doctor.activity.config.HttpConfig;
 import com.renxin.doctor.activity.data.http.APIModule;
 import com.renxin.doctor.activity.injection.components.ApplicationComponent;
@@ -14,6 +15,7 @@ import com.renxin.doctor.activity.nim.NimManager;
 import com.renxin.doctor.activity.receiver.XGInitManager;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -50,6 +52,10 @@ public class DocApplication extends Application {
         NimManager.getInstance(this);
         //信鸽推送 初始化
         XGInitManager.getInstance(this);
+        //bugly isdebug（true/false）
+        CrashReport.initCrashReport(getApplicationContext(), "cf03101aef", BuildConfig.DEBUG);
+        //todo 全部设置为测试设备 release 去掉
+        CrashReport.setIsDevelopmentDevice(getApplicationContext(), BuildConfig.DEBUG);
         //内存泄漏检测
         refWatcher = setupLeakCanary();
         //db 初始化

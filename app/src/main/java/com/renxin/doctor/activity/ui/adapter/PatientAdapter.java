@@ -22,7 +22,7 @@ import java.util.List;
  * PatientAdapter 患者列表adapter
  * Create at 2018/4/14 下午11:21 by mayakun
  */
-public class PatientAdapter extends BaseQuickAdapter<PatientBean, PatientAdapter.ViewHolder>
+public class PatientAdapter extends BaseQuickAdapter<PatientBean, BaseViewHolder>
         implements StickyRecyclerHeadersAdapter<PatientAdapter.HeaderViewHolder> {
 
 
@@ -31,9 +31,11 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, PatientAdapter
     }
 
     @Override
-    protected void convert(ViewHolder helper, PatientBean item) {
+    protected void convert(BaseViewHolder helper, PatientBean item) {
         helper.setText(R.id.tv_name, TextUtils.isEmpty(item.remark_name) ? item.nick_name : item.remark_name)
-                .setText(R.id.tv_from, item.memb_class);
+                .setText(R.id.tv_from, TextUtils.isEmpty(item.memb_class) ? "" : item.memb_class)
+                .setGone(R.id.tv_redpoint, item.is_new == 1);
+
         ImageUtil.showCircleImage(item.head_url, helper.getView(R.id.iv_headerimg));
 
         if (mData.size() == mData.lastIndexOf(item) + 1
@@ -55,8 +57,7 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, PatientAdapter
 
     @Override
     public HeaderViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_patient_header, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_patient_header, parent, false);
         return new HeaderViewHolder(view);
     }
 
@@ -66,7 +67,7 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, PatientAdapter
         textView.setText(getFirstLetter(position));
     }
 
-    //
+    //侧边快捷栏 使用
     public int getPositionForSection(char section) {
         for (int i = 0; i < getData().size(); i++) {
             String firstChar1 = CharacterParser.getInstance().getSelling(getData().get(i).nick_name);
@@ -83,6 +84,16 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, PatientAdapter
         return CharacterParser.getInstance().getInitials(getItemSortLetter(pos));
     }
 
+    @Override
+    public int getItemCount() {
+        return mData.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     //获取 昵称的汉语拼音
     public String getItemSortLetter(int position) {
         return CharacterParser.getInstance().getSelling(mData.get(position).nick_name);
@@ -94,11 +105,5 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, PatientAdapter
         }
     }
 
-    class ViewHolder extends BaseViewHolder {
-        ViewHolder(View view) {
-            super(view);
-
-        }
-    }
 
 }

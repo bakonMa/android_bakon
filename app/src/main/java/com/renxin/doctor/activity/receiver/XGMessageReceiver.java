@@ -4,8 +4,12 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 
+import com.renxin.doctor.activity.config.EventConfig;
+import com.renxin.doctor.activity.data.eventbus.Event;
+import com.renxin.doctor.activity.data.eventbus.EventBusUtil;
 import com.renxin.doctor.activity.utils.LogUtil;
 import com.renxin.doctor.activity.utils.ToastUtil;
+import com.renxin.doctor.activity.utils.U;
 import com.tencent.android.tpush.XGPushBaseReceiver;
 import com.tencent.android.tpush.XGPushClickedResult;
 import com.tencent.android.tpush.XGPushRegisterResult;
@@ -55,17 +59,24 @@ public class XGMessageReceiver extends XGPushBaseReceiver {
                     // key1为前台配置的key
                     if (!obj.isNull("type")) { //提醒红点使用
                         int type = obj.getInt("type");
-//                        switch (type) {
-//                            case 1://认证失败
-//                                context.startActivity(new Intent(context, AuthStep1Activity.class));
-//                                break;
-//                            case 2://审方
-//                                context.startActivity(new Intent(context, CheckPaperActivity.class));
-//                                break;
-//                            case 3://系统消息
-//                                context.startActivity(new Intent(context, SystemMsgListActivity.class));
-//                                break;
-//                        }
+                        switch (type) {
+                            case 1://认证失败
+                                //context.startActivity(new Intent(context, AuthStep1Activity.class));
+                                break;
+                            case 2://审方
+                                //context.startActivity(new Intent(context, CheckPaperActivity.class));
+                                //提示显示红点
+                                U.setRedPointExt(1);
+                                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME));
+                                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME_CHECK));
+                                break;
+                            case 3://系统消息
+                                //context.startActivity(new Intent(context, SystemMsgListActivity.class));
+                                U.setRedPointSys(1);
+                                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME));
+                                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REDPOINT_HOME_SYSMSG));
+                                break;
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

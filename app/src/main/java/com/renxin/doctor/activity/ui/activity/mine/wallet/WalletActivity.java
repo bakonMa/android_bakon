@@ -63,8 +63,6 @@ public class WalletActivity extends BaseActivity implements WalletContact.View {
     LinearLayout lltBankcardinfo;
     @BindView(R.id.tv_yearmonth)
     TextView tvYearmonth;
-    @BindView(R.id.tv_guahao)
-    TextView tvGuahao;
     @BindView(R.id.tv_wenzhen)
     TextView tvWenzhen;
     @BindView(R.id.tv_chufang)
@@ -177,7 +175,6 @@ public class WalletActivity extends BaseActivity implements WalletContact.View {
                 }
                 tvYearmonth.setText(TextUtils.isEmpty(walletBean.nowtime) ? "" : walletBean.nowtime);
                 tvAllmoney.setText(TextUtils.isEmpty(walletBean.remain) ? "0.00" : walletBean.remain);
-                tvGuahao.setText((TextUtils.isEmpty(walletBean.registration_money) ? "" : walletBean.registration_money) + "\n(网)挂号收入");
                 tvWenzhen.setText((TextUtils.isEmpty(walletBean.inquiry_money) ? "" : walletBean.inquiry_money) + "\n问诊收入");
                 tvChufang.setText((TextUtils.isEmpty(walletBean.recipe_money) ? "" : walletBean.recipe_money) + "\n处方收入");
                 tvJiangli.setText((TextUtils.isEmpty(walletBean.award) ? "" : walletBean.award) + "\n奖励收入");

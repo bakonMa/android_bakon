@@ -61,10 +61,11 @@ public class SetPriceActivity extends BaseActivity implements PersonalContact.Vi
         //读取sp中持久化
         bean = U.getUserInfo();
         if (bean != null) {
-            tvTopicinfo.setText("\u3000\u3000" + bean.fee_explain);
-            etFirstprice.setText(TextUtils.isEmpty(bean.first_diagnose) ? "0.00" : bean.first_diagnose);
+            String str = bean.fee_explain.replace("\\n", "\n");
+            tvTopicinfo.setText(str);
+            etFirstprice.setText(TextUtils.isEmpty(bean.first_diagnose) ? "" : bean.first_diagnose);
             etFirstprice.setSelection(etFirstprice.getText().length());
-            etAgainprice.setText(TextUtils.isEmpty(bean.second_diagnose) ? "0.00" : bean.second_diagnose);
+            etAgainprice.setText(TextUtils.isEmpty(bean.second_diagnose) ? "" : bean.second_diagnose);
             etAgainprice.setSelection(etAgainprice.getText().length());
         }
     }

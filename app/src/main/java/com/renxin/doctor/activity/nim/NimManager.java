@@ -14,6 +14,7 @@ import com.netease.nimlib.sdk.util.NIMUtil;
 import com.renxin.doctor.activity.nim.event.DocOnlineStateContentProvider;
 import com.renxin.doctor.activity.nim.message.SessionHelper;
 import com.renxin.doctor.activity.utils.LogUtil;
+import com.renxin.doctor.activity.utils.U;
 
 /**
  * 网易云IM相关
@@ -133,8 +134,9 @@ public class NimManager {
 
     /**
      * 外部 公共发送消息 统一发送消息
+     *
      * @param imMessage
-     * @param isReSend 失败后是否自动重发
+     * @param isReSend        失败后是否自动重发
      * @param requestCallback 结果回调
      */
     public static void sengChatMsg(IMMessage imMessage, boolean isReSend, RequestCallback<Void> requestCallback) {
@@ -146,6 +148,15 @@ public class NimManager {
         } else {
             NIMClient.getService(MsgService.class).sendMessage(imMessage, isReSend).setCallback(requestCallback);
         }
+    }
+
+    /**
+     * 设置免扰推送
+     */
+    public static void setPushStatus(boolean checkState) {
+        // 开启/关闭通知栏消息提醒 只有StatusBarNotificationConfig配置不为空时才有效
+        NIMClient.toggleNotification(U.getMessageStatus());
+        UserPreferences.setNotificationToggle(U.getMessageStatus());
     }
 
 }

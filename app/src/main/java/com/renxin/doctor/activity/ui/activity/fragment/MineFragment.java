@@ -115,7 +115,8 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
                 changeViewStatus(U.getAuthStatus());
             }
         });
-        changeViewStatus(U.getAuthStatus());
+        //认证状态
+        mPresenter.getUserIdentifyStatus();
     }
 
     @OnClick({R.id.llt_auth_status, R.id.llt_user_info, R.id.id_collect,
@@ -165,9 +166,6 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
     //根据认证状态，修改UI
     //状态值，0：未认证 1：审核中；2：审核通过 3：审核失败
     private void changeViewStatus(int status) {
-        if (idSwipe.isRefreshing()) {
-            idSwipe.setRefreshing(false);
-        }
         switch (status) {
             case 0:
                 lltAuthStatus.setVisibility(View.VISIBLE);
@@ -204,6 +202,19 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
         }
     }
 
+    /**
+     * fragment 是否隐藏
+     *
+     * @param hidden false 前台显示 true 隐藏
+     */
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            mPresenter.getUserIdentifyStatus();
+        }
+    }
+
     @Override
     public void onSuccess(Message message) {
         if (idSwipe.isRefreshing()) {
@@ -213,6 +224,9 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
             return;
         }
         switch (message.what) {
+            case PersonalPresenter.GET_AUTH_STATUS://认证状态
+                changeViewStatus(U.getAuthStatus());
+                break;
             case PersonalPresenter.GET_USEBASE_INFO://个人基本资料
                 baseInfoBean = (UserBaseInfoBean) message.obj;
                 ImageUtil.showCircleImage(baseInfoBean.header, idIvHead);

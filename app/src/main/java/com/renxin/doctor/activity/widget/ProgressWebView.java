@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.view.View.OnKeyListener;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -132,7 +130,8 @@ public class ProgressWebView extends WebView implements OnKeyListener {
             super.onPageFinished(view, url);
             //加载失败
             if (errorCallback != null) {
-                errorCallback.onError(isError);
+//                errorCallback.onError(isError);
+                errorCallback.onError(0);
             }
             ProgressWebView.this.setEnabled(true);
             //页面finish后再发起图片加载
@@ -161,14 +160,14 @@ public class ProgressWebView extends WebView implements OnKeyListener {
             isError = (error.getErrorCode() == -2 ? ERROR_NONETWORK : ERROR_LOADFAIL);
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-        @Override
-        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-            super.onReceivedHttpError(view, request, errorResponse);
-            if (errorResponse.getStatusCode() != 200) {
-                isError = ERROR_LOADFAIL;
-            }
-        }
+//        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//        @Override
+//        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+//            super.onReceivedHttpError(view, request, errorResponse);
+//            if (errorResponse.getStatusCode() != 200) {
+//                isError = ERROR_LOADFAIL;
+//            }
+//        }
 
         @Override
         public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
@@ -187,6 +186,9 @@ public class ProgressWebView extends WebView implements OnKeyListener {
                 }
                 mProgressbar.setProgress(newProgress);
             }
+            //bugly 增加Javascript异常监控
+            //不需要可以删除
+//            CrashReport.setJavascriptMonitor(view, true);
             super.onProgressChanged(view, newProgress);
         }
     }

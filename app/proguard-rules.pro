@@ -291,6 +291,9 @@ public static java.lang.String TABLENAME;
 -keep class com.tencent.mid.** {* ;}
 -keep class com.qq.taf.jce.** {*;}
 
+#bugly
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
 
 #Umeng
 -dontshrink

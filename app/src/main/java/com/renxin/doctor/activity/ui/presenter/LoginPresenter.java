@@ -1,6 +1,5 @@
 package com.renxin.doctor.activity.ui.presenter;
 
-import com.netease.nim.uikit.api.NimUIKit;
 import com.renxin.doctor.activity.application.DocApplication;
 import com.renxin.doctor.activity.config.HttpConfig;
 import com.renxin.doctor.activity.config.SPConfig;
@@ -11,7 +10,6 @@ import com.renxin.doctor.activity.ui.base.BaseObserver;
 import com.renxin.doctor.activity.ui.bean.LoginResponse;
 import com.renxin.doctor.activity.ui.contact.LoginContact;
 import com.renxin.doctor.activity.utils.M;
-import com.renxin.doctor.activity.utils.U;
 import com.renxin.doctor.activity.widget.dialog.LoadingDialog;
 
 import javax.inject.Inject;
@@ -32,8 +30,8 @@ public class LoginPresenter implements LoginContact.Presenter {
     public static final int SEND_CODE = 0x110;//发送验证码
     public static final int LOGIN_SUCCESS = 0x111;//登录
     public static final int REGISTE_SUCCESS = 0x112;//注册
-    public static final int LOGOUT_SUCCESS = 0x113;//退出登录
-    public static final int RESETPWD_SUCCESS = 0x114;//注册
+    public static final int RESETPWD_SUCCESS = 0x113;//注册
+    public static final int SETPUSHSTATIS_SUCCESS = 0x114;//是否推送
 
     @Inject
     public LoginPresenter(LoginContact.View view) {
@@ -157,34 +155,6 @@ public class LoginPresenter implements LoginContact.Presenter {
     }
 
     @Override
-    public void loginOut() {
-        Params params = new Params();
-        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
-                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().logout(params))
-                .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mdialog != null) mdialog.show();
-                })
-                .subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
-                    @Override
-                    public void onSuccess(HttpResponse<String> loginResponseHttpResponse) {
-                        //清空本地数据
-                        U.logout();
-                        //im logout
-                        NimUIKit.logout();
-                        mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, LOGOUT_SUCCESS));
-                    }
-
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-                        mView.onError(errorCode, errorMsg);
-                    }
-                });
-        mSubscription.add(subscription);
-    }
-
-    @Override
     public void restPwd(String phone, String code, String pwd) {
         Params params = new Params();
         params.put("mobile", phone);
@@ -202,6 +172,32 @@ public class LoginPresenter implements LoginContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<String> loginResponseHttpResponse) {
                         mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, RESETPWD_SUCCESS));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    //设置是否推送
+    @Override
+    public void setPushStatus(int status) {
+        Params params = new Params();
+        params.put("status", status);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().setPushStatus(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mdialog != null) mdialog.show();
+                })
+                .subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<String> loginResponseHttpResponse) {
+                        mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, SETPUSHSTATIS_SUCCESS));
                     }
 
                     @Override

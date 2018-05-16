@@ -51,11 +51,12 @@
             android:id="@+id/et_firstprice"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:hint="50.00"
+            android:hint="50"
             android:inputType="numberDecimal"
             android:maxLength="8"
             android:paddingLeft="50dp"
             android:paddingRight="20dp"
+            android:textCursorDrawable="@drawable/color_cursor"
             android:textSize="16sp"
             android:theme="@style/blackEditText" />
 
@@ -91,11 +92,12 @@
             android:id="@+id/et_againprice"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:hint="50.00"
+            android:hint="30"
             android:inputType="numberDecimal"
             android:maxLength="10"
             android:paddingLeft="50dp"
             android:paddingRight="20dp"
+            android:textCursorDrawable="@drawable/color_cursor"
             android:textSize="16sp"
             android:theme="@style/blackEditText" />
 

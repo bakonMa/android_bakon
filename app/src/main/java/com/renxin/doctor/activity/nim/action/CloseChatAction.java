@@ -1,5 +1,6 @@
 package com.renxin.doctor.activity.nim.action;
 
+import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.session.actions.BaseAction;
 import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
@@ -25,6 +26,9 @@ public class CloseChatAction extends BaseAction {
                 UIUtils.getString(R.string.input_panel_close),
                 customAttachment);
         sendMessage(askPaperMessage);
+        //删除会话列表
+        NimUIKit.deleteRecentContact2(getAccount());
+        //关闭页面
         getActivity().finish();
     }
 }
