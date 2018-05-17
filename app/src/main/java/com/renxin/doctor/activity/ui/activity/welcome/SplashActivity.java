@@ -57,7 +57,7 @@ public class SplashActivity extends BaseActivity {
         arrayList.add(guideView4);
         guideAdapter = new GuideAdapter();
         viewPager.setAdapter(guideAdapter);
-//        idIndicator.setViewPager(viewPager);
+        idIndicator.setViewPager(viewPager);
     }
 
     class GuideAdapter extends PagerAdapter {

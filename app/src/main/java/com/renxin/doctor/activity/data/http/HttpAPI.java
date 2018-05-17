@@ -111,8 +111,8 @@ public interface HttpAPI {
     Observable<HttpResponse<OtherBean>> getHomeRedPointStatus(@Body Params params);
 
     //获取个人中心资料，认证时的资料
-    @POST("getUserBasicInfo")
-    Observable<HttpResponse<UserBaseInfoBean>> getUserBasicInfo(@Body Params params);
+    @GET("getUserBasicInfo")
+    Observable<HttpResponse<UserBaseInfoBean>> getUserBasicInfo(@QueryMap Params params);
 
     //获取科室、职称、擅长等信息
     @GET("getDpAndTitles")
