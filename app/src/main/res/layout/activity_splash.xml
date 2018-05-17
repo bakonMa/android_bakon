@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <com.renxin.doctor.activity.widget.SplashIndicator
+        <com.junhetang.doctor.widget.SplashIndicator
             android:id="@+id/id_indicator"
             android:layout_width="60dp"
             android:layout_height="2dp"

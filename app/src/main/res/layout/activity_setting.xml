@@ -41,7 +41,7 @@
         android:layout_marginRight="15dp"
         style="@style/line_gray_hor" />
 
-    <com.renxin.doctor.activity.widget.RelativeWithText
+    <com.junhetang.doctor.widget.RelativeWithText
         android:id="@+id/tv_reset_password"
         android:layout_width="match_parent"
         android:layout_height="44dp"

@@ -29,6 +29,7 @@
                 android:minHeight="160dp"
                 android:padding="15dp"
                 android:textColor="@color/color_000"
+                android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="14sp" />
 
             <TextView

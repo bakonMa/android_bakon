@@ -24,7 +24,7 @@
         android:text="请输入6位数字交易密码"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"/>
-    <com.renxin.doctor.activity.widget.PasswordInputView
+    <com.junhetang.doctor.widget.PasswordInputView
         android:id="@+id/id_ed_password"
         android:layout_width="250dp"
         android:layout_height="40dp"

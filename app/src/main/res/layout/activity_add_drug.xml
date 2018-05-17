@@ -145,6 +145,7 @@
             android:layout_marginRight="15dp"
             android:layout_toStartOf="@+id/tv_commpaper"
             android:background="@drawable/shape_stroke_graybg_1"
+            android:textCursorDrawable="@drawable/color_cursor"
             android:hint="名称或者首字母缩写"
             android:paddingLeft="10dp"
             android:singleLine="true"

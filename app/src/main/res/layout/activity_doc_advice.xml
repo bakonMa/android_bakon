@@ -31,6 +31,7 @@
                 android:hint="例如：饭前一小时，忌荤腥"
                 android:minHeight="100dp"
                 android:minLines="5"
+                android:textCursorDrawable="@drawable/color_cursor"
                 android:padding="10dp"
                 android:textSize="16sp" />
 

@@ -106,22 +106,22 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <com.renxin.doctor.activity.widget.EditableLayout
+    <com.junhetang.doctor.widget.EditableLayout
         android:id="@+id/id_ed_loan_usage"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:edit_leftText="借款用途"
         app:edit_mode="select"
-        app:edit_textMainSize="14sp"></com.renxin.doctor.activity.widget.EditableLayout>
+        app:edit_textMainSize="14sp"></com.junhetang.doctor.widget.EditableLayout>
 
-    <com.renxin.doctor.activity.widget.EditableLayout
+    <com.junhetang.doctor.widget.EditableLayout
         android:id="@+id/id_ed_repayment_method"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="5dp"
         app:edit_leftText="还款方式"
         app:edit_mode="select"
-        app:edit_textMainSize="14sp"></com.renxin.doctor.activity.widget.EditableLayout>
+        app:edit_textMainSize="14sp"></com.junhetang.doctor.widget.EditableLayout>
 
     <TextView
         android:id="@+id/id_btn_apply"

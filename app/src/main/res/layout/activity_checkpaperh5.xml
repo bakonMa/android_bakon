@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f6f6f6"
+    android:orientation="vertical">
+
+    <include layout="@layout/base_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/llt_web"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.junhetang.doctor.widget.ProgressWebView
+                android:id="@+id/wb_webview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/llt_checkpaper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:descendantFocusability="beforeDescendants"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp">
+
+                    <TextView
+                        android:id="@+id/tv_temp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:paddingRight="20dp"
+                        android:text="是否和原方一致"
+                        android:textColor="@color/color_000"
+                        android:textSize="16sp" />
+
+                    <RadioGroup
+                        android:id="@+id/rg_daijian"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/tv_temp"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rb_yes"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:button="@drawable/selector_radiobutton"
+                            android:checked="true"
+                            android:paddingLeft="20dp"
+                            android:text="是"
+                            android:textSize="16sp" />
+
+                        <RadioButton
+                            android:id="@+id/rb_no"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:button="@drawable/selector_radiobutton"
+                            android:paddingLeft="20dp"
+                            android:text="否"
+                            android:textColor="@color/color_000"
+                            android:textSize="16sp" />
+                    </RadioGroup>
+
+                    <View
+                        style="@style/line_gray_hor"
+                        android:layout_alignParentBottom="true" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:text="备注"
+                    android:textColor="@color/color_000"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/et_remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_stroke_bg_10"
+                    android:gravity="left"
+                    android:minLines="5"
+                    android:textCursorDrawable="@drawable/color_cursor"
+                    android:padding="10dp" />
+
+                <TextView
+                    android:id="@+id/tv_checkpaper_commite"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/selector_bg_button_login"
+                    android:gravity="center"
+                    android:text="提交"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/rlt_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_error_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="140dp"
+            android:src="@drawable/wangluoyichang" />
+
+        <TextView
+            android:id="@+id/tv_error_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_error_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:text="啊哦～网络异常" />
+
+        <Button
+            android:id="@+id/btn_error_reload"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="120dp"
+            android:layout_height="38dp"
+            android:layout_below="@+id/tv_error_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="41dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_stroke_bg_1"
+            android:text="重新加载"
+            android:textColor="@color/color_999"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+
+</LinearLayout>
+

@@ -23,6 +23,7 @@
         android:background="@color/white"
         android:gravity="center_vertical"
         android:hint="请输入备注名"
+        android:textCursorDrawable="@drawable/color_cursor"
         android:maxLength="30"
         android:singleLine="true"
         android:paddingLeft="15dp"

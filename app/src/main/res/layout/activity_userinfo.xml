@@ -51,7 +51,7 @@
 
         </RelativeLayout>
 
-        <com.renxin.doctor.activity.widget.EditTextlayout
+        <com.junhetang.doctor.widget.EditTextlayout
             android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -62,7 +62,7 @@
             app:leftText="姓名"
             app:textMainSize="14sp" />
 
-        <com.renxin.doctor.activity.widget.EditTextlayout
+        <com.junhetang.doctor.widget.EditTextlayout
             android:id="@+id/tv_sex"
             android:layout_width="match_parent"
             android:layout_height="50dp"

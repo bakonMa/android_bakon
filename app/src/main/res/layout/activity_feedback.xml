@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:gravity="start"
+            android:textCursorDrawable="@drawable/color_cursor"
             android:hint="请输入您的反馈意见"
             android:maxLength="500"
             android:minHeight="240dp"

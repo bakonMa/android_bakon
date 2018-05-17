@@ -9,7 +9,7 @@
     <include layout="@layout/base_toolbar" />
 
 
-    <com.renxin.doctor.activity.widget.EditTextlayout
+    <com.junhetang.doctor.widget.EditTextlayout
         android:id="@+id/et_name"
         android:layout_width="match_parent"
         android:layout_height="44dp"
@@ -21,7 +21,7 @@
         app:maxLength="20"
         app:textMainSize="16sp" />
 
-    <com.renxin.doctor.activity.widget.EditableLayout
+    <com.junhetang.doctor.widget.EditableLayout
         android:id="@+id/et_bankname"
         android:layout_width="match_parent"
         android:layout_height="44dp"
@@ -33,7 +33,7 @@
         app:edit_mode="select"
         app:edit_textMainSize="16sp" />
 
-    <com.renxin.doctor.activity.widget.EditTextlayout
+    <com.junhetang.doctor.widget.EditTextlayout
         android:id="@+id/et_cardnum"
         android:layout_width="match_parent"
         android:layout_height="44dp"
@@ -46,7 +46,7 @@
         app:maxLength="19"
         app:textMainSize="16sp" />
 
-    <com.renxin.doctor.activity.widget.EditTextlayout
+    <com.junhetang.doctor.widget.EditTextlayout
         android:id="@+id/et_cardbankname"
         android:layout_width="match_parent"
         android:layout_height="44dp"

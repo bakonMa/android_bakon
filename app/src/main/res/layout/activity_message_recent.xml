@@ -58,7 +58,7 @@
 
     </RelativeLayout>
 
-    <com.renxin.doctor.activity.widget.RelativeWithImage
+    <com.junhetang.doctor.widget.RelativeWithImage
         android:id="@+id/tv_p2p_message"
         android:layout_width="match_parent"
         android:layout_height="45dp"

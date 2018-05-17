@@ -61,6 +61,7 @@
             android:paddingLeft="15dp"
             android:textColor="@color/color_000"
             android:textColorHint="@color/color_cacaca"
+            android:textCursorDrawable="@drawable/color_cursor"
             android:textSize="16sp"/>
 
         <TextView

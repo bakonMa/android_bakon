@@ -8,14 +8,14 @@
 
     <include layout="@layout/base_toolbar" />
 
-    <com.renxin.doctor.activity.widget.RelativeWithImage
+    <com.junhetang.doctor.widget.RelativeWithImage
         android:id="@+id/tv_books"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         app:leftIamge="@drawable/icon_books"
         app:title="经典书籍" />
 
-    <com.renxin.doctor.activity.widget.RelativeWithImage
+    <com.junhetang.doctor.widget.RelativeWithImage
         android:id="@+id/tv_encyclopedia"
         android:layout_width="match_parent"
         android:layout_height="44dp"
@@ -24,14 +24,14 @@
         app:leftIamge="@drawable/icon_baike"
         app:title="中医百科" />
 
-    <com.renxin.doctor.activity.widget.RelativeWithImage
+    <com.junhetang.doctor.widget.RelativeWithImage
         android:id="@+id/tv_guildnews"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         app:leftIamge="@drawable/icon_guild"
         app:title="行业追踪" />
 
-    <com.renxin.doctor.activity.widget.RelativeWithImage
+    <com.junhetang.doctor.widget.RelativeWithImage
         android:id="@+id/tv_healtheducation"
         android:layout_width="match_parent"
         android:layout_height="44dp"

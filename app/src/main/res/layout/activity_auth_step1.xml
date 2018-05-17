@@ -23,7 +23,7 @@
                 android:layout_height="70dp"
                 android:background="@color/color_main">
 
-                <com.renxin.doctor.activity.widget.ScheduleView_jht
+                <com.junhetang.doctor.widget.ScheduleView_jht
                     android:id="@+id/id_step"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp">
 
-                <com.renxin.doctor.activity.widget.EditTextlayout
+                <com.junhetang.doctor.widget.EditTextlayout
                     android:id="@+id/et_name"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
@@ -164,7 +164,7 @@
                         android:layout_alignParentBottom="true" />
                 </RelativeLayout>
 
-                <com.renxin.doctor.activity.widget.EditableLayout
+                <com.junhetang.doctor.widget.EditableLayout
                     android:id="@+id/et_address"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
@@ -172,7 +172,7 @@
                     app:edit_mode="select"
                     app:edit_textMainSize="16sp" />
 
-                <com.renxin.doctor.activity.widget.EditableLayout
+                <com.junhetang.doctor.widget.EditableLayout
                     android:id="@+id/et_organization"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
@@ -180,7 +180,7 @@
                     app:edit_mode="select"
                     app:edit_textMainSize="16sp" />
 
-                <com.renxin.doctor.activity.widget.EditableLayout
+                <com.junhetang.doctor.widget.EditableLayout
                     android:id="@+id/et_lab_type"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
@@ -188,7 +188,7 @@
                     app:edit_mode="select"
                     app:edit_textMainSize="16sp" />
 
-                <com.renxin.doctor.activity.widget.EditableLayout
+                <com.junhetang.doctor.widget.EditableLayout
                     android:id="@+id/et_title"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
@@ -196,7 +196,7 @@
                     app:edit_mode="select"
                     app:edit_textMainSize="16sp" />
 
-                <com.renxin.doctor.activity.widget.EditableLayout
+                <com.junhetang.doctor.widget.EditableLayout
                     android:id="@+id/et_goodat"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"

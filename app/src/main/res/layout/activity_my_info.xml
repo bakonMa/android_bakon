@@ -9,7 +9,7 @@
 
     <include layout="@layout/base_toolbar" />
 
-    <com.renxin.doctor.activity.widget.RelativeWithText
+    <com.junhetang.doctor.widget.RelativeWithText
         android:id="@+id/id_basic_info"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -17,14 +17,14 @@
         app:isShowTab="false"
         app:titleT="基本信息" />
 
-    <com.renxin.doctor.activity.widget.RelativeWithText
+    <com.junhetang.doctor.widget.RelativeWithText
         android:id="@+id/id_job_info"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:isShowTab="false"
         app:titleT="工作信息" />
 
-    <com.renxin.doctor.activity.widget.RelativeWithText
+    <com.junhetang.doctor.widget.RelativeWithText
         android:id="@+id/id_house_info"
         android:layout_width="match_parent"
         android:layout_height="50dp"

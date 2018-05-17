@@ -14,5 +14,6 @@
         <files-path name="filesDir" path=""/>
         <!-- root-path 手机存储根目录 -->
         <root-path name="rootPath" path=""/>
+        <root-path name="external_files" path=""/>
     </paths>
 </resources>

@@ -36,6 +36,7 @@
         android:maxLength="4"
         android:textColor="@color/color_000"
         android:textSize="16sp"
+        android:textCursorDrawable="@drawable/color_cursor"
         android:theme="@style/blackEditText" />
 
     <TextView

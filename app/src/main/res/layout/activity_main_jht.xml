@@ -21,7 +21,7 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <com.renxin.doctor.activity.widget.BottomBarItem
+        <com.junhetang.doctor.widget.BottomBarItem
             android:id="@+id/tab_home"
             style="@style/home_botton_text"
             app:iconDrawable="@drawable/selector_tab_workroom"
@@ -30,7 +30,7 @@
             app:textColorNormal="@color/color_000"
             app:textColorSelected="@color/color_main" />
 
-        <com.renxin.doctor.activity.widget.BottomBarItem
+        <com.junhetang.doctor.widget.BottomBarItem
             android:id="@+id/tab_patient"
             style="@style/home_botton_text"
             app:iconDrawable="@drawable/selector_tab_patient"
@@ -39,7 +39,7 @@
             app:textColorNormal="@color/color_000"
             app:textColorSelected="@color/color_main" />
 
-        <com.renxin.doctor.activity.widget.BottomBarItem
+        <com.junhetang.doctor.widget.BottomBarItem
             android:id="@+id/tab_find"
             style="@style/home_botton_text"
             app:iconDrawable="@drawable/selector_tab_find"
@@ -48,7 +48,7 @@
             app:textColorNormal="@color/color_000"
             app:textColorSelected="@color/color_main" />
 
-        <com.renxin.doctor.activity.widget.BottomBarItem
+        <com.junhetang.doctor.widget.BottomBarItem
             android:id="@+id/tab_me"
             style="@style/home_botton_text"
             app:iconDrawable="@drawable/selector_tab_me"

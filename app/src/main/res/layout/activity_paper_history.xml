@@ -20,6 +20,7 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/shape_stroke_bg_10"
         android:drawableLeft="@drawable/nim_actionbar_search_dark_icon"
+        android:textCursorDrawable="@drawable/color_cursor"
         android:drawablePadding="5dp"
         android:gravity="center_vertical"
         android:hint="患者姓名、联系电话"

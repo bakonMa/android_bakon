@@ -64,7 +64,7 @@
                     android:textColor="@color/color_999"
                     android:textSize="10sp" />
 
-                <com.renxin.doctor.activity.widget.EditTextlayout
+                <com.junhetang.doctor.widget.EditTextlayout
                     android:id="@+id/et_name"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
@@ -124,7 +124,7 @@
                         android:layout_alignParentBottom="true" />
                 </RelativeLayout>
 
-                <com.renxin.doctor.activity.widget.EditTextlayout
+                <com.junhetang.doctor.widget.EditTextlayout
                     android:id="@+id/et_age"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
@@ -137,7 +137,7 @@
                     app:maxLength="2"
                     app:textMainSize="16sp" />
 
-                <com.renxin.doctor.activity.widget.EditTextlayout
+                <com.junhetang.doctor.widget.EditTextlayout
                     android:id="@+id/et_phone"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
@@ -178,7 +178,7 @@
             </LinearLayout>
 
 
-            <com.renxin.doctor.activity.widget.EditableLayout
+            <com.junhetang.doctor.widget.EditableLayout
                 android:id="@+id/et_drugstore"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -330,7 +330,7 @@
                 android:textColor="@color/color_999"
                 android:textSize="10sp" />
 
-            <com.renxin.doctor.activity.widget.EditableLayout
+            <com.junhetang.doctor.widget.EditableLayout
                 android:id="@+id/et_drugclass"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -437,6 +437,7 @@
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:text="1"
+                        android:textCursorDrawable="@drawable/color_cursor"
                         android:textColor="@color/color_000"
                         android:textSize="16sp" />
 
@@ -466,7 +467,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp" />
 
-            <com.renxin.doctor.activity.widget.EditableLayout
+            <com.junhetang.doctor.widget.EditableLayout
                 android:id="@+id/et_usetype"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -521,7 +522,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp" />
 
-            <com.renxin.doctor.activity.widget.EditableLayout
+            <com.junhetang.doctor.widget.EditableLayout
                 android:id="@+id/et_docadvice"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"

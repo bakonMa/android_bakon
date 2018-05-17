@@ -23,7 +23,7 @@
                 android:background="@color/color_f6f6f6" />
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <com.renxin.doctor.activity.widget.SideBar
+        <com.junhetang.doctor.widget.SideBar
             android:id="@+id/sideBar"
             android:layout_width="30dp"
             android:layout_height="match_parent"
