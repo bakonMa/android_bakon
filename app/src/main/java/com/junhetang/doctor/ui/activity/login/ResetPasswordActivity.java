@@ -79,7 +79,7 @@ public class ResetPasswordActivity extends BaseActivity implements LoginContact.
     LoginPresenter mPresenter;
 
     /**
-     * 验证码倒计时时间
+     * 验证码倒计时
      */
     private int time = 60;//每次验证请求需要间隔60S
     private Subscription subscription;

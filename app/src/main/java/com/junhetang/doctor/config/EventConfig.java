@@ -32,6 +32,8 @@ public interface EventConfig {
     int EVENT_KEY_NIM_LOGIN = 0x127;//云信im登录成功
     int EVENT_KEY_NIM_LOGOUT = 0x128;//云信im被踢，进入登录画面
 
-    int EVENT_KEY_XG_BINDTOKEN= 0x129;//后台绑定信鸽token
+    int EVENT_KEY_XG_BINDTOKEN = 0x129;//后台绑定信鸽token
+
+    int EVENT_KEY_REMARKNAME = 0x130;//修改备注
 
 }

@@ -32,7 +32,8 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, BaseViewHolder
 
     @Override
     protected void convert(BaseViewHolder helper, PatientBean item) {
-        helper.setText(R.id.tv_name, TextUtils.isEmpty(item.remark_name) ? item.nick_name : item.remark_name)
+        String name = TextUtils.isEmpty(item.remark_name) ? item.nick_name : item.remark_name;
+        helper.setText(R.id.tv_name, TextUtils.isEmpty(name) ? "": name)
                 .setText(R.id.tv_from, TextUtils.isEmpty(item.memb_class) ? "" : item.memb_class)
                 .setGone(R.id.tv_redpoint, item.is_new == 1);
 
@@ -70,7 +71,7 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, BaseViewHolder
     //侧边快捷栏 使用
     public int getPositionForSection(char section) {
         for (int i = 0; i < getData().size(); i++) {
-            String firstChar1 = CharacterParser.getInstance().getSelling(getData().get(i).nick_name);
+            String firstChar1 = CharacterParser.getInstance().getSelling(TextUtils.isEmpty(getData().get(i).remark_name) ? getData().get(i).nick_name : getData().get(i).remark_name);
             String firstChar = CharacterParser.getInstance().getInitials(firstChar1);
             if (firstChar.charAt(0) == section) {
                 return i;
@@ -96,7 +97,7 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, BaseViewHolder
 
     //获取 昵称的汉语拼音
     public String getItemSortLetter(int position) {
-        return CharacterParser.getInstance().getSelling(mData.get(position).nick_name);
+        return CharacterParser.getInstance().getSelling(TextUtils.isEmpty(getData().get(position).remark_name) ? getData().get(position).nick_name : getData().get(position).remark_name);
     }
 
     class HeaderViewHolder extends BaseViewHolder {

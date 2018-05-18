@@ -10,6 +10,9 @@ import android.widget.EditText;
 
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
+import com.junhetang.doctor.config.EventConfig;
+import com.junhetang.doctor.data.eventbus.Event;
+import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.ui.base.BaseActivity;
@@ -63,7 +66,7 @@ public class RemarkNameActivity extends BaseActivity implements PatientContact.V
                 .setTitle("设置备注")
                 .setStatuBar(R.color.white)
                 .setLeft(false)
-                .setRightText("保存", true, R.color.color_999)
+                .setRightText("保存", true, R.color.color_main)
                 .setListener(new TitleOnclickListener() {
                     @Override
                     public void leftClick() {
@@ -90,10 +93,14 @@ public class RemarkNameActivity extends BaseActivity implements PatientContact.V
 
     @Override
     public void onSuccess(Message message) {
+        if(message == null) {
+            return;
+        }
         ToastUtil.showShort("设置备注成功");
         Intent intent = new Intent();
         intent.putExtra("remarkname", edRemarkname.getText().toString().trim());
         setResult(RESULT_OK, intent);
+        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_REMARKNAME));
         finish();
     }
 

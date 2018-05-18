@@ -97,6 +97,7 @@
                     android:background="@drawable/shape_stroke_bg_10"
                     android:gravity="left"
                     android:minLines="5"
+                    android:textSize="14sp"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:padding="10dp" />
 

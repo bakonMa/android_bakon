@@ -356,6 +356,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     @OnClick({R.id.tv_add_patient, R.id.tv_online_paper, R.id.tv_camera_patient, R.id.tv_comm_paper,
             R.id.tv_ask_paper, R.id.tv_flow_paper, R.id.tv_checkpaper, R.id.tv_notice})
     void btnOnClick(View view) {
+
         //认证是否通过
         if (!U.isHasAuthOK()) {
             commonDialog = new CommonDialog(getActivity(),

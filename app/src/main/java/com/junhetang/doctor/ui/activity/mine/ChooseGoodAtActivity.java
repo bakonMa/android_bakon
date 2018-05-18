@@ -52,10 +52,27 @@ public class ChooseGoodAtActivity extends BaseActivity {
     @Override
     protected void initView() {
         initToolbar();
-
+        //全部的疾病数据
         skillList = getIntent().getParcelableArrayListExtra("skills");
+        //选中的bean
+        selectBeans = getIntent().getParcelableArrayListExtra("selectskill");
+        if (selectBeans == null) {
+            selectBeans = new ArrayList<>();
+        }
+        //这种办法要3重循环 好low 以后想办法改进
         for (BaseConfigBean.SkillsBean skillsBean : skillList) {
+            //title
             showList.add(new BaseConfigBean.Skill(skillsBean.category, 1));
+            //疾病
+            for (BaseConfigBean.Skill skill : skillsBean.name) {
+                for (int i = 0; i < selectBeans.size(); i++) {
+                    if(skill.id == selectBeans.get(i).id){
+                        skill.isSelect = true;
+                        //对象要一样
+                        selectBeans.set(i, skill);
+                    }
+                }
+            }
             showList.addAll(skillsBean.name);
         }
 

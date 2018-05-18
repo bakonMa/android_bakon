@@ -115,6 +115,8 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     private List<String> hospitalStr = new ArrayList<>();//医院
     private List<String> titleList = new ArrayList<>();//职称
     private List<String> departmentStrList = new ArrayList<>();//科室
+    //擅长疾病 中间传递使用
+    private ArrayList<BaseConfigBean.Skill> selectSkills = new ArrayList<>();
 
     @Override
     protected int provideRootLayout() {
@@ -210,6 +212,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
             case R.id.et_goodat:
                 Intent intent = new Intent(this, ChooseGoodAtActivity.class);
                 intent.putParcelableArrayListExtra("skills", baseConfigBean.skills);
+                intent.putParcelableArrayListExtra("selectskill", selectSkills);
                 startActivityForResult(intent, REQUEST_CHOOSE_GOODAT);
                 break;
             case R.id.tv_next_step:
@@ -342,11 +345,11 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                     }
                     break;
                 case REQUEST_CHOOSE_GOODAT://擅长疾病
-                    List<BaseConfigBean.Skill> selectSekills = data.getParcelableArrayListExtra("skills");
+                    selectSkills = data.getParcelableArrayListExtra("skills");
                     StringBuffer stringBuffer = new StringBuffer();
-                    for (int i = 0; i < selectSekills.size(); i++) {
-                        stringBuffer.append(selectSekills.get(i).name);
-                        if (i != selectSekills.size() - 1) {
+                    for (int i = 0; i < selectSkills.size(); i++) {
+                        stringBuffer.append(selectSkills.get(i).name);
+                        if (i != selectSkills.size() - 1) {
                             stringBuffer.append(",");
                         }
                     }

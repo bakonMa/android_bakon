@@ -55,7 +55,7 @@
             android:layout_alignParentRight="true"
             android:textColor="@color/color_main"
             android:textSize="12sp"
-            tools:text="备注" />
+            android:text="备注" />
 
         <TextView
             android:id="@+id/tv_class"

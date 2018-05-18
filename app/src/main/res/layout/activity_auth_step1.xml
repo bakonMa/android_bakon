@@ -79,7 +79,6 @@
                         android:layout_marginLeft="32dp"
                         android:scaleType="centerInside"
                         android:src="@drawable/sample_head" />
-
                 </LinearLayout>
 
                 <TextView

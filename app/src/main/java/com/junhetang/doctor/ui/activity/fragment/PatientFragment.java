@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
+import com.junhetang.doctor.config.EventConfig;
+import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.injection.components.DaggerFragmentComponent;
 import com.junhetang.doctor.injection.modules.FragmentModule;
 import com.junhetang.doctor.ui.activity.patient.PatientFamilyActivity;
@@ -29,6 +31,9 @@ import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import com.trello.rxlifecycle.LifecycleTransformer;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -128,6 +133,7 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
 
     /**
      * fragment 是否隐藏
+     *
      * @param hidden false 前台显示 true 隐藏
      */
     @Override
@@ -181,6 +187,25 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
     public void onError(String errorCode, String errorMsg) {
         CommonDialog commonDialog = new CommonDialog(getActivity(), errorMsg);
         commonDialog.show();
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCome(Event event) {
+        if (event == null) {
+            return;
+        }
+        switch (event.getCode()) {
+            case EventConfig.EVENT_KEY_REMARKNAME://备注修改
+                mPresenter.getPatientlist();
+                break;
+
+        }
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return true;
     }
 
     @Override

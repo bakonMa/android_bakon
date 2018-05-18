@@ -170,6 +170,7 @@ public class RecentActivity extends BaseActivity implements BaseView {
         registerObservers(false);
         registerDropCompletedListener(false);
         registerOnlineStateChangeListener(false);
+        commonPresenter.unsubscribe();
     }
 
     private void notifyDataSetChanged() {

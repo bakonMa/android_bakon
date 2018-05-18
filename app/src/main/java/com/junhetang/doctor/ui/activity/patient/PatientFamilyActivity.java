@@ -59,8 +59,6 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
     TextView tvPhone;
     @BindView(R.id.tv_class)
     TextView tvClass;
-    @BindView(R.id.tv_remark)
-    TextView tvRemark;
     @BindView(R.id.et_price)
     EditableLayout etPrice;
     @BindView(R.id.recycleview)
@@ -190,8 +188,7 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
                 bean = (PatientFamilyBean) message.obj;
                 if (bean != null && bean.patientinfo != null) {
                     ImageUtil.showCircleImage(bean.patientinfo.head_url, ivHead);
-                    tvName.setText(TextUtils.isEmpty(bean.patientinfo.nick_name) ? "" : bean.patientinfo.nick_name);
-                    tvRemark.setText(TextUtils.isEmpty(bean.patientinfo.remark_name) ? "" : bean.patientinfo.remark_name);
+                    tvName.setText(TextUtils.isEmpty(bean.patientinfo.remark_name) ? bean.patientinfo.nick_name : bean.patientinfo.remark_name);
                     tvPhone.setText("手机号：" + (TextUtils.isEmpty(bean.patientinfo.phone) ? "" : bean.patientinfo.phone));
                     tvClass.setText(TextUtils.isEmpty(bean.patientinfo.memb_class) ? "" : bean.patientinfo.memb_class);
                     etPrice.setText(TextUtils.isEmpty(bean.patientinfo.advisory_fee) ? "" : (bean.patientinfo.advisory_fee + "元"));
@@ -214,8 +211,8 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_REMARKNAME) {
             if (data != null) {
-                bean.patientinfo.remark_name = getIntent().getStringExtra("remarkname");
-                tvRemark.setText(TextUtils.isEmpty(bean.patientinfo.remark_name) ? "" : bean.patientinfo.remark_name);
+                bean.patientinfo.remark_name = data.getStringExtra("remarkname");
+                tvName.setText(TextUtils.isEmpty(bean.patientinfo.remark_name) ? bean.patientinfo.nick_name : bean.patientinfo.remark_name);
             }
         }
     }

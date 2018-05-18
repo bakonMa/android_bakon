@@ -124,7 +124,7 @@ public interface HttpAPI {
 
     //认证信息提交1
     @POST("userIdentify")
-    Observable<HttpResponse<String>> userIdentify(@Body Params params);
+    Observable<HttpResponse<String>> userIdentify(@QueryMap Params params);
 
     //认证信息提交1
     @POST("userIdentifyNext")

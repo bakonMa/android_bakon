@@ -30,13 +30,13 @@ public class PatientBean implements Comparable<PatientBean> {
     @Override
     public int compareTo(@NonNull PatientBean bean) {
         //当前对象
-        String string = CharacterParser.getInstance().getSelling(TextUtils.isEmpty(nick_name) ? "" : nick_name);
+        String string = CharacterParser.getInstance().getSelling(TextUtils.isEmpty(remark_name) ? nick_name : remark_name);
         if (CharacterParser.getInstance().getInitials(string).equals("#")) {
             return 1;
         }
         char[] chars = string.toCharArray();
         //当前bean
-        String antherString = CharacterParser.getInstance().getSelling(TextUtils.isEmpty(bean.nick_name) ? "" : bean.nick_name);
+        String antherString = CharacterParser.getInstance().getSelling(TextUtils.isEmpty(bean.remark_name) ? bean.nick_name : bean.remark_name);
         if (CharacterParser.getInstance().getInitials(antherString).equals("#")) {
             return -1;
         }
