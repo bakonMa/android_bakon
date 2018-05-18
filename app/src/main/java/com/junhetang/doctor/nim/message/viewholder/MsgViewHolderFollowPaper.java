@@ -45,13 +45,11 @@ public class MsgViewHolderFollowPaper extends MsgViewHolderBase {
     // 此条消息点击时响应事件
     @Override
     protected void onItemClick() {
-        //todo 修改id
         PaperH5Activity.startResultActivity(context,
                 RequestCode.SEND_FOLLOWPAPER_INFO,
                 true,
                 PaperH5Activity.FORM_TYPE.H5_FOLLOWPAPER,
                 UIUtils.getString(R.string.input_panel_followpaper),
-//                H5Config.H5_FOLLOWPAPER_INFO + "1" //测试连接
                 H5Config.H5_FOLLOWPAPER_INFO + attachment.getLinkID()
         );
 

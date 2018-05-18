@@ -45,13 +45,11 @@ public class MsgViewHolderAskPaper extends MsgViewHolderBase {
     // 此条消息点击时响应事件
     @Override
     protected void onItemClick() {
-        //todo 修改id
         PaperH5Activity.startResultActivity(context,
                 RequestCode.SEND_ASKPAPER_INFO,
                 true,
                 PaperH5Activity.FORM_TYPE.H5_ASKPAPER,
                 UIUtils.getString(R.string.input_panel_askpaper),
-//                H5Config.H5_ASKPAPER_INFO + "1"  //测试连接
                 H5Config.H5_ASKPAPER_INFO + attachment.getLinkID()
         );
     }
