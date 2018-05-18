@@ -39,9 +39,9 @@ public class MsgViewHolderFirstMessage extends MsgViewHolderBase {
         // MsgDirectionEnum.Out 表示发出去的消息， In 标示收到的消息
         if (message.getDirect() == MsgDirectionEnum.In) {//收到
             tvTitle.setText(TextUtils.isEmpty(attachment.getPatients_title()) ? "患者信息" : attachment.getPatients_title());
-            tvContent.setText("患者 " + attachment.getPatients_name()
-                    + "\n性别 " + attachment.getPatients_sex()
-                    + "\n年龄 " + attachment.getPatients_age());
+            tvContent.setText("患者 " + (TextUtils.isEmpty(attachment.getPatients_name()) ? "" : attachment.getPatients_name())
+                    + "\n性别 " + (TextUtils.isEmpty(attachment.getPatients_sex()) ? "" : attachment.getPatients_sex())
+                    + "\n年龄 " + (TextUtils.isEmpty(attachment.getPatients_age()) ? "" : attachment.getPatients_age()));
         }
     }
 }

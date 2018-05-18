@@ -31,13 +31,14 @@ android {
 
 
     signingConfigs {
-//        keytool -list -v -keystore /Users/mayakun/Downloads/mayakun-file/jht/jht_doc.keystore
-        release {
-//            storeFile file("./src/jht_doc.keystore")
-//            storePassword "jht2018"//key pwd
-//            keyAlias "jht_doc"//key alias
-//            keyPassword "jht2018"//key alias pwd
+//        keytool -list -v -keystore /Users/bakon/Downloads/Bakon-Files/jht_space/jht_doctor.keystore
+//        MD5: D6:57:2D:23:F0:4B:EB:70:CC:6E:83:A4:31:D0:F6:3C
+//        SHA1: 5E:D2:E1:7C:CD:F2:84:D3:A2:22:51:D6:83:42:BF:90:53:08:1A:90
+//        SHA256: 06:41:F3:CB:D3:6E:CD:F0:D4:41:B7:14:7F:98:88:AD:1A:0E:5A:81:02:F4:74:11:77:90:E4:C1:2F:5E:F2:49
+//        签名算法名称: SHA256withRSA
+//        版本: 3
 
+        release {
             storeFile file("$keystore_path")
             storePassword "$keystore_password"//key pwd
             keyAlias "$keyalias_name"//key alias

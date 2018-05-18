@@ -33,6 +33,7 @@ public class CommonPresenter implements BasePresenter {
 
     public static final int GET_MOMBNO_OK = 0x110;
     public static final int TOTALK_OK = 0x111;
+    public static final int ADD_CHAT_RECORD_OK = 0x112;//添加交互记录
 
     public CommonPresenter(BaseView view) {
         if (view != null) {
@@ -106,6 +107,33 @@ public class CommonPresenter implements BasePresenter {
 //                        mView.onError(errorCode, errorMsg);
                     }
 
+                });
+        compositeSubscription.add(subscription);
+    }
+
+    //添加记录
+    public void addChatRecord(String d_accid, String p_accid, int type, int source) {
+        Params params = new Params();
+        params.put("d_accid", d_accid);
+        params.put("p_accid", p_accid);
+        params.put("type", type);//1:问诊单 2:随诊单 3:开方
+        params.put("source", source);//0:首页 1：聊天
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().addChatRecord(params))
+//                .compose(mView.toLifecycle())
+                .subscribe(new BaseObserver<HttpResponse<String>>(null) {
+                    @Override
+                    public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
+                        LogUtil.d("CommonPresenter addChatRecord ok");
+                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, ADD_CHAT_RECORD_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        LogUtil.d("CommonPresenter addChatRecord onError:" + errorMsg);
+//                        mView.onError(errorCode, errorMsg);
+                    }
                 });
         compositeSubscription.add(subscription);
     }

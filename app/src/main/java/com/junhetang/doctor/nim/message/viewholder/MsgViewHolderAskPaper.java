@@ -64,10 +64,10 @@ public class MsgViewHolderAskPaper extends MsgViewHolderBase {
             tviTps.setVisibility(View.GONE);
             lltContent.setVisibility(View.VISIBLE);
             tvTitle.setText(TextUtils.isEmpty(attachment.getPatients_title()) ? "问诊单（已填写）" : attachment.getPatients_title());
-            tvContent.setText("患者 " + attachment.getPatients_name()
-                    + "\n性别 " + attachment.getPatients_sex()
-                    + "\n年龄 " + attachment.getPatients_age()
-                    + "\n症状 " + attachment.getPatients_describe());
+            tvContent.setText("患者 " + (TextUtils.isEmpty(attachment.getPatients_name()) ? "" : attachment.getPatients_name())
+                    + "\n性别 " + (TextUtils.isEmpty(attachment.getPatients_sex()) ? "" : attachment.getPatients_sex())
+                    + "\n年龄 " + (TextUtils.isEmpty(attachment.getPatients_age()) ? "" : attachment.getPatients_age())
+                    + "\n症状 " +(TextUtils.isEmpty(attachment.getPatients_describe()) ? "" : attachment.getPatients_describe()));
         } else {//发出
             tviTps.setVisibility(View.VISIBLE);
             lltContent.setVisibility(View.GONE);

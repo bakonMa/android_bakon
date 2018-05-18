@@ -35,5 +35,6 @@ public interface EventConfig {
     int EVENT_KEY_XG_BINDTOKEN = 0x129;//后台绑定信鸽token
 
     int EVENT_KEY_REMARKNAME = 0x130;//修改备注
+    int EVENT_KEY_CLOSE_CHAT= 0x131;//结束咨询
 
 }

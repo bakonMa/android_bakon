@@ -1,5 +1,8 @@
 package com.junhetang.doctor.nim.action;
 
+import com.junhetang.doctor.config.EventConfig;
+import com.junhetang.doctor.data.eventbus.Event;
+import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.session.actions.BaseAction;
 import com.netease.nimlib.sdk.msg.MessageBuilder;
@@ -28,6 +31,8 @@ public class CloseChatAction extends BaseAction {
         sendMessage(askPaperMessage);
         //删除会话列表
         NimUIKit.deleteRecentContact2(getAccount());
+        //调用 记录接口
+        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_CLOSE_CHAT, getAccount()));
         //关闭页面
         getActivity().finish();
     }

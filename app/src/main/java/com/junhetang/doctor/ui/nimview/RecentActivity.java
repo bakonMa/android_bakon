@@ -19,6 +19,7 @@ import com.junhetang.doctor.config.EventConfig;
 import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.nim.NimManager;
+import com.junhetang.doctor.nim.NimU;
 import com.junhetang.doctor.nim.message.SessionHelper;
 import com.junhetang.doctor.nim.message.extension.AskPaperAttachment;
 import com.junhetang.doctor.nim.message.extension.CloseChatAttachment;
@@ -32,6 +33,7 @@ import com.junhetang.doctor.ui.activity.home.SystemMsgListActivity;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.base.BaseView;
 import com.junhetang.doctor.ui.presenter.CommonPresenter;
+import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
@@ -67,6 +69,9 @@ import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
 import com.trello.rxlifecycle.LifecycleTransformer;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -816,6 +821,23 @@ public class RecentActivity extends BaseActivity implements BaseView {
     @Override
     public void onError(String errorCode, String errorMsg) {
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCome(Event event) {
+        if (event == null) {
+            return;
+        }
+        switch (event.getCode()) {
+            case EventConfig.EVENT_KEY_CLOSE_CHAT://结束咨询
+                commonPresenter.addChatRecord(NimU.getNimAccount(), event.getData().toString(), Constant.CHAT_RECORD_TYPE_4, 1);
+                break;
+        }
+    }
+
+    @Override
+    protected boolean useEventBus() {
+        return true;
     }
 
     @Override

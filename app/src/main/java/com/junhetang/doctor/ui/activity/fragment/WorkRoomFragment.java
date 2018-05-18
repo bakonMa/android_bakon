@@ -169,7 +169,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                     //重新登录
                     EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_NIM_LOGOUT));
                 } else if (status == StatusCode.UNLOGIN) {
-                    //未登录就等一下
+                    //未登录就登录
                     NimManager.getInstance(DocApplication.getInstance()).nimLogin();
                 } else if (status == StatusCode.LOGINED) {
                     //登录成功 初始化service
@@ -240,6 +240,9 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     private void showServiceInfo() {
         //客服个人资料
         String serviceName = UserInfoHelper.getUserDisplayName(accid);
+//        if(!TextUtils.isEmpty(serviceName) && ){
+//
+//        }
         //name
         tvServiceName.setText(TextUtils.isEmpty(serviceName) ? "咨询客服" : serviceName);
         //head img
