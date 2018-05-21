@@ -5,7 +5,7 @@ import com.junhetang.doctor.config.HttpConfig;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.data.response.HttpResponse;
 import com.junhetang.doctor.ui.base.BaseObserver;
-import com.junhetang.doctor.ui.base.BasePageBean;
+import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.NewsInfoBean;
 import com.junhetang.doctor.ui.contact.FindContact;
 import com.junhetang.doctor.utils.M;

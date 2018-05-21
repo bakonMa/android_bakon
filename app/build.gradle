@@ -17,8 +17,10 @@ android {
             abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
             //信鸽推送
             manifestPlaceholders = [
+                    PACKAGE_NAME : "com.junhetang.doctor",
                     XG_ACCESS_ID : "2100291473",
                     XG_ACCESS_KEY: "AT43LK65VM3M",
+                    HW_APPID     : "100287577"
             ]
 
         }
@@ -32,12 +34,6 @@ android {
 
     signingConfigs {
 //        keytool -list -v -keystore /Users/bakon/Downloads/Bakon-Files/jht_space/jht_doctor.keystore
-//        MD5: D6:57:2D:23:F0:4B:EB:70:CC:6E:83:A4:31:D0:F6:3C
-//        SHA1: 5E:D2:E1:7C:CD:F2:84:D3:A2:22:51:D6:83:42:BF:90:53:08:1A:90
-//        SHA256: 06:41:F3:CB:D3:6E:CD:F0:D4:41:B7:14:7F:98:88:AD:1A:0E:5A:81:02:F4:74:11:77:90:E4:C1:2F:5E:F2:49
-//        签名算法名称: SHA256withRSA
-//        版本: 3
-
         release {
             storeFile file("$keystore_path")
             storePassword "$keystore_password"//key pwd
@@ -80,14 +76,12 @@ android {
 
 def devAddress() {
     "\"http://dev.dr.jhtcm.com/\""  //测试环境
-//    "\"http://lyp.bendi.dr.jhtcm.com/\""  //测试环境
-//    "\"http://wdev.dr.jhtcm.com:7996/\""  //外网测试环境
 }
 
 def onLineAddress() {
 //    "\"http://dr.jhtcm.com/\""  //正式线上环境
-//    "\"http://wdev.dr.jhtcm.com:7996/\""  //测试环境
-    "\"http://dev.dr.jhtcm.com/\""
+    "\"http://dev.dr.jhtcm.com/\""  //测试环境
+//    "\"https://dr.beta.jhtcm.vip/\""
 }
 
 greendao {
@@ -189,8 +183,14 @@ dependencies {
     //mid包
     implementation 'com.tencent.mid:mid:4.0.6-release'
 
+    //小米3.2.4-beta版
+    implementation 'com.tencent.xinge:mipush:3.2.4-beta'
+    //华为3.2.4 beta版本
+    implementation 'com.tencent.xinge:xghw:3.2.4-beta'
+
     //bugly
     implementation 'com.tencent.bugly:crashreport:latest.release'
+
 
 }
 

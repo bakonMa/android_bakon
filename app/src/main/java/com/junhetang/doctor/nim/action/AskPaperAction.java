@@ -30,7 +30,8 @@ public class AskPaperAction extends BaseAction {
                 true,
                 PaperH5Activity.FORM_TYPE.H5_ASKPAPER,
                 UIUtils.getString(R.string.input_panel_askpaper),
-                H5Config.H5_ASKPAPER
+                H5Config.H5_ASKPAPER,
+                getAccount()
         );
     }
 

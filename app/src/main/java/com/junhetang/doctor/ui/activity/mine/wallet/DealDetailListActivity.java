@@ -16,7 +16,7 @@ import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.ui.base.BaseActivity;
-import com.junhetang.doctor.ui.base.BasePageBean;
+import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.DealDetailBean;
 import com.junhetang.doctor.ui.contact.WalletContact;
 import com.junhetang.doctor.ui.presenter.present_jht.WalletPresenter;

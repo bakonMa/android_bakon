@@ -80,7 +80,8 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
     private int drugStoreId;//药房id
 
     private List<SearchDrugBean> searchSearchDrugBeans = new ArrayList<>();
-    //最后使用的药材列表
+    //最初的药材json，用于比较是否修改了
+    private String commDrugJsonTemp = "";
     private ArrayList<DrugBean> drugBeans;
     private List<String> userTypeListStr = new ArrayList<>();
     private BaseQuickAdapter adapterSearch, adapter;
@@ -89,6 +90,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
     private boolean hasError = false;//提交前检查是否有重复或者不可用药材
     private SavePaperDialog savePaperDialog;//保存dialog
     private ToolbarBuilder toolbarBuilder;
+    private Gson gson;
 
     @Override
     protected int provideRootLayout() {
@@ -118,6 +120,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
         drugStoreId = getIntent().getIntExtra("store_id", 0);
         title = getIntent().getStringExtra("title");
         mExplain = getIntent().getStringExtra("m_explain");
+        gson = new Gson();
 
         //编辑常用处方时使用
         ArrayList<CommPaperInfoBean> commbeans = getIntent().getParcelableArrayListExtra("commbean");
@@ -335,19 +338,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                     @Override
                     public void leftClick() {
                         super.leftClick();
-                        if (formtype == 1 || drugBeans.isEmpty()) {//开方，或者空数据 直接返回
-                            finish();
-                        } else {// 常用处方 返回提醒保存
-                            commonDialog = new CommonDialog(AddDrugActivity.this, false, "您尚未保存是否退出？", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if (view.getId() == R.id.btn_ok) {
-                                        finish();
-                                    }
-                                }
-                            });
-                            commonDialog.show();
-                        }
+                        onBackPressed();
                     }
 
                     @Override
@@ -361,6 +352,46 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
         if (formtype == 2 && !TextUtils.isEmpty(title)) {
             toolbarBuilder.setTitle(title);
         }
+    }
+
+    /**
+     * 点击返回
+     */
+    @Override
+    public void onBackPressed() {
+        if (formtype == 1) {//开方
+            if (drugBeans.isEmpty()) {//空列表 直接返回
+                finish();
+            } else {
+                commonDialog = new CommonDialog(AddDrugActivity.this, false, "您尚未保存是否退出？", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (view.getId() == R.id.btn_ok) {
+                            finish();
+                        }
+                    }
+                });
+                commonDialog.show();
+            }
+        } else {// 常用处方 返回提醒保存
+            //列表完全一样 直接关闭
+            if ((TextUtils.isEmpty(commDrugJsonTemp) && drugBeans.isEmpty())
+                    || commDrugJsonTemp.equals(gson.toJson(drugBeans))) {
+                finish();
+                return;
+            }
+            commonDialog = new CommonDialog(AddDrugActivity.this, false, "您尚未保存是否退出？", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (view.getId() == R.id.btn_ok) {
+                        finish();
+                    }
+                }
+            });
+            commonDialog.show();
+        }
+
+
     }
 
     //点击保存
@@ -401,7 +432,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                     }
                     params.put("title", name);
                     params.put("m_explain", remark);
-                    params.put("param", new Gson().toJson(drugBeans));
+                    params.put("param", gson.toJson(drugBeans));
                     mPresenter.addOftenmed(params);
                 }
             });
@@ -502,6 +533,8 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
             tempBean.drug_num = bean.drug_num;
             drugBeans.add(tempBean);
         }
+        //临时列表，为了比较是否修改了list
+        commDrugJsonTemp = gson.toJson(drugBeans);
     }
 
 

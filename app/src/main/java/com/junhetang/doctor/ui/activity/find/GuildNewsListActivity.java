@@ -18,7 +18,7 @@ import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.ui.activity.WebViewActivity;
 import com.junhetang.doctor.ui.base.BaseActivity;
-import com.junhetang.doctor.ui.base.BasePageBean;
+import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.NewsInfoBean;
 import com.junhetang.doctor.ui.contact.FindContact;
 import com.junhetang.doctor.ui.presenter.present_jht.FindPresenter;
@@ -141,15 +141,14 @@ public class GuildNewsListActivity extends BaseActivity implements FindContact.V
 
     @Override
     public void onSuccess(Message message) {
+        if (idSwipe.isRefreshing()) {
+            idSwipe.setRefreshing(false);
+        }
         if (message == null) {
             return;
         }
         switch (message.what) {
             case FindPresenter.GET_NEWS_OK:
-                if (idSwipe.isRefreshing()) {
-                    idSwipe.setRefreshing(false);
-                }
-
                 BasePageBean<NewsInfoBean> tempBean = (BasePageBean<NewsInfoBean>) message.obj;
                 if (tempBean != null && tempBean.list != null) {
                     pageNum = tempBean.page;

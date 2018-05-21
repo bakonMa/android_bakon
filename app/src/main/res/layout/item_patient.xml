@@ -51,5 +51,6 @@
     <View
         android:id="@+id/bottom_line"
         style="@style/line_gray_hor"
+        android:layout_marginRight="10dp"
         android:layout_alignParentBottom="true" />
 </RelativeLayout>

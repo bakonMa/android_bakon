@@ -76,19 +76,22 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
 
     //标题，url
     private String titleStr, urlStr, webType;
+    private String paccid;
     private boolean hasTopBar;//带头部导航栏
     private int formParent = 0;//是否来自聊天(0 默认不是 1：聊天)
     private String askPapertypeID = "";//男性，女性，儿童  问诊单需要
 
     //带有返回的startActivityForResult-仅限nim中使用
+    //paccid 患者accid
     public static void startResultActivity(Context context, int requestCode,
                                            boolean hasTopBar, String webType,
-                                           String title, String url) {
+                                           String title, String url, String paccid) {
         Intent intent = new Intent(context, PaperH5Activity.class);
         intent.putExtra("hasTopBar", hasTopBar);//是否包含toolbar
         intent.putExtra("webType", webType);//URL的类型，自己定义
         intent.putExtra("title", title);
         intent.putExtra("url", url);
+        intent.putExtra("paccid", paccid);//聊天才有
         intent.putExtra("formParent", 1);//来自聊天
         ((Activity) context).startActivityForResult(intent, requestCode);
     }
@@ -105,6 +108,7 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
         titleStr = getIntent().getStringExtra("title");
         urlStr = getIntent().getStringExtra("url");
         webType = getIntent().getStringExtra("webType");
+        paccid = getIntent().getStringExtra("paccid");//聊天才有
         formParent = getIntent().getIntExtra("formParent", 0);
 
         LogUtil.d(urlStr);
@@ -226,6 +230,9 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
                 EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_CHECKPAPER_OK));
                 finish();
                 break;
+            case OpenPaperPresenter.ADD_CHAT_RECORD_OK://提交发送记录成功
+                LogUtil.d("提交发送记录ok");
+                break;
         }
     }
 
@@ -260,6 +267,12 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
             switch (bean.jstype) {
                 case "edit_inquiry"://医生【发送问诊单】
                     if (formParent == 1) {//聊天列表
+                        //发送自定义消息记录
+                        mPresenter.addChatRecord(NimU.getNimAccount(),
+                                paccid,
+                                Constant.CHAT_RECORD_TYPE_1,
+                                formParent);
+                        //返回聊天
                         Intent intent = new Intent();
                         intent.putExtra("typeID", bean.id);
                         setResult(RESULT_OK, intent);
@@ -276,6 +289,12 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
                     break;
                 case "web_checkups"://医生【发送随诊单】
                     if (formParent == 1) {//聊天列表
+                        //发送自定义消息记录
+                        mPresenter.addChatRecord(NimU.getNimAccount(),
+                                paccid,
+                                Constant.CHAT_RECORD_TYPE_2,
+                                formParent);
+                        //返回聊天
                         setResult(RESULT_OK, new Intent());
                         finish();
                     } else {//首页进入，选择患者发送

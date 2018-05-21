@@ -1,4 +1,4 @@
-package com.junhetang.doctor.ui.base;
+package com.junhetang.doctor.ui.bean;
 
 import java.util.List;
 

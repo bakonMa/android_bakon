@@ -29,7 +29,8 @@ public class FollowPaperAction extends BaseAction {
                 true,
                 PaperH5Activity.FORM_TYPE.H5_ASKPAPER,
                 UIUtils.getString(R.string.input_panel_followpaper),
-                H5Config.H5_FOLLOWPAPER
+                H5Config.H5_FOLLOWPAPER,
+                getAccount()
         );
     }
 

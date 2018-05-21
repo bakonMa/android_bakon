@@ -65,7 +65,7 @@
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:text="如有任何疑问，请联系客服：400-888-9999。"
+        android:text="如有任何疑问，请联系客服：021-55880623。"
         android:textColor="@color/color_000"
         android:textSize="10sp" />
 

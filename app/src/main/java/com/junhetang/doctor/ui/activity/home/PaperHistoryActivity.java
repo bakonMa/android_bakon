@@ -22,7 +22,7 @@ import com.junhetang.doctor.config.H5Config;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.ui.base.BaseActivity;
-import com.junhetang.doctor.ui.base.BasePageBean;
+import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean_jht.CheckPaperBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.nimview.PaperH5Activity;
@@ -128,7 +128,8 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
                             || !searchStr.equals(tvSerch.getText().toString().trim())) {
                         pageNum = 1;
                     }
-                    mPresenter.getPaperHistoryList(pageNum, tvSerch.getText().toString().trim());
+                    searchStr = tvSerch.getText().toString().trim();
+                    mPresenter.getPaperHistoryList(pageNum, searchStr);
                     return true;
                 }
                 return false;

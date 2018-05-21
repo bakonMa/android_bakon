@@ -104,12 +104,12 @@ public class SetPriceActivity extends BaseActivity implements PersonalContact.Vi
 
     private void checkData() {
         if (TextUtils.isEmpty(etFirstprice.getText().toString().trim())
-                && Integer.parseInt(etFirstprice.getText().toString().trim()) >= 0) {
+                || Integer.parseInt(etFirstprice.getText().toString().trim()) < 0) {
             ToastUtil.showShort("请输入初诊资费");
             return;
         }
         if (TextUtils.isEmpty(etAgainprice.getText().toString().trim())
-                && Integer.parseInt(etAgainprice.getText().toString().trim()) >= 0) {
+                || Integer.parseInt(etAgainprice.getText().toString().trim()) < 0) {
             ToastUtil.showShort("请输入复诊资费");
             return;
         }

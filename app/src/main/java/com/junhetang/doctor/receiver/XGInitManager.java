@@ -43,6 +43,16 @@ public class XGInitManager {
         //开启debug日志数据
         XGPushConfig.enableDebug(context, BuildConfig.DEBUG);
 
+        //小米推送
+        XGPushConfig.setMiPushAppId(context, "2882303761517794100");
+        XGPushConfig.setMiPushAppKey(context, "5831779458100");
+        //打开第三方推送
+        XGPushConfig.enableOtherPush(context, true);
+
+
+
+
+
         //自定义通知
 //        XGCustomPushNotificationBuilder build = new XGCustomPushNotificationBuilder();
 //        build.setSound(

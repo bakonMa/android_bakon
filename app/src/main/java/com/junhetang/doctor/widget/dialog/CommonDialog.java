@@ -101,7 +101,7 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
                 TextView okBtn = layoutView.findViewById(R.id.btn_gotuauth);
                 okBtn.setOnClickListener(this);
                 //未认证 显示"去认证"， 认证中 不显示
-                if (UIUtils.getString(R.string.str_autu_no).equals(titleStr)) {//未认证
+                if (UIUtils.getString(R.string.str_auth_ing).equals(titleStr)) {//认证中。。。。
                     okBtn.setText("确定");
                     noBtn.setVisibility(View.GONE);
                     okBtn.setId(0);//改变id 不需要点击跳转

@@ -50,7 +50,8 @@ public class MsgViewHolderFollowPaper extends MsgViewHolderBase {
                 true,
                 PaperH5Activity.FORM_TYPE.H5_FOLLOWPAPER,
                 UIUtils.getString(R.string.input_panel_followpaper),
-                H5Config.H5_FOLLOWPAPER_INFO + attachment.getLinkID()
+                H5Config.H5_FOLLOWPAPER_INFO + attachment.getLinkID(),
+                ""
         );
 
     }
@@ -66,7 +67,7 @@ public class MsgViewHolderFollowPaper extends MsgViewHolderBase {
             tvContent.setText("患者 " + (TextUtils.isEmpty(attachment.getPatients_name()) ? "" : attachment.getPatients_name())
                     + "\n性别 " + (TextUtils.isEmpty(attachment.getPatients_sex()) ? "" : attachment.getPatients_sex())
                     + "\n年龄 " + (TextUtils.isEmpty(attachment.getPatients_age()) ? "" : attachment.getPatients_age())
-                    + "\n症状 " +(TextUtils.isEmpty(attachment.getPatients_describe()) ? "" : attachment.getPatients_describe()));
+                    + "\n症状 " + (TextUtils.isEmpty(attachment.getPatients_describe()) ? "" : attachment.getPatients_describe()));
         } else {//发出
             tviTps.setVisibility(View.VISIBLE);
             lltContent.setVisibility(View.GONE);

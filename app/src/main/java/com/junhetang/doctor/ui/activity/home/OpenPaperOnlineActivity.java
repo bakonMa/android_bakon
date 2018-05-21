@@ -415,11 +415,12 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             commonDialog.show();
             return;
         }
-        if (TextUtils.isEmpty(skilNameCode)) {
-            commonDialog = new CommonDialog(this, "请选择主述及辩证型");
-            commonDialog.show();
-            return;
-        }
+        //主述 可以不填写
+//        if (TextUtils.isEmpty(skilNameCode)) {
+//            commonDialog = new CommonDialog(this, "请选择主述及辩证型");
+//            commonDialog.show();
+//            return;
+//        }
         if (TextUtils.isEmpty(etDrugstore.getText())) {
             commonDialog = new CommonDialog(this, "请选择药房");
             commonDialog.show();

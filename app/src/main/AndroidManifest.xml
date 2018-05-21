@@ -81,7 +81,9 @@
         </provider>
 
         <!-- 网易IM，APPkey, 可以在这里设置，也可以在 SDKOptions 中提供。
-          如果 SDKOptions 中提供了，取 SDKOptions 中的值。 -->
+          如果 SDKOptions 中提供了，取 SDKOptions 中的值。
+          dev:2e3de4134edc75184f5fa5f67a8a2ae2
+          release:5edefcfb5b5abeb615aea00f15a6943d-->
         <meta-data
             android:name="com.netease.nim.appKey"
             android:value="2e3de4134edc75184f5fa5f67a8a2ae2" />

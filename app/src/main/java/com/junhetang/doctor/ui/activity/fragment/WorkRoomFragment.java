@@ -138,6 +138,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
 
     @Override
     protected void initView() {
+        //获取客服accid login接口获得
+        accid = DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_SERVICE_ACCID);
         //请求权限
         requestPermissions();
 
@@ -145,8 +147,6 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         NimManager.getInstance(DocApplication.getInstance()).nimLogin();
         //信鸽注册
         XGInitManager.getInstance(DocApplication.getInstance()).registerXG();
-        //获取客服accid login接口获得
-        accid = DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_SERVICE_ACCID);
 
         //Banner初始化
         initBanner();
@@ -182,6 +182,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
 
     /**
      * fragment 是否隐藏
+     *
      * @param hidden false 前台显示 true 隐藏
      */
     @Override
@@ -195,9 +196,6 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
 
     //登录成功后初始化 客服数据
     private void initService() {
-        //测试
-        // accid = "851b6313ba321b719d861aa658c7f5a5";
-//        accid = "753166d9bce4d2c7c4c30b520c647d4c";
         //最近联系人列表变化观察者
         NIMClient.getService(MsgServiceObserve.class).observeRecentContact(messageObserver, true);
         NIMClient.getService(MsgServiceObserve.class).observeReceiveMessage(messageReceiverObserver, true);
@@ -238,11 +236,11 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
 
     //显示客服数据
     private void showServiceInfo() {
-        //客服个人资料
-        String serviceName = UserInfoHelper.getUserDisplayName(accid);
-//        if(!TextUtils.isEmpty(serviceName) && ){
+//        if(tvServiceName.getText().length() > 20){
 //
 //        }
+        //客服个人资料
+        String serviceName = UserInfoHelper.getUserDisplayName(accid);
         //name
         tvServiceName.setText(TextUtils.isEmpty(serviceName) ? "咨询客服" : serviceName);
         //head img
@@ -446,11 +444,12 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 lltShownotice.setVisibility(U.getAuthStatus() == 2 ? View.GONE : View.VISIBLE);
                 switch (U.getAuthStatus()) {//0：未认证 1：审核中；2：审核通过 3：审核失败
                     case 0://未认证
-                        tvNotification.setText("您尚未认证，认证后可获取更多权限！");
+                        tvNotification.setText(getString(R.string.str_autu_no));
                         break;
                     case 1://审核中
-                        tvNotification.setText("您的认证信息正在审核中，请耐心等待！");
+                        tvNotification.setText(getString(R.string.str_auth_ing));
                         break;
+
                     case 3://审核失败
                         OtherBean bean = (OtherBean) message.obj;
                         tvNotification.setText(TextUtils.isEmpty(bean.fail_msg) ? "您的认证信息未通过，请重新认证！" : bean.fail_msg);

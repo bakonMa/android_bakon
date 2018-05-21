@@ -1,21 +1,22 @@
 package com.junhetang.doctor.ui.presenter.present_jht;
 
 import com.google.gson.Gson;
+import com.junhetang.doctor.application.DocApplication;
+import com.junhetang.doctor.config.HttpConfig;
 import com.junhetang.doctor.config.SPConfig;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.data.response.HttpResponse;
 import com.junhetang.doctor.ui.base.BaseObserver;
-import com.junhetang.doctor.ui.bean_jht.UploadImgBean;
-import com.junhetang.doctor.ui.contact.AuthContact;
-import com.junhetang.doctor.utils.LogUtil;
-import com.junhetang.doctor.utils.ToastUtil;
-import com.junhetang.doctor.application.DocApplication;
-import com.junhetang.doctor.config.HttpConfig;
 import com.junhetang.doctor.ui.bean_jht.AuthInfoBean;
 import com.junhetang.doctor.ui.bean_jht.BaseConfigBean;
 import com.junhetang.doctor.ui.bean_jht.HospitalBean;
+import com.junhetang.doctor.ui.bean_jht.UploadImgBean;
+import com.junhetang.doctor.ui.contact.AuthContact;
 import com.junhetang.doctor.utils.FileUtil;
+import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.M;
+import com.junhetang.doctor.utils.ToastUtil;
+import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.widget.dialog.LoadingDialog;
 
 import java.io.File;
@@ -166,6 +167,8 @@ public class AuthPresenter implements AuthContact.Presenter {
                 .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> response) {
+                        //修改本地认证状态
+                        U.setAuthStatus(1);
                         mView.onSuccess(M.createMessage(response.data, USER_IDENTIFY_OK));
                     }
 

@@ -9,7 +9,7 @@ import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.data.response.HttpResponse;
 import com.junhetang.doctor.ui.base.BaseObserver;
-import com.junhetang.doctor.ui.base.BasePageBean;
+import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.BannerBean;
 import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
 import com.junhetang.doctor.ui.bean.OtherBean;
@@ -190,7 +190,7 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
         mSubscription.add(subscription);
     }
 
-    //后天绑定信鸽token
+    //后台绑定信鸽token
     @Override
     public void bindXGToken(String xgToken) {
         Params params = new Params();

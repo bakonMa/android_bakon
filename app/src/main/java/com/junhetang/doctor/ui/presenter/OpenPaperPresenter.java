@@ -5,7 +5,7 @@ import com.junhetang.doctor.config.HttpConfig;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.data.response.HttpResponse;
 import com.junhetang.doctor.ui.base.BaseObserver;
-import com.junhetang.doctor.ui.base.BasePageBean;
+import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.OnlinePaperBackBean;
 import com.junhetang.doctor.ui.bean_jht.BaseConfigBean;
 import com.junhetang.doctor.ui.bean_jht.CheckPaperBean;
@@ -308,7 +308,7 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
         Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().addChatRecord(params))
-                .compose(mView.toLifecycle())
+//                .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<String>>(null) {
                     @Override
                     public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
@@ -380,7 +380,7 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
     public void getPaperHistoryList(int page, String searchStr) {
         Params params = new Params();
         params.put("page", page);
-        params.put("searchStr", searchStr);
+        params.put("search", searchStr);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
         Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getPaperHistoryList(params))

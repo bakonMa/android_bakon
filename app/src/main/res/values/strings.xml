@@ -45,8 +45,8 @@
     <string name="str_notice2">本人近期停诊，恢复时间待定，给您造成不便，敬请谅解，如有疑问，请联系君和客服。</string>
     <string name="str_notice3">您的健康，我的责任，让我们共同关注身体健康，欢迎新老患者前来咨询。</string>
     <string name="str_notice4">感谢您光临我的诊室，针对您的咨询，我会及时认真的回复。</string>
-    <string name="str_autu_no">您还未认证，认证后体验更多优质服务！</string>
-    <string name="str_auth_ing">您的认证信息正在审核中，审核通过后体验更多优质服务！</string>
+    <string name="str_autu_no">您尚未认证，认证后可获取更多权限！</string>
+    <string name="str_auth_ing">您的认证信息正在审核中，请耐心等待！</string>
 
     <!-- 云信SDK所需文案 -->
     <string name="nim_status_bar_multi_messages_incoming">%1$d位联系人有新消息</string>

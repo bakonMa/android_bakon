@@ -2,7 +2,7 @@ package com.junhetang.doctor.data.http;
 
 import com.junhetang.doctor.config.HttpConfig;
 import com.junhetang.doctor.data.response.HttpResponse;
-import com.junhetang.doctor.ui.base.BasePageBean;
+import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.AddCoborrowerBean;
 import com.junhetang.doctor.ui.bean.AppUpdateBean;
 import com.junhetang.doctor.ui.bean.ApplyInfoBean;
