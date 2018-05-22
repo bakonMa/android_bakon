@@ -17,10 +17,12 @@ android {
             abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
             //信鸽推送
             manifestPlaceholders = [
-                    PACKAGE_NAME : "com.junhetang.doctor",
-                    XG_ACCESS_ID : "2100291473",
-                    XG_ACCESS_KEY: "AT43LK65VM3M",
-                    HW_APPID     : "100287577"
+                    PACKAGE_NAME       : "com.junhetang.doctor",
+                    XG_ACCESS_ID       : "2100291473",
+                    XG_ACCESS_KEY      : "AT43LK65VM3M",
+                    HW_APPID           : "100287577",
+                    // 默认是[应用宝]的渠道
+                    UMENG_CHANNEL_VALUE: "yingyongbao"
             ]
 
         }

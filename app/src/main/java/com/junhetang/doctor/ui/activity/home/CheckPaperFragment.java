@@ -77,7 +77,7 @@ public class CheckPaperFragment extends BaseFragment implements OpenPaperContact
             @Override
             protected void convert(BaseViewHolder helper, CheckPaperBean item) {
                 helper.setText(R.id.tv_name, item.patient_name + "    " + (item.sex == 0 ? "男" : "女") + "    " + item.age + "岁")
-                        .setImageResource(R.id.iv_papertype, item.presc_type == 1 ? R.drawable.icon_camera : R.drawable.icon_phone)
+                        .setImageResource(R.id.iv_papertype, item.presc_type == 1 ? R.drawable.icon_phone : R.drawable.icon_camera)
                         .setText(R.id.tv_phone, TextUtils.isEmpty(item.phone) ? "" : item.phone)
                         .setText(R.id.tv_date, "开方日期：" + (TextUtils.isEmpty(item.create_time) ? "" : item.create_time));
             }

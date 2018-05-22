@@ -111,7 +111,7 @@ public class GuildNewsListActivity extends BaseActivity implements FindContact.V
         recycleview.setAdapter(mAdapter);
 
         //请求数据
-        idSwipe.setRefreshing(true);
+//        idSwipe.setRefreshing(true);
         mPresenter.getNewsList(type, pageNum);
     }
 

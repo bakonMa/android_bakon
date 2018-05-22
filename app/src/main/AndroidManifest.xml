@@ -80,6 +80,11 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <!--多渠道打包-->
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}"/>
+
         <!-- 网易IM，APPkey, 可以在这里设置，也可以在 SDKOptions 中提供。
           如果 SDKOptions 中提供了，取 SDKOptions 中的值。
           dev:2e3de4134edc75184f5fa5f67a8a2ae2

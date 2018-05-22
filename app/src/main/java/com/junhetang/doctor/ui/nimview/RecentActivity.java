@@ -175,6 +175,7 @@ public class RecentActivity extends BaseActivity implements BaseView {
         registerObservers(false);
         registerDropCompletedListener(false);
         registerOnlineStateChangeListener(false);
+        dropCompletedListener = null;
         commonPresenter.unsubscribe();
     }
 
@@ -203,17 +204,17 @@ public class RecentActivity extends BaseActivity implements BaseView {
         // ios style 弹性下拉
         OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
         // drop listener
-        DropManager.getInstance().setDropListener(new DropManager.IDropListener() {
-            @Override
-            public void onDropBegin() {
-                touchListener.setShouldDetectGesture(false);
-            }
-
-            @Override
-            public void onDropEnd() {
-                touchListener.setShouldDetectGesture(true);
-            }
-        });
+//        DropManager.getInstance().setDropListener(new DropManager.IDropListener() {
+//            @Override
+//            public void onDropBegin() {
+//                touchListener.setShouldDetectGesture(false);
+//            }
+//
+//            @Override
+//            public void onDropEnd() {
+//                touchListener.setShouldDetectGesture(true);
+//            }
+//        });
     }
 
     //消息记录回调

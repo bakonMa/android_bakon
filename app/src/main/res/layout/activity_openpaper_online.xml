@@ -437,8 +437,8 @@
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:text="1"
-                        android:textCursorDrawable="@drawable/color_cursor"
                         android:textColor="@color/color_000"
+                        android:textCursorDrawable="@drawable/color_cursor"
                         android:textSize="16sp" />
 
                     <TextView
@@ -505,6 +505,7 @@
                     android:inputType="number"
                     android:maxLength="5"
                     android:paddingLeft="15dp"
+                    android:textCursorDrawable="@drawable/color_cursor"
                     android:textSize="16sp" />
 
                 <TextView

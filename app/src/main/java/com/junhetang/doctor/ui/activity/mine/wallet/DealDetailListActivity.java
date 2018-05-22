@@ -94,7 +94,7 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
         recycleview.setAdapter(mAdapter);
         
         //请求数据
-        idSwipe.setRefreshing(true);
+//        idSwipe.setRefreshing(true);
         mPresenter.getDealFlow(pageNum);
     }
 

@@ -4,14 +4,12 @@ package com.junhetang.doctor.config;
 import com.junhetang.doctor.BuildConfig;
 
 /**
- * @author: ZhaoYun
- * @date: 2017/11/1
- * @project: customer-android-2th
- * @detail:
+ * @author: mayakun
+ * @date: 2018/4/2
  */
 public interface HttpConfig {
 
-    //私盐
+    //http私盐
     String SECRET_VALUE = "jht2018app";
     String SIGN_KEY = "sign";
     String TIMESTAMP = "timestamp";
@@ -21,12 +19,11 @@ public interface HttpConfig {
     long IO_READ_TIMEOUT = 60 * 1000;
     long IO_WRITE_TIMEOUT = 60 * 1000;
 
-    //微信分享AppId
-//    String UMENG_APPKEY = "5aced483b27b0a303b000044";
+    //Umeng分享AppId
     String UMENG_APPKEY = "5aded051f29d985b64000026";
 
-    String WX_APP_ID = "wxa792384772439d0f";
-    String WX_APP_SECRET = "2e37c33fd6ff031ebeae1cbeb94e6219";
+    String WX_APP_ID = "wx7f3bde58fbc30588";
+    String WX_APP_SECRET = "8808364972a4b28e751598584fb1b9e0";
     String QQ_APP_ID = "1104231476";
     String QQ_APP_ID_Key = "WJXfjBPBJpTJWfr5";
 

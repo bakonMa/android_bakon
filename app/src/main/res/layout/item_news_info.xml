@@ -40,7 +40,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:scaleType="fitXY"
-        android:src="@drawable/nim_default_img"
+        android:src="@drawable/default_img"
         android:textColor="@color/color_000"
         android:textSize="16sp" />
 

@@ -110,7 +110,7 @@ public class SystemMsgListActivity extends BaseActivity implements WorkRoomConta
         recycleview.setAdapter(mAdapter);
 
         //请求数据
-        idSwipe.setRefreshing(true);
+//        idSwipe.setRefreshing(true);
         mPresenter.getSystemMsgList(pageNum);
     }
 

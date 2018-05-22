@@ -124,7 +124,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
 
     @Override
     protected int provideRootLayout() {
-        return R.layout.fragment_workroom2;
+        return R.layout.fragment_workroom;
     }
 
     @Override
