@@ -8,16 +8,12 @@ import com.junhetang.doctor.ui.base.BasicProvider;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.contact.PatientContact;
 import com.junhetang.doctor.ui.contact.LoginContact;
-import com.junhetang.doctor.ui.contact.MyLoanContact;
 import com.junhetang.doctor.ui.contact.WorkRoomContact;
-import com.junhetang.doctor.ui.presenter.MyLoanPresenter;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
 import com.junhetang.doctor.ui.presenter.PatientPresenter;
-import com.junhetang.doctor.ui.presenter.RepaymentPresenter;
 import com.junhetang.doctor.ui.presenter.LoginPresenter;
 import com.junhetang.doctor.injection.scopes.PerFragment;
 import com.junhetang.doctor.ui.contact.PersonalContact;
-import com.junhetang.doctor.ui.contact.RepaymentContact;
 import com.junhetang.doctor.ui.presenter.PersonalPresenter;
 import com.junhetang.doctor.ui.presenter.WorkRoomPresenter;
 
@@ -68,20 +64,10 @@ public final class FragmentModule {
     public WorkRoomPresenter provideWorkRoomPresenter() {
         return new WorkRoomPresenter((WorkRoomContact.View) mView);
     }
-
-
-    //********************************************************
-
-
+    
     @PerFragment
     @Provides
-    public RepaymentPresenter provideRepaymentPresenter() {
-        return new RepaymentPresenter((RepaymentContact.View) mView);
-    }
-
-    @PerFragment
-    @Provides
-    public PatientPresenter provideHomeLoanPresenter() {
+    public PatientPresenter providePatientPresenter() {
         return new PatientPresenter((PatientContact.View) mView);
     }
 
@@ -89,13 +75,6 @@ public final class FragmentModule {
     @Provides
     public OpenPaperPresenter provideOpenPaperPresenter() {
         return new OpenPaperPresenter((OpenPaperContact.View) mView);
-    }
-
-
-    @PerFragment
-    @Provides
-    public MyLoanPresenter provideMyLoanPresenter() {
-        return new MyLoanPresenter((MyLoanContact.View) mView);
     }
 
 

@@ -14,7 +14,7 @@ import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.ui.base.BaseActivity;
-import com.junhetang.doctor.ui.bean_jht.UserBaseInfoBean;
+import com.junhetang.doctor.ui.bean.UserBaseInfoBean;
 import com.junhetang.doctor.ui.contact.PersonalContact;
 import com.junhetang.doctor.ui.presenter.PersonalPresenter;
 import com.junhetang.doctor.utils.RegexUtil;

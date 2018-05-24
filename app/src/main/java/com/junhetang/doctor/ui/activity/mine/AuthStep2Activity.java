@@ -15,7 +15,7 @@ import android.widget.ScrollView;
 
 import com.junhetang.doctor.BuildConfig;
 import com.junhetang.doctor.R;
-import com.junhetang.doctor.ui.bean_jht.UploadImgBean;
+import com.junhetang.doctor.ui.bean.UploadImgBean;
 import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.widget.EditTextlayout;
@@ -26,7 +26,7 @@ import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.contact.AuthContact;
-import com.junhetang.doctor.ui.presenter.present_jht.AuthPresenter;
+import com.junhetang.doctor.ui.presenter.AuthPresenter;
 import com.junhetang.doctor.utils.ActivityUtil;
 import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.ImageUtil;

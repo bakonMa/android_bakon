@@ -23,7 +23,7 @@ import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.BasePageBean;
-import com.junhetang.doctor.ui.bean_jht.CheckPaperBean;
+import com.junhetang.doctor.ui.bean.CheckPaperBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.nimview.PaperH5Activity;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;

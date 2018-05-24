@@ -52,7 +52,6 @@ import dagger.Component;
         modules = {ActivityModule.class}
 )
 public interface ActivityComponent extends ApplicationComponent {
-    /**********************JHT Start ***********************/
     @ActivityContext
     Context actContext();
 

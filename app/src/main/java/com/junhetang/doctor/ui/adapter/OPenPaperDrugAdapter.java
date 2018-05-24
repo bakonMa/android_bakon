@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.junhetang.doctor.R;
-import com.junhetang.doctor.ui.bean_jht.DrugBean;
+import com.junhetang.doctor.ui.bean.DrugBean;
 
 import java.util.List;
 

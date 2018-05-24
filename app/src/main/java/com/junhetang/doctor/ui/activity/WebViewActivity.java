@@ -19,7 +19,7 @@ import com.junhetang.doctor.config.EventConfig;
 import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.ui.base.BaseActivity;
-import com.junhetang.doctor.ui.bean_jht.H5JsonBean;
+import com.junhetang.doctor.ui.bean.H5JsonBean;
 import com.junhetang.doctor.utils.FileUtil;
 import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.ShareSDKUtils;

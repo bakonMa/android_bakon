@@ -67,6 +67,7 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<OtherBean> resultResponse) {
                         U.setAuthStatus(resultResponse.data.status);
+                        U.setAuthStatusFailMsg(resultResponse.data.fail_msg);
                         mView.onSuccess(M.createMessage(resultResponse.data, GET_AUTH_STATUS));
                     }
 

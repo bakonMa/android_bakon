@@ -19,7 +19,7 @@ import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.injection.components.DaggerFragmentComponent;
 import com.junhetang.doctor.injection.modules.FragmentModule;
 import com.junhetang.doctor.ui.base.BaseFragment;
-import com.junhetang.doctor.ui.bean_jht.CheckPaperBean;
+import com.junhetang.doctor.ui.bean.CheckPaperBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.nimview.CheckPaperH5Activity;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;

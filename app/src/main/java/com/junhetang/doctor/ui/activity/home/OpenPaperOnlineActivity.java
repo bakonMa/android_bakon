@@ -30,14 +30,15 @@ import com.junhetang.doctor.ui.activity.patient.PatientFamilyActivity;
 import com.junhetang.doctor.ui.activity.patient.PatientListActivity;
 import com.junhetang.doctor.ui.adapter.OPenPaperDrugAdapter;
 import com.junhetang.doctor.ui.base.BaseActivity;
+import com.junhetang.doctor.ui.bean.DrugBean;
 import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
 import com.junhetang.doctor.ui.bean.OnlinePaperBackBean;
 import com.junhetang.doctor.ui.bean.PatientFamilyBean;
-import com.junhetang.doctor.ui.bean_jht.DrugBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
 import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
+import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.widget.EditTextlayout;
@@ -250,6 +251,10 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 writeJzInfo();
                 break;
             case R.id.tv_addcommpaper://添加为常用处方
+                if (drugBeans == null || drugBeans.isEmpty()) {
+                    ToastUtil.showShort("请添加药材");
+                    return;
+                }
                 savePaperDialog = new SavePaperDialog(this, new SavePaperDialog.ClickListener() {
                     @Override
                     public void confirm(String name, String remark) {
@@ -457,7 +462,9 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         params.put("sex", sexType);
         params.put("age", etAge.getEditText().getText());
         params.put("phone", etPhone.getEditText().getText());
-        params.put("icd10", skilNameCode);//主述及辩证型的icd10_code字段
+        if (!TextUtils.isEmpty(skilNameCode)) {
+            params.put("icd10", skilNameCode);//主述及辩证型的icd10_code字段
+        }
         params.put("store_id", storeId);
         params.put("param", new Gson().toJson(drugBeans));
         params.put("drug_class", drugClassId);
@@ -562,7 +569,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     }
 
     //主述及辩证型
-    private String skilNameCode;
+    private String skilNameCode = "";
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

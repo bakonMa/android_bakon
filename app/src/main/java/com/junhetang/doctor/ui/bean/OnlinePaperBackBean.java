@@ -1,7 +1,5 @@
 package com.junhetang.doctor.ui.bean;
 
-import com.junhetang.doctor.ui.bean_jht.DrugBean;
-
 import java.util.List;
 
 /**

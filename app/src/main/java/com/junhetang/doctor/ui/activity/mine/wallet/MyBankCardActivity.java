@@ -23,7 +23,7 @@ import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.BankCardBean;
 import com.junhetang.doctor.ui.contact.WalletContact;
-import com.junhetang.doctor.ui.presenter.present_jht.WalletPresenter;
+import com.junhetang.doctor.ui.presenter.WalletPresenter;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;

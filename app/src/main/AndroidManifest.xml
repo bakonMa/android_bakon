@@ -91,7 +91,7 @@
           release:5edefcfb5b5abeb615aea00f15a6943d-->
         <meta-data
             android:name="com.netease.nim.appKey"
-            android:value="2e3de4134edc75184f5fa5f67a8a2ae2" />
+            android:value="5edefcfb5b5abeb615aea00f15a6943d" />
         <!-- 云信后台服务，请使用独立进程。 -->
         <service
             android:name="com.netease.nimlib.service.NimService"

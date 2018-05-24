@@ -24,13 +24,14 @@ public interface HttpConfig {
 
     String WX_APP_ID = "wx7f3bde58fbc30588";
     String WX_APP_SECRET = "8808364972a4b28e751598584fb1b9e0";
-    String QQ_APP_ID = "1104231476";
-    String QQ_APP_ID_Key = "WJXfjBPBJpTJWfr5";
+    String QQ_APP_ID = "1106783321";
+    String QQ_APP_ID_Key = "j5tRZ5zNzbhdoNQd";
+//    String QQ_APP_ID = "1104231476";
+//    String QQ_APP_ID_Key = "WJXfjBPBJpTJWfr5";
 
     String HTTP_HEADER_OS = "android";
     String HTTP_HEADER_CONTENTTYPE_KEY = "Content-Type";
     String HTTP_HEADER_CONTENTTYPE_VALUE = "application/json; charset=UTF-8";
-    String HTTP_HEADER_TOKEN_KEY = "Token";
     String HTTP_HEADER_DOWNLOAD_APK = "DownloadApk";
 
 }

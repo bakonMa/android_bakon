@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.data.eventbus.EventBusUtil;
-import com.junhetang.doctor.ui.presenter.present_jht.WalletPresenter;
+import com.junhetang.doctor.ui.presenter.WalletPresenter;
 import com.junhetang.doctor.widget.EditableLayout;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.EventConfig;

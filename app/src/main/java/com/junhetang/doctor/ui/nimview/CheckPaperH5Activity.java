@@ -23,7 +23,7 @@ import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.ui.base.BaseActivity;
-import com.junhetang.doctor.ui.bean_jht.H5JsonBean;
+import com.junhetang.doctor.ui.bean.H5JsonBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
 import com.junhetang.doctor.utils.LogUtil;

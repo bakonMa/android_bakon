@@ -21,7 +21,7 @@ import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.NewsInfoBean;
 import com.junhetang.doctor.ui.contact.FindContact;
-import com.junhetang.doctor.ui.presenter.present_jht.FindPresenter;
+import com.junhetang.doctor.ui.presenter.FindPresenter;
 import com.junhetang.doctor.utils.ImageUtil;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;

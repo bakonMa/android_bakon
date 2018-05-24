@@ -5,12 +5,14 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
-    android:visibility="gone" >
+    android:visibility="gone">
 
+    <!--高度200 2018年05月24日14:28:29 wrap_content
+    android:layout_height="@dimen/message_bottom_function_viewpager_height"-->
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/message_bottom_function_viewpager_height"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="4dp" />
 

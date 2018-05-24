@@ -22,12 +22,14 @@ import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.nim.message.SessionHelper;
+import com.junhetang.doctor.ui.activity.mine.AuthStep1Activity;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.PatientFamilyBean;
 import com.junhetang.doctor.ui.contact.PatientContact;
 import com.junhetang.doctor.ui.presenter.PatientPresenter;
 import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.ImageUtil;
+import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.widget.EditableLayout;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
@@ -145,8 +147,21 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
             return;
         }
         switch (view.getId()) {
-            case R.id.tv_gotochat://进入聊天
-                SessionHelper.startP2PSession(actContext(), im_accid);
+            case R.id.tv_gotochat:
+                if (U.isHasAuthOK()) { //认证通过 进入聊天
+                    SessionHelper.startP2PSession(actContext(), im_accid);
+                } else {
+                    commonDialog = new CommonDialog(this, R.layout.dialog_auth, U.getAuthStatusMsg(),
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (view.getId() == R.id.btn_gotuauth) {
+                                        startActivity(new Intent(PatientFamilyActivity.this, AuthStep1Activity.class));
+                                    }
+                                }
+                            });
+                    commonDialog.show();
+                }
                 break;
             case R.id.rlt_head://设置备注
                 Intent intent = new Intent(this, RemarkNameActivity.class);

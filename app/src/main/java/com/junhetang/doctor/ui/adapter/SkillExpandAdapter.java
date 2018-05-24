@@ -3,7 +3,7 @@ package com.junhetang.doctor.ui.adapter;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.junhetang.doctor.R;
-import com.junhetang.doctor.ui.bean_jht.BaseConfigBean;
+import com.junhetang.doctor.ui.bean.BaseConfigBean;
 
 import java.util.List;
 

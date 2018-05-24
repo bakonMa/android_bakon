@@ -27,7 +27,7 @@ import com.junhetang.doctor.ui.activity.mine.SettingActivity;
 import com.junhetang.doctor.ui.activity.mine.UserInfoActivity;
 import com.junhetang.doctor.ui.activity.mine.wallet.WalletActivity;
 import com.junhetang.doctor.ui.base.BaseFragment;
-import com.junhetang.doctor.ui.bean_jht.UserBaseInfoBean;
+import com.junhetang.doctor.ui.bean.UserBaseInfoBean;
 import com.junhetang.doctor.ui.contact.PersonalContact;
 import com.junhetang.doctor.ui.presenter.PersonalPresenter;
 import com.junhetang.doctor.utils.ImageUtil;
@@ -166,6 +166,10 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
     //根据认证状态，修改UI
     //状态值，0：未认证 1：审核中；2：审核通过 3：审核失败
     private void changeViewStatus(int status) {
+        //下来刷新关闭
+        if (idSwipe.isRefreshing()) {
+            idSwipe.setRefreshing(false);
+        }
         switch (status) {
             case 0:
                 lltAuthStatus.setVisibility(View.VISIBLE);

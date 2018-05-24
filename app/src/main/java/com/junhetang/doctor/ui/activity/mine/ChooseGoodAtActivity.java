@@ -13,7 +13,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.ui.adapter.SkillExpandAdapter;
 import com.junhetang.doctor.ui.base.BaseActivity;
-import com.junhetang.doctor.ui.bean_jht.BaseConfigBean;
+import com.junhetang.doctor.ui.bean.BaseConfigBean;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;

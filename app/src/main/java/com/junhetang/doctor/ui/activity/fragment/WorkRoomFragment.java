@@ -11,22 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.netease.nim.uikit.api.NimUIKit;
-import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
-import com.netease.nim.uikit.common.util.sys.TimeUtil;
-import com.netease.nimlib.sdk.NIMClient;
-import com.netease.nimlib.sdk.Observer;
-import com.netease.nimlib.sdk.RequestCallback;
-import com.netease.nimlib.sdk.StatusCode;
-import com.netease.nimlib.sdk.auth.AuthServiceObserver;
-import com.netease.nimlib.sdk.msg.MessageBuilder;
-import com.netease.nimlib.sdk.msg.MsgService;
-import com.netease.nimlib.sdk.msg.MsgServiceObserve;
-import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum;
-import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
-import com.netease.nimlib.sdk.msg.model.CustomMessageConfig;
-import com.netease.nimlib.sdk.msg.model.IMMessage;
-import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.junhetang.doctor.BuildConfig;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
@@ -52,7 +36,6 @@ import com.junhetang.doctor.ui.activity.mine.AuthStep1Activity;
 import com.junhetang.doctor.ui.activity.mine.UserNoticeActivity;
 import com.junhetang.doctor.ui.base.BaseFragment;
 import com.junhetang.doctor.ui.bean.BannerBean;
-import com.junhetang.doctor.ui.bean.OtherBean;
 import com.junhetang.doctor.ui.contact.WorkRoomContact;
 import com.junhetang.doctor.ui.nimview.PaperH5Activity;
 import com.junhetang.doctor.ui.nimview.RecentActivity;
@@ -64,6 +47,22 @@ import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.utils.imageloader.BannerImageLoader;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
+import com.netease.nim.uikit.api.NimUIKit;
+import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
+import com.netease.nim.uikit.common.util.sys.TimeUtil;
+import com.netease.nimlib.sdk.NIMClient;
+import com.netease.nimlib.sdk.Observer;
+import com.netease.nimlib.sdk.RequestCallback;
+import com.netease.nimlib.sdk.StatusCode;
+import com.netease.nimlib.sdk.auth.AuthServiceObserver;
+import com.netease.nimlib.sdk.msg.MessageBuilder;
+import com.netease.nimlib.sdk.msg.MsgService;
+import com.netease.nimlib.sdk.msg.MsgServiceObserve;
+import com.netease.nimlib.sdk.msg.constant.MsgStatusEnum;
+import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
+import com.netease.nimlib.sdk.msg.model.CustomMessageConfig;
+import com.netease.nimlib.sdk.msg.model.IMMessage;
+import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.youth.banner.Banner;
@@ -362,7 +361,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         if (!U.isHasAuthOK()) {
             commonDialog = new CommonDialog(getActivity(),
                     R.layout.dialog_auth,
-                    U.getAuthStatus() == 0 ? getString(R.string.str_autu_no) : getString(R.string.str_auth_ing),
+                    U.getAuthStatusMsg(),
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -442,19 +441,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         switch (message.what) {
             case WorkRoomPresenter.GET_AUTH_STATUS://认证状态
                 lltShownotice.setVisibility(U.getAuthStatus() == 2 ? View.GONE : View.VISIBLE);
-                switch (U.getAuthStatus()) {//0：未认证 1：审核中；2：审核通过 3：审核失败
-                    case 0://未认证
-                        tvNotification.setText(getString(R.string.str_autu_no));
-                        break;
-                    case 1://审核中
-                        tvNotification.setText(getString(R.string.str_auth_ing));
-                        break;
-
-                    case 3://审核失败
-                        OtherBean bean = (OtherBean) message.obj;
-                        tvNotification.setText(TextUtils.isEmpty(bean.fail_msg) ? "您的认证信息未通过，请重新认证！" : bean.fail_msg);
-                        break;
-                }
+                tvNotification.setText(U.getAuthStatusMsg());
                 break;
             case WorkRoomPresenter.GET_BANNER_OK:
                 imgUrl.clear();

@@ -237,4 +237,10 @@ public class MainActivity extends BaseActivity {
     protected void setupActivityComponent() {
 
     }
+
+    @Override
+    public void onBackPressed() {
+        //模拟HOME键退出界面
+        moveTaskToBack(true);
+    }
 }

@@ -10,7 +10,7 @@ import com.junhetang.doctor.R;
 import com.junhetang.doctor.config.EventConfig;
 import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.ui.base.BaseActivity;
-import com.junhetang.doctor.ui.bean_jht.UserBaseInfoBean;
+import com.junhetang.doctor.ui.bean.UserBaseInfoBean;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.widget.EditableLayout;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;

@@ -1,5 +1,6 @@
 package com.junhetang.doctor.widget;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -19,6 +20,7 @@ import static android.graphics.Paint.ANTI_ALIAS_FLAG;
  * Created by Tang on 2017/10/19.
  */
 
+@SuppressLint("AppCompatCustomView")
 public class PasswordInputView extends EditText {
     private static final int defaultContMargin = 5;
     private static final int defaultSplitLineWidth = 3;

@@ -7,7 +7,7 @@ import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.data.response.HttpResponse;
 import com.junhetang.doctor.ui.base.BaseObserver;
 import com.junhetang.doctor.ui.bean.OtherBean;
-import com.junhetang.doctor.ui.bean_jht.UserBaseInfoBean;
+import com.junhetang.doctor.ui.bean.UserBaseInfoBean;
 import com.junhetang.doctor.ui.contact.PersonalContact;
 import com.junhetang.doctor.utils.M;
 import com.junhetang.doctor.utils.ToastUtil;
@@ -61,6 +61,7 @@ public class PersonalPresenter implements PersonalContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<OtherBean> resultResponse) {
                         U.setAuthStatus(resultResponse.data.status);
+                        U.setAuthStatusFailMsg(resultResponse.data.fail_msg);
                         mView.onSuccess(M.createMessage(resultResponse.data, GET_AUTH_STATUS));
                     }
 

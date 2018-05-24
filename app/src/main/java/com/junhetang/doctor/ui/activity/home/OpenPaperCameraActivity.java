@@ -33,7 +33,7 @@ import com.junhetang.doctor.ui.activity.patient.PatientListActivity;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
 import com.junhetang.doctor.ui.bean.PatientFamilyBean;
-import com.junhetang.doctor.ui.bean_jht.UploadImgBean;
+import com.junhetang.doctor.ui.bean.UploadImgBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
 import com.junhetang.doctor.utils.ActivityUtil;

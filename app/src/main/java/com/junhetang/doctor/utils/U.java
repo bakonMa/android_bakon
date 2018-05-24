@@ -3,11 +3,11 @@ package com.junhetang.doctor.utils;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.SPConfig;
-import com.junhetang.doctor.ui.bean.ConfigBean;
 import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
-import com.junhetang.doctor.ui.bean_jht.UserBaseInfoBean;
+import com.junhetang.doctor.ui.bean.UserBaseInfoBean;
 
 /**
  * Create by mayakun at 2018/3/30 下午3:01
@@ -66,7 +66,7 @@ public class U {
         return DocApplication.getAppComponent().dataRepo().appSP().getInteger(SPConfig.SP_INT_SUTH_STATUS, 0) == 2;
     }
 
-    //获取sp中认证状态
+    //获取sp中认证状态 //0：未认证 1：审核中；2：审核通过 3：审核失败
     public static int getAuthStatus() {
         return DocApplication.getAppComponent().dataRepo().appSP().getInteger(SPConfig.SP_INT_SUTH_STATUS, 0);
     }
@@ -74,6 +74,31 @@ public class U {
     //获取sp中认证状态 认证状态 0：未认证 1：审核中；2：审核通过 3：审核失败
     public static void setAuthStatus(int status) {
         DocApplication.getAppComponent().dataRepo().appSP().setInteger(SPConfig.SP_INT_SUTH_STATUS, status);
+    }
+
+    //获取sp中认证状态失败 原因
+    public static void setAuthStatusFailMsg(String failMsg) {
+        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_SUTH_STATUS_FAIL_MSG, failMsg);
+    }
+
+    //获取sp中认证状 文字 //0：未认证 1：审核中；2：审核通过 3：审核失败
+    public static String getAuthStatusMsg() {
+        String msg = "";
+        switch (getAuthStatus()) {
+            case 0:
+                msg = DocApplication.getInstance().getString(R.string.str_autu_no);
+                break;
+            case 1:
+                msg = DocApplication.getInstance().getString(R.string.str_auth_ing);
+                break;
+            case 2:
+                msg = "认证成功";
+                break;
+            case 3:
+                msg = DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_SUTH_STATUS_FAIL_MSG, "您的认证信息未通过，请重新认证！");
+                break;
+        }
+        return msg;
     }
 
     //首页 审核处方 set红点
@@ -156,16 +181,6 @@ public class U {
 //        DEAL_STATUS.put("SUCCESS", "交易成功");
 //        DEAL_STATUS.put("FAIL", "交易失败");
 //    }
-
-    //获取base信息 ConfigBean
-    public static ConfigBean getConfigData() {
-        String json = DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_KEY_BASE_CONFIG);
-        if (TextUtils.isEmpty(json)) {
-            return null;
-        } else {
-            return new Gson().fromJson(json, ConfigBean.class);
-        }
-    }
 
 
 }

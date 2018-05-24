@@ -20,7 +20,7 @@ import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.ui.base.BaseActivity;
-import com.junhetang.doctor.ui.bean_jht.BaseConfigBean;
+import com.junhetang.doctor.ui.bean.BaseConfigBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
 import com.junhetang.doctor.utils.KeyBoardUtils;

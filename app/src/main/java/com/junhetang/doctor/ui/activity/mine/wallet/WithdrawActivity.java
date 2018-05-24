@@ -20,7 +20,7 @@ import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.BankCardBean;
 import com.junhetang.doctor.ui.contact.WalletContact;
-import com.junhetang.doctor.ui.presenter.present_jht.WalletPresenter;
+import com.junhetang.doctor.ui.presenter.WalletPresenter;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.widget.dialog.CommonDialog;

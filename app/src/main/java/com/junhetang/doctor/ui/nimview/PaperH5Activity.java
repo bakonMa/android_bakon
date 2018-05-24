@@ -27,7 +27,7 @@ import com.junhetang.doctor.nim.message.extension.AskPaperAttachment;
 import com.junhetang.doctor.nim.message.extension.FollowPaperAttachment;
 import com.junhetang.doctor.ui.activity.patient.PatientListActivity;
 import com.junhetang.doctor.ui.base.BaseActivity;
-import com.junhetang.doctor.ui.bean_jht.H5JsonBean;
+import com.junhetang.doctor.ui.bean.H5JsonBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
 import com.junhetang.doctor.utils.Constant;

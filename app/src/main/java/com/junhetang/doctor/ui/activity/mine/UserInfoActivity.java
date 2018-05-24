@@ -11,7 +11,7 @@ import com.junhetang.doctor.R;
 import com.junhetang.doctor.config.H5Config;
 import com.junhetang.doctor.ui.activity.WebViewActivity;
 import com.junhetang.doctor.ui.base.BaseActivity;
-import com.junhetang.doctor.ui.bean_jht.UserBaseInfoBean;
+import com.junhetang.doctor.ui.bean.UserBaseInfoBean;
 import com.junhetang.doctor.utils.ImageUtil;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.widget.EditTextlayout;

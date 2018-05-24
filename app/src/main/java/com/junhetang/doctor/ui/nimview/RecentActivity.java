@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.EventConfig;
+import com.junhetang.doctor.config.SPConfig;
 import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.nim.NimManager;
@@ -30,12 +31,14 @@ import com.junhetang.doctor.nim.message.extension.OPenPaperAttachment;
 import com.junhetang.doctor.nim.message.extension.SnapChatAttachment;
 import com.junhetang.doctor.nim.message.extension.StickerAttachment;
 import com.junhetang.doctor.ui.activity.home.SystemMsgListActivity;
+import com.junhetang.doctor.ui.activity.mine.AuthStep1Activity;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.base.BaseView;
 import com.junhetang.doctor.ui.presenter.CommonPresenter;
 import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.U;
+import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.netease.nim.uikit.api.NimUIKit;
@@ -109,6 +112,7 @@ public class RecentActivity extends BaseActivity implements BaseView {
     private Map<String, RecentContact> cached = new HashMap<>(3); // 暂缓刷上列表的数据（未读数红点拖拽动画运行时用）
     private RecentContactAdapter adapter;
     private RecentContactsCallback callback;
+    private CommonDialog commonDialog;
 
     private boolean msgLoaded = false;
     private UserInfoObserver userInfoObserver;
@@ -236,13 +240,32 @@ public class RecentActivity extends BaseActivity implements BaseView {
 
             @Override
             public void onItemClick(RecentContact recent) {
+                if (!U.isHasAuthOK()) { //认证不通过
+                    commonDialog = new CommonDialog(RecentActivity.this, R.layout.dialog_auth, U.getAuthStatusMsg(),
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (view.getId() == R.id.btn_gotuauth) {
+                                        startActivity(new Intent(actContext(), AuthStep1Activity.class));
+                                    }
+                                }
+                            });
+                    commonDialog.show();
+                    return;
+                }
+
                 // 回调函数，以供打开会话窗口时传入定制化参数，或者做其他动作
                 LogUtil.d("accid=" + recent.getContactId());
                 switch (recent.getSessionType()) {
                     case P2P:
-                        //告诉 后台 医生主动聊天
-                        commonPresenter.docToTalk(recent.getContactId());
-                        SessionHelper.startP2PSession(actContext(), recent.getContactId());
+                        //是否是 客服
+                        if (DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_SERVICE_ACCID).equals(recent.getContactId())) {
+                            SessionHelper.startP2PSession(actContext(), recent.getContactId(), true);
+                        } else {
+                            //告诉 后台 医生主动聊天
+                            commonPresenter.docToTalk(recent.getContactId());
+                            SessionHelper.startP2PSession(actContext(), recent.getContactId());
+                        }
                         break;
                     case Team:
                         NimUIKit.startTeamSession(actContext(), recent.getContactId());
