@@ -130,7 +130,7 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
                             if (!apkDir.exists()) {
                                 apkDir.mkdirs();
                             }
-                            File apkFile = new File(apkDir,  getPackageName()+ ".apk");
+                            File apkFile = new File(apkDir, getPackageName() + ".apk");
                             //已存在，校验md5
                             if (apkFile.exists()) {
                                 String localMD5 = MD5Util.md5(apkFile);
@@ -209,6 +209,12 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
         }
         switch (message.what) {
             case TranslucentPresenter.CHECK_UPDATE:
+//                long systemClock = SystemClock.currentThreadTimeMillis();
+//                //上次检测是否强制更新
+//                boolean initIsForceUpdate = DocApplication.getAppComponent().dataRepo().appSP().getBoolean(SPConfig.SP_BOOL_LASTCHECK_FORCEUPDATE_NAME, false);
+//                //最后检测时间
+//                long lastCheckUpdateTime = DocApplication.getAppComponent().dataRepo().appSP().getLong(SPConfig.SP_LONG_LASTCHECKUPDATE_TIME_NAME, systemClock);
+//                if (systemClock == lastCheckUpdateTime || (!initIsForceUpdate && systemClock >= lastCheckUpdateTime + 7 * 24 * 60 * 60 * 1000) || initIsForceUpdate) {
                 showUpdateDialog((AppUpdateBean) message.obj);
                 break;
             default:

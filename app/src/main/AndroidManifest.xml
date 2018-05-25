@@ -83,7 +83,7 @@
         <!--多渠道打包-->
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="${UMENG_CHANNEL_VALUE}"/>
+            android:value="${UMENG_CHANNEL_VALUE}" />
 
         <!-- 网易IM，APPkey, 可以在这里设置，也可以在 SDKOptions 中提供。
           如果 SDKOptions 中提供了，取 SDKOptions 中的值。
@@ -142,9 +142,10 @@
 
         <!--微信分享-->
         <activity
-            android:name="com.junhetang.doctor.wxapi.WXEntryActivity"
+            android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!--qq分享-->

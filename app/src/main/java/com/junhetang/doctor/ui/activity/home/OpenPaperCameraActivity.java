@@ -335,7 +335,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
             ToastUtil.showShort("请选择药房");
             return;
         }
-        if (TextUtils.isEmpty(etDrugstore.getText())) {
+        if (TextUtils.isEmpty(etDrugClass.getText())) {
             ToastUtil.showShort("请选择剂型");
             return;
         }

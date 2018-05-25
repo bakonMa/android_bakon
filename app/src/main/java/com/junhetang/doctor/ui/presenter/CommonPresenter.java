@@ -6,7 +6,6 @@ import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.HttpConfig;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.data.response.HttpResponse;
-import com.junhetang.doctor.nim.NimU;
 import com.junhetang.doctor.nim.UserPreferences;
 import com.junhetang.doctor.ui.base.BaseObserver;
 import com.junhetang.doctor.ui.base.BasePresenter;
@@ -32,7 +31,6 @@ public class CommonPresenter implements BasePresenter {
     private CompositeSubscription compositeSubscription;
 
     public static final int GET_MOMBNO_OK = 0x110;
-    public static final int TOTALK_OK = 0x111;
     public static final int ADD_CHAT_RECORD_OK = 0x112;//添加交互记录
 
     public CommonPresenter(BaseView view) {
@@ -79,32 +77,6 @@ public class CommonPresenter implements BasePresenter {
                     @Override
                     public void onError(String errorCode, String errorMsg) {
                         mView.onError(errorCode, errorMsg);
-                    }
-
-                });
-        compositeSubscription.add(subscription);
-    }
-
-    //accid 获取 memb_no
-    public void docToTalk(String accid) {
-        Params params = new Params();
-        params.put("daccid", NimU.getNimAccount());
-        params.put("saccid", accid);
-        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
-                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().docToTalk(params))
-//                .compose(mView.toLifecycle())
-                .subscribe(new BaseObserver<HttpResponse<String>>(null) {
-                    @Override
-                    public void onSuccess(HttpResponse<String> httpResponse) {
-                        LogUtil.d("docToTalk ok");
-                        mView.onSuccess(M.createMessage(httpResponse.data, TOTALK_OK));
-                    }
-
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-                        LogUtil.d("docToTalk error=" + errorMsg);
-//                        mView.onError(errorCode, errorMsg);
                     }
 
                 });

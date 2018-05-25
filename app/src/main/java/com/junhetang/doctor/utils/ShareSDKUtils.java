@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
+import com.junhetang.doctor.config.H5Config;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -30,7 +31,7 @@ public class ShareSDKUtils {
         share(context,
                 shareType,
                 "",
-                Constant.APP_SHARE_URL,
+                H5Config.H5_SHARE_DOWNLOAD,
                 UIUtils.getString(R.string.app_name),
                 UIUtils.getString(R.string.str_share_app),
                 null);

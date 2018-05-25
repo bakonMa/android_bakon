@@ -262,8 +262,6 @@ public class RecentActivity extends BaseActivity implements BaseView {
                         if (DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_SERVICE_ACCID).equals(recent.getContactId())) {
                             SessionHelper.startP2PSession(actContext(), recent.getContactId(), true);
                         } else {
-                            //告诉 后台 医生主动聊天
-                            commonPresenter.docToTalk(recent.getContactId());
                             SessionHelper.startP2PSession(actContext(), recent.getContactId());
                         }
                         break;
@@ -836,10 +834,8 @@ public class RecentActivity extends BaseActivity implements BaseView {
         if (message == null) {
             return;
         }
-        switch (message.what) {
-            case CommonPresenter.TOTALK_OK:
-                break;
-        }
+//        switch (message.what) {
+//        }
     }
 
     @Override

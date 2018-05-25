@@ -9,6 +9,7 @@ import com.junhetang.doctor.BuildConfig;
  */
 public interface H5Config {
     String CRASH_DIR_NAME = "crash";
+    String H5_SHARE_DOWNLOAD = BuildConfig.BASE_URL + "download.html";
     
     //个人名片
     String H5_USERCARD = BuildConfig.BASE_URL + "web_mycard/";

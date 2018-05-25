@@ -87,7 +87,7 @@ public class AppUpdateDialog extends Dialog implements View.OnClickListener {
 
         iv_close.setOnClickListener(this);
         iv_close.setVisibility(appUpdateBean.isforced == 1 ? GONE : VISIBLE);
-        tv_version.setText("V" + (appUpdateBean.current_version == null ? "1.0" : appUpdateBean.current_version));
+        tv_version.setText("V" + (TextUtils.isEmpty(appUpdateBean.current_version) ? "1.0.0" : appUpdateBean.current_version));
         tv_updatelog.setText(appUpdateBean.comments == null ? "" : appUpdateBean.comments);
         tv_updatelog.setMovementMethod(ScrollingMovementMethod.getInstance());
         if (TextUtils.isEmpty(appUpdateBean.comments)) {

@@ -149,6 +149,8 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
         switch (view.getId()) {
             case R.id.tv_gotochat:
                 if (U.isHasAuthOK()) { //认证通过 进入聊天
+                    //告诉 后台 医生主动聊天
+                    mPresenter.docToTalk(im_accid);
                     SessionHelper.startP2PSession(actContext(), im_accid);
                 } else {
                     commonDialog = new CommonDialog(this, R.layout.dialog_auth, U.getAuthStatusMsg(),
