@@ -40,9 +40,9 @@ public class ChooseGoodAtActivity extends BaseActivity {
 
     private BaseQuickAdapter tagAdapter;
     private SkillExpandAdapter skillAdapter;
-    private ArrayList<BaseConfigBean.SkillsBean> skillList = new ArrayList<>();
+    private ArrayList<BaseConfigBean.SkillsBean> skillList;
     private List<BaseConfigBean.Skill> showList = new ArrayList<>();
-    private ArrayList<BaseConfigBean.Skill> selectBeans = new ArrayList<>();
+    private ArrayList<BaseConfigBean.Skill> selectBeans;
 
     @Override
     protected int provideRootLayout() {
@@ -59,6 +59,9 @@ public class ChooseGoodAtActivity extends BaseActivity {
         if (selectBeans == null) {
             selectBeans = new ArrayList<>();
         }
+        if (skillList == null) {
+            skillList = new ArrayList<>();
+        }
         //这种办法要3重循环 好low 以后想办法改进
         for (BaseConfigBean.SkillsBean skillsBean : skillList) {
             //title
@@ -66,7 +69,7 @@ public class ChooseGoodAtActivity extends BaseActivity {
             //疾病
             for (BaseConfigBean.Skill skill : skillsBean.name) {
                 for (int i = 0; i < selectBeans.size(); i++) {
-                    if(skill.id == selectBeans.get(i).id){
+                    if (skill.id == selectBeans.get(i).id) {
                         skill.isSelect = true;
                         //对象要一样
                         selectBeans.set(i, skill);

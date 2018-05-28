@@ -46,7 +46,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected int provideRootLayout() {
-        return R.layout.activity_main_jht;
+        return R.layout.activity_main;
     }
 
     @Override

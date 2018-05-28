@@ -46,6 +46,7 @@ public class XGInitManager {
         XGPushManager.setTag(context, BuildConfig.VERSION_NAME);
         //开启debug日志数据
         XGPushConfig.enableDebug(context, BuildConfig.DEBUG);
+        XGPushConfig.setHuaweiDebug(BuildConfig.DEBUG);
 
         //小米推送
         XGPushConfig.setMiPushAppId(context, "2882303761517794100");

@@ -60,21 +60,21 @@ public class AboutUsActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_function_introduction://功能介绍
-                WebViewActivity.startAct(actContext(),
+                WebViewActivity.startAct(this,
                         true,
                         WebViewActivity.WEB_TYPE.WEB_TYPE_FUNCTION_INTRODUCTION,
                         H5Config.H5_FUNCTION_INTRODUCTION_TITLE,
                         H5Config.H5_FUNCTION_INTRODUCTION);
                 break;
             case R.id.tv_produce_info://产品说明
-                WebViewActivity.startAct(actContext(),
+                WebViewActivity.startAct(this,
                         true,
                         WebViewActivity.WEB_TYPE.WEB_TYPE_PRODUCT_INFO,
                         H5Config.H5_PRODUCE_INFO_TITLE,
                         H5Config.H5_PRODUCE_INFO);
                 break;
             case R.id.tv_agreement://用户协议
-                WebViewActivity.startAct(actContext(),
+                WebViewActivity.startAct(this,
                         true,
                         WebViewActivity.WEB_TYPE.WEB_TYPE_AGREEMENT,
                         H5Config.H5_AGREEMENT_TITLE,

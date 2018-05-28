@@ -76,12 +76,14 @@ public class WithdrawActivity extends BaseActivity implements WalletContact.View
         initToolbar();
         cardBean = getIntent().getParcelableExtra("bankcard");
         canUseMoney = getIntent().getStringExtra("remain");
+
+        if (null != cardBean) {
+            tvCardbank.setText(TextUtils.isEmpty(cardBean.ch_name) ? "" : cardBean.ch_name);
+            tvCardnum.setText(TextUtils.isEmpty(cardBean.bank_number) ? "" : cardBean.bank_number);
+        }
         if (TextUtils.isEmpty(canUseMoney)) {
             canUseMoney = "0.00";
         }
-
-        tvCardbank.setText(TextUtils.isEmpty(cardBean.ch_name) ? "" : cardBean.ch_name);
-        tvCardnum.setText(TextUtils.isEmpty(cardBean.bank_number) ? "" : cardBean.bank_number);
         tvCanusemoney.setText("可提现余额" + canUseMoney + "元");
     }
 

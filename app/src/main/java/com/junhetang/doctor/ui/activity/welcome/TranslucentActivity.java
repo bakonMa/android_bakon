@@ -60,8 +60,6 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
             startActivity(intent);
             finish();
         } else {
-            // todo 测试
-//            DocApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.FIRST_ENTER, true);
             //版本检查
             mPresenter.checkVersion();
         }
@@ -208,14 +206,20 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
             return;
         }
         switch (message.what) {
-            case TranslucentPresenter.CHECK_UPDATE:
-//                long systemClock = SystemClock.currentThreadTimeMillis();
-//                //上次检测是否强制更新
-//                boolean initIsForceUpdate = DocApplication.getAppComponent().dataRepo().appSP().getBoolean(SPConfig.SP_BOOL_LASTCHECK_FORCEUPDATE_NAME, false);
-//                //最后检测时间
-//                long lastCheckUpdateTime = DocApplication.getAppComponent().dataRepo().appSP().getLong(SPConfig.SP_LONG_LASTCHECKUPDATE_TIME_NAME, systemClock);
-//                if (systemClock == lastCheckUpdateTime || (!initIsForceUpdate && systemClock >= lastCheckUpdateTime + 7 * 24 * 60 * 60 * 1000) || initIsForceUpdate) {
-                showUpdateDialog((AppUpdateBean) message.obj);
+            case TranslucentPresenter.CHECK_UPDATE://升级提醒
+                long systemClock = System.currentTimeMillis();
+                //最后检测时间
+                long lastCheckUpdateTime = DocApplication.getAppComponent().dataRepo().appSP().getLong(SPConfig.SP_LONG_LASTCHECKUPDATE_TIME_NAME);
+                AppUpdateBean appUpdateBean = (AppUpdateBean) message.obj;
+                boolean isForce = appUpdateBean.isforced == 1;
+                //强制 || 第一次 || （非强制 && 时间超过1天）  都弹出升级提示
+                if (isForce || lastCheckUpdateTime == 0 || (!isForce && systemClock >= lastCheckUpdateTime + 1 * 24 * 60 * 60 * 1000)) {
+                    //提示后 关系最新时间
+                    DocApplication.getAppComponent().dataRepo().appSP().setLong(SPConfig.SP_LONG_LASTCHECKUPDATE_TIME_NAME, systemClock);
+                    showUpdateDialog((AppUpdateBean) message.obj);
+                } else {
+                    jumpToMain();
+                }
                 break;
             default:
                 break;

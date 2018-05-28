@@ -1,7 +1,5 @@
 package com.junhetang.doctor.ui.presenter;
 
-import android.os.SystemClock;
-
 import com.junhetang.doctor.BuildConfig;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.HttpConfig;
@@ -63,8 +61,7 @@ public class TranslucentPresenter implements TranslucentContact.Presenter {
                 Observable.zip(
                         Observable.timer(1, TimeUnit.SECONDS),//启动动画 1秒
                         DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().appUpdateCheck(params),
-                        (aLong, httpResponse) -> httpResponse
-                )
+                        (aLong, httpResponse) -> httpResponse)
                         .compose(HttpAPIWrapper.SCHEDULERS_TRANSFORMER())
                         .compose(mView.toLifecycle())
                         .subscribe(
@@ -73,9 +70,9 @@ public class TranslucentPresenter implements TranslucentContact.Presenter {
                                         int netVersionCode = httpResponse.data.version_code;//最新版本code
                                         boolean isForced = httpResponse.data.isforced == 1;//是否强制
 
-                                        //检查成功，更新检查成功后得到的当前时间
+                                        //检查成功，更新检查成功后是否强制升级
                                         DocApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.SP_BOOL_LASTCHECK_FORCEUPDATE_NAME, isForced);
-                                        DocApplication.getAppComponent().dataRepo().appSP().setLong(SPConfig.SP_LONG_LASTCHECKUPDATE_TIME_NAME, SystemClock.currentThreadTimeMillis());
+//                                        DocApplication.getAppComponent().dataRepo().appSP().setLong(SPConfig.SP_LONG_LASTCHECKUPDATE_TIME_NAME, SystemClock.currentThreadTimeMillis());
 
                                         //手机中版本大于等于网络中请求到的版本
                                         if (BuildConfig.VERSION_CODE >= netVersionCode) {

@@ -54,6 +54,10 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
         if (!mSubscription.isUnsubscribed()) {
             mSubscription.unsubscribe();
         }
+        if (null != mDialog) {
+            mDialog = null;
+        }
+        mView = null;
     }
 
     @Override

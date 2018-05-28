@@ -64,9 +64,9 @@ public class SplashGuideView extends LinearLayout {
         if (resId > 0) {
             ivGuide.setBackgroundResource(resId);
         }
-        idTv1.setVisibility(VISIBLE);
-        idTv2.setVisibility(VISIBLE);
-        idTv3.setVisibility(VISIBLE);
+        idTv1.setVisibility(GONE);
+        idTv2.setVisibility(GONE);
+        idTv3.setVisibility(GONE);
         if (isShowButton) {
             idBtnEnter.setVisibility(VISIBLE);
             idBtnEnter.setOnClickListener(new OnClickListener() {
