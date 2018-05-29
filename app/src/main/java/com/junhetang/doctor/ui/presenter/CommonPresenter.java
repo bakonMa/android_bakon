@@ -76,6 +76,7 @@ public class CommonPresenter implements BasePresenter {
 
                     @Override
                     public void onError(String errorCode, String errorMsg) {
+                        LogUtil.d("getMembNo errorMsg=" + errorMsg);
                         mView.onError(errorCode, errorMsg);
                     }
 

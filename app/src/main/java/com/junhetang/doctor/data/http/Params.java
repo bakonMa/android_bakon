@@ -14,7 +14,6 @@ import java.util.TreeMap;
  */
 
 public class Params extends HashMap<String, Object> {
-    //todo 公共请求参数
     public Params() {
         put(HttpConfig.TIMESTAMP, System.currentTimeMillis());
     }
@@ -24,7 +23,10 @@ public class Params extends HashMap<String, Object> {
         StringBuffer stringBuffer = new StringBuffer();
         Map<String, Object> map = sortMapByKey(params);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
-            stringBuffer.append(entry.getKey()).append("=").append(entry.getValue().toString()).append("&");
+            stringBuffer.append(entry.getKey())
+                    .append("=")
+                    .append(null == entry.getValue() ? "" : entry.getValue().toString())
+                    .append("&");
         }
         stringBuffer.append("secret=").append(HttpConfig.SECRET_VALUE);
         return MD5Util.md5(stringBuffer.toString());

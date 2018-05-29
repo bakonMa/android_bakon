@@ -166,6 +166,8 @@ public class MainActivity extends BaseActivity {
 
     //隐藏所有的fragment
     private void hideFragment(FragmentTransaction transaction) {
+
+
         switch (currTag) {
             case 0:
                 break;

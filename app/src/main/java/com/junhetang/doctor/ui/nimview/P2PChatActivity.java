@@ -8,9 +8,21 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.junhetang.doctor.BuildConfig;
+import com.junhetang.doctor.R;
+import com.junhetang.doctor.application.DocApplication;
+import com.junhetang.doctor.config.SPConfig;
+import com.junhetang.doctor.ui.base.BaseView;
+import com.junhetang.doctor.ui.presenter.CommonPresenter;
+import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
+import com.junhetang.doctor.utils.StatusBarUtil;
+import com.junhetang.doctor.utils.ToastUtil;
+import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
+import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.api.model.contact.ContactChangedObserver;
 import com.netease.nim.uikit.api.model.main.OnlineStateChangeObserver;
@@ -25,16 +37,6 @@ import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
-import com.junhetang.doctor.BuildConfig;
-import com.junhetang.doctor.R;
-import com.junhetang.doctor.ui.base.BaseView;
-import com.junhetang.doctor.ui.presenter.CommonPresenter;
-import com.junhetang.doctor.utils.LogUtil;
-import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
-import com.junhetang.doctor.utils.StatusBarUtil;
-import com.junhetang.doctor.utils.ToastUtil;
-import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
-import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
@@ -73,7 +75,12 @@ public class P2PChatActivity extends BaseMessageActivity implements BaseView {
         requestPermissions();
 
         commonPresenter = new CommonPresenter(this);
-        commonPresenter.getMembNo(getIntent().getStringExtra(Extras.EXTRA_ACCOUNT));
+        String accid = getIntent().getStringExtra(Extras.EXTRA_ACCOUNT);
+        //不为空，不是客服才获取患者的momb_no
+        if (!TextUtils.isEmpty(accid)
+                && !DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_SERVICE_ACCID).equals(accid)) {
+            commonPresenter.getMembNo(accid);
+        }
         // 单聊特例话数据，包括个人信息，
         setTitleText();//这里才拿到数据
         registerObservers(true);
@@ -306,7 +313,6 @@ public class P2PChatActivity extends BaseMessageActivity implements BaseView {
         }
         switch (message.what) {
             case CommonPresenter.GET_MOMBNO_OK://获取memb_no
-                LogUtil.d("memb_no=" + message.obj.toString());
                 break;
         }
     }

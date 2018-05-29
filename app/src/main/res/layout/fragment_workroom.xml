@@ -51,7 +51,7 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                android:text="这是一条消息这是一条消息这是一条消息这是一条消息这是一条消息这是一条消息"
+                tools:text="君和中医审核消息"
                 android:textColor="@color/white"
                 android:textSize="14dp" />
         </LinearLayout>
