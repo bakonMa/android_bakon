@@ -36,5 +36,6 @@ public interface EventConfig {
 
     int EVENT_KEY_REMARKNAME = 0x130;//修改备注
     int EVENT_KEY_CLOSE_CHAT= 0x131;//结束咨询
+    int EVENT_KEY_SERVICE_INFO= 0x132;//异步获取客服资料
 
 }

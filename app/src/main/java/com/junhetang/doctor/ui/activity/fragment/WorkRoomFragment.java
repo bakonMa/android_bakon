@@ -241,7 +241,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         String serviceName = UserInfoHelper.getServiceName(accid);
         LogUtil.d("serviceName=" + serviceName);
         //name
-        tvServiceName.setText(TextUtils.isEmpty(serviceName) ? "" : serviceName);
+        tvServiceName.setText(TextUtils.isEmpty(serviceName) ? "君和客服" : serviceName);
         //head img
         ImageUtil.showCircleImage(UserInfoHelper.getUserHeadImg(accid), ivServiceImg);
 
@@ -251,8 +251,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 @Override
                 public void onSuccess(List<UserInfo> userInfos) {
                     if (userInfos != null && !userInfos.isEmpty()) {
-                        tvServiceName.setText(TextUtils.isEmpty(userInfos.get(0).getName()) ? "咨询客服" : userInfos.get(0).getName());
-                        ImageUtil.showCircleImage(userInfos.get(0).getAvatar(), ivServiceImg);
+                        //显示客服资料
+                        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_SERVICE_INFO, userInfos.get(0)));
                     }
                 }
 
@@ -380,7 +380,6 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     @OnClick({R.id.tv_add_patient, R.id.tv_online_paper, R.id.tv_camera_patient, R.id.tv_comm_paper,
             R.id.tv_ask_paper, R.id.tv_flow_paper, R.id.tv_checkpaper, R.id.tv_notice})
     void btnOnClick(View view) {
-
         //认证是否通过
         if (!U.isHasAuthOK()) {
             commonDialog = new CommonDialog(getActivity(),
@@ -498,6 +497,11 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
             case EventConfig.EVENT_KEY_NIM_LOGIN://nim 登录成功
                 //客服 初始化
                 initService();
+                break;
+            case EventConfig.EVENT_KEY_SERVICE_INFO://客服资料
+                UserInfo userInfo = (UserInfo) event.getData();
+                tvServiceName.setText(TextUtils.isEmpty(userInfo.getName()) ? "君和客服" : userInfo.getName());
+                ImageUtil.showCircleImage(userInfo.getAvatar(), ivServiceImg);
                 break;
             case EventConfig.EVENT_KEY_REDPOINT_HOME_SYSMSG://消息通知 未读消息数和系统消息红点
                 showAllUnreadMessageNum();
