@@ -180,7 +180,11 @@
 
         <activity
             android:name=".ui.activity.login.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:theme="@style/translucent" />
+        <activity
+            android:name=".ui.activity.home.LogoutActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/translucent"  />
         <activity
             android:name=".ui.activity.fragment.MainActivity"
             android:launchMode="singleTask"

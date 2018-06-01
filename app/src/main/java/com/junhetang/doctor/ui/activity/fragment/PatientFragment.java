@@ -67,6 +67,7 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
 
     private PatientAdapter mAdapter;
     private List<PatientBean> dataList = new ArrayList<>();
+    private CommonDialog commonDialog;
 
     @Override
     protected void setupActivityComponent() {
@@ -185,10 +186,17 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-        CommonDialog commonDialog = new CommonDialog(getActivity(), errorMsg);
+        commonDialog = new CommonDialog(getActivity(), errorMsg);
         commonDialog.show();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (commonDialog != null) {
+            commonDialog = null;
+        }
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventCome(Event event) {

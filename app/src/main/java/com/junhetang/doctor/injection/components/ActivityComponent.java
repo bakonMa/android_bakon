@@ -6,7 +6,9 @@ import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.injection.qualifiers.ActivityContext;
 import com.junhetang.doctor.injection.scopes.PerActivity;
 import com.junhetang.doctor.ui.activity.find.GuildNewsListActivity;
+import com.junhetang.doctor.ui.activity.fragment.MainActivity;
 import com.junhetang.doctor.ui.activity.home.AddDrugActivity;
+import com.junhetang.doctor.ui.activity.home.ChooseDocAdviceActivity;
 import com.junhetang.doctor.ui.activity.home.CommUsePaperActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperCameraActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperOnlineActivity;
@@ -54,6 +56,8 @@ import dagger.Component;
 public interface ActivityComponent extends ApplicationComponent {
     @ActivityContext
     Context actContext();
+
+    void inject(MainActivity mainActivity);
 
     void inject(AuthStep1Activity authStep1Activity);
 
@@ -122,5 +126,7 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(SystemMsgListActivity systemMsgListActivity);
 
     void inject(CheckPaperH5Activity checkPaperH5Activity);
+
+    void inject(ChooseDocAdviceActivity chooseDocAdviceActivity);
 
 }

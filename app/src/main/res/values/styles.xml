@@ -14,10 +14,15 @@
         <item name="android:windowBackground">@drawable/splash</item>
         <item name="windowNoTitle">true</item>
     </style>
+    <!--透明的activity-->
+    <style name="translucent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/color_loading_bg</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 
     <style name="TranslucentAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-        <!--<icategoryname="android:windowIsTranslucent">true</item>-->
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowBackground">@drawable/splash</item>
         <item name="windowNoTitle">true</item>
@@ -41,13 +46,6 @@
         <item name="android:windowBackground">@android:color/transparent</item><!--背景透明-->
         <item name="android:backgroundDimEnabled">true</item><!--模糊-->
         <item name="android:backgroundDimAmount">0.5</item>
-    </style>
-
-    <!-- 横线 金色-->
-    <style name="line_gold_hor">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">2dp</item>
-        <item name="android:background">@color/color_e7d5b8</item>
     </style>
 
     <style name="dialog">

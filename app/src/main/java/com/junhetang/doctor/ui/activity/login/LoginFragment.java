@@ -23,6 +23,7 @@ import com.junhetang.doctor.ui.activity.fragment.MainActivity;
 import com.junhetang.doctor.ui.base.BaseFragment;
 import com.junhetang.doctor.ui.contact.LoginContact;
 import com.junhetang.doctor.ui.presenter.LoginPresenter;
+import com.junhetang.doctor.utils.U;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
 import java.util.concurrent.TimeUnit;
@@ -102,6 +103,9 @@ public class LoginFragment extends BaseFragment implements LoginContact.View {
         lltCode.setVisibility(type == 0 ? View.VISIBLE : View.GONE);
         lltPassword.setVisibility(type == 1 ? View.VISIBLE : View.GONE);
         tvFrogetpwd.setVisibility(type == 1 ? View.VISIBLE : View.GONE);
+        //上次登录的手机号
+        etPhone.setText( U.getPhone());
+        etPhone.setSelection(etPhone.getText().length());
     }
 
     @OnClick({R.id.tv_registe, R.id.tv_frogetpwd, R.id.btn_login, R.id.tv_sendcode,

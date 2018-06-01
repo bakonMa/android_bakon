@@ -124,10 +124,11 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        dismiss();
         if (listener != null) {
             listener.onClick(view);
         }
-        dismiss();
+
     }
 
     //dialog_edite_common 使用

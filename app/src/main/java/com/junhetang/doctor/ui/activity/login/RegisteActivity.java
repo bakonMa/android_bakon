@@ -144,6 +144,7 @@ public class RegisteActivity extends BaseActivity implements LoginContact.View {
                 break;
             case R.id.iv_sec_pwd_clean://密码清除
                 etSecPassword.setText("");
+                break;
             case R.id.iv_pwd_eye://密码可视状态
                 ivPwdEye.setSelected(!ivPwdEye.isSelected());
                 etPassword.setTransformationMethod(ivPwdEye.isSelected() ? HideReturnsTransformationMethod.getInstance() : PasswordTransformationMethod.getInstance());
@@ -231,6 +232,10 @@ public class RegisteActivity extends BaseActivity implements LoginContact.View {
                 timeDown();
                 break;
             case LoginPresenter.REGISTE_SUCCESS://注册成功
+                mPresenter.login(etPhone.getText().toString().trim(),
+                        etPassword.getText().toString().trim(), 1);
+                break;
+            case LoginPresenter.LOGIN_SUCCESS://登录成功
                 ToastUtil.show("注册成功，已帮您自动登录");
                 //自动登录
                 startActivity(new Intent(this, MainActivity.class));

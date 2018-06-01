@@ -1,24 +1,11 @@
 <resources>
     <string name="app_name">君和中医</string>
 
-    <string name="myinfo_dialog_title">您还未完成借款资料录入，\n是否急需完成</string>
-
-    <string name="info_base">基本信息</string>
-    <string name="info_job">工作信息</string>
-    <string name="info_house">房产信息</string>
-
-    <string name="remission_str">逾期违约金=该期应还金额千分之二/天</string>
-
-
-
-    <!--JHT-->
-
     <string name="home_workroom">工作室</string>
     <string name="home_patient">患者</string>
     <string name="home_find">发现</string>
     <string name="home_me">我</string>
     <string name="str_jpg_png_gif">格式为jpg/png/gif</string>
-    <string name="str_icon_demo">头像示例</string>
     <string name="str_check">1.我们会将在72小时内，对您提交的资料进行审核。 \n2.审核通过后，我们会将信息发到您的手机，请注意查收。 \n3.审核未通过，客服会联系您，请在审核期间请保持电话畅通。 \n4.如需帮助，请拨打客服电话 021-55880623 。</string>
     <string name="str_share_app">我在使用【君和中医】APP，非常方便的，赶快下载吧！</string>
     <string name="str_check_paper">审核处方</string>
@@ -60,9 +47,6 @@
     <string name="nim_status_bar_custom_message">%1$s: 自定义消息</string>
     <string name="nim_status_bar_unsupported_message">%1$s: 无法显示该内容</string>
     <string name="nim_status_bar_hidden_msg_content">你收到一条新消息</string>
-
-
-    <!--demo-->
 
 
     <!-- session -->

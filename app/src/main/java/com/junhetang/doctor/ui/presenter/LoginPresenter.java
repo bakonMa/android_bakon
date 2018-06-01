@@ -23,7 +23,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 
 public class LoginPresenter implements LoginContact.Presenter {
-    private final LoginContact.View mView;
+    private LoginContact.View mView;
     private CompositeSubscription mSubscription;
     private LoadingDialog mdialog;
 
@@ -45,6 +45,10 @@ public class LoginPresenter implements LoginContact.Presenter {
         if (!mSubscription.isUnsubscribed()) {
             mSubscription.unsubscribe();
         }
+        if (mdialog != null) {
+            mdialog = null;
+        }
+        mView = null;
     }
 
     //登录获取验证码

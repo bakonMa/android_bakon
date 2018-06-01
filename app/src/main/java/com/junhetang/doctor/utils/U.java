@@ -162,6 +162,8 @@ public class U {
         DocApplication.getAppComponent().dataRepo().appSP().setInteger(SPConfig.SP_INT_SUTH_STATUS, 0);
         //用户信息
         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_USERBEAN, "");
+        //客服accid
+        DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_SERVICE_ACCID, "");
         //审方 红点
         U.setRedPointExt(0);
         //系统消息 红点

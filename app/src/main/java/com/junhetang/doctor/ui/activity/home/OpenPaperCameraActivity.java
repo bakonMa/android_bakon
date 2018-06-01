@@ -134,6 +134,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private int sexType = 0;
     private int daijianType = 0;
     private String membNo = "";//患者编号，选择患者才有
+    private int relationship = 4;//就诊人关系（不是选择 默认4-其他）
     private String pAccid = "";//患者云信 accid
 
     private OPenPaperBaseBean baseBean;
@@ -301,6 +302,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         rbNan.setEnabled(true);
         rbNv.setEnabled(true);
         membNo = "";
+        relationship = 4;
         pAccid = "";
         etName.setEditeText("");
         etAge.setEditeText("");
@@ -316,6 +318,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         etAge.setEditeText(bean.age > 0 ? (bean.age + "") : "");
         rgSex.check(bean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
         membNo = bean.id;
+        relationship = bean.relationship;
         pAccid = bean.getIm_accid();
         etName.setEditeEnable(false);
         etAge.setEditeEnable(false);
@@ -361,6 +364,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         if (!TextUtils.isEmpty(membNo)) {
             params.put("memb_no", membNo);
         }
+        params.put("relationship", relationship);
         params.put("name", etName.getEditText().getText());
         params.put("sex", sexType);
         params.put("age", etAge.getEditText().getText());

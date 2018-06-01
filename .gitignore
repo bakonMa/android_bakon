@@ -57,3 +57,16 @@ freeline.py
 freeline/
 freeline_project_description.json
 
+.DS_Store
+src/.DS_Store
+src/androidTest/.DS_Store
+src/main/.DS_Store
+src/main/java/.DS_Store
+src/main/java/com/.DS_Store
+src/main/res/.DS_Store
+src/main/res/mipmap-hdpi/.DS_Store
+src/main/res/mipmap-mdpi/.DS_Store
+src/main/res/mipmap-xhdpi/.DS_Store
+src/main/res/mipmap-xxhdpi/.DS_Store
+src/main/res/mipmap-xxxhdpi/.DS_Store
+src/test/

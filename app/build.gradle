@@ -78,6 +78,7 @@ android {
 
 def devAddress() {
     "\"http://dev.dr.jhtcm.com/\""  //测试环境
+//    "\"https://dr.jhtcm.vip/\""//正式线上环境
 }
 
 def onLineAddress() {

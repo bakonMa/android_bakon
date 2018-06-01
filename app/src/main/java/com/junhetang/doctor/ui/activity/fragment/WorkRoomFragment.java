@@ -28,10 +28,10 @@ import com.junhetang.doctor.receiver.XGInitManager;
 import com.junhetang.doctor.ui.activity.WebViewActivity;
 import com.junhetang.doctor.ui.activity.home.CheckPaperActivity;
 import com.junhetang.doctor.ui.activity.home.CommUsePaperActivity;
+import com.junhetang.doctor.ui.activity.home.LogoutActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperCameraActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperOnlineActivity;
 import com.junhetang.doctor.ui.activity.home.PaperHistoryActivity;
-import com.junhetang.doctor.ui.activity.login.LoginActivity;
 import com.junhetang.doctor.ui.activity.mine.AuthStep1Activity;
 import com.junhetang.doctor.ui.activity.mine.UserNoticeActivity;
 import com.junhetang.doctor.ui.base.BaseFragment;
@@ -63,6 +63,7 @@ import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.CustomMessageConfig;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
+import com.netease.nimlib.sdk.uinfo.model.UserInfo;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.youth.banner.Banner;
@@ -176,6 +177,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 }
             }
         }, true);
+
     }
 
 
@@ -235,15 +237,37 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
 
     //显示客服数据
     private void showServiceInfo() {
-//        if(tvServiceName.getText().length() > 20){
-//
-//        }
         //客服个人资料
-        String serviceName = UserInfoHelper.getUserDisplayName(accid);
+        String serviceName = UserInfoHelper.getServiceName(accid);
+        LogUtil.d("serviceName=" + serviceName);
         //name
-        tvServiceName.setText(TextUtils.isEmpty(serviceName) ? "咨询客服" : serviceName);
+        tvServiceName.setText(TextUtils.isEmpty(serviceName) ? "" : serviceName);
         //head img
         ImageUtil.showCircleImage(UserInfoHelper.getUserHeadImg(accid), ivServiceImg);
+
+        //本地是空的话，去云信服务器拿数据
+        if (TextUtils.isEmpty(serviceName)) {
+            UserInfoHelper.getServiceInfo(accid, new RequestCallback<List<UserInfo>>() {
+                @Override
+                public void onSuccess(List<UserInfo> userInfos) {
+                    if (userInfos != null && !userInfos.isEmpty()) {
+                        tvServiceName.setText(TextUtils.isEmpty(userInfos.get(0).getName()) ? "咨询客服" : userInfos.get(0).getName());
+                        ImageUtil.showCircleImage(userInfos.get(0).getAvatar(), ivServiceImg);
+                    }
+                }
+
+                @Override
+                public void onFailed(int i) {
+
+                }
+
+                @Override
+                public void onException(Throwable throwable) {
+
+                }
+            });
+        }
+
     }
 
     /**
@@ -419,8 +443,6 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     void unCheckBtnOnClick(View view) {
         switch (view.getId()) {
             case R.id.rlt_service://客服
-//                NimUIKit.startP2PSession(actContext(), "3ef2e56a2f9476de092743cbd577a900", null);
-//                SessionHelper.startP2PSession(actContext(), "3ef2e56a2f9476de092743cbd577a900");
                 SessionHelper.startP2PSession(actContext(), accid, true);
                 break;
             case R.id.id_history://历史处方
@@ -487,16 +509,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
             case EventConfig.EVENT_KEY_NIM_LOGOUT://踢掉 进入登录画面
                 U.logout();
                 NimUIKit.logout();
-                Activity currAct = DocApplication.getAppComponent().mgrRepo().actMgr().currentActivity().get();
-                commonDialog = new CommonDialog(currAct, true, "该账户在其他终端登录，注意账号信息安全", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //关闭所有activity
-                        DocApplication.getAppComponent().mgrRepo().actMgr().finishAllActivity();
-                        startActivity(new Intent(DocApplication.getInstance(), LoginActivity.class));
-                    }
-                });
-                commonDialog.show();
+                startActivity(new Intent(getActivity(), LogoutActivity.class));
                 break;
             case EventConfig.EVENT_KEY_XG_BINDTOKEN://绑定信鸽token
                 mPresenter.bindXGToken(event.getData().toString());
@@ -521,9 +534,13 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
+        if (commonDialog != null) {
+            commonDialog.dismiss();
+            commonDialog = null;
+        }
         //注销监听
         NIMClient.getService(MsgServiceObserve.class).observeRecentContact(messageObserver, true);
+        super.onDestroyView();
     }
 
     /**

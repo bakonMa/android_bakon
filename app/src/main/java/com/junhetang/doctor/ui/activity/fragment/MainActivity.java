@@ -1,16 +1,22 @@
 package com.junhetang.doctor.ui.activity.fragment;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.junhetang.doctor.R;
+import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.EventConfig;
 import com.junhetang.doctor.data.eventbus.Event;
+import com.junhetang.doctor.injection.components.DaggerActivityComponent;
+import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.nim.NimU;
 import com.junhetang.doctor.ui.base.BaseActivity;
+import com.junhetang.doctor.ui.base.BaseView;
 import com.junhetang.doctor.ui.nimview.RecentActivity;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.widget.BottomBarItem;
@@ -20,6 +26,7 @@ import com.netease.nimlib.sdk.NIMSDK;
 import com.netease.nimlib.sdk.NimIntent;
 import com.netease.nimlib.sdk.StatusCode;
 import com.netease.nimlib.sdk.msg.MsgService;
+import com.trello.rxlifecycle.LifecycleTransformer;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -29,7 +36,7 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements BaseView{
 
     @BindView(R.id.tab_home)
     BottomBarItem tabHome;
@@ -237,12 +244,36 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setupActivityComponent() {
-
+        DaggerActivityComponent.builder()
+                .activityModule(new ActivityModule(this))
+                .applicationComponent(DocApplication.getAppComponent())
+                .build()
+                .inject(this);
     }
 
     @Override
     public void onBackPressed() {
         //模拟HOME键退出界面
         moveTaskToBack(true);
+    }
+
+    @Override
+    public void onSuccess(Message message) {
+
+    }
+
+    @Override
+    public void onError(String errorCode, String errorMsg) {
+
+    }
+
+    @Override
+    public Activity provideContext() {
+        return this;
+    }
+
+    @Override
+    public LifecycleTransformer toLifecycle() {
+        return bindToLifecycle();
     }
 }
