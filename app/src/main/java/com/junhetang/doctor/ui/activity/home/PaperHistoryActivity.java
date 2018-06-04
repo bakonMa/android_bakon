@@ -8,10 +8,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -41,6 +44,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 /**
  * PaperHistoryActivity 历史处方
@@ -54,8 +59,10 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
     SwipeRefreshLayout idSwipe;
     @BindView(R.id.recycleview)
     RecyclerView recyvleview;
-    @BindView(R.id.tv_serch)
-    TextView tvSerch;
+    @BindView(R.id.et_serch)
+    EditText etSerch;
+    @BindView(R.id.iv_clear)
+    ImageView ivClear;
 
     @Inject
     OpenPaperPresenter mPresenter;
@@ -81,7 +88,7 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
             public void onRefresh() {
                 //刷新数据
                 pageNum = 1;
-                mPresenter.getPaperHistoryList(pageNum, tvSerch.getText().toString().trim());
+                mPresenter.getPaperHistoryList(pageNum, etSerch.getText().toString().trim());
             }
         });
 
@@ -119,16 +126,16 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
 
         recyvleview.setAdapter(mAdapter);
 
-        tvSerch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        etSerch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                KeyBoardUtils.hideKeyBoard(tvSerch, actContext());
+                KeyBoardUtils.hideKeyBoard(etSerch, actContext());
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    if (TextUtils.isEmpty(tvSerch.getText().toString().trim())
-                            || !searchStr.equals(tvSerch.getText().toString().trim())) {
+                    if (TextUtils.isEmpty(etSerch.getText().toString().trim())
+                            || !searchStr.equals(etSerch.getText().toString().trim())) {
                         pageNum = 1;
                     }
-                    searchStr = tvSerch.getText().toString().trim();
+                    searchStr = etSerch.getText().toString().trim();
                     mPresenter.getPaperHistoryList(pageNum, searchStr);
                     return true;
                 }
@@ -136,7 +143,7 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
             }
         });
         //请求数据
-        mPresenter.getPaperHistoryList(pageNum, tvSerch.getText().toString().trim());
+        mPresenter.getPaperHistoryList(pageNum, etSerch.getText().toString().trim());
     }
 
     //共同头部处理
@@ -152,6 +159,22 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
                         finish();
                     }
                 }).bind();
+    }
+
+    //搜索监听
+    @OnTextChanged(value = R.id.et_serch, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    void afterSearchTextChanged(Editable s) {
+        ivClear.setVisibility(s.length() > 0 ? View.VISIBLE : View.GONE);
+        if (s.length() == 0) {
+            //请求数据
+            pageNum = 1;
+            mPresenter.getPaperHistoryList(pageNum, etSerch.getText().toString().trim());
+        }
+    }
+
+    @OnClick(R.id.iv_clear)
+    public void cleanClick() {
+        etSerch.setText("");
     }
 
     @Override
@@ -173,13 +196,10 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
         }
         switch (message.what) {
             case OpenPaperPresenter.GET_PAPER_HISTORYLIST_OK:
-                if (pageNum == 1) {
-                    checkPaperBeans.clear();
-                }
+
                 BasePageBean<CheckPaperBean> beans = (BasePageBean<CheckPaperBean>) message.obj;
                 if (beans != null && beans.list != null) {
                     pageNum = beans.page;
-                    //第一页 情况
                     if (pageNum == 1) {
                         checkPaperBeans.clear();
                     }
@@ -192,8 +212,6 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
                         mAdapter.loadMoreComplete();
                     }
                 }
-                mAdapter.notifyDataSetChanged();
-
                 if (checkPaperBeans.isEmpty()) {
                     mAdapter.setEmptyView(R.layout.empty_view);
                 }

@@ -10,26 +10,42 @@
 
     <include layout="@layout/base_toolbar" />
 
-    <EditText
-        android:id="@+id/tv_serch"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="5dp"
-        android:background="@drawable/shape_stroke_bg_10"
-        android:drawableLeft="@drawable/nim_actionbar_search_dark_icon"
-        android:drawablePadding="5dp"
-        android:gravity="center_vertical"
-        android:hint="患者姓名、联系电话"
-        android:imeOptions="actionSearch"
-        android:maxLength="20"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:singleLine="true"
-        android:textCursorDrawable="@drawable/color_cursor"
-        android:textSize="16sp" />
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_serch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_stroke_bg_10"
+            android:drawableLeft="@drawable/nim_actionbar_search_dark_icon"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:hint="患者姓名、联系电话"
+            android:imeOptions="actionSearch"
+            android:maxLength="20"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/iv_clear"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/icon_close_2"
+            android:visibility="gone" />
+    </RelativeLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/id_swipe"

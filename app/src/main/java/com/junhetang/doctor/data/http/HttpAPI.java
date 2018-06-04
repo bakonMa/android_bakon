@@ -254,7 +254,7 @@ public interface HttpAPI {
     @POST("check_extra")
     Observable<HttpResponse<String>> checkPape(@Body Params params);
 
-    //审核处方列表
+    //历史处方列表
     @POST("my_historyextra")
     Observable<HttpResponse<BasePageBean<CheckPaperBean>>> getPaperHistoryList(@Body Params params);
 

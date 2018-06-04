@@ -126,7 +126,9 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
 
     private int formParent = 0;//是否来自聊天(0 默认不是 1：聊天)
     private int storeId = -1;//药房id
-    private int drugClassId, usagesId, freqId;//剂型id，用法id，用量id
+    private int drugClassId;//剂型id，
+    private String usagesStr = "";//用法str
+    private String freqStr = "";//用量str
     private int sexType = 0;
     private int daijianType = 0;
     private String membNo = "";//患者编号，选择患者才有
@@ -303,9 +305,9 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                         drugUseList, frequencyList, new TwoPopupWheel.ClickedListener() {
                     @Override
                     public void completeClicked(int pos1, int pos2) {
-                        usagesId = baseBean.usage.get(pos1).id;
-                        freqId = baseBean.frequency.get(pos2).id;
-                        etUsetype.setText(drugUseList.get(pos1) + "-" + frequencyList.get(pos2));
+                        usagesStr = drugUseList.get(pos1);
+                        freqStr = frequencyList.get(pos2);
+                        etUsetype.setText(usagesStr + "-" + freqStr);
                     }
                 });
                 mTwoWheel.show(scrollView);
@@ -474,8 +476,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         params.put("drug_class", drugClassId);
         params.put("boiled_type", daijianType);
         params.put("drug_num", Integer.parseInt(etNum.getText().toString()));
-        params.put("usages", usagesId);
-        params.put("freq", freqId);
+        params.put("usages", usagesStr);
+        params.put("freq", freqStr);
         //补充收费
         if (!TextUtils.isEmpty(etServerprice.getText().toString().trim())) {
             params.put("service_price", etServerprice.getText().toString().trim());
