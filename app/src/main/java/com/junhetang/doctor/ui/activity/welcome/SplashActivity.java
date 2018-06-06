@@ -1,21 +1,31 @@
 package com.junhetang.doctor.ui.activity.welcome;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.junhetang.doctor.R;
+import com.junhetang.doctor.application.DocApplication;
+import com.junhetang.doctor.config.SPConfig;
 import com.junhetang.doctor.ui.base.BaseActivity;
-import com.junhetang.doctor.widget.SplashGuideView;
 import com.junhetang.doctor.widget.SplashIndicator;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
- * Created by Tang
+ * SplashActivity  介绍页
+ * Create at 2018/6/5 下午2:20 by mayakun
  */
 
 public class SplashActivity extends BaseActivity {
@@ -24,8 +34,10 @@ public class SplashActivity extends BaseActivity {
     ViewPager viewPager;
     @BindView(R.id.id_indicator)
     SplashIndicator idIndicator;
-    ArrayList<SplashGuideView> arrayList = new ArrayList<>();
-    GuideAdapter guideAdapter;
+
+    List<Integer> imgList = new ArrayList<>();
+    private WelcomeAdapter welcomeAdapter;
+    private SparseArray<View> mViewList = new SparseArray<View>();
 
     private void initStatusBar() {
         View decorView = getWindow().getDecorView();
@@ -38,7 +50,6 @@ public class SplashActivity extends BaseActivity {
         return R.layout.activity_splash;
     }
 
-
     @Override
     protected void setupActivityComponent() {
 
@@ -47,41 +58,70 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void initView() {
         initStatusBar();
-        SplashGuideView guideView1 = new SplashGuideView(this, R.drawable.welcome_1, false);
-        SplashGuideView guideView2 = new SplashGuideView(this, R.drawable.welcome_2, false);
-        SplashGuideView guideView3 = new SplashGuideView(this, R.drawable.welcome_3, false);
-        SplashGuideView guideView4 = new SplashGuideView(this, R.drawable.welcome_4, true);
-        arrayList.add(guideView1);
-        arrayList.add(guideView2);
-        arrayList.add(guideView3);
-        arrayList.add(guideView4);
-        guideAdapter = new GuideAdapter();
-        viewPager.setAdapter(guideAdapter);
+
+        imgList.add(R.drawable.welcome_1);
+        imgList.add(R.drawable.welcome_2);
+        imgList.add(R.drawable.welcome_3);
+        imgList.add(R.drawable.welcome_4);
+        welcomeAdapter = new WelcomeAdapter();
+
+        viewPager.setOffscreenPageLimit(1);
+        viewPager.setAdapter(welcomeAdapter);
         idIndicator.setViewPager(viewPager);
     }
 
-    class GuideAdapter extends PagerAdapter {
+    @OnClick(R.id.tv_enter)
+    public void enterClick() {
+        if (viewPager.getCurrentItem() == imgList.size() - 1) {
+            DocApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.FIRST_ENTER, false);
+            startActivity(new Intent(this, TranslucentActivity.class));
+            finish();
+        }
+    }
+
+    class WelcomeAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
-            return arrayList.size();
+            return imgList.size();
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            SplashGuideView welcomeGuideView = arrayList.get(position);
-            container.addView(welcomeGuideView);
-            return welcomeGuideView;
-        }
-
-        @Override
-        public boolean isViewFromObject(View view, Object object) {
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
             return view == object;
         }
 
+        @NonNull
         @Override
-        public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView(arrayList.get(position));
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            View view = mViewList.get(position);
+            if (view == null) {
+                view = new ImageView(actContext());
+                ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                view.setBackgroundResource(imgList.get(position));
+                view.setLayoutParams(params);
+                mViewList.append(position, view);
+            }
+
+            container.addView(view);
+            return view;
+        }
+
+        @Override
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            ImageView imageView = (ImageView) mViewList.get(position);
+            //优化 防止oom
+            if (imageView != null) {
+                BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();
+                if (bitmapDrawable != null) {
+                    Bitmap bm = bitmapDrawable.getBitmap();
+                    if (bm != null && !bm.isRecycled()) {
+                        imageView.setImageResource(0);
+                        bm.recycle();
+                    }
+                }
+            }
+            container.removeView((View) object);
         }
     }
 

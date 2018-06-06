@@ -112,7 +112,7 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
         idSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                changeViewStatus(U.getAuthStatus());
+                mPresenter.getUserIdentifyStatus();
             }
         });
         //认证状态

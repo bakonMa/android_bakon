@@ -63,6 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         app:isShowLine="false"
+        app:isShowRightArrow="false"
         app:leftIamge="@drawable/icon_chatmessage"
         app:title="咨询消息" />
 

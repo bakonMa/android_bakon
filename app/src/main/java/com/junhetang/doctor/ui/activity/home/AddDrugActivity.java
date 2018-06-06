@@ -80,8 +80,10 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
     private int drugStoreId;//药房id
 
     private List<SearchDrugBean> searchSearchDrugBeans = new ArrayList<>();
-    //最初的药材json，用于比较是否修改了
+    //最初的药材json，用于比较是否修改了(常用处方)
     private String commDrugJsonTemp = "";
+    //最初的药材json，用于比较是否修改了(开方)
+    private String addDrugJsonTemp = "";
     private ArrayList<DrugBean> drugBeans;
     private List<String> userTypeListStr = new ArrayList<>();
     private BaseQuickAdapter adapterSearch, adapter;
@@ -121,8 +123,9 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
         title = getIntent().getStringExtra("title");
         mExplain = getIntent().getStringExtra("m_explain");
         gson = new Gson();
-
-        //编辑常用处方时使用
+        //比较是否改变（开方）
+        addDrugJsonTemp = gson.toJson(drugBeans);
+        //比较是否改变 (常用处方)
         ArrayList<CommPaperInfoBean> commbeans = getIntent().getParcelableArrayListExtra("commbean");
         conversionDrugBean(commbeans);
 
@@ -360,8 +363,10 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
     @Override
     public void onBackPressed() {
         if (formtype == 1) {//开方
-            if (drugBeans.isEmpty()) {//空列表 直接返回
+            if ((TextUtils.isEmpty(addDrugJsonTemp) && drugBeans.isEmpty())
+                    || addDrugJsonTemp.equals(gson.toJson(drugBeans))) {//空列表 或者么有改变 直接返回
                 finish();
+                return;
             } else {
                 commonDialog = new CommonDialog(AddDrugActivity.this, false, "您尚未保存是否退出？", new View.OnClickListener() {
                     @Override
@@ -390,8 +395,6 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
             });
             commonDialog.show();
         }
-
-
     }
 
     //点击保存

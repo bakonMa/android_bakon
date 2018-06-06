@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -267,7 +268,6 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
         mPresenter.userIdentify(params);
     }
 
-
     private File cameraPath;
 
     //1:打开相机拍照 2:打开相册
@@ -412,10 +412,9 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                 mPopupWheel = new OnePopupWheel(this, hospitalStr, "请选择医院", new OnePopupWheel.Listener() {
                     @Override
                     public void completed(int position) {
-                        etOrganization.setText(hospitalStr.get(position));
                         //选择其他后，弹出dialog填写
                         if (position == hospitalStr.size() - 1) {
-                            commonDialog = new CommonDialog(AuthStep1Activity.this, R.layout.dialog_edite_common,
+                            commonDialog = new CommonDialog(AuthStep1Activity.this, "填写医院名称", InputType.TYPE_CLASS_TEXT,
                                     new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
@@ -427,6 +426,8 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                                         }
                                     });
                             commonDialog.show();
+                        } else {
+                            etOrganization.setText(hospitalStr.get(position));
                         }
                     }
                 });

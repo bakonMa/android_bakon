@@ -27,14 +27,14 @@
             android:drawableLeft="@drawable/nim_actionbar_search_dark_icon"
             android:drawablePadding="5dp"
             android:gravity="center_vertical"
-            android:hint="患者姓名、联系电话"
+            android:hint="就诊人姓名、联系电话"
             android:imeOptions="actionSearch"
             android:maxLength="20"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:singleLine="true"
             android:textCursorDrawable="@drawable/color_cursor"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <ImageView
             android:id="@+id/iv_clear"

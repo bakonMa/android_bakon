@@ -6,14 +6,14 @@ package com.junhetang.doctor.config;
  */
 
 public interface EventConfig {
-    int REFRESH_APK_DOWNLOAD_PROGRESS = 0x121; //刷新Apk安装包的下载进度
+    int REFRESH_APK_DOWNLOAD_PROGRESS = 0x110; //刷新Apk安装包的下载进度
 
-
-    //*********************jht**********************
     int EVENT_KEY_AUTH_STATUS = 0x111;//刷新个人认证状态
+
     int EVENT_KEY_ADDBANKCARD_OK = 0x112;//添加银行卡
     int EVENT_KEY_DELBANKCARD_OK = 0x113;//删除银行卡
     int EVENT_KEY_WITHRAW_OK = 0x114;//提现成功
+
     int EVENT_KEY_CHAT_SELECT_COMMMSG = 0x115;//聊天，选择发送常用语
     int EVENT_KEY_H5_BOOKS_SHARE = 0x116;//书籍 分享
     int EVENT_KEY_CHOOSE_PATIENT = 0x117;//开方 选择患者
@@ -37,5 +37,7 @@ public interface EventConfig {
     int EVENT_KEY_REMARKNAME = 0x130;//修改备注
     int EVENT_KEY_CLOSE_CHAT= 0x131;//结束咨询
     int EVENT_KEY_SERVICE_INFO= 0x132;//异步获取客服资料
+
+    int EVENT_KEY_CHOOSE_JIUZHEN_HISTORY= 0x133;//选择历史就诊人
 
 }

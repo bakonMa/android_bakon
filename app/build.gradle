@@ -7,8 +7,8 @@ android {
         applicationId "com.junhetang.doctor"
         minSdkVersion 19  //16:4.1(99.1%) 19:4.4(90%)
         targetSdkVersion 27
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true //dex分包
         ndk {
@@ -82,9 +82,9 @@ def devAddress() {
 }
 
 def onLineAddress() {
-//    "\"http://dev.dr.jhtcm.com/\""  //测试环境
+    "\"http://dev.dr.jhtcm.com/\""  //测试环境
 //    "\"https://dr.beta.jhtcm.vip/\""//beta测试环境
-    "\"https://dr.jhtcm.vip/\""//正式线上环境
+//    "\"https://dr.jhtcm.vip/\""//正式线上环境
 }
 
 greendao {

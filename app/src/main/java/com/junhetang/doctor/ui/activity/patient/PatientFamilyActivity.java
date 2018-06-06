@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -171,8 +172,7 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
                 startActivityForResult(intent, REQUEST_CODE_REMARKNAME);
                 break;
             case R.id.et_price:
-                commonDialog = new CommonDialog(this, false, true,
-                        "设置咨询价格(元)", view1 -> {
+                commonDialog = new CommonDialog(this, "设置咨询价格(元)", InputType.TYPE_CLASS_NUMBER, view1 -> {
                     if (view1.getId() == R.id.btn_ok) {
                         tempPrice = commonDialog.getCommonEditText();
                         if (!tempPrice.equals(bean.patientinfo.advisory_fee)) {

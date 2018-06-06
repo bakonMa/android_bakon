@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@drawable/selector_bg_tab"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="10dp">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/icon_head"
+        android:drawablePadding="10dp"
+        android:ellipsize="end"
+        android:maxEms="10"
+        android:minWidth="100dp"
+        android:singleLine="true"
+        android:textColor="@color/color_000"
+        android:textSize="14sp"
+        tools:text="李元芳李元芳李元芳李元芳李元芳" />
+
+    <TextView
+        android:id="@+id/tv_sex_age"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/tv_name"
+        android:textColor="@color/color_000"
+        android:textSize="14sp"
+        tools:text="男    25" />
+
+    <TextView
+        android:id="@+id/tv_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_toStartOf="@+id/tv_date"
+        android:drawableLeft="@drawable/icon_phone_little"
+        android:drawablePadding="10dp"
+        android:textColor="@color/color_000"
+        android:textSize="14sp"
+        tools:text="18202199090" />
+
+    <View
+        style="@style/line_gray_hor"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

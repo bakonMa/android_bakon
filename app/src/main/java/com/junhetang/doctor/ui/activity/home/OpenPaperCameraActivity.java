@@ -31,6 +31,7 @@ import com.junhetang.doctor.nim.NimU;
 import com.junhetang.doctor.ui.activity.patient.PatientFamilyActivity;
 import com.junhetang.doctor.ui.activity.patient.PatientListActivity;
 import com.junhetang.doctor.ui.base.BaseActivity;
+import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
 import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
 import com.junhetang.doctor.ui.bean.PatientFamilyBean;
 import com.junhetang.doctor.ui.bean.UploadImgBean;
@@ -121,6 +122,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     ImageView ivImg2Clean;
     @BindView(R.id.iv_img3_clean)
     ImageView ivImg3Clean;
+    @BindView(R.id.tv_choose_history)
+    TextView tvChooseHistory;
     @BindView(R.id.tv_next_step)
     TextView tvNextStep;
     @BindView(R.id.et_serverprice)
@@ -210,7 +213,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                     @Override
                     public void leftClick() {
                         super.leftClick();
-                        finish();
+                        onBackPressed();
                     }
 
                 }).bind();
@@ -221,7 +224,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
 
     @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugstore, R.id.et_drugclass,
             R.id.iv_img1, R.id.iv_img2, R.id.iv_img3, R.id.iv_img1_clean, R.id.iv_img2_clean,
-            R.id.iv_img3_clean, R.id.tv_next_step})
+            R.id.iv_img3_clean, R.id.tv_choose_history, R.id.tv_next_step})
     public void tabOnClick(View view) {
         switch (view.getId()) {
             case R.id.tv_addpatient://选择患者
@@ -237,6 +240,9 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 break;
             case R.id.tv_editepatient://编辑就诊人
                 writeJzInfo();
+                break;
+            case R.id.tv_choose_history://选择历史就诊人
+                startActivity(new Intent(this, JiuZhenHistoryActivity.class));
                 break;
             case R.id.et_drugstore://药房
                 mPopupWheel = new OnePopupWheel(this, drugStoreList, "请选择药房", new OnePopupWheel.Listener() {
@@ -293,9 +299,28 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         }
     }
 
+    //选择的患者的就诊人（第一类）
+    private void chooseJzInfo(PatientFamilyBean.JiuzhenBean bean) {
+        lltJZinfo.setVisibility(View.VISIBLE);
+        tvChooseHistory.setVisibility(View.GONE);
+        etName.setEditeText(TextUtils.isEmpty(bean.patient_name) ? "" : bean.patient_name);
+        etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
+        etAge.setEditeText(bean.age > 0 ? (bean.age + "") : "");
+        rgSex.check(bean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
+        membNo = bean.id;
+        relationship = bean.relationship;
+        pAccid = bean.getIm_accid();
+        etName.setEditeEnable(false);
+        etAge.setEditeEnable(false);
+        etPhone.setEditeEnable(false);
+        rbNan.setEnabled(false);
+        rbNv.setEnabled(false);
+    }
+
     //手写就诊人信息
     private void writeJzInfo() {
         lltJZinfo.setVisibility(View.VISIBLE);
+        tvChooseHistory.setVisibility(View.VISIBLE);
         etName.setEditeEnable(true);
         etAge.setEditeEnable(true);
         etPhone.setEditeEnable(true);
@@ -310,16 +335,16 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         rgSex.check(R.id.rb_nan);
     }
 
-    //选择的就诊人
-    private void chooseJzInfo(PatientFamilyBean.JiuzhenBean bean) {
-        lltJZinfo.setVisibility(View.VISIBLE);
+    //选择填写的历史就诊人（第二类）
+    private void chooseJzHistoryInfo(JiuZhenHistoryBean bean) {
         etName.setEditeText(TextUtils.isEmpty(bean.patient_name) ? "" : bean.patient_name);
         etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
         etAge.setEditeText(bean.age > 0 ? (bean.age + "") : "");
         rgSex.check(bean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
-        membNo = bean.id;
-        relationship = bean.relationship;
-        pAccid = bean.getIm_accid();
+        relationship = 4;//关系 其他
+        membNo = "";
+        pAccid = "";
+        //不可修改
         etName.setEditeEnable(false);
         etAge.setEditeEnable(false);
         etPhone.setEditeEnable(false);
@@ -352,9 +377,11 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         StringBuffer imgPath = new StringBuffer();
         if (!TextUtils.isEmpty(imgPath1)) {
             imgPath.append(imgPath1).append(",");
-        } else if (!TextUtils.isEmpty(imgPath2)) {
+        }
+        if (!TextUtils.isEmpty(imgPath2)) {
             imgPath.append(imgPath2).append(",");
-        } else if (!TextUtils.isEmpty(imgPath3)) {
+        }
+        if (!TextUtils.isEmpty(imgPath3)) {
             imgPath.append(imgPath3);
         }
 
@@ -553,8 +580,26 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                     chooseJzInfo(bean);
                 }
                 break;
+            case EventConfig.EVENT_KEY_CHOOSE_JIUZHEN_HISTORY://选择历史就诊人
+                JiuZhenHistoryBean jiuZhenHistoryBean = (JiuZhenHistoryBean) event.getData();
+                if (jiuZhenHistoryBean != null) {
+                    chooseJzHistoryInfo(jiuZhenHistoryBean);
+                }
+                break;
         }
+    }
 
+    @Override
+    public void onBackPressed() {
+        commonDialog = new CommonDialog(this, false, "确定要退出开方吗？", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getId() == R.id.btn_ok) {
+                    finish();
+                }
+            }
+        });
+        commonDialog.show();
     }
 
     @Override

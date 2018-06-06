@@ -227,11 +227,6 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
     }
 
     @Override
-    protected boolean useButterKnife() {
-        return false;
-    }
-
-    @Override
     public Activity provideContext() {
         return this;
     }

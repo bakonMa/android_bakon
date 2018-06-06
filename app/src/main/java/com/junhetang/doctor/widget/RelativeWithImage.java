@@ -18,12 +18,15 @@ import com.junhetang.doctor.R;
 
 public class RelativeWithImage extends RelativeLayout {
     private ImageView iv_left;
+    private ImageView iv_right_arrow;
 
     private View lineView;
 
     private TextView tv_title;
-
+    //是否显示下划线
     private boolean isShowLine;
+    //是否显示右边箭头
+    private boolean isShowRightArrow;
 
     private int leftImage;
 
@@ -41,24 +44,23 @@ public class RelativeWithImage extends RelativeLayout {
     public RelativeWithImage(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.RelativeWithImage);
-        isShowLine = ta.getBoolean(R.styleable.RelativeWithImage_isShowLine,true);
-        leftImage = ta.getResourceId(R.styleable.RelativeWithImage_leftIamge,R.drawable.icon_ziliao);
+        isShowLine = ta.getBoolean(R.styleable.RelativeWithImage_isShowLine, true);
+        isShowRightArrow = ta.getBoolean(R.styleable.RelativeWithImage_isShowRightArrow, true);
+        leftImage = ta.getResourceId(R.styleable.RelativeWithImage_leftIamge, R.drawable.icon_ziliao);
         title = ta.getString(R.styleable.RelativeWithImage_title);
         ta.recycle();
         init(context);
     }
 
     private void init(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.layout_relative_img,this);
+        LayoutInflater.from(context).inflate(R.layout.layout_relative_img, this);
         iv_left = findViewById(R.id.id_image);
+        iv_right_arrow = findViewById(R.id.iv_right_arrow);
         tv_title = findViewById(R.id.id_title);
         lineView = findViewById(R.id.id_line);
         iv_left.setImageResource(leftImage);
         tv_title.setText(title);
-        if(isShowLine){
-            lineView.setVisibility(VISIBLE);
-        }else{
-            lineView.setVisibility(GONE);
-        }
+        lineView.setVisibility(isShowLine ? VISIBLE : GONE);
+        iv_right_arrow.setVisibility(isShowRightArrow ? VISIBLE : GONE);
     }
 }

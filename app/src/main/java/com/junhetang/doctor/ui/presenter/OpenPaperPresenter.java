@@ -5,12 +5,13 @@ import com.junhetang.doctor.config.HttpConfig;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.data.response.HttpResponse;
 import com.junhetang.doctor.ui.base.BaseObserver;
-import com.junhetang.doctor.ui.bean.BasePageBean;
-import com.junhetang.doctor.ui.bean.OnlinePaperBackBean;
 import com.junhetang.doctor.ui.bean.BaseConfigBean;
+import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.CheckPaperBean;
 import com.junhetang.doctor.ui.bean.CommPaperBean;
 import com.junhetang.doctor.ui.bean.CommPaperInfoBean;
+import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
+import com.junhetang.doctor.ui.bean.OnlinePaperBackBean;
 import com.junhetang.doctor.ui.bean.SearchDrugBean;
 import com.junhetang.doctor.ui.bean.UploadImgBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
@@ -54,6 +55,7 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
     public static final int GET_CHECKPAPERLIST_OK = 0x122;
     public static final int CHECKPAPER_OK = 0x123;
     public static final int GET_PAPER_HISTORYLIST_OK = 0x124;
+    public static final int GET_JIUZHEN_HISTORYLIST_OK = 0x125;
 
     public OpenPaperPresenter(OpenPaperContact.View mView) {
         this.mView = mView;
@@ -392,6 +394,32 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<BasePageBean<CheckPaperBean>> personalBeanHttpResponse) {
                         mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_PAPER_HISTORYLIST_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void getJiuZhenHistoryList(int page, String searchStr) {
+        Params params = new Params();
+        params.put("page", page);
+        params.put("search", searchStr);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getJiuZhenHistoryList(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null)
+                        mDialog.show();
+                }).subscribe(new BaseObserver<HttpResponse<BasePageBean<JiuZhenHistoryBean>>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<BasePageBean<JiuZhenHistoryBean>> personalBeanHttpResponse) {
+                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_JIUZHEN_HISTORYLIST_OK));
                     }
 
                     @Override

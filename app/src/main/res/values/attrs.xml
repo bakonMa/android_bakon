@@ -51,6 +51,7 @@
         <attr name="title" format="string" />
         <attr name="leftIamge" format="reference" />
         <attr name="isShowLine" format="boolean" />
+        <attr name="isShowRightArrow" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="RelativeWithText">

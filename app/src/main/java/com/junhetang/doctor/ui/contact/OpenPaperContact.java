@@ -39,7 +39,9 @@ public interface OpenPaperContact {
 
         void checkPaper(int id, int status, String remark);//医生审核处方提交接口
 
-        void getPaperHistoryList(int page, String searchStr);//历史处方，和搜索
+        void getPaperHistoryList(int page, String searchStr);//历史处方和搜索
+
+        void getJiuZhenHistoryList(int page, String searchStr);//历史就诊人和搜索
 
     }
 

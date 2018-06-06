@@ -31,6 +31,7 @@ import com.junhetang.doctor.ui.activity.patient.PatientListActivity;
 import com.junhetang.doctor.ui.adapter.OPenPaperDrugAdapter;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.DrugBean;
+import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
 import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
 import com.junhetang.doctor.ui.bean.OnlinePaperBackBean;
 import com.junhetang.doctor.ui.bean.PatientFamilyBean;
@@ -118,6 +119,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     TextView tvSkillname;
     @BindView(R.id.tv_showall)
     TextView tvShowall;
+    @BindView(R.id.tv_choose_history)
+    TextView tvChooseHistory;
     @BindView(R.id.tv_next_step)
     TextView tvNextStep;
 
@@ -228,7 +231,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                     @Override
                     public void leftClick() {
                         super.leftClick();
-                        finish();
+                        onBackPressed();
                     }
 
                 }).bind();
@@ -236,7 +239,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
 
     @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugstore, R.id.et_drugclass,
             R.id.tv_adddrug, R.id.tv_minus_one, R.id.tv_add_one, R.id.et_usetype, R.id.tv_showall,
-            R.id.tv_addcommpaper, R.id.tv_skillname, R.id.et_docadvice, R.id.tv_next_step})
+            R.id.tv_addcommpaper, R.id.tv_skillname, R.id.et_docadvice, R.id.tv_choose_history, R.id.tv_next_step})
     public void tabOnClick(View view) {
         switch (view.getId()) {
             case R.id.tv_addpatient://选择患者
@@ -252,6 +255,9 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 break;
             case R.id.tv_editepatient://编辑就诊人
                 writeJzInfo();
+                break;
+            case R.id.tv_choose_history://选择历史就诊人
+                startActivity(new Intent(this, JiuZhenHistoryActivity.class));
                 break;
             case R.id.tv_addcommpaper://添加为常用处方
                 if (drugBeans == null || drugBeans.isEmpty()) {
@@ -383,26 +389,10 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         }
     }
 
-    //手写就诊人信息
-    private void writeJzInfo() {
-        lltJZinfo.setVisibility(View.VISIBLE);
-        etName.setEditeEnable(true);
-        etAge.setEditeEnable(true);
-        etPhone.setEditeEnable(true);
-        rbNan.setEnabled(true);
-        rbNv.setEnabled(true);
-        membNo = "";
-        relationship = 4;
-        pAccid = "";
-        etName.setEditeText("");
-        etAge.setEditeText("");
-        etPhone.setEditeText("");
-        rgSex.check(R.id.rb_nan);
-    }
-
-    //选择的就诊人
+    //选择的患者的就诊人（第一类）
     private void chooseJzInfo(PatientFamilyBean.JiuzhenBean bean) {
         lltJZinfo.setVisibility(View.VISIBLE);
+        tvChooseHistory.setVisibility(View.GONE);
         etName.setEditeText(TextUtils.isEmpty(bean.patient_name) ? "" : bean.patient_name);
         etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
         etAge.setEditeText(bean.age > 0 ? (bean.age + "") : "");
@@ -410,6 +400,41 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         membNo = bean.id;
         relationship = bean.relationship;
         pAccid = bean.getIm_accid();//记录需要
+        etName.setEditeEnable(false);
+        etAge.setEditeEnable(false);
+        etPhone.setEditeEnable(false);
+        rbNan.setEnabled(false);
+        rbNv.setEnabled(false);
+    }
+
+    //手写就诊人信息
+    private void writeJzInfo() {
+        lltJZinfo.setVisibility(View.VISIBLE);
+        tvChooseHistory.setVisibility(View.VISIBLE);
+        etName.setEditeEnable(true);
+        etAge.setEditeEnable(true);
+        etPhone.setEditeEnable(true);
+        rbNan.setEnabled(true);
+        rbNv.setEnabled(true);
+        relationship = 4;//关系 其他
+        membNo = "";
+        pAccid = "";
+        etName.setEditeText("");
+        etAge.setEditeText("");
+        etPhone.setEditeText("");
+        rgSex.check(R.id.rb_nan);
+    }
+
+    //选择填写的历史就诊人（第二类）
+    private void chooseJzHistoryInfo(JiuZhenHistoryBean bean) {
+        etName.setEditeText(TextUtils.isEmpty(bean.patient_name) ? "" : bean.patient_name);
+        etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
+        etAge.setEditeText(bean.age > 0 ? (bean.age + "") : "");
+        rgSex.check(bean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
+        relationship = 4;//关系 其他
+        membNo = "";
+        pAccid = "";
+        //不可修改
         etName.setEditeEnable(false);
         etAge.setEditeEnable(false);
         etPhone.setEditeEnable(false);
@@ -571,6 +596,12 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                     chooseJzInfo(bean);
                 }
                 break;
+            case EventConfig.EVENT_KEY_CHOOSE_JIUZHEN_HISTORY://选择历史就诊人
+                JiuZhenHistoryBean jiuZhenHistoryBean = (JiuZhenHistoryBean) event.getData();
+                if (jiuZhenHistoryBean != null) {
+                    chooseJzHistoryInfo(jiuZhenHistoryBean);
+                }
+                break;
         }
     }
 
@@ -608,6 +639,19 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        commonDialog = new CommonDialog(this, false, "确定要退出开方吗？", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getId() == R.id.btn_ok) {
+                    finish();
+                }
+            }
+        });
+        commonDialog.show();
     }
 
     @Override

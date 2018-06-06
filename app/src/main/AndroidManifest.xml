@@ -184,7 +184,7 @@
         <activity
             android:name=".ui.activity.home.LogoutActivity"
             android:launchMode="singleTask"
-            android:theme="@style/translucent"  />
+            android:theme="@style/translucent" />
         <activity
             android:name=".ui.activity.fragment.MainActivity"
             android:launchMode="singleTask"
@@ -297,6 +297,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.home.PaperHistoryActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".ui.activity.home.JiuZhenHistoryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity

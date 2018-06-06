@@ -10,6 +10,7 @@ import com.junhetang.doctor.ui.activity.fragment.MainActivity;
 import com.junhetang.doctor.ui.activity.home.AddDrugActivity;
 import com.junhetang.doctor.ui.activity.home.ChooseDocAdviceActivity;
 import com.junhetang.doctor.ui.activity.home.CommUsePaperActivity;
+import com.junhetang.doctor.ui.activity.home.JiuZhenHistoryActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperCameraActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperOnlineActivity;
 import com.junhetang.doctor.ui.activity.home.PaperHistoryActivity;
@@ -128,5 +129,7 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(CheckPaperH5Activity checkPaperH5Activity);
 
     void inject(ChooseDocAdviceActivity chooseDocAdviceActivity);
+
+    void inject(JiuZhenHistoryActivity jiuZhenHistoryActivity);
 
 }

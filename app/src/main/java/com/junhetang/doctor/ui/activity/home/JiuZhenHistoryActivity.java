@@ -1,7 +1,6 @@
 package com.junhetang.doctor.ui.activity.home;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,17 +20,17 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
-import com.junhetang.doctor.config.H5Config;
+import com.junhetang.doctor.config.EventConfig;
+import com.junhetang.doctor.data.eventbus.Event;
+import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.BasePageBean;
-import com.junhetang.doctor.ui.bean.CheckPaperBean;
+import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
-import com.junhetang.doctor.ui.nimview.PaperH5Activity;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
 import com.junhetang.doctor.utils.KeyBoardUtils;
-import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
@@ -51,7 +50,7 @@ import butterknife.OnTextChanged;
  * PaperHistoryActivity 历史处方
  * Create at 2018/5/7 下午3:11 by mayakun
  */
-public class PaperHistoryActivity extends BaseActivity implements OpenPaperContact.View {
+public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperContact.View {
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
@@ -67,7 +66,7 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
     @Inject
     OpenPaperPresenter mPresenter;
 
-    private List<CheckPaperBean> checkPaperBeans = new ArrayList<>();
+    private List<JiuZhenHistoryBean> jiuZhenHistoryBeans = new ArrayList<>();
     private BaseQuickAdapter mAdapter;
     private int pageNum = 1;
     private String searchStr = "";
@@ -88,39 +87,32 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
             public void onRefresh() {
                 //刷新数据
                 pageNum = 1;
-                mPresenter.getPaperHistoryList(pageNum, etSerch.getText().toString().trim());
+                mPresenter.getJiuZhenHistoryList(pageNum, etSerch.getText().toString().trim());
             }
         });
 
         recyvleview.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new BaseQuickAdapter<CheckPaperBean, BaseViewHolder>(R.layout.item_checkpaper, checkPaperBeans) {
+        mAdapter = new BaseQuickAdapter<JiuZhenHistoryBean, BaseViewHolder>(R.layout.item_jiuzhen_history, jiuZhenHistoryBeans) {
             @Override
-            protected void convert(BaseViewHolder helper, CheckPaperBean item) {
-                helper.setText(R.id.tv_name, item.patient_name + "    " + (item.sex == 0 ? "男" : "女") + "    " + item.age + "岁")
-                        .setText(R.id.tv_phone, TextUtils.isEmpty(item.phone) ? "" : item.phone)
-                        .setText(R.id.tv_date, "开方日期：" + (TextUtils.isEmpty(item.create_time) ? "" : item.create_time))
-                        .setImageResource(R.id.iv_papertype, item.presc_type == 1 ? R.drawable.icon_phone : R.drawable.icon_camera)
-                        .setGone(R.id.tv_checkstatus, false);
+            protected void convert(BaseViewHolder helper, JiuZhenHistoryBean item) {
+                helper.setText(R.id.tv_name, TextUtils.isEmpty(item.patient_name) ? "" : item.patient_name)
+                        .setText(R.id.tv_sex_age, (item.sex == 0 ? "男" : "女") + "        " + item.age + "岁")
+                        .setText(R.id.tv_phone, TextUtils.isEmpty(item.phone) ? "" : item.phone);
             }
         };
 
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                mPresenter.getPaperHistoryList(pageNum + 1, searchStr);
+                mPresenter.getJiuZhenHistoryList(pageNum + 1, searchStr);
             }
         }, recyvleview);
 
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter mAdapter, View view, int position) {
-                Intent intent = new Intent(actContext(), PaperH5Activity.class);
-                intent.putExtra("hasTopBar", true);//是否包含toolbar
-                intent.putExtra("webType", PaperH5Activity.FORM_TYPE.H5_PAPER_DETAIL);
-                intent.putExtra("title", UIUtils.getString(R.string.str_paper_detail));
-                intent.putExtra("url", H5Config.H5_PAPER_DETAIL + checkPaperBeans.get(position).id);
-                intent.putExtra("checkid", checkPaperBeans.get(position).id);
-                startActivity(intent);
+                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_CHOOSE_JIUZHEN_HISTORY, jiuZhenHistoryBeans.get(position)));
+                finish();
             }
         });
 
@@ -136,20 +128,20 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
                         pageNum = 1;
                     }
                     searchStr = etSerch.getText().toString().trim();
-                    mPresenter.getPaperHistoryList(pageNum, searchStr);
+                    mPresenter.getJiuZhenHistoryList(pageNum, searchStr);
                     return true;
                 }
                 return false;
             }
         });
         //请求数据
-        mPresenter.getPaperHistoryList(pageNum, etSerch.getText().toString().trim());
+        mPresenter.getJiuZhenHistoryList(pageNum, etSerch.getText().toString().trim());
     }
 
     //共同头部处理
     private void initToolbar() {
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
-                .setTitle("历史处方")
+                .setTitle("处方联系人")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
                 .setListener(new TitleOnclickListener() {
@@ -169,7 +161,7 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
             searchStr = "";
             //请求数据
             pageNum = 1;
-            mPresenter.getPaperHistoryList(pageNum, etSerch.getText().toString().trim());
+            mPresenter.getJiuZhenHistoryList(pageNum, etSerch.getText().toString().trim());
         }
     }
 
@@ -196,15 +188,14 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
             return;
         }
         switch (message.what) {
-            case OpenPaperPresenter.GET_PAPER_HISTORYLIST_OK:
-
-                BasePageBean<CheckPaperBean> beans = (BasePageBean<CheckPaperBean>) message.obj;
+            case OpenPaperPresenter.GET_JIUZHEN_HISTORYLIST_OK:
+                BasePageBean<JiuZhenHistoryBean> beans = (BasePageBean<JiuZhenHistoryBean>) message.obj;
                 if (beans != null && beans.list != null) {
                     pageNum = beans.page;
                     if (pageNum == 1) {
-                        checkPaperBeans.clear();
+                        jiuZhenHistoryBeans.clear();
                     }
-                    checkPaperBeans.addAll(beans.list);
+                    jiuZhenHistoryBeans.addAll(beans.list);
                     mAdapter.notifyDataSetChanged();
 
                     if (beans.is_last == 1) {//最后一页
@@ -213,7 +204,7 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
                         mAdapter.loadMoreComplete();
                     }
                 }
-                if (checkPaperBeans.isEmpty()) {
+                if (jiuZhenHistoryBeans.isEmpty()) {
                     mAdapter.setEmptyView(R.layout.empty_view);
                 }
                 break;

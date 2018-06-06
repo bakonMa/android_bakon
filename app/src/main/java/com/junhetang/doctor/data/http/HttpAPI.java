@@ -3,12 +3,19 @@ package com.junhetang.doctor.data.http;
 import com.junhetang.doctor.config.HttpConfig;
 import com.junhetang.doctor.data.response.HttpResponse;
 import com.junhetang.doctor.ui.bean.AppUpdateBean;
+import com.junhetang.doctor.ui.bean.AuthInfoBean;
 import com.junhetang.doctor.ui.bean.BankCardBean;
 import com.junhetang.doctor.ui.bean.BankTypeBean;
 import com.junhetang.doctor.ui.bean.BannerBean;
+import com.junhetang.doctor.ui.bean.BaseConfigBean;
 import com.junhetang.doctor.ui.bean.BasePageBean;
+import com.junhetang.doctor.ui.bean.CheckPaperBean;
 import com.junhetang.doctor.ui.bean.CommMessageBean;
+import com.junhetang.doctor.ui.bean.CommPaperBean;
+import com.junhetang.doctor.ui.bean.CommPaperInfoBean;
 import com.junhetang.doctor.ui.bean.DealDetailBean;
+import com.junhetang.doctor.ui.bean.HospitalBean;
+import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
 import com.junhetang.doctor.ui.bean.LoginResponse;
 import com.junhetang.doctor.ui.bean.NewsInfoBean;
 import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
@@ -16,14 +23,8 @@ import com.junhetang.doctor.ui.bean.OnlinePaperBackBean;
 import com.junhetang.doctor.ui.bean.OtherBean;
 import com.junhetang.doctor.ui.bean.PatientBean;
 import com.junhetang.doctor.ui.bean.PatientFamilyBean;
-import com.junhetang.doctor.ui.bean.SystemMsgBean;
-import com.junhetang.doctor.ui.bean.AuthInfoBean;
-import com.junhetang.doctor.ui.bean.BaseConfigBean;
-import com.junhetang.doctor.ui.bean.CheckPaperBean;
-import com.junhetang.doctor.ui.bean.CommPaperBean;
-import com.junhetang.doctor.ui.bean.CommPaperInfoBean;
-import com.junhetang.doctor.ui.bean.HospitalBean;
 import com.junhetang.doctor.ui.bean.SearchDrugBean;
+import com.junhetang.doctor.ui.bean.SystemMsgBean;
 import com.junhetang.doctor.ui.bean.UploadImgBean;
 import com.junhetang.doctor.ui.bean.UserBaseInfoBean;
 import com.junhetang.doctor.ui.bean.WalletBean;
@@ -257,6 +258,10 @@ public interface HttpAPI {
     //历史处方列表
     @POST("my_historyextra")
     Observable<HttpResponse<BasePageBean<CheckPaperBean>>> getPaperHistoryList(@Body Params params);
+
+    //历史就诊人处方列表
+    @POST("getpresc_patient")
+    Observable<HttpResponse<BasePageBean<JiuZhenHistoryBean>>> getJiuZhenHistoryList(@Body Params params);
 
     //检查App更新
     @POST("getVersion")

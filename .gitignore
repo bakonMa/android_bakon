@@ -36,7 +36,6 @@ captures/
 
 # Intellij
 *.iml
-.idea/caches
 .idea/workspace.xml
 .idea/tasks.xml
 .idea/gradle.xml
@@ -70,3 +69,4 @@ src/main/res/mipmap-xhdpi/.DS_Store
 src/main/res/mipmap-xxhdpi/.DS_Store
 src/main/res/mipmap-xxxhdpi/.DS_Store
 src/test/
+app/src/test/java/

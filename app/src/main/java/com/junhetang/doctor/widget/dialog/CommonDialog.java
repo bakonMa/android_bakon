@@ -29,6 +29,7 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
     private boolean isSingelBtn;//true：只有确定 false：确定和取消(显示模式)
     private EditText commEditext;
     private boolean isInput = false;//是否显示输入框
+    private int inputType;
     private String titleStr;
     private View layoutView;
     private View.OnClickListener listener;
@@ -45,19 +46,28 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
         this.listener = listener;
     }
 
-    public CommonDialog(@NonNull Activity context, boolean isSingelBtn, String titleStr, View.OnClickListener listener) {
-        this(context, isSingelBtn, false, titleStr, listener);
-    }
-
     public CommonDialog(@NonNull Activity context, String titleStr) {
         this(context, true, titleStr, null);
     }
 
-    //是否显示输入框
-    public CommonDialog(@NonNull Activity context, boolean isSingelBtn, boolean isInput, String titleStr, View.OnClickListener listener) {
+    public CommonDialog(@NonNull Activity context, boolean isSingelBtn, String titleStr, View.OnClickListener listener) {
+        this(context, isSingelBtn, false, 0, titleStr, listener);
+    }
+
+
+    //显示输入框
+    public CommonDialog(@NonNull Activity context, String titleStr, int inputType, View.OnClickListener listener) {
+        this(context, false, true, inputType, titleStr, listener);
+    }
+
+    //【确定】【取消】是否全部显示；输入框是否显示
+    public CommonDialog(@NonNull Activity context,
+                        boolean isSingelBtn, boolean isInput, int inputType,
+                        String titleStr, View.OnClickListener listener) {
         super(context, R.style.common_dialog);
         this.mContext = context;
         this.isSingelBtn = isSingelBtn;
+        this.inputType = inputType;
         this.layout = R.layout.dialog_common;
         this.titleStr = titleStr;
         this.isInput = isInput;
@@ -73,7 +83,7 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
 
     private void init() {
         switch (layout) {
-            case R.layout.dialog_common://普通 确定，取消；是否显示数图库
+            case R.layout.dialog_common://普通 确定，取消；是否显示确定
                 layoutView = LayoutInflater.from(mContext).inflate(R.layout.dialog_common, null);
                 commEditext = layoutView.findViewById(R.id.dialog_content);
                 Button buttonNo = layoutView.findViewById(R.id.btn_no);
@@ -84,7 +94,13 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
                 if (isSingelBtn) {
                     buttonNo.setVisibility(View.GONE);
                 }
-                commEditext.setVisibility(isInput ? View.VISIBLE : View.GONE);
+                if(isInput){//显示输入框
+                    commEditext.setVisibility(View.VISIBLE);
+                    commEditext.setInputType(inputType);
+                } else {
+                    commEditext.setVisibility(View.GONE);
+                }
+
                 //title
                 if (!TextUtils.isEmpty(titleStr)) {
                     ((TextView) layoutView.findViewById(R.id.dialog_title)).setText(titleStr);

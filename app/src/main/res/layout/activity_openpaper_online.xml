@@ -55,14 +55,33 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <TextView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="15dp"
-                    android:text="就诊人信息"
-                    android:textColor="@color/color_999"
-                    android:textSize="10sp" />
+                    android:layout_height="30dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingLeft="15dp"
+                        android:text="就诊人信息"
+                        android:textColor="@color/color_999"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_choose_history"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:drawableRight="@drawable/icon_yellow_arrow_right"
+                        android:gravity="center"
+                        android:paddingRight="15dp"
+                        android:text="处方联系人"
+                        android:textColor="@color/color_main"
+                        android:textSize="14sp"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
 
                 <com.junhetang.doctor.widget.EditTextlayout
                     android:id="@+id/et_name"
