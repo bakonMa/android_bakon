@@ -23,6 +23,7 @@ public class CheckPaperBean {
     public String age;
     public String phone;
     public String create_time;
+    public String status_name;//支付状态
     public int presc_type;//1、手工开方；2、拍照开方
 
 }

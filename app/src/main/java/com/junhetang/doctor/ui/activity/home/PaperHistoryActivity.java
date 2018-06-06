@@ -100,7 +100,7 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
                         .setText(R.id.tv_phone, TextUtils.isEmpty(item.phone) ? "" : item.phone)
                         .setText(R.id.tv_date, "开方日期：" + (TextUtils.isEmpty(item.create_time) ? "" : item.create_time))
                         .setImageResource(R.id.iv_papertype, item.presc_type == 1 ? R.drawable.icon_phone : R.drawable.icon_camera)
-                        .setGone(R.id.tv_checkstatus, false);
+                        .setText(R.id.tv_checkstatus, TextUtils.isEmpty(item.status_name) ? "" : item.status_name);
             }
         };
 
@@ -197,7 +197,6 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
         }
         switch (message.what) {
             case OpenPaperPresenter.GET_PAPER_HISTORYLIST_OK:
-
                 BasePageBean<CheckPaperBean> beans = (BasePageBean<CheckPaperBean>) message.obj;
                 if (beans != null && beans.list != null) {
                     pageNum = beans.page;
