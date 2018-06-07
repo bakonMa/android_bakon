@@ -18,6 +18,8 @@ import com.junhetang.doctor.nim.NimU;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.base.BaseView;
 import com.junhetang.doctor.ui.nimview.RecentActivity;
+import com.junhetang.doctor.ui.presenter.CommonPresenter;
+import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.widget.BottomBarItem;
 import com.netease.nim.uikit.common.badger.Badger;
@@ -51,6 +53,7 @@ public class MainActivity extends BaseActivity implements BaseView{
     private int currTag = 0;
     private static boolean firstEnter = true; // app是否应打开过
 
+    private CommonPresenter commonPresenter;
     @Override
     protected int provideRootLayout() {
         return R.layout.activity_main;
@@ -62,7 +65,7 @@ public class MainActivity extends BaseActivity implements BaseView{
 //        transaction.add(fragment对象);
 //        transaction.addToBackStack(null);
 //        transaction.commit();
-
+        commonPresenter = new CommonPresenter(this);
         switchFrgment(R.id.tab_home);
     }
 
@@ -164,8 +167,6 @@ public class MainActivity extends BaseActivity implements BaseView{
                 }
                 break;
         }
-
-
         transaction.commit();
         currTag = viewId;
         setTabState();
@@ -173,8 +174,6 @@ public class MainActivity extends BaseActivity implements BaseView{
 
     //隐藏所有的fragment
     private void hideFragment(FragmentTransaction transaction) {
-
-
         switch (currTag) {
             case 0:
                 break;
@@ -234,6 +233,9 @@ public class MainActivity extends BaseActivity implements BaseView{
                     tabPatient.hideNotify();
                 }
                 break;
+            case EventConfig.EVENT_KEY_CLOSE_CHAT://结束咨询
+                commonPresenter.addChatRecord(NimU.getNimAccount(), event.getData().toString(), Constant.CHAT_RECORD_TYPE_4, 1);
+                break;
         }
     }
 
@@ -267,6 +269,7 @@ public class MainActivity extends BaseActivity implements BaseView{
 
     }
 
+
     @Override
     public Activity provideContext() {
         return this;
@@ -275,5 +278,10 @@ public class MainActivity extends BaseActivity implements BaseView{
     @Override
     public LifecycleTransformer toLifecycle() {
         return bindToLifecycle();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        commonPresenter.unsubscribe();
     }
 }

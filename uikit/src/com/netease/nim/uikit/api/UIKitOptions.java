@@ -61,7 +61,7 @@ public class UIKitOptions {
     /**
      * 构建群缓存
      */
-    public boolean buildTeamCache = true;
+    public boolean buildTeamCache = false;
 
     /**
      * 构建群好友关系缓存
