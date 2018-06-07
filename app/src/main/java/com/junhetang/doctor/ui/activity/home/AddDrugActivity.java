@@ -185,7 +185,13 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                 };
                 editText.addTextChangedListener(textWatcher);
                 editText.setTag(textWatcher);
-                editText.clearFocus();
+                //焦点问题
+                if (helper.getLayoutPosition() == drugBeans.size() - 1) {
+                    editText.requestFocus();
+                    editText.setSelection(editText.getText().length());
+                } else {
+                    editText.clearFocus();
+                }
             }
         };
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
@@ -446,7 +452,6 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
             }
         }
     }
-
 
     @Override
     protected void setupActivityComponent() {

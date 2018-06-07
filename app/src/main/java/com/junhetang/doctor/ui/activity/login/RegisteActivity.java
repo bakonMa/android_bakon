@@ -109,7 +109,6 @@ public class RegisteActivity extends BaseActivity implements LoginContact.View {
                     }
                 })
                 .bind();
-
     }
 
     @OnClick({R.id.btn_registe, R.id.tv_sendcode,
@@ -122,7 +121,7 @@ public class RegisteActivity extends BaseActivity implements LoginContact.View {
                     showDialog("两次密码不一致");
                     return;
                 } else if (!cbAgreement.isChecked()) {
-                    showDialog("未同意用户协议");
+                    showDialog("未同意《君和中医用户协议》");
                     return;
                 }
 

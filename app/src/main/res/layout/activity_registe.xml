@@ -235,7 +235,7 @@
                 android:layout_gravity="center_vertical"
                 android:paddingLeft="5dp"
                 android:gravity="center_vertical"
-                android:text="我同意《君和中医所有用户协议》"
+                android:text="我同意《君和中医用户协议》"
                 android:textColor="@color/color_main"
                 android:textSize="10sp" />
         </LinearLayout>

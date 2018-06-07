@@ -41,7 +41,6 @@ import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
-import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.EditableLayout;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
@@ -71,7 +70,6 @@ import butterknife.OnClick;
 public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperContact.View {
 
     public static final int REQUEST_CODE_DOCADVICE = 1020;
-    public static final int REQUEST_CODE_SEARCHSKILLNAME = 1021;
     public static final int REQUEST_CODE_ADDDRUG = 1022;
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
@@ -115,8 +113,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     EditText etNum;
     @BindView(R.id.et_serverprice)
     EditText etServerprice;
-    @BindView(R.id.tv_skillname)
-    TextView tvSkillname;
+    @BindView(R.id.et_skillname)
+    TextView etSkillname;
     @BindView(R.id.tv_showall)
     TextView tvShowall;
     @BindView(R.id.tv_choose_history)
@@ -239,7 +237,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
 
     @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugstore, R.id.et_drugclass,
             R.id.tv_adddrug, R.id.tv_minus_one, R.id.tv_add_one, R.id.et_usetype, R.id.tv_showall,
-            R.id.tv_addcommpaper, R.id.tv_skillname, R.id.et_docadvice, R.id.tv_choose_history, R.id.tv_next_step})
+            R.id.tv_addcommpaper, R.id.et_docadvice, R.id.tv_choose_history, R.id.tv_next_step})
     public void tabOnClick(View view) {
         switch (view.getId()) {
             case R.id.tv_addpatient://选择患者
@@ -323,10 +321,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 break;
             case R.id.tv_add_one://副加1
                 editeDrugNum(true);
-                break;
-            case R.id.tv_skillname://疾病名称
-                Intent intentSkillname = new Intent(this, SearchSkillNameActivity.class);
-                startActivityForResult(intentSkillname, REQUEST_CODE_SEARCHSKILLNAME);
                 break;
             case R.id.et_docadvice://医嘱
                 Intent intentDocAdvice = new Intent(this, ChooseDocAdviceActivity.class);
@@ -450,12 +444,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             commonDialog.show();
             return;
         }
-        //主述 可以不填写
-//        if (TextUtils.isEmpty(skilNameCode)) {
-//            commonDialog = new CommonDialog(this, "请选择主述及辩证型");
-//            commonDialog.show();
-//            return;
-//        }
         if (TextUtils.isEmpty(etDrugstore.getText())) {
             commonDialog = new CommonDialog(this, "请选择药房");
             commonDialog.show();
@@ -493,8 +481,9 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         params.put("sex", sexType);
         params.put("age", etAge.getEditText().getText());
         params.put("phone", etPhone.getEditText().getText());
-        if (!TextUtils.isEmpty(skilNameCode)) {
-            params.put("icd10", skilNameCode);//主述及辩证型的icd10_code字段
+        //主述及辩证型 填写
+        if (!TextUtils.isEmpty(etSkillname.getText().toString().trim())) {
+            params.put("icd10", etSkillname.getText().toString().trim());
         }
         params.put("store_id", storeId);
         params.put("param", new Gson().toJson(drugBeans));
@@ -625,18 +614,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             case REQUEST_CODE_DOCADVICE://医嘱
                 docadviceStr = data.getStringExtra("docadvice");
                 etDocadvice.setText(docadviceStr);
-                break;
-            case REQUEST_CODE_SEARCHSKILLNAME://搜索疾病名称 主述及辩证型
-                String skilName = data.getStringExtra("drug_name");
-                if (TextUtils.isEmpty(skilName)) {
-                    skilNameCode = "";
-                    tvSkillname.setTextColor(UIUtils.getColor(R.color.color_999));
-                    tvSkillname.setText("");
-                } else {
-                    skilNameCode = data.getStringExtra("icd10_code");
-                    tvSkillname.setTextColor(UIUtils.getColor(R.color.color_000));
-                    tvSkillname.setText(skilName);
-                }
                 break;
         }
     }

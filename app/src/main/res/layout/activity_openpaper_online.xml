@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -179,6 +179,23 @@
                     android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
+                <EditText
+                    android:id="@+id/et_skillname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="top|start"
+                    android:hint="患者病症描述（非必填）"
+                    android:lineSpacingExtra="5dp"
+                    android:minLines="3"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingTop="10dp"
+                    android:textColor="@color/color_000"
+                    android:textCursorDrawable="@drawable/color_cursor"
+                    android:textSize="16sp" />
+
                 <TextView
                     android:id="@+id/tv_skillname"
                     android:layout_width="match_parent"
@@ -192,7 +209,8 @@
                     android:singleLine="true"
                     android:text="请选择病名或证型"
                     android:textColor="@color/color_999"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
