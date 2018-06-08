@@ -75,7 +75,7 @@ public class CheckPaperH5Activity extends BaseActivity implements ProgressWebVie
     private String titleStr, urlStr, webType;
     private boolean hasTopBar;//带头部导航栏
     private int checkPaperID = -1;//审核处方 id
-
+    private ToolbarBuilder toolbarBuilder;
 
     @Override
     protected int provideRootLayout() {
@@ -98,7 +98,7 @@ public class CheckPaperH5Activity extends BaseActivity implements ProgressWebVie
             initToolbar();
         } else {
             idToolbar.setVisibility(View.GONE);
-            ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
+            toolbarBuilder = ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                     .setStatuBar(R.color.white)
                     .bind();
         }
@@ -123,7 +123,7 @@ public class CheckPaperH5Activity extends BaseActivity implements ProgressWebVie
 
     //共同头部处理
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
+        toolbarBuilder = ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle(TextUtils.isEmpty(titleStr) ? wbWebview.getTitle() : titleStr)
                 .setLeft(false)
                 .isShowClose(false)//是否显示close
@@ -183,11 +183,15 @@ public class CheckPaperH5Activity extends BaseActivity implements ProgressWebVie
     }
 
     @Override
-    public void onError(int type) {
+    public void onError(int type, String webTitle) {
         switch (type) {
             case 0://正常页面
                 lltWeb.setVisibility(View.VISIBLE);
                 rltError.setVisibility(View.GONE);
+                //title
+                if (hasTopBar && toolbarBuilder != null) {
+                    toolbarBuilder.setTitle(TextUtils.isEmpty(titleStr) ? webTitle : titleStr);
+                }
                 lltWeb.postDelayed(new Runnable() {
                     @Override
                     public void run() {

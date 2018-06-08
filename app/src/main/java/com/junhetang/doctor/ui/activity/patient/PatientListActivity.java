@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -100,7 +101,7 @@ public class PatientListActivity extends BaseActivity implements PatientContact.
                 if (formType == 0) {
                     commonDialog = new CommonDialog(PatientListActivity.this,
                             false,
-                            ("确认发送给：\n" + dataList.get(position).nick_name),
+                            ("确认发送给:\n" + (TextUtils.isEmpty(dataList.get(position).remark_name) ? dataList.get(position).nick_name : dataList.get(position).remark_name)),
                             new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {

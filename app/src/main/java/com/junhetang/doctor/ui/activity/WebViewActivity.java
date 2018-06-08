@@ -89,8 +89,11 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
         webType = getIntent().getStringExtra("webType");
 
         LogUtil.d(urlStr);
-//        urlStr = "http://www.123qwesfasdf.com/";
         wbWebview.setErrorCallback(this);
+        //js and java 交互
+        wbWebview.addJavascriptInterface(new JSWebInterface(), "Android");
+        wbWebview.loadUrl(urlStr);
+
         //是否有导航头
         if (hasTopBar) {
             initToolbar();
@@ -100,9 +103,6 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
                     .setStatuBar(R.color.white)
                     .bind();
         }
-        //js and java 交互
-        wbWebview.addJavascriptInterface(new JSWebInterface(), "Android");
-        wbWebview.loadUrl(urlStr);
     }
 
     @OnClick(R.id.btn_error_reload)
@@ -113,7 +113,7 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
     //共同头部处理
     private void initToolbar() {
         toolbarBuilder = ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
-                .setTitle(TextUtils.isEmpty(titleStr) ? wbWebview.getTitle() : titleStr)
+                .setTitle(TextUtils.isEmpty(titleStr) ? "" : titleStr)
                 .setLeft(false)
                 //.isShowClose(true)//是否显示close
                 .setStatuBar(R.color.white)
@@ -186,11 +186,14 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
     }
 
     @Override
-    public void onError(int type) {
+    public void onError(int type, String webTitle) {
         switch (type) {
             case 0://正常页面
                 wbWebview.setVisibility(View.VISIBLE);
                 rltError.setVisibility(View.GONE);
+                if (hasTopBar && toolbarBuilder != null) {
+                    toolbarBuilder.setTitle(TextUtils.isEmpty(titleStr) ? webTitle : titleStr);
+                }
                 break;
             case 1://无网络
                 wbWebview.setVisibility(View.GONE);
@@ -230,7 +233,7 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
                 break;
         }
     }
-    
+
     @Override
     protected boolean useEventBus() {
         return true;

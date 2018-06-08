@@ -60,7 +60,7 @@
         android:singleLine="false"
         android:maxLines="6"
         android:scrollbars="vertical"
-        android:lineSpacingExtra="10dp"
+        android:lineSpacingExtra="6dp"
         android:paddingBottom="10dp"
         android:paddingLeft="34dp"
         android:paddingRight="34dp"

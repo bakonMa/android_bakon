@@ -131,7 +131,7 @@ public class ProgressWebView extends WebView implements OnKeyListener {
             //加载失败
             if (errorCallback != null) {
 //                errorCallback.onError(isError);
-                errorCallback.onError(0);
+                errorCallback.onError(0, view.getTitle());
             }
             ProgressWebView.this.setEnabled(true);
             //页面finish后再发起图片加载
@@ -212,7 +212,7 @@ public class ProgressWebView extends WebView implements OnKeyListener {
 
     //错误的监听回调
     public interface ErrorCallback {
-        void onError(int type);
+        void onError(int type, String title);
     }
 
 }

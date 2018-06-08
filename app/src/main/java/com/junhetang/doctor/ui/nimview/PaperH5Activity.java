@@ -80,6 +80,7 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
     private boolean hasTopBar;//带头部导航栏
     private int formParent = 0;//是否来自聊天(0 默认不是 1：聊天)
     private String askPapertypeID = "";//男性，女性，儿童  问诊单需要
+    private ToolbarBuilder toolbarBuilder;
 
     //带有返回的startActivityForResult-仅限nim中使用
     //paccid 患者accid
@@ -118,7 +119,7 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
             initToolbar();
         } else {
             idToolbar.setVisibility(View.GONE);
-            ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
+            toolbarBuilder = ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                     .setStatuBar(R.color.white)
                     .bind();
         }
@@ -138,7 +139,7 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
 
     //共同头部处理
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
+        toolbarBuilder = ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle(TextUtils.isEmpty(titleStr) ? wbWebview.getTitle() : titleStr)
                 .setLeft(false)
                 .isShowClose(false)//是否显示close
@@ -198,11 +199,14 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
     }
 
     @Override
-    public void onError(int type) {
+    public void onError(int type, String webTitle) {
         switch (type) {
             case 0://正常页面
                 wbWebview.setVisibility(View.VISIBLE);
                 rltError.setVisibility(View.GONE);
+                if (hasTopBar && toolbarBuilder != null) {
+                    toolbarBuilder.setTitle(TextUtils.isEmpty(titleStr) ? webTitle : titleStr);
+                }
                 break;
             case 1://无网络
                 wbWebview.setVisibility(View.GONE);
