@@ -1,6 +1,7 @@
 package com.junhetang.doctor.ui.activity.login;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,9 +23,11 @@ import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.contact.LoginContact;
 import com.junhetang.doctor.ui.presenter.LoginPresenter;
 import com.junhetang.doctor.utils.ToastUtil;
+import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
+import com.netease.nim.uikit.api.NimUIKit;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
 import java.lang.ref.WeakReference;
@@ -93,8 +96,12 @@ public class ResetPasswordActivity extends BaseActivity implements LoginContact.
     @Override
     protected void initView() {
         title = getIntent().getStringExtra("title");
-        if(TextUtils.isEmpty(title)){
+        //修改密码 不能填入手机号
+        if (TextUtils.isEmpty(title)) {
             title = "修改密码";
+            etPhone.setText(U.getPhone());
+            etPhone.setEnabled(false);
+            ivPhoneClean.setVisibility(View.GONE);
         }
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle(title)
@@ -220,8 +227,12 @@ public class ResetPasswordActivity extends BaseActivity implements LoginContact.
                 timeDown();
                 break;
             case LoginPresenter.RESETPWD_SUCCESS://密码修改成功
-                ToastUtil.show("密码修改成功");
-                finish();
+                ToastUtil.show("密码修改成功，请重新登录");
+                U.logout();
+                NimUIKit.logout();
+                //关闭所有activity
+                DocApplication.getAppComponent().mgrRepo().actMgr().finishAllActivity();
+                startActivity(new Intent(DocApplication.getInstance(), LoginActivity.class));
                 break;
         }
     }
