@@ -8,8 +8,6 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <include layout="@layout/base_toolbar" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
@@ -22,12 +20,12 @@
             android:id="@+id/et_serch"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/shape_stroke_bg_10"
             android:layout_toStartOf="@+id/tv_search"
+            android:background="@drawable/shape_stroke_bg_10"
             android:drawableLeft="@drawable/nim_actionbar_search_dark_icon"
             android:drawablePadding="5dp"
             android:gravity="center_vertical"
-            android:hint="就诊人姓名、联系电话"
+            android:hint="输入处方名称搜索"
             android:imeOptions="actionSearch"
             android:maxLength="20"
             android:paddingLeft="8dp"
@@ -40,19 +38,19 @@
             android:id="@+id/iv_clear"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_toStartOf="@+id/tv_search"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
+            android:layout_toStartOf="@+id/tv_search"
             android:src="@drawable/icon_close_2"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_search"
             android:layout_width="50dp"
-            android:layout_alignParentRight="true"
             android:layout_height="match_parent"
-            android:text="搜索"
+            android:layout_alignParentRight="true"
             android:gravity="center"
+            android:text="搜索"
             android:textColor="@color/color_main"
             android:textSize="14sp" />
     </RelativeLayout>

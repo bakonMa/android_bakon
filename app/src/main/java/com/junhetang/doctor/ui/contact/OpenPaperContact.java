@@ -17,7 +17,7 @@ public interface OpenPaperContact {
     interface Presenter extends BasePresenter {
         void uploadImg(String path, String type);
 
-        void openPaperCamera(Params params);//拍照开方
+        void openPaperCamera(Params params);//拍照开方 v1.0.3开始使用
 
         void openPaperOnline(Params params);//在线开方
 
@@ -25,9 +25,9 @@ public interface OpenPaperContact {
 
         void searchDrugName(int store_id, String name);//搜索药材名称
 
-        void searchDrugPaperById(int store_id, int id);//药材中的处方 开方需要store_id，添加常用处方不需要
+        void searchDrugPaperById(int store_id, int id, int type);//药材中的处方 开方需要store_id，添加常用处方不需要
 
-        void getOftenmedList();//常用处方列表
+        void getOftenmedList(int page, int type, String searchStr);//常用/经典处方列表
 
         void addOftenmed(Params params);//添加常用处方
 

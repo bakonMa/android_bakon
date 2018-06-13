@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.webkit.JavascriptInterface;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,6 +20,7 @@ import com.junhetang.doctor.R;
 import com.junhetang.doctor.config.EventConfig;
 import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.data.eventbus.EventBusUtil;
+import com.junhetang.doctor.ui.activity.patient.AddPatientJZRActivity;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.H5JsonBean;
 import com.junhetang.doctor.utils.FileUtil;
@@ -58,6 +61,8 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
     RelativeLayout rltError;
     @BindView(R.id.wb_webview)
     ProgressWebView wbWebview;
+    @BindView(R.id.tv_add_jzr)
+    TextView tvAddPatient;
 
     //标题，url
     private String titleStr, urlStr, webType;
@@ -105,9 +110,16 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
         }
     }
 
-    @OnClick(R.id.btn_error_reload)
-    void relodBtn() {
-        wbWebview.reload();
+    @OnClick({R.id.btn_error_reload, R.id.tv_add_jzr})
+    void relodBtn(View view) {
+        switch (view.getId()) {
+            case R.id.btn_error_reload:
+                wbWebview.reload();
+                break;
+            case R.id.tv_add_jzr:
+                startActivity(new Intent(this, AddPatientJZRActivity.class));
+                break;
+        }
     }
 
     //共同头部处理
@@ -165,6 +177,7 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
         switch (webType) {
             case WEB_TYPE.WEB_TYPE_MYCARD://我的卡片 右边显示分享
                 toolbarBuilder.setRightImg(R.drawable.icon_threepoint, true);
+                tvAddPatient.setVisibility(View.VISIBLE);
                 break;
         }
 
@@ -178,11 +191,23 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
 
     @Override
     protected void onDestroy() {
+        if (wbWebview != null) {
+            // 如果先调用destroy()方法，则会命中if (isDestroyed()) return;这一行代码，需要先onDetachedFromWindow()，再
+            // destory()
+            ViewParent parent = wbWebview.getParent();
+            if (parent != null) {
+                ((ViewGroup) parent).removeView(wbWebview);
+            }
+
+            wbWebview.removeJavascriptInterface("Android");
+            wbWebview.stopLoading();
+            // 退出时调用此方法，移除绑定的服务，否则某些特定系统会报错
+            wbWebview.getSettings().setJavaScriptEnabled(false);
+            wbWebview.clearHistory();
+            wbWebview.removeAllViews();
+            wbWebview.destroy();
+        }
         super.onDestroy();
-        wbWebview.removeJavascriptInterface("Android");
-        wbWebview.clearHistory();
-        wbWebview.removeAllViews();
-        wbWebview.destroy();
     }
 
     @Override

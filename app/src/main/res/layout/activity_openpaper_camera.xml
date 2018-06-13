@@ -18,9 +18,184 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:paddingLeft="15dp"
+                android:text="上传处方照片"
+                android:textColor="@color/color_main"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="请拍照或从相册选择图片上传处方（最多可上传3张）"
+                android:textColor="@color/color_999"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/iv_img1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/img_default_1"
+                        android:scaleType="centerInside" />
+
+                    <ImageView
+                        android:id="@+id/iv_img1_clean"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="6dp"
+                        android:background="@drawable/icon_img_del"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/iv_img2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/img_default_1"
+                        android:scaleType="centerInside" />
+
+                    <ImageView
+                        android:id="@+id/iv_img2_clean"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="6dp"
+                        android:background="@drawable/icon_img_del"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/iv_img3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="6dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/img_default_1"
+                        android:scaleType="centerInside" />
+
+                    <ImageView
+                        android:id="@+id/iv_img3_clean"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/icon_img_del"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/white"
+                android:drawableLeft="@drawable/attention"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="格式为jpg/png/gif，请确保图片内文字清晰可见"
+                android:textColor="@color/color_999"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:paddingLeft="15dp"
+                android:text="补充信息（非必填）"
+                android:textColor="@color/color_main"
+                android:textSize="14sp" />
+
+            <com.junhetang.doctor.widget.EditableLayout
+                android:id="@+id/et_drugclass"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                app:edit_editTextHint="请选择剂型"
+                app:edit_leftText="剂型"
+                app:edit_mode="select"
+                app:edit_textMainSize="16sp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="诊疗费"
+                    android:textColor="@color/color_000"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/et_serverprice"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="诊疗费"
+                    android:inputType="number"
+                    android:maxLength="5"
+                    android:textCursorDrawable="@drawable/color_cursor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="元"
+                    android:textColor="@color/color_000"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -34,7 +209,10 @@
                     android:textColor="@color/color_main"
                     android:textSize="16sp" />
 
-                <View style="@style/line_gray_ver" />
+                <View
+                    style="@style/line_gray_ver"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp" />
 
                 <TextView
                     android:id="@+id/tv_editepatient"
@@ -172,243 +350,6 @@
 
             </LinearLayout>
 
-
-            <com.junhetang.doctor.widget.EditableLayout
-                android:id="@+id/et_drugstore"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                app:edit_editTextHint="请选择药房"
-                app:edit_leftText="药房"
-                app:edit_mode="select"
-                app:edit_textMainSize="16sp"
-                app:isShowLineBottom="false" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="10dp"
-                    android:text="请拍照或从相册选择图片上传处方（最多可上传3张）"
-                    android:textColor="@color/color_999"
-                    android:textSize="12sp" />
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="85dp"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="horizontal">
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <ImageView
-                            android:id="@+id/iv_img1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/img_default_1"
-                            android:scaleType="centerInside" />
-
-                        <ImageView
-                            android:id="@+id/iv_img1_clean"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginRight="6dp"
-                            android:background="@drawable/icon_img_del"
-                            android:visibility="gone" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <ImageView
-                            android:id="@+id/iv_img2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/img_default_1"
-                            android:scaleType="centerInside" />
-
-                        <ImageView
-                            android:id="@+id/iv_img2_clean"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginRight="6dp"
-                            android:background="@drawable/icon_img_del"
-                            android:visibility="gone" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-
-                        <ImageView
-                            android:id="@+id/iv_img3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="6dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/img_default_1"
-                            android:scaleType="centerInside" />
-
-                        <ImageView
-                            android:id="@+id/iv_img3_clean"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:background="@drawable/icon_img_del"
-                            android:visibility="gone" />
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/attention"
-                    android:drawablePadding="5dp"
-                    android:paddingBottom="10dp"
-                    android:text="格式为JPG/PNG/GIF，请确保图片内文字清晰可见。"
-                    android:textColor="@color/color_999"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingLeft="15dp"
-                android:text="温馨提示：汤剂代煎费及其他剂型加工费，以药房实际计算为准。"
-                android:textColor="@color/color_999"
-                android:textSize="10sp" />
-
-            <com.junhetang.doctor.widget.EditableLayout
-                android:id="@+id/et_drugclass"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="@color/white"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                app:edit_leftText="剂型"
-                app:edit_mode="select"
-                app:edit_textMainSize="16sp" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="@color/white"
-                android:paddingLeft="15dp">
-
-                <TextView
-                    android:id="@+id/tv_temp"
-                    android:layout_width="80dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:text="代煎"
-                    android:textColor="@color/color_000"
-                    android:textSize="16sp" />
-
-                <RadioGroup
-                    android:id="@+id/rg_daijian"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toRightOf="@+id/tv_temp"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/rb_yes"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:button="@drawable/selector_radiobutton"
-                        android:checked="true"
-                        android:paddingLeft="20dp"
-                        android:text="是"
-                        android:textSize="16sp" />
-
-                    <RadioButton
-                        android:id="@+id/rb_no"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:button="@drawable/selector_radiobutton"
-                        android:paddingLeft="20dp"
-                        android:text="否"
-                        android:textSize="16sp" />
-                </RadioGroup>
-
-                <View
-                    style="@style/line_gray_hor"
-                    android:layout_alignParentBottom="true" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="@color/white"
-                android:orientation="horizontal"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="开方补充收费"
-                    android:textColor="@color/color_000"
-                    android:textSize="16sp" />
-
-                <EditText
-                    android:id="@+id/et_serverprice"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:hint="开方补充收费"
-                    android:inputType="number"
-                    android:maxLength="5"
-                    android:paddingLeft="15dp"
-                    android:textCursorDrawable="@drawable/color_cursor"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="元"
-                    android:textColor="@color/color_000"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
-
             <TextView
                 android:id="@+id/tv_next_step"
                 android:layout_width="match_parent"
@@ -419,7 +360,7 @@
                 android:clickable="true"
                 android:enabled="true"
                 android:gravity="center"
-                android:text="确认提交处方"
+                android:text="提交处方"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
         </LinearLayout>

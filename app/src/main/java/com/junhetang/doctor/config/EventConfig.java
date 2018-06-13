@@ -39,5 +39,6 @@ public interface EventConfig {
     int EVENT_KEY_SERVICE_INFO= 0x132;//异步获取客服资料
 
     int EVENT_KEY_CHOOSE_JIUZHEN_HISTORY= 0x133;//选择历史就诊人
+    int EVENT_KEY_CHOOSE_COMM_PAPER= 0x134;//选择常用处方
 
 }

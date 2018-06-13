@@ -110,7 +110,7 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
     public void openPaperCamera(Params params) {
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
         Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
-                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().photoExtraction(params))
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().photoExtractionNew(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null)
@@ -202,10 +202,12 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
     }
 
     @Override
-    public void searchDrugPaperById(int store_id, int id) {
+    public void searchDrugPaperById(int store_id, int id, int type) {
+        //Type 2：常用处方 3：经典处方
         Params params = new Params();
         params.put("store_id", store_id);
         params.put("id", id);
+        params.put("datatype", type);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
         Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getOftenmedInfo(params))
@@ -228,18 +230,21 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
     }
 
     @Override
-    public void getOftenmedList() {
+    public void getOftenmedList(int page, int type, String searchStr) {
         Params params = new Params();
+        params.put("page", page);
+        params.put("type", type);
+        params.put("search", searchStr);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
         Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
-                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getOftenmedList(params))
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getOftenmedList2(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
                     if (mDialog != null)
                         mDialog.show();
-                }).subscribe(new BaseObserver<HttpResponse<List<CommPaperBean>>>(mDialog) {
+                }).subscribe(new BaseObserver<HttpResponse<BasePageBean<CommPaperBean>>>(mDialog) {
                     @Override
-                    public void onSuccess(HttpResponse<List<CommPaperBean>> personalBeanHttpResponse) {
+                    public void onSuccess(HttpResponse<BasePageBean<CommPaperBean>> personalBeanHttpResponse) {
                         mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_COMMPAPER_LIST_OK));
                     }
 

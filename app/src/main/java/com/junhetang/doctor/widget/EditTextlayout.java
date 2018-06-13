@@ -7,6 +7,7 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Selection;
 import android.text.Spannable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -123,7 +124,7 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
         deleteImage.setOnClickListener(this);
     }
 
-    private void setClearImageVisible(boolean isShow) {
+    public void setClearImageVisible(boolean isShow) {
         if (isShow) {
             deleteImage.setVisibility(VISIBLE);
         } else {
@@ -185,28 +186,37 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
     public String getText() {
         return showText.getText().toString();
     }
+
     //设置text
     public void setText(String text) {
         mEditText.setVisibility(GONE);
         showText.setText(text);
         showText.setVisibility(VISIBLE);
     }
+
     //**********EditText*********************
     public EditText getEditText() {
         return mEditText;
     }
+
     //设置EditText的text
     public void setEditeText(String str) {
+        if (TextUtils.isEmpty(str)) {
+            str = "";
+        }
         mEditText.setVisibility(VISIBLE);
         mEditText.setText(str);
+        mEditText.setSelection(str.length());
         showText.setText("");
         showText.setVisibility(GONE);
     }
+
     //设置EditText是否可以编辑
     public void setEditeEnable(boolean isEnable) {
         mEditText.setEnabled(isEnable);
         setClearImageVisible(false);
     }
+
     //设置EditText输入长度
     public void setMaxLength(int length) {
         mEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(length)});

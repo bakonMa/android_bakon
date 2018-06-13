@@ -10,6 +10,11 @@ public interface Constant {
     String UPLOADIMG_TYPE_1 = "1";
     String UPLOADIMG_TYPE_2 = "2";
 
+    int PAPER_TYPE_2 = 2;//常用处方-查询药物列表详情
+    int PAPER_TYPE_3 = 3;//经典处方-查询药物列表详情
+
+
+
     //下载链接（可以使用应用宝的推广链接）
 //    String APP_SHARE_URL = "http://a.app.qq.com/o/simple.jsp?pkgname=com.junhetang.doctor";
 

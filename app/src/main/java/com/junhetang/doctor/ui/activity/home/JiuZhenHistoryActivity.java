@@ -1,6 +1,7 @@
 package com.junhetang.doctor.ui.activity.home;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -25,6 +26,7 @@ import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
+import com.junhetang.doctor.ui.activity.patient.AddPatientJZRActivity;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
@@ -70,6 +72,7 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
     private BaseQuickAdapter mAdapter;
     private int pageNum = 1;
     private String searchStr = "";
+    private boolean isChoose = false;//是否是选择操作
 
     @Override
     protected int provideRootLayout() {
@@ -78,6 +81,7 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
 
     @Override
     protected void initView() {
+        isChoose = getIntent().getBooleanExtra("isChoose", false);
         initToolbar();
 
         //下拉刷新
@@ -111,8 +115,15 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter mAdapter, View view, int position) {
-                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_CHOOSE_JIUZHEN_HISTORY, jiuZhenHistoryBeans.get(position)));
-                finish();
+                if (isChoose) {
+                    EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_CHOOSE_JIUZHEN_HISTORY, jiuZhenHistoryBeans.get(position)));
+                    finish();
+                } else {
+                    Intent intent = new Intent(JiuZhenHistoryActivity.this, AddPatientJZRActivity.class);
+                    intent.putExtra("bean", jiuZhenHistoryBeans.get(position));
+                    intent.putExtra("isEdite", true);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -140,7 +151,7 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
 
     //共同头部处理
     private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
+        ToolbarBuilder toolbarBuilder = ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle("处方联系人")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
@@ -150,7 +161,17 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
                         super.leftClick();
                         finish();
                     }
+
+                    @Override
+                    public void rightClick() {
+                        super.rightClick();
+                        startActivity(new Intent(JiuZhenHistoryActivity.this, AddPatientJZRActivity.class));
+                    }
                 }).bind();
+
+        if (!isChoose) {
+            toolbarBuilder.setRightImg(R.drawable.icon_add_bank, true);
+        }
     }
 
     //搜索监听
@@ -165,9 +186,22 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
         }
     }
 
-    @OnClick(R.id.iv_clear)
-    public void cleanClick() {
-        etSerch.setText("");
+    @OnClick({R.id.iv_clear, R.id.tv_search})
+    public void cleanClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_clear:
+                etSerch.setText("");
+                break;
+            case R.id.tv_search:
+                KeyBoardUtils.hideKeyBoard(etSerch, actContext());
+                if (TextUtils.isEmpty(etSerch.getText().toString().trim())
+                        || !searchStr.equals(etSerch.getText().toString().trim())) {
+                    pageNum = 1;
+                }
+                searchStr = etSerch.getText().toString().trim();
+                mPresenter.getJiuZhenHistoryList(pageNum, searchStr);
+                break;
+        }
     }
 
     @Override

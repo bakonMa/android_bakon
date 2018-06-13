@@ -16,6 +16,8 @@ public class CommPaperBean {
      */
 
     public int id;
+    public int type;
+    public String type_name;
     public String title;
     public String m_explain;
     public boolean isCheck;//view选择使用，默认false

@@ -200,8 +200,8 @@ public interface HttpAPI {
     Observable<HttpResponse<OtherBean>> updateToken(@Body Params params);
 
     //拍照开方
-    @POST("photo_extraction")
-    Observable<HttpResponse<String>> photoExtraction(@QueryMap Params params);
+    @POST("newphoto_extraction")
+    Observable<HttpResponse<String>> photoExtractionNew(@QueryMap Params params);
 
     //在线开方
     @POST("line_extraction")
@@ -230,6 +230,10 @@ public interface HttpAPI {
     //常用方列表
     @POST("oftenmed_list")
     Observable<HttpResponse<List<CommPaperBean>>> getOftenmedList(@Body Params params);
+
+    //常用方列表
+    @POST("oftenmed_list")
+    Observable<HttpResponse<BasePageBean<CommPaperBean>>> getOftenmedList2(@Body Params params);
 
     //添加常用方列表
     @POST("often_medicinal")

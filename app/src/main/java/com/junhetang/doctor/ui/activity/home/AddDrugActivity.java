@@ -20,13 +20,15 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.google.gson.Gson;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
+import com.junhetang.doctor.config.EventConfig;
+import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.ui.base.BaseActivity;
-import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
 import com.junhetang.doctor.ui.bean.CommPaperInfoBean;
 import com.junhetang.doctor.ui.bean.DrugBean;
+import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
 import com.junhetang.doctor.ui.bean.SearchDrugBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
@@ -41,6 +43,9 @@ import com.junhetang.doctor.widget.popupwindow.OnePopupWheel;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -71,6 +76,8 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
     TextView tvCommpaper;
     @BindView(R.id.tv_totalmoney)
     TextView tvTotalmoney;
+    @BindView(R.id.et_searchcontent)
+    EditText etSearch;
 
     @Inject
     OpenPaperPresenter mPresenter;
@@ -226,9 +233,12 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
         adapterSearch = new BaseQuickAdapter<SearchDrugBean, BaseViewHolder>(R.layout.item_search_drug, searchSearchDrugBeans) {
             @Override
             protected void convert(BaseViewHolder helper, SearchDrugBean item) {
-                helper.setText(R.id.tv_drugname, item.name)
-                        .setGone(R.id.tv_drugprice, item.datatype == 1)
-                        .setText(R.id.tv_drugprice, item.price + "元/" + item.unit);
+                helper.setText(R.id.tv_drugname, item.name);
+                if (item.datatype == 1) {//药物
+                    helper.setText(R.id.tv_drugprice, item.price + "元/" + item.unit);
+                } else {//处方
+                    helper.setText(R.id.tv_drugprice, TextUtils.isEmpty(item.type_title) ? "" : item.type_title);
+                }
             }
         };
         searchRecycleview.setAdapter(adapterSearch);
@@ -253,8 +263,9 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                     upDataDrugList(drugBean, true);
                 } else {
                     //获取处方信息
-                    mPresenter.searchDrugPaperById(drugStoreId, bean.id);
+                    mPresenter.searchDrugPaperById(drugStoreId, bean.id, bean.datatype);
                 }
+                etSearch.setText("");
             }
         });
     }
@@ -302,7 +313,6 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
         scrollView.fullScroll(ScrollView.FOCUS_DOWN);
         //更新价格
         updataTotalMoney();
-
     }
 
     //输入搜索监听
@@ -328,8 +338,8 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                 tvTotalmoney.setText("预计：0元");
                 break;
             case R.id.tv_commpaper://常用处方
-                Intent intent = new Intent(this, CommUsePaperActivity.class);
-                intent.putExtra("form", 1);//进入选择方子
+                Intent intent = new Intent(this, ChooseCommActivity.class);
+//                intent.putExtra("form", 1);//进入选择方子
                 intent.putExtra("store_id", drugStoreId);//药房id
                 startActivityForResult(intent, REQUEST_CODE_SHOOSE_COMMPAPER);
                 break;
@@ -506,6 +516,29 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
     public void onError(String errorCode, String errorMsg) {
         CommonDialog commonDialog = new CommonDialog(this, errorMsg);
         commonDialog.show();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventCome(Event event) {
+        if (event == null) {
+            return;
+        }
+        switch (event.getCode()) {
+            case EventConfig.EVENT_KEY_CHOOSE_COMM_PAPER://选择常用处方 回调
+                ArrayList<CommPaperInfoBean> commbeans = (ArrayList<CommPaperInfoBean>) event.getData();
+                conversionDrugBean(commbeans);
+                //修改全局状态
+                hasError = false;
+                adapter.notifyDataSetChanged();
+                //更新价格
+                updataTotalMoney();
+                break;
+        }
+    }
+
+    @Override
+    public boolean useEventBus() {
+        return true;
     }
 
     @Override

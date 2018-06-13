@@ -100,16 +100,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     EditTextlayout etAge;
     @BindView(R.id.et_phone)
     EditTextlayout etPhone;
-    @BindView(R.id.et_drugstore)
-    EditableLayout etDrugstore;
     @BindView(R.id.et_drugclass)
     EditableLayout etDrugClass;
-    @BindView(R.id.rb_yes)
-    RadioButton rbYes;
-    @BindView(R.id.rb_no)
-    RadioButton rbNo;
-    @BindView(R.id.rg_daijian)
-    RadioGroup rgDaijian;
     @BindView(R.id.iv_img1)
     ImageView ivImg1;
     @BindView(R.id.iv_img2)
@@ -133,15 +125,13 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     OpenPaperPresenter mPresenter;
 
     private int formParent = 0;//是否来自聊天(0 默认不是 1：聊天)
-    private int storeId, drugClassId;
+    private int drugClassId = 0;
     private int sexType = 0;
-    private int daijianType = 0;
     private String membNo = "";//患者编号，选择患者才有
     private int relationship = 4;//就诊人关系（不是选择 默认4-其他）
     private String pAccid = "";//患者云信 accid
 
     private OPenPaperBaseBean baseBean;
-    private List<String> drugStoreList = new ArrayList<>();//药房
     private List<String> drugClassList = new ArrayList<>();//剂型
     private OnePopupWheel mPopupWheel;
     private CameraPopupView cameraPopupView;
@@ -180,23 +170,11 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 sexType = (i == R.id.rb_nan ? 0 : 1);
             }
         });
-        //代煎
-        rgDaijian.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                daijianType = (i == R.id.rb_yes ? 0 : 1);
-            }
-        });
-
     }
 
     //初始base数据
     private void initBaseData() {
         baseBean = U.getOpenpapeBaseData();
-        //药房
-        for (OPenPaperBaseBean.StoreBean bean : baseBean.store) {
-            drugStoreList.add(bean.drug_store_name);
-        }
         //剂型
         for (OPenPaperBaseBean.CommBean bean : baseBean.drug_class) {
             drugClassList.add(bean.name);
@@ -222,7 +200,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private String imgPath1, imgPath2, imgPath3;
     private int currImg;
 
-    @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugstore, R.id.et_drugclass,
+    @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugclass,
             R.id.iv_img1, R.id.iv_img2, R.id.iv_img3, R.id.iv_img1_clean, R.id.iv_img2_clean,
             R.id.iv_img3_clean, R.id.tv_choose_history, R.id.tv_next_step})
     public void tabOnClick(View view) {
@@ -242,17 +220,9 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 writeJzInfo();
                 break;
             case R.id.tv_choose_history://选择历史就诊人
-                startActivity(new Intent(this, JiuZhenHistoryActivity.class));
-                break;
-            case R.id.et_drugstore://药房
-                mPopupWheel = new OnePopupWheel(this, drugStoreList, "请选择药房", new OnePopupWheel.Listener() {
-                    @Override
-                    public void completed(int position) {
-                        storeId = baseBean.store.get(position).drug_store_id;
-                        etDrugstore.setText(drugStoreList.get(position));
-                    }
-                });
-                mPopupWheel.show(scrollView);
+                Intent intentChoose = new Intent(this, JiuZhenHistoryActivity.class);
+                intentChoose.putExtra("isChoose", true);
+                startActivity(intentChoose);
                 break;
             case R.id.et_drugclass://剂型
                 mPopupWheel = new OnePopupWheel(this, drugClassList, "请选择剂型", new OnePopupWheel.Listener() {
@@ -354,25 +324,13 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
 
     //数据检测
     private void checkData() {
-        if (TextUtils.isEmpty(etName.getEditText().getText())
-                || TextUtils.isEmpty(etAge.getEditText().getText())) {
-            ToastUtil.showShort("请填写就诊人信息");
-            return;
-        }
-        if (TextUtils.isEmpty(etDrugstore.getText())) {
-            ToastUtil.showShort("请选择药房");
-            return;
-        }
-        if (TextUtils.isEmpty(etDrugClass.getText())) {
-            ToastUtil.showShort("请选择剂型");
-            return;
-        }
         if (TextUtils.isEmpty(imgPath1)
                 && TextUtils.isEmpty(imgPath2)
                 && TextUtils.isEmpty(imgPath3)) {
             ToastUtil.showShort("请上传处方照片");
             return;
         }
+
         //图片路径拼接
         StringBuffer imgPath = new StringBuffer();
         if (!TextUtils.isEmpty(imgPath1)) {
@@ -392,14 +350,14 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
             params.put("memb_no", membNo);
         }
         params.put("relationship", relationship);
+        //就诊人信息
         params.put("name", etName.getEditText().getText());
         params.put("sex", sexType);
         params.put("age", etAge.getEditText().getText());
         params.put("phone", etPhone.getEditText().getText());
-        params.put("store_id", storeId);
+
         params.put("drug_class", drugClassId);
         params.put("img_url", imgPath.toString());
-        params.put("boiled_type", daijianType);
         //补充收费
         if (!TextUtils.isEmpty(etServerprice.getText().toString().trim())) {
             params.put("service_price", etServerprice.getText().toString().trim());

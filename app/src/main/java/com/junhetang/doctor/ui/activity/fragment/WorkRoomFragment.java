@@ -28,6 +28,7 @@ import com.junhetang.doctor.receiver.XGInitManager;
 import com.junhetang.doctor.ui.activity.WebViewActivity;
 import com.junhetang.doctor.ui.activity.home.CheckPaperActivity;
 import com.junhetang.doctor.ui.activity.home.CommUsePaperActivity;
+import com.junhetang.doctor.ui.activity.home.JiuZhenHistoryActivity;
 import com.junhetang.doctor.ui.activity.home.LogoutActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperCameraActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperOnlineActivity;
@@ -378,7 +379,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     }
 
     @OnClick({R.id.tv_add_patient, R.id.tv_online_paper, R.id.tv_camera_patient, R.id.tv_comm_paper,
-            R.id.tv_ask_paper, R.id.tv_flow_paper, R.id.tv_checkpaper, R.id.tv_notice})
+            R.id.tv_ask_paper, R.id.tv_flow_paper, R.id.tv_checkpaper, R.id.tv_notice, R.id.id_patient_jzr})
     void btnOnClick(View view) {
         //认证是否通过
         if (!U.isHasAuthOK()) {
@@ -402,6 +403,9 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
             case R.id.tv_add_patient://添加患者
                 //个人卡片
                 WebViewActivity.startAct(actContext(), true, WebViewActivity.WEB_TYPE.WEB_TYPE_MYCARD, H5Config.H5_USERCARD_TITLE, H5Config.H5_USERCARD);
+                break;
+            case R.id.id_patient_jzr://处方联系人列表
+                startActivity(new Intent(actContext(), JiuZhenHistoryActivity.class));
                 break;
             case R.id.tv_online_paper://在线开方
                 startActivity(new Intent(actContext(), OpenPaperOnlineActivity.class));

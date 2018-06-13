@@ -29,7 +29,7 @@ public class RequestInterceptor implements Interceptor {
                     .header(HttpConfig.HTTP_HEADER_CONTENTTYPE_KEY, HttpConfig.HTTP_HEADER_CONTENTTYPE_VALUE)
                     .header("OS", HttpConfig.HTTP_HEADER_OS)
                     .header("APPVERSION", BuildConfig.VERSION_NAME)
-                    .header("APPVERSION_CODE", BuildConfig.VERSION_CODE + "")
+                    .header("APPVERSION-CODE", BuildConfig.VERSION_CODE + "")
                     .header("MODEL", Build.MODEL)//手机型号
                     .header("RELEASE", Build.VERSION.RELEASE)//系统版本号
                     .header("TOKEN", U.getToken())//token

@@ -205,6 +205,11 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         for (OPenPaperBaseBean.StoreBean bean : baseBean.store) {
             drugStoreList.add(bean.drug_store_name);
         }
+        //药房默认选择第一
+        if(!drugStoreList.isEmpty()){
+            storeId = baseBean.store.get(0).drug_store_id;
+            etDrugstore.setText(baseBean.store.get(0).drug_store_name);
+        }
         //剂型
         for (OPenPaperBaseBean.CommBean bean : baseBean.drug_class) {
             drugClassList.add(bean.name);
@@ -255,7 +260,9 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 writeJzInfo();
                 break;
             case R.id.tv_choose_history://选择历史就诊人
-                startActivity(new Intent(this, JiuZhenHistoryActivity.class));
+                Intent intentChoose = new Intent(this, JiuZhenHistoryActivity.class);
+                intentChoose.putExtra("isChoose", true);
+                startActivity(intentChoose);
                 break;
             case R.id.tv_addcommpaper://添加为常用处方
                 if (drugBeans == null || drugBeans.isEmpty()) {
@@ -439,6 +446,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     //数据检测
     private void checkData() {
         if (TextUtils.isEmpty(etName.getEditText().getText())
+                || TextUtils.isEmpty(etPhone.getEditText().getText())
                 || TextUtils.isEmpty(etAge.getEditText().getText())) {
             commonDialog = new CommonDialog(this, "请填写就诊人信息");
             commonDialog.show();
@@ -593,9 +601,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 break;
         }
     }
-
-    //主述及辩证型
-    private String skilNameCode = "";
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

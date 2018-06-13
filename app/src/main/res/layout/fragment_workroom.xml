@@ -31,7 +31,8 @@
             android:background="@color/color_main"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingLeft="15dp">
+            android:paddingLeft="15dp"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="20dp"
@@ -51,9 +52,9 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                tools:text="君和中医审核消息"
                 android:textColor="@color/white"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                tools:text="君和中医审核消息" />
         </LinearLayout>
 
         <LinearLayout
@@ -264,6 +265,13 @@
                 android:layout_alignParentBottom="true" />
 
         </RelativeLayout>
+
+        <com.junhetang.doctor.widget.RelativeWithImage
+            android:id="@+id/id_patient_jzr"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            app:leftIamge="@drawable/icon_patient_book"
+            app:title="处方联系人" />
 
         <com.junhetang.doctor.widget.RelativeWithImage
             android:id="@+id/id_history"

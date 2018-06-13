@@ -8,6 +8,7 @@ import com.junhetang.doctor.injection.scopes.PerActivity;
 import com.junhetang.doctor.ui.activity.find.GuildNewsListActivity;
 import com.junhetang.doctor.ui.activity.fragment.MainActivity;
 import com.junhetang.doctor.ui.activity.home.AddDrugActivity;
+import com.junhetang.doctor.ui.activity.home.ChooseCommActivity;
 import com.junhetang.doctor.ui.activity.home.ChooseDocAdviceActivity;
 import com.junhetang.doctor.ui.activity.home.CommUsePaperActivity;
 import com.junhetang.doctor.ui.activity.home.JiuZhenHistoryActivity;
@@ -33,6 +34,7 @@ import com.junhetang.doctor.ui.activity.mine.wallet.DeleteBankCardActivity;
 import com.junhetang.doctor.ui.activity.mine.wallet.MyBankCardActivity;
 import com.junhetang.doctor.ui.activity.mine.wallet.WalletActivity;
 import com.junhetang.doctor.ui.activity.mine.wallet.WithdrawActivity;
+import com.junhetang.doctor.ui.activity.patient.AddPatientJZRActivity;
 import com.junhetang.doctor.ui.activity.patient.PatienHealthRecordActivity;
 import com.junhetang.doctor.ui.activity.patient.PatientFamilyActivity;
 import com.junhetang.doctor.ui.activity.patient.PatientListActivity;
@@ -131,5 +133,9 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(ChooseDocAdviceActivity chooseDocAdviceActivity);
 
     void inject(JiuZhenHistoryActivity jiuZhenHistoryActivity);
+
+    void inject(ChooseCommActivity chooseCommActivity);
+
+    void inject(AddPatientJZRActivity addPatientJZRActivity);
 
 }

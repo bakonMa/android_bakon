@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.webkit.JavascriptInterface;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -191,11 +193,23 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
 
     @Override
     protected void onDestroy() {
+        if (wbWebview != null) {
+            // 如果先调用destroy()方法，则会命中if (isDestroyed()) return;这一行代码，需要先onDetachedFromWindow()，再
+            // destory()
+            ViewParent parent = wbWebview.getParent();
+            if (parent != null) {
+                ((ViewGroup) parent).removeView(wbWebview);
+            }
+
+            wbWebview.removeJavascriptInterface("Android");
+            wbWebview.stopLoading();
+            // 退出时调用此方法，移除绑定的服务，否则某些特定系统会报错
+            wbWebview.getSettings().setJavaScriptEnabled(false);
+            wbWebview.clearHistory();
+            wbWebview.removeAllViews();
+            wbWebview.destroy();
+        }
         super.onDestroy();
-        wbWebview.removeJavascriptInterface("Android");
-        wbWebview.clearHistory();
-        wbWebview.removeAllViews();
-        wbWebview.destroy();
     }
 
     @Override

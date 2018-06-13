@@ -26,5 +26,6 @@ public class SearchDrugBean {
     public int use_flag;
     //数据类型，1:药品，2：处方
     public int datatype;
+    public String type_title;//处方的类型（处方）
 
 }

@@ -173,9 +173,22 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
         }
     }
 
-    @OnClick(R.id.iv_clear)
-    public void cleanClick() {
-        etSerch.setText("");
+    @OnClick({R.id.iv_clear, R.id.tv_search})
+    public void cleanClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_clear:
+                etSerch.setText("");
+                break;
+            case R.id.tv_search:
+                KeyBoardUtils.hideKeyBoard(etSerch, actContext());
+                if (TextUtils.isEmpty(etSerch.getText().toString().trim())
+                        || !searchStr.equals(etSerch.getText().toString().trim())) {
+                    pageNum = 1;
+                }
+                searchStr = etSerch.getText().toString().trim();
+                mPresenter.getPaperHistoryList(pageNum, searchStr);
+                break;
+        }
     }
 
     @Override

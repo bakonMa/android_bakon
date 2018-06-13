@@ -10,7 +10,20 @@
     <com.junhetang.doctor.widget.ProgressWebView
         android:id="@+id/wb_webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tv_add_jzr"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/selector_bg_button_login"
+        android:gravity="center"
+        android:text="手动添加患者"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/rlt_error"
