@@ -56,7 +56,7 @@
             android:id="@+id/btn_no"
             android:layout_width="80dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="50dp"
             android:background="@drawable/shape_bg_cancel"
             android:text="取消"
             android:textColor="@color/white"

@@ -26,6 +26,7 @@ import com.junhetang.doctor.ui.bean.CommPaperBean;
 import com.junhetang.doctor.ui.bean.CommPaperInfoBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
+import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
@@ -119,7 +120,7 @@ public class CommUsePaperActivity extends BaseActivity implements OpenPaperConta
                     adapter.notifyItemChanged(position);
                 } else {
                     clickTempPos = position;
-                    mPresenter.searchDrugPaperById(drugStoreId, beans.get(position).id, 1);
+                    mPresenter.searchDrugPaperById(drugStoreId, beans.get(position).id, Constant.PAPER_TYPE_2);
                 }
             }
         });

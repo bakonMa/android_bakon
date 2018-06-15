@@ -1,6 +1,7 @@
 package com.junhetang.doctor.ui.activity.patient;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,8 +12,10 @@ import android.widget.RadioGroup;
 
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
+import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
+import com.junhetang.doctor.ui.activity.home.JiuZhenHistoryActivity;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
 import com.junhetang.doctor.ui.contact.PatientContact;
@@ -114,15 +117,24 @@ public class AddPatientJZRActivity extends BaseActivity implements PatientContac
     }
 
     @OnClick(R.id.tv_save)
-    public void saveOnClick(View view) {
+    public void saveOnClick() {
         if (TextUtils.isEmpty(etName.getEditText().getText().toString().trim())
                 || TextUtils.isEmpty(etAge.getEditText().getText().toString().trim())
                 || TextUtils.isEmpty(etPhone.getEditText().getText().toString().trim())
                 ) {
-            showDialog("请输入患者的全部信息");
+            commonDialog = new CommonDialog(this, true, "请输入患者的全部信息", null);
+            commonDialog.show();
         } else {
-//            mPresenter;
-            ToastUtil.show("保存");
+            Params params = new Params();
+            if (isEdite) {
+                params.put("id", bean.id);
+            }
+            params.put("name", etName.getEditText().getText().toString().trim());
+            params.put("age", etAge.getEditText().getText().toString().trim());
+            params.put("phone", etPhone.getEditText().getText().toString().trim());
+            params.put("sex", sexType);
+
+            mPresenter.addPatientJZR(params);
         }
     }
 
@@ -131,7 +143,12 @@ public class AddPatientJZRActivity extends BaseActivity implements PatientContac
         if (message == null) {
             return;
         }
-        switch (message.what){
+        switch (message.what) {
+            case PatientPresenter.ADD_PATIENT_JZR_OK:
+                ToastUtil.show(isEdite ? "患者信息保存成功" : "添加患者成功");
+                startActivity(new Intent(this, JiuZhenHistoryActivity.class));
+                finish();
+                break;
 
         }
     }
@@ -145,9 +162,9 @@ public class AddPatientJZRActivity extends BaseActivity implements PatientContac
     @Override
     public void onBackPressed() {
         if (isEdite) {
-            if (etName.getEditText().getText().toString().trim().equals(bean.patient_name)
-                    || etAge.getEditText().getText().toString().trim().equals(bean.age + "")
-                    || etPhone.getEditText().getText().toString().trim().equals(bean.phone)
+            if (!etName.getEditText().getText().toString().trim().equals(bean.patient_name)
+                    || !etAge.getEditText().getText().toString().trim().equals(bean.age + "")
+                    || !etPhone.getEditText().getText().toString().trim().equals(bean.phone)
                     || sexType != bean.sex
                     ) {
                 showDialog("患者信息尚未保存，是否确定退出？");

@@ -267,6 +267,10 @@ public interface HttpAPI {
     @POST("getpresc_patient")
     Observable<HttpResponse<BasePageBean<JiuZhenHistoryBean>>> getJiuZhenHistoryList(@Body Params params);
 
+    //添加患者（处方联系人）
+    @POST("addprescpatient")
+    Observable<HttpResponse<String>> addPatientJZR(@Body Params params);
+
     //检查App更新
     @POST("getVersion")
     Observable<HttpResponse<AppUpdateBean>> appUpdateCheck(@Body Params params);

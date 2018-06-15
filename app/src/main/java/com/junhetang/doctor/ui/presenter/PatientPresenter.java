@@ -34,6 +34,7 @@ public class PatientPresenter implements PatientContact.Presenter {
     public static final int GET_PATIENTFAMILY_0K = 0x111;
     public static final int SET_PRICE_0K = 0x112;
     public static final int TOTALK_OK = 0x113;
+    public static final int ADD_PATIENT_JZR_OK = 0x114;
 
     public PatientPresenter(PatientContact.View mView) {
         this.mView = mView;
@@ -172,6 +173,27 @@ public class PatientPresenter implements PatientContact.Presenter {
                     public void onError(String errorCode, String errorMsg) {
                         LogUtil.d("docToTalk error=" + errorMsg);
 //                        mView.onError(errorCode, errorMsg);
+                    }
+
+                });
+        compositeSubscription.add(subscription);
+    }
+
+    @Override
+    public void addPatientJZR(Params params) {
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().addPatientJZR(params))
+                .compose(mView.toLifecycle())
+                .subscribe(new BaseObserver<HttpResponse<String>>(null) {
+                    @Override
+                    public void onSuccess(HttpResponse<String> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, ADD_PATIENT_JZR_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
                     }
 
                 });

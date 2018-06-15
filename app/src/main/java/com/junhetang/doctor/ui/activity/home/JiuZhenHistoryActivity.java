@@ -246,6 +246,14 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        //刷新数据
+        pageNum = 1;
+        mPresenter.getJiuZhenHistoryList(pageNum, etSerch.getText().toString().trim());
+    }
+
+    @Override
     public void onError(String errorCode, String errorMsg) {
         CommonDialog commonDialog = new CommonDialog(this, errorMsg);
         commonDialog.show();

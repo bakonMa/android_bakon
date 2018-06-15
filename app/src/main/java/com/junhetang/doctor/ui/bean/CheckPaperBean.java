@@ -25,5 +25,6 @@ public class CheckPaperBean {
     public String create_time;
     public String status_name;//支付状态
     public int presc_type;//1、手工开方；2、拍照开方
+    public int z_status;//0：未转方 1：已转方
 
 }

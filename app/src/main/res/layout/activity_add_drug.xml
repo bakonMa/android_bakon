@@ -132,7 +132,7 @@
             android:layout_marginRight="15dp"
             android:background="@drawable/selector_bg_button_login"
             android:gravity="center"
-            android:text="常用处方"
+            android:text="常用/经典"
             android:textColor="@color/white"
             android:textSize="14sp" />
 

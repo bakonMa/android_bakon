@@ -41,7 +41,7 @@
         android:layout_toStartOf="@+id/iv_right"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textColor="@color/color_d6d6d6"
+        android:textColor="@color/color_666"
         android:textSize="14sp"
         tools:text="备注" />
 
