@@ -141,7 +141,7 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
 
     private String tempPrice;
 
-    @OnClick({R.id.et_price, R.id.rlt_head, R.id.tv_gotochat})
+    @OnClick({R.id.et_price, R.id.tv_remark, R.id.tv_gotochat})
     public void btnOnClick(View view) {
         //选择患者时不能修改其他都行
         if (formType == 1) {
@@ -166,7 +166,7 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
                     commonDialog.show();
                 }
                 break;
-            case R.id.rlt_head://设置备注
+            case R.id.tv_remark://设置备注
                 Intent intent = new Intent(this, RemarkNameActivity.class);
                 intent.putExtra("patientinfo", bean.patientinfo);
                 startActivityForResult(intent, REQUEST_CODE_REMARKNAME);
@@ -184,6 +184,23 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
                 break;
         }
 
+    }
+
+    //选择就诊人（默认就诊人）
+    @OnClick(R.id.rlt_head)
+    public void headOnClick() {
+        //选择患者时 可以点击
+        if (formType == 1) {
+            PatientFamilyBean.JiuzhenBean jzrBean = new PatientFamilyBean.JiuzhenBean();
+            jzrBean.id = membNo;//讨巧，后台需要的是患者的id
+            jzrBean.setIm_accid(im_accid);
+            jzrBean.patient_name = TextUtils.isEmpty(bean.patientinfo.remark_name) ? bean.patientinfo.nick_name : bean.patientinfo.remark_name;
+            jzrBean.relationship = 0;//0：本人
+            jzrBean.sex = -1;//-1
+            jzrBean.phone = bean.patientinfo.phone;
+            EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_CHOOSE_PATIENT, jzrBean));
+            finish();
+        }
     }
 
     @Override

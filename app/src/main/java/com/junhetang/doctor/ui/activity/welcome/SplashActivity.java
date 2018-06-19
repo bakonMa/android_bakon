@@ -1,5 +1,6 @@
 package com.junhetang.doctor.ui.activity.welcome;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -15,6 +16,7 @@ import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.SPConfig;
 import com.junhetang.doctor.ui.base.BaseActivity;
+import com.junhetang.doctor.utils.ImageUtil;
 import com.junhetang.doctor.widget.SplashIndicator;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class SplashActivity extends BaseActivity {
 
     List<Integer> imgList = new ArrayList<>();
     private WelcomeAdapter welcomeAdapter;
-    private SparseArray<View> mViewList = new SparseArray<View>();
+    private SparseArray<ImageView> mViewList = new SparseArray<ImageView>();
 
     private void initStatusBar() {
         View decorView = getWindow().getDecorView();
@@ -63,7 +65,7 @@ public class SplashActivity extends BaseActivity {
         imgList.add(R.drawable.welcome_2);
         imgList.add(R.drawable.welcome_3);
         imgList.add(R.drawable.welcome_4);
-        welcomeAdapter = new WelcomeAdapter();
+        welcomeAdapter = new WelcomeAdapter(this);
 
         viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(welcomeAdapter);
@@ -80,6 +82,11 @@ public class SplashActivity extends BaseActivity {
     }
 
     class WelcomeAdapter extends PagerAdapter {
+        private Context context;
+
+        public WelcomeAdapter(Context context) {
+            this.context = context;
+        }
 
         @Override
         public int getCount() {
@@ -94,22 +101,23 @@ public class SplashActivity extends BaseActivity {
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            View view = mViewList.get(position);
+            ImageView view = mViewList.get(position);
             if (view == null) {
                 view = new ImageView(actContext());
                 ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                view.setBackgroundResource(imgList.get(position));
+                view.setImageBitmap(ImageUtil.readBitMap(context, imgList.get(position)));
                 view.setLayoutParams(params);
                 mViewList.append(position, view);
+            } else {
+                view.setImageBitmap(ImageUtil.readBitMap(context, imgList.get(position)));
             }
-
             container.addView(view);
             return view;
         }
 
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            ImageView imageView = (ImageView) mViewList.get(position);
+            ImageView imageView = mViewList.get(position);
             //优化 防止oom
             if (imageView != null) {
                 BitmapDrawable bitmapDrawable = (BitmapDrawable) imageView.getDrawable();

@@ -102,8 +102,8 @@ public class PatientFamilyBean {
             this.im_accid = im_accid;
         }
 
-
-
+        public JiuzhenBean() {
+        }
 
         protected JiuzhenBean(Parcel in) {
             id = in.readString();

@@ -206,7 +206,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             drugStoreList.add(bean.drug_store_name);
         }
         //药房默认选择第一
-        if(!drugStoreList.isEmpty()){
+        if (!drugStoreList.isEmpty()) {
             storeId = baseBean.store.get(0).drug_store_id;
             etDrugstore.setText(baseBean.store.get(0).drug_store_name);
         }
@@ -396,16 +396,29 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         tvChooseHistory.setVisibility(View.GONE);
         etName.setEditeText(TextUtils.isEmpty(bean.patient_name) ? "" : bean.patient_name);
         etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
-        etAge.setEditeText(bean.age > 0 ? (bean.age + "") : "");
-        rgSex.check(bean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
         membNo = bean.id;
         relationship = bean.relationship;
         pAccid = bean.getIm_accid();//记录需要
         etName.setEditeEnable(false);
-        etAge.setEditeEnable(false);
         etPhone.setEditeEnable(false);
-        rbNan.setEnabled(false);
-        rbNv.setEnabled(false);
+
+        //默认及就诊人的时候（性别，年龄 是空，可以修改）
+        if (bean.sex == 0 || bean.sex == 1) {
+            sexType = bean.sex;
+            rgSex.check(bean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
+            rbNan.setEnabled(false);
+            rbNv.setEnabled(false);
+        } else {
+            //在线开方 选择默认就诊人，默认性别不选择
+            sexType = bean.sex;//-1
+            //默认就诊人可以修改
+            rgSex.check(0);
+            rbNan.setEnabled(true);
+            rbNv.setEnabled(true);
+        }
+        //年龄
+        etAge.setEditeText(bean.age > 0 ? (bean.age + "") : "");
+        etAge.setEditeEnable(bean.age <= 0);
     }
 
     //手写就诊人信息
@@ -446,6 +459,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     //数据检测
     private void checkData() {
         if (TextUtils.isEmpty(etName.getEditText().getText())
+                || sexType < 0
                 || TextUtils.isEmpty(etPhone.getEditText().getText())
                 || TextUtils.isEmpty(etAge.getEditText().getText())) {
             commonDialog = new CommonDialog(this, "请填写就诊人信息");

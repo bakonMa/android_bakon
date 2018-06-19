@@ -166,7 +166,7 @@
                     android:background="@color/white"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    app:editTextHint="请输入手机号"
+                    app:editTextHint="就诊人手机号"
                     app:editTextType="number"
                     app:leftText="联系电话"
                     app:maxLength="11"

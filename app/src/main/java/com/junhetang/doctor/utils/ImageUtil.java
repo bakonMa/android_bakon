@@ -1,8 +1,10 @@
 package com.junhetang.doctor.utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -13,6 +15,7 @@ import com.junhetang.doctor.utils.glide_transformation.RoundedCornersTransformat
 import com.junhetang.doctor.utils.imageloader.GlideApp;
 
 import java.io.File;
+import java.io.InputStream;
 
 /**
  * ImageUtil
@@ -130,6 +133,22 @@ public class ImageUtil {
         intent.putExtra(MediaStore.EXTRA_OUTPUT, cropUri);//裁剪后的图片路径
 
         activity.startActivityForResult(intent, requestCode);
+    }
+
+    /**
+     * 本地图片转换bitmap
+     * @param context
+     * @param resId
+     * @return
+     */
+    public static Bitmap readBitMap(Context context, int resId) {
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+        opt.inPreferredConfig = Bitmap.Config.RGB_565;
+        opt.inPurgeable = true;
+        opt.inInputShareable = true;
+        //获取资源图片
+        InputStream is = context.getResources().openRawResource(resId);
+        return BitmapFactory.decodeStream(is, null, opt);
     }
 }
 

@@ -275,16 +275,30 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         tvChooseHistory.setVisibility(View.GONE);
         etName.setEditeText(TextUtils.isEmpty(bean.patient_name) ? "" : bean.patient_name);
         etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
-        etAge.setEditeText(bean.age > 0 ? (bean.age + "") : "");
-        rgSex.check(bean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
         membNo = bean.id;
         relationship = bean.relationship;
         pAccid = bean.getIm_accid();
         etName.setEditeEnable(false);
-        etAge.setEditeEnable(false);
         etPhone.setEditeEnable(false);
-        rbNan.setEnabled(false);
-        rbNv.setEnabled(false);
+
+        //默认及就诊人的时候（性别，年龄 是空，可以修改）
+        //默认及就诊人的时候（性别，年龄 是空，可以修改）
+        if (bean.sex == 0 || bean.sex == 1) {
+            sexType = bean.sex;
+            rgSex.check(bean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
+            rbNan.setEnabled(false);
+            rbNv.setEnabled(false);
+        } else {
+            //拍照开方 选择默认就诊人，性别默认男
+            sexType = 0;
+            //默认就诊人可以修改
+            rgSex.check(R.id.rb_nan);
+            rbNan.setEnabled(true);
+            rbNv.setEnabled(true);
+        }
+        //年龄
+        etAge.setEditeText(bean.age > 0 ? (bean.age + "") : "");
+        etAge.setEditeEnable(bean.age <= 0);
     }
 
     //手写就诊人信息
@@ -464,7 +478,6 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         commonDialog = new CommonDialog(this, errorMsg);
         commonDialog.show();
     }
-
 
     @Override
     public void onSuccess(Message message) {
