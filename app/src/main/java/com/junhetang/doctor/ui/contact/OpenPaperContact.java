@@ -43,6 +43,8 @@ public interface OpenPaperContact {
 
         void getJiuZhenHistoryList(int page, String searchStr);//历史就诊人和搜索
 
+        void classicsPaperUp(int id);//经典处方 置顶/取消置顶
+
     }
 
 }

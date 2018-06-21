@@ -241,7 +241,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     }
 
     @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugstore, R.id.et_drugclass,
-            R.id.tv_adddrug, R.id.tv_minus_one, R.id.tv_add_one, R.id.et_usetype, R.id.tv_showall,
+            R.id.tv_adddrug, R.id.et_usetype, R.id.tv_showall,
             R.id.tv_addcommpaper, R.id.et_docadvice, R.id.tv_choose_history, R.id.tv_next_step})
     public void tabOnClick(View view) {
         switch (view.getId()) {
@@ -323,12 +323,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 });
                 mTwoWheel.show(scrollView);
                 break;
-            case R.id.tv_minus_one://副减1
-                editeDrugNum(false);
-                break;
-            case R.id.tv_add_one://副加1
-                editeDrugNum(true);
-                break;
             case R.id.et_docadvice://医嘱
                 Intent intentDocAdvice = new Intent(this, ChooseDocAdviceActivity.class);
                 intentDocAdvice.putParcelableArrayListExtra("beanlist", baseBean.docadvice);
@@ -377,16 +371,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             adapter.setIsShowAll(isShowAll);
             tvShowall.setSelected(isShowAll);
             tvShowall.setText(isShowAll ? "收起" : "展开");
-        }
-    }
-
-    //要副加减
-    private void editeDrugNum(boolean isAdd) {
-        int currNum = Integer.parseInt(etNum.getText().toString());
-        if (isAdd) {
-            etNum.setText(currNum + 1 + "");
-        } else {
-            etNum.setText(currNum > 1 ? currNum - 1 + "" : "1");
         }
     }
 
@@ -488,6 +472,11 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         }
         if (TextUtils.isEmpty(docadviceStr)) {
             commonDialog = new CommonDialog(this, "请填写医嘱");
+            commonDialog.show();
+            return;
+        }
+        if (TextUtils.isEmpty(etNum.getText().toString().trim()) || Integer.parseInt(etNum.getText().toString()) <= 0) {
+            commonDialog = new CommonDialog(this, "请填写副数");
             commonDialog.show();
             return;
         }

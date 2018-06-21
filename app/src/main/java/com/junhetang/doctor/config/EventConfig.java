@@ -41,4 +41,6 @@ public interface EventConfig {
     int EVENT_KEY_CHOOSE_JIUZHEN_HISTORY= 0x133;//选择历史就诊人
     int EVENT_KEY_CHOOSE_COMM_PAPER= 0x134;//选择常用处方
 
+    int EVENT_KEY_ADD_COMMMEPAPER= 0x135;//添加常用处方
+
 }

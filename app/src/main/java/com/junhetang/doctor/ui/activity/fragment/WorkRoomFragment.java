@@ -26,8 +26,7 @@ import com.junhetang.doctor.nim.message.SessionHelper;
 import com.junhetang.doctor.nim.message.extension.FirstMessageAttachment;
 import com.junhetang.doctor.receiver.XGInitManager;
 import com.junhetang.doctor.ui.activity.WebViewActivity;
-import com.junhetang.doctor.ui.activity.home.CheckPaperActivity;
-import com.junhetang.doctor.ui.activity.home.CommUsePaperActivity;
+import com.junhetang.doctor.ui.activity.home.CommPaperActivity;
 import com.junhetang.doctor.ui.activity.home.JiuZhenHistoryActivity;
 import com.junhetang.doctor.ui.activity.home.LogoutActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperCameraActivity;
@@ -107,8 +106,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     TextView tvServiceTime;
     @BindView(R.id.tv_notification)
     TextView tvNotification;
-    @BindView(R.id.tv_checkredpoint)
-    TextView tvCheckredpoint;//审核处方-红点
+//    @BindView(R.id.tv_checkredpoint)
+//    TextView tvCheckredpoint;//审核处方-红点
     @BindView(R.id.tv_chatunreadnum)
     TextView tvChatunreadnum;//消息通知-数字红点
     @BindView(R.id.tv_chatredpoint)
@@ -379,7 +378,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     }
 
     @OnClick({R.id.tv_add_patient, R.id.tv_online_paper, R.id.tv_camera_patient, R.id.tv_comm_paper,
-            R.id.tv_ask_paper, R.id.tv_flow_paper, R.id.tv_checkpaper, R.id.tv_notice, R.id.id_patient_jzr})
+            R.id.tv_ask_paper, R.id.tv_flow_paper, R.id.tv_notice, R.id.id_patient_jzr})
     void btnOnClick(View view) {
         //认证是否通过
         if (!U.isHasAuthOK()) {
@@ -429,26 +428,27 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 intentFollow.putExtra("url", H5Config.H5_FOLLOWPAPER);
                 startActivity(intentFollow);
                 break;
-            case R.id.tv_checkpaper://审核开方
-                startActivity(new Intent(actContext(), CheckPaperActivity.class));
-                break;
+//            case R.id.tv_checkpaper://审核开方
+//                startActivity(new Intent(actContext(), CheckPaperActivity.class));
+//                break;
             case R.id.tv_notice://公告
                 startActivity(new Intent(actContext(), UserNoticeActivity.class));
                 break;
             case R.id.tv_comm_paper://常用处方
-                startActivity(new Intent(actContext(), CommUsePaperActivity.class));
+//                startActivity(new Intent(actContext(), CommUsePaperActivity.class));
+                startActivity(new Intent(actContext(), CommPaperActivity.class));
                 break;
         }
 
     }
 
-    @OnClick({R.id.rlt_service, R.id.id_history, R.id.id_notification})
+    @OnClick({R.id.rlt_service, R.id.tv_history_paper, R.id.id_notification})
     void unCheckBtnOnClick(View view) {
         switch (view.getId()) {
             case R.id.rlt_service://客服
                 SessionHelper.startP2PSession(actContext(), accid, true);
                 break;
-            case R.id.id_history://历史处方
+            case R.id.tv_history_paper://历史处方
                 startActivity(new Intent(actContext(), PaperHistoryActivity.class));
                 break;
             case R.id.id_notification://消息通知
@@ -495,8 +495,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         }
         switch (event.getCode()) {
             case EventConfig.EVENT_KEY_REDPOINT_HOME_CHECK://红点 审核处方
-                //是否有审核处方
-                tvCheckredpoint.setVisibility(U.getRedPointExt() > 0 ? View.VISIBLE : View.GONE);
+                //是否有审核处方 暂时删除，以防后用
+                //tvCheckredpoint.setVisibility(U.getRedPointExt() > 0 ? View.VISIBLE : View.GONE);
                 break;
             case EventConfig.EVENT_KEY_NIM_LOGIN://nim 登录成功
                 //客服 初始化

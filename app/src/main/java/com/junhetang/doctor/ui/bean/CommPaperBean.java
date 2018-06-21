@@ -17,6 +17,7 @@ public class CommPaperBean {
 
     public int id;
     public int type;
+    public int is_star;//经典处方显示星星 0:不亮 1：亮
     public String type_name;
     public String title;
     public String m_explain;

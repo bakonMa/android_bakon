@@ -8,6 +8,7 @@ import com.junhetang.doctor.ui.activity.fragment.PatientFragment;
 import com.junhetang.doctor.ui.activity.fragment.WorkRoomFragment;
 import com.junhetang.doctor.ui.activity.home.CheckPaperFragment;
 import com.junhetang.doctor.ui.activity.home.ChooseCommFragment;
+import com.junhetang.doctor.ui.activity.home.CommUsePaperFragment;
 import com.junhetang.doctor.ui.activity.login.LoginFragment;
 import com.junhetang.doctor.injection.modules.FragmentModule;
 import com.junhetang.doctor.injection.scopes.PerFragment;
@@ -44,5 +45,7 @@ public interface FragmentComponent extends ApplicationComponent {
     void inject(CheckPaperFragment checkPaperFragment);
 
     void inject(ChooseCommFragment chooseCommFragment);
+
+    void inject(CommUsePaperFragment commUsePaperFragment);
 
 }

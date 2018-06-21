@@ -99,7 +99,6 @@ public class MainActivity extends BaseActivity implements BaseView{
         }
     }
 
-
     @OnClick({R.id.tab_home, R.id.tab_patient, R.id.tab_find, R.id.tab_me})
     public void tabOnClick(View view) {
         switch (view.getId()) {

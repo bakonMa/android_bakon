@@ -22,6 +22,7 @@ import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.EventConfig;
 import com.junhetang.doctor.data.eventbus.Event;
+import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
@@ -506,7 +507,8 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                 updataTotalMoney();
                 break;
             case OpenPaperPresenter.ADD_COMMPAPER_OK:
-                setResult(RESULT_OK);
+                //添加常用处方成功
+                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_ADD_COMMMEPAPER));
                 finish();
                 break;
         }

@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toStartOf="@+id/iv_right"
+        android:layout_toStartOf="@+id/iv_star"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
@@ -29,14 +29,23 @@
             android:id="@+id/tv_paperremark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:singleLine="true"
-            android:layout_marginTop="5dp"
             android:textColor="@color/color_666"
             android:textSize="14sp"
             tools:text="备注" />
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_star"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/selector_star_icon"
+        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/iv_right"

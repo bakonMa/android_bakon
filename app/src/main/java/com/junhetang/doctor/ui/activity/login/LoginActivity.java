@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.ui.adapter.CommonViewpageFragmentAdapter;
@@ -111,6 +112,11 @@ public class LoginActivity extends BaseActivity {
         });
         magicIndicator.setNavigator(commonNavigator);
 
+        //添加分割线
+        LinearLayout titleContainer = commonNavigator.getTitleContainer(); // must after setNavigator
+        titleContainer.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
+        titleContainer.setDividerPadding(UIUtil.dip2px(this, 10));
+        titleContainer.setDividerDrawable(getResources().getDrawable(R.drawable.splitter));
 
         CommonViewpageFragmentAdapter viewPageAdapter = new CommonViewpageFragmentAdapter(getSupportFragmentManager(), fragmentList, titles);
         viewPager.setCurrentItem(0);

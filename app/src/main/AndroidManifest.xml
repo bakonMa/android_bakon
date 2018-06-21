@@ -292,6 +292,9 @@
             android:name=".ui.activity.home.CommUsePaperActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activity.home.CommPaperActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activity.home.ChooseCommActivity"
             android:screenOrientation="portrait" />
         <activity

@@ -84,7 +84,7 @@
             app:editTextHint="请输入患者年龄"
             app:editTextType="number"
             app:leftText="年龄"
-            app:maxLength="2"
+            app:maxLength="3"
             app:textMainSize="16sp" />
 
         <com.junhetang.doctor.widget.EditTextlayout

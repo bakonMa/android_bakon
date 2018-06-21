@@ -239,6 +239,10 @@ public interface HttpAPI {
     @POST("often_medicinal")
     Observable<HttpResponse<String>> addOftenmed(@Body Params params);
 
+    //经典处方【置顶、取消置顶】
+    @POST("stickclassics")
+    Observable<HttpResponse<String>> classicsPaperUp(@Body Params params);
+
     //删除常用方列表
     @POST("del_oftenmed")
     Observable<HttpResponse<String>> delOftenmed(@Body Params params);

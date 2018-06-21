@@ -156,7 +156,7 @@
                     app:editTextHint="就诊人年龄"
                     app:editTextType="number"
                     app:leftText="年龄"
-                    app:maxLength="2"
+                    app:maxLength="3"
                     app:textMainSize="16sp" />
 
                 <com.junhetang.doctor.widget.EditTextlayout
@@ -428,6 +428,7 @@
                     android:layout_alignParentBottom="true" />
             </RelativeLayout>
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -437,59 +438,27 @@
                 android:paddingRight="15dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="共"
+                    android:gravity="center_vertical"
+                    android:text="副数"
                     android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:background="@drawable/shape_stroke_bg_10"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tv_minus_one"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:background="@drawable/shape_solid_cornerleft_selector"
-                        android:gravity="center"
-                        android:text="－"
-                        android:textColor="@drawable/selector_textcolor_grayyellow" />
-
-                    <EditText
-                        android:id="@+id/et_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:background="@null"
-                        android:cursorVisible="false"
-                        android:enabled="false"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:maxLength="5"
-                        android:minWidth="30dp"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:text="1"
-                        android:textColor="@color/color_000"
-                        android:textCursorDrawable="@drawable/color_cursor"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/tv_add_one"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:background="@drawable/shape_solid_cornerright_selector"
-                        android:gravity="center"
-                        android:text="＋"
-                        android:textColor="@drawable/selector_textcolor_grayyellow" />
-                </LinearLayout>
+                <EditText
+                    android:id="@+id/et_num"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="请输入副数"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:paddingRight="15dp"
+                    android:text="1"
+                    android:textCursorDrawable="@drawable/color_cursor"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -498,7 +467,6 @@
                     android:text="副"
                     android:textColor="@color/color_000"
                     android:textSize="16sp" />
-
 
             </LinearLayout>
 
@@ -541,9 +509,11 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:gravity="center_vertical|right"
                     android:hint="请输入诊疗费"
                     android:inputType="number"
                     android:maxLength="5"
+                    android:paddingRight="15dp"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:textSize="16sp" />
 
@@ -585,7 +555,7 @@
                 android:clickable="true"
                 android:enabled="true"
                 android:gravity="center"
-                android:text="确认提交处方"
+                android:text="提交处方"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
         </LinearLayout>

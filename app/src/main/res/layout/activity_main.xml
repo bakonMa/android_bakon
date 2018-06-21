@@ -56,7 +56,6 @@
             app:textColorNormal="@color/color_000"
             app:textColorSelected="@color/color_main" />
 
-
     </LinearLayout>
 
 </LinearLayout>
