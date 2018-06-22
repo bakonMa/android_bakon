@@ -63,8 +63,6 @@ public class ProgressWebView extends WebView implements OnKeyListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-        //缩放
-        settings.setSupportZoom(false);
         //设置适应Html5的一些方法
         settings.setDomStorageEnabled(true);
         //启用JavaScript
@@ -72,6 +70,10 @@ public class ProgressWebView extends WebView implements OnKeyListener {
         //屏幕自适应
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
+        //缩放 不显示缩放按钮
+        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(true);
+        settings.setDisplayZoomControls(false);
         //是否使用缓存
         settings.setAppCacheEnabled(true);
         //优先缓存

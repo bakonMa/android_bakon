@@ -60,7 +60,7 @@ public class CommPaperActivity extends BaseActivity {
     @Override
     protected void initView() {
         toolbarBuilder = ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
-                .setTitle("常用/经典处方")
+                .setTitle("处方模板")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
                 .setRightText("编辑", true, R.color.color_main)

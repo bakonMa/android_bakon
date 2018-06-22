@@ -1,7 +1,5 @@
 package com.junhetang.doctor.ui.base;
 
-import android.util.Log;
-
 import com.bumptech.glide.load.HttpException;
 import com.junhetang.doctor.data.http.ApiException;
 import com.junhetang.doctor.data.response.HttpResponse;
@@ -33,34 +31,38 @@ public abstract class BaseObserver<T extends HttpResponse> implements Observer<T
 
     @Override
     public void onError(Throwable throwable) {
-        if (mDialog != null) {
-            if (throwable instanceof ConnectException) {
-                mDialog.dismiss();
-                ToastUtil.show("网络错误，请检查网络");
-            } else if (throwable instanceof HttpException) {
-                mDialog.dismiss();
-                ToastUtil.show("网络异常,请求失败");
-            } else if (throwable instanceof TimeoutException || throwable instanceof SocketTimeoutException) {
-                mDialog.dismiss();
-                ToastUtil.show("连接超时,请稍后重试");
-            } else if (throwable instanceof ApiException) {
-                mDialog.dismiss();
-                if (((ApiException) throwable).getCode().equals(ApiException.ERROR_API_1001)
-                        || ((ApiException) throwable).getCode().equals(ApiException.ERROR_API_1002)) {
-                    ToastUtil.show(throwable.getMessage());
-                }
-            } else {
-                mDialog.error("系统异常");
+        if (throwable instanceof ConnectException) {
+            showErroeMsg("网络不可用，请检查网络设置");
+        } else if (throwable instanceof HttpException) {
+            showErroeMsg("网络异常，请求失败");
+        } else if (throwable instanceof TimeoutException || throwable instanceof SocketTimeoutException) {
+            showErroeMsg("连接超时，请稍后重试");
+        } else if (throwable instanceof ApiException) {
+            if (((ApiException) throwable).getCode().equals(ApiException.ERROR_API_1001)
+                    || ((ApiException) throwable).getCode().equals(ApiException.ERROR_API_1002)) {
+                ToastUtil.show(throwable.getMessage());
             }
+            if (mDialog != null) {
+                mDialog.dismiss();
+            }
+        } else {
+            showErroeMsg("系统异常，请稍后重试");
         }
-        Log.e("error", throwable.getMessage());
     }
 
+    private void showErroeMsg(String str) {
+        if (mDialog != null) {
+            mDialog.error(str);
+        } else {
+            ToastUtil.show(str);
+        }
+    }
 
     @Override
     public void onNext(T t) {
-        if (mDialog != null)
+        if (mDialog != null) {
             mDialog.dismiss();
+        }
         if (t.code.equals("1")) {//todo  网络是否成功
             onSuccess(t);
         } else {

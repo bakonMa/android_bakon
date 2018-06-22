@@ -3,10 +3,13 @@ package com.junhetang.doctor.data.http;
 import android.os.Build;
 
 import com.junhetang.doctor.BuildConfig;
+import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.HttpConfig;
 import com.junhetang.doctor.utils.U;
+import com.netease.nim.uikit.common.util.sys.NetworkUtil;
 
 import java.io.IOException;
+import java.net.ConnectException;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -21,9 +24,8 @@ public class RequestInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request;
-//        if (chain.request().url().url().toString().contains("clientVersion/search")) {
-//            request = chain.withConnectTimeout(3, TimeUnit.SECONDS).request();//检查更新接口只设置3秒的超时
-//        } else {
+        boolean connected = NetworkUtil.isNetworkConnected(DocApplication.getInstance());
+        if (connected) {
             request = chain.request()
                     .newBuilder()
                     .header(HttpConfig.HTTP_HEADER_CONTENTTYPE_KEY, HttpConfig.HTTP_HEADER_CONTENTTYPE_VALUE)
@@ -34,7 +36,10 @@ public class RequestInterceptor implements Interceptor {
                     .header("RELEASE", Build.VERSION.RELEASE)//系统版本号
                     .header("TOKEN", U.getToken())//token
                     .build();
-//        }
-        return chain.proceed(request);
+            return chain.proceed(request);
+
+        } else {
+            throw new ConnectException();
+        }
     }
 }

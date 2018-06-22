@@ -4,18 +4,20 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:layout_width="97dp"
-        android:layout_height="97dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/bg_loading_dialog">
+        android:background="@drawable/bg_loading_dialog"
+        android:minHeight="100dp"
+        android:minWidth="100dp">
 
         <RelativeLayout
             android:id="@+id/id_rl_loading"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
-            android:visibility="visible"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="12dp"
+            android:visibility="visible">
 
             <ImageView
                 android:layout_width="25dp"
@@ -24,24 +26,25 @@
                 android:src="@drawable/smile" />
 
             <!--<ProgressBar-->
-                <!--android:id="@+id/iv_loading"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:indeterminateDrawable="@drawable/loading_anim" />-->
+            <!--android:id="@+id/iv_loading"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:indeterminateDrawable="@drawable/loading_anim" />-->
             <ImageView
                 android:id="@+id/id_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/loading"/>
+                android:src="@drawable/loading" />
         </RelativeLayout>
+
         <ImageView
             android:id="@+id/id_iv_error"
             android:layout_width="34dp"
             android:layout_height="44.5dp"
-            android:src="@drawable/system_error"
             android:layout_centerHorizontal="true"
-            android:visibility="gone"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="15dp"
+            android:src="@drawable/system_error"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/id_tv_message"
@@ -49,6 +52,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="68dp"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:text="加载中..."
             android:textColor="@color/white"
             android:textSize="16sp" />

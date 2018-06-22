@@ -390,10 +390,7 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
         Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getPaperHistoryList(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mDialog != null)
-                        mDialog.show();
-                }).subscribe(new BaseObserver<HttpResponse<BasePageBean<CheckPaperBean>>>(mDialog) {
+                .subscribe(new BaseObserver<HttpResponse<BasePageBean<CheckPaperBean>>>(null) {
                     @Override
                     public void onSuccess(HttpResponse<BasePageBean<CheckPaperBean>> personalBeanHttpResponse) {
                         mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_PAPER_HISTORYLIST_OK));

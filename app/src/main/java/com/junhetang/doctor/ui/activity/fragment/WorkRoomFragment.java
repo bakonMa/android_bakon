@@ -106,7 +106,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     TextView tvServiceTime;
     @BindView(R.id.tv_notification)
     TextView tvNotification;
-//    @BindView(R.id.tv_checkredpoint)
+    //    @BindView(R.id.tv_checkredpoint)
 //    TextView tvCheckredpoint;//审核处方-红点
     @BindView(R.id.tv_chatunreadnum)
     TextView tvChatunreadnum;//消息通知-数字红点
@@ -192,6 +192,13 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         if (!hidden) {
             mPresenter.getUserIdentifyStatus();//认证状态
             mPresenter.getRedPointStatus();//红点状态
+            //网络问题切换时，没有数据就请求一下
+            if (bannerBeans == null || bannerBeans.isEmpty()) {
+                //开方基础数据
+                mPresenter.getOPenPaperBaseData();
+                //首页Banner数据
+                mPresenter.getHomeBanner();
+            }
         }
     }
 
@@ -435,7 +442,6 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 startActivity(new Intent(actContext(), UserNoticeActivity.class));
                 break;
             case R.id.tv_comm_paper://常用处方
-//                startActivity(new Intent(actContext(), CommUsePaperActivity.class));
                 startActivity(new Intent(actContext(), CommPaperActivity.class));
                 break;
         }

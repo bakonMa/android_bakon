@@ -112,7 +112,7 @@
                 android:drawableTop="@drawable/selector_commpaper_icon"
                 android:gravity="center"
                 android:padding="12dp"
-                android:text="常用处方"
+                android:text="处方模板"
                 android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
 
