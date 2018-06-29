@@ -42,5 +42,6 @@ public interface EventConfig {
     int EVENT_KEY_CHOOSE_COMM_PAPER= 0x134;//选择常用处方
 
     int EVENT_KEY_ADD_COMMMEPAPER= 0x135;//添加常用处方
+    int EVENT_KEY_BASEDATA_NULL= 0x136;//基础数据空异常
 
 }

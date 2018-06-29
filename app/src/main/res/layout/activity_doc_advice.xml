@@ -26,7 +26,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/shape_bg_corner_5"
+                android:background="@drawable/shape_bg_corner_10"
                 android:gravity="top"
                 android:hint="例如：饭前一小时，忌荤腥"
                 android:minHeight="100dp"

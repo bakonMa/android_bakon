@@ -24,6 +24,7 @@ import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.EventConfig;
 import com.junhetang.doctor.data.eventbus.Event;
+import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
@@ -102,6 +103,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     EditTextlayout etPhone;
     @BindView(R.id.et_drugclass)
     EditableLayout etDrugClass;
+    @BindView(R.id.et_drugstore)
+    EditableLayout etDrugstore;
     @BindView(R.id.iv_img1)
     ImageView ivImg1;
     @BindView(R.id.iv_img2)
@@ -130,8 +133,10 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private String membNo = "";//患者编号，选择患者才有
     private int relationship = 4;//就诊人关系（不是选择 默认4-其他）
     private String pAccid = "";//患者云信 accid
+    private int storeId = -1;//药房id
 
     private OPenPaperBaseBean baseBean;
+    private List<String> drugStoreList = new ArrayList<>();//药房
     private List<String> drugClassList = new ArrayList<>();//剂型
     private OnePopupWheel mPopupWheel;
     private CameraPopupView cameraPopupView;
@@ -175,6 +180,26 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     //初始base数据
     private void initBaseData() {
         baseBean = U.getOpenpapeBaseData();
+        //基础数据空的时候
+        if (null == baseBean || null == baseBean.store || null == baseBean.drug_class) {
+            commonDialog = new CommonDialog(this, true, "数据异常，请退出后重试", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_BASEDATA_NULL));
+                    finish();
+                }
+            });
+            commonDialog.show();
+        }
+        //药房
+        for (OPenPaperBaseBean.StoreBean bean : baseBean.store) {
+            drugStoreList.add(bean.drug_store_name);
+        }
+        //药房默认选择第一
+        if (!drugStoreList.isEmpty()) {
+            storeId = baseBean.store.get(0).drug_store_id;
+            etDrugstore.setText(baseBean.store.get(0).drug_store_name);
+        }
         //剂型
         for (OPenPaperBaseBean.CommBean bean : baseBean.drug_class) {
             drugClassList.add(bean.name);
@@ -200,7 +225,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private String imgPath1, imgPath2, imgPath3;
     private int currImg;
 
-    @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugclass,
+    @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugclass, R.id.et_drugstore,
             R.id.iv_img1, R.id.iv_img2, R.id.iv_img3, R.id.iv_img1_clean, R.id.iv_img2_clean,
             R.id.iv_img3_clean, R.id.tv_choose_history, R.id.tv_next_step})
     public void tabOnClick(View view) {
@@ -233,7 +258,16 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                     }
                 });
                 mPopupWheel.show(scrollView);
-
+                break;
+            case R.id.et_drugstore://选择药房
+                mPopupWheel = new OnePopupWheel(this, drugStoreList, "请选择药房", new OnePopupWheel.Listener() {
+                    @Override
+                    public void completed(int position) {
+                        storeId = baseBean.store.get(position).drug_store_id;
+                        etDrugstore.setText(drugStoreList.get(position));
+                    }
+                });
+                mPopupWheel.show(scrollView);
                 break;
             case R.id.tv_next_step://提交
                 checkData();
@@ -345,6 +379,12 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
             return;
         }
 
+        if (TextUtils.isEmpty(etDrugstore.getText())) {
+            commonDialog = new CommonDialog(this, "请选择药房");
+            commonDialog.show();
+            return;
+        }
+
         //图片路径拼接
         StringBuffer imgPath = new StringBuffer();
         if (!TextUtils.isEmpty(imgPath1)) {
@@ -370,6 +410,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         params.put("age", etAge.getEditText().getText());
         params.put("phone", etPhone.getEditText().getText());
 
+        params.put("store_id", storeId);
         params.put("drug_class", drugClassId);
         params.put("img_url", imgPath.toString());
         //补充收费

@@ -27,11 +27,12 @@ import com.junhetang.doctor.nim.message.extension.FirstMessageAttachment;
 import com.junhetang.doctor.receiver.XGInitManager;
 import com.junhetang.doctor.ui.activity.WebViewActivity;
 import com.junhetang.doctor.ui.activity.home.CommPaperActivity;
+import com.junhetang.doctor.ui.activity.home.HistoryPaperActivity;
 import com.junhetang.doctor.ui.activity.home.JiuZhenHistoryActivity;
+import com.junhetang.doctor.ui.activity.home.JobScheduleActivity;
 import com.junhetang.doctor.ui.activity.home.LogoutActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperCameraActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperOnlineActivity;
-import com.junhetang.doctor.ui.activity.home.PaperHistoryActivity;
 import com.junhetang.doctor.ui.activity.mine.AuthStep1Activity;
 import com.junhetang.doctor.ui.activity.mine.UserNoticeActivity;
 import com.junhetang.doctor.ui.base.BaseFragment;
@@ -46,6 +47,7 @@ import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.utils.imageloader.BannerImageLoader;
+import com.junhetang.doctor.widget.RelativeWithImage;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
@@ -106,6 +108,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     TextView tvServiceTime;
     @BindView(R.id.tv_notification)
     TextView tvNotification;
+    @BindView(R.id.id_job_schedule)
+    RelativeWithImage idJobSchedule;
     //    @BindView(R.id.tv_checkredpoint)
 //    TextView tvCheckredpoint;//审核处方-红点
     @BindView(R.id.tv_chatunreadnum)
@@ -385,7 +389,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     }
 
     @OnClick({R.id.tv_add_patient, R.id.tv_online_paper, R.id.tv_camera_patient, R.id.tv_comm_paper,
-            R.id.tv_ask_paper, R.id.tv_flow_paper, R.id.tv_notice, R.id.id_patient_jzr})
+            R.id.tv_ask_paper, R.id.tv_flow_paper, R.id.tv_notice, R.id.id_job_schedule})
     void btnOnClick(View view) {
         //认证是否通过
         if (!U.isHasAuthOK()) {
@@ -409,9 +413,6 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
             case R.id.tv_add_patient://添加患者
                 //个人卡片
                 WebViewActivity.startAct(actContext(), true, WebViewActivity.WEB_TYPE.WEB_TYPE_MYCARD, H5Config.H5_USERCARD_TITLE, H5Config.H5_USERCARD);
-                break;
-            case R.id.id_patient_jzr://处方联系人列表
-                startActivity(new Intent(actContext(), JiuZhenHistoryActivity.class));
                 break;
             case R.id.tv_online_paper://在线开方
                 startActivity(new Intent(actContext(), OpenPaperOnlineActivity.class));
@@ -444,25 +445,29 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
             case R.id.tv_comm_paper://常用处方
                 startActivity(new Intent(actContext(), CommPaperActivity.class));
                 break;
+            case R.id.id_job_schedule://坐诊信息
+                startActivity(new Intent(actContext(), JobScheduleActivity.class));
+                break;
         }
-
     }
 
-    @OnClick({R.id.rlt_service, R.id.tv_history_paper, R.id.id_notification})
+    @OnClick({R.id.rlt_service, R.id.tv_history_paper, R.id.id_notification, R.id.id_patient_history})
     void unCheckBtnOnClick(View view) {
         switch (view.getId()) {
             case R.id.rlt_service://客服
                 SessionHelper.startP2PSession(actContext(), accid, true);
                 break;
             case R.id.tv_history_paper://历史处方
-                startActivity(new Intent(actContext(), PaperHistoryActivity.class));
+                startActivity(new Intent(actContext(), HistoryPaperActivity.class));
+                break;
+            case R.id.id_patient_history://处方联系人列表
+                startActivity(new Intent(actContext(), JiuZhenHistoryActivity.class));
                 break;
             case R.id.id_notification://消息通知
                 startActivity(new Intent(actContext(), RecentActivity.class));
                 break;
         }
     }
-
 
     @Override
     public void onSuccess(Message message) {
@@ -473,6 +478,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
             case WorkRoomPresenter.GET_AUTH_STATUS://认证状态
                 lltShownotice.setVisibility(U.getAuthStatus() == 2 ? View.GONE : View.VISIBLE);
                 tvNotification.setText(U.getAuthStatusMsg());
+                //第三方类型用户 不显示【我的门诊】
+                idJobSchedule.setVisibility(U.getUserType() == 2 ? View.GONE : View.VISIBLE);
                 break;
             case WorkRoomPresenter.GET_BANNER_OK:
                 imgUrl.clear();
@@ -527,6 +534,9 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 break;
             case EventConfig.EVENT_KEY_XG_BINDTOKEN://绑定信鸽token
                 mPresenter.bindXGToken(event.getData().toString());
+                break;
+            case EventConfig.EVENT_KEY_BASEDATA_NULL://基础数据空 异常
+                mPresenter.getOPenPaperBaseData();
                 break;
         }
     }

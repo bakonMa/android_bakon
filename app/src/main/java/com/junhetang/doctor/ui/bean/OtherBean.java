@@ -9,6 +9,7 @@ public class OtherBean {
     //认证状态 0：未认证 1：审核中；2：审核通过 3：审核失败
     public int status;
     public String fail_msg;//未认证 文言（审核通过 空）
+    public int user_type;//用户类型，0:兼职，1:全职，2:第三方
 
     //accid 获取memb_no 使用
     public String memb_no;

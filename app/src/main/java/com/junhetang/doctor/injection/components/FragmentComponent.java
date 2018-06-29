@@ -2,17 +2,18 @@ package com.junhetang.doctor.injection.components;
 
 import android.content.Context;
 
+import com.junhetang.doctor.injection.modules.FragmentModule;
 import com.junhetang.doctor.injection.qualifiers.FragmentContext;
+import com.junhetang.doctor.injection.scopes.PerFragment;
 import com.junhetang.doctor.ui.activity.fragment.FindFragment;
+import com.junhetang.doctor.ui.activity.fragment.MineFragment;
 import com.junhetang.doctor.ui.activity.fragment.PatientFragment;
 import com.junhetang.doctor.ui.activity.fragment.WorkRoomFragment;
 import com.junhetang.doctor.ui.activity.home.CheckPaperFragment;
 import com.junhetang.doctor.ui.activity.home.ChooseCommFragment;
 import com.junhetang.doctor.ui.activity.home.CommUsePaperFragment;
+import com.junhetang.doctor.ui.activity.home.HistoryPaperFragment;
 import com.junhetang.doctor.ui.activity.login.LoginFragment;
-import com.junhetang.doctor.injection.modules.FragmentModule;
-import com.junhetang.doctor.injection.scopes.PerFragment;
-import com.junhetang.doctor.ui.activity.fragment.MineFragment;
 
 import dagger.Component;
 
@@ -47,5 +48,7 @@ public interface FragmentComponent extends ApplicationComponent {
     void inject(ChooseCommFragment chooseCommFragment);
 
     void inject(CommUsePaperFragment commUsePaperFragment);
+
+    void inject(HistoryPaperFragment historyPaperFragment);
 
 }

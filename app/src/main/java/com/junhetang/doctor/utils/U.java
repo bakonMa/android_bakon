@@ -76,6 +76,16 @@ public class U {
         DocApplication.getAppComponent().dataRepo().appSP().setInteger(SPConfig.SP_INT_SUTH_STATUS, status);
     }
 
+    //获取sp中 用户类型 0:兼职，1:全职，2:第三方
+    public static int getUserType() {
+        return DocApplication.getAppComponent().dataRepo().appSP().getInteger(SPConfig.SP_INT_USER_TYPE, 0);
+    }
+
+    //获取sp中 用户类型 0:兼职，1:全职，2:第三方
+    public static void setUserType(int userType) {
+        DocApplication.getAppComponent().dataRepo().appSP().setInteger(SPConfig.SP_INT_USER_TYPE, userType);
+    }
+
     //获取sp中认证状态失败 原因
     public static void setAuthStatusFailMsg(String failMsg) {
         DocApplication.getAppComponent().dataRepo().appSP().setString(SPConfig.SP_SUTH_STATUS_FAIL_MSG, failMsg);

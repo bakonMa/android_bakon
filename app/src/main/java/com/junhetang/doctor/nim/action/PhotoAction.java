@@ -1,14 +1,19 @@
 package com.junhetang.doctor.nim.action;
 
+import android.Manifest;
+
+import com.junhetang.doctor.R;
 import com.netease.nim.uikit.business.session.actions.PickImageAction;
 import com.netease.nim.uikit.business.session.constant.RequestCode;
 import com.netease.nimlib.sdk.chatroom.ChatRoomMessageBuilder;
 import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
-import com.junhetang.doctor.R;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.File;
+
+import rx.Observer;
 
 /**
  * PhotoAction 照片，拍照
@@ -37,8 +42,29 @@ public class PhotoAction extends PickImageAction {
 
     @Override
     public void onClick() {
-        int requestCode = makeRequestCode(RequestCode.PICK_IMAGE);
-        showSelector(getTitleId(), requestCode, false, tempFile(), type);
+        //拍照权限
+        RxPermissions rxPermissions = new RxPermissions(getActivity());
+        rxPermissions.request(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA})
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        if (aBoolean) {
+                            int requestCode = makeRequestCode(RequestCode.PICK_IMAGE);
+                            showSelector(getTitleId(), requestCode, false, tempFile(), type);
+                        }
+                    }
+
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                });
     }
 
 }

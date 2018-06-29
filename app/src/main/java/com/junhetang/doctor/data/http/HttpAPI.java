@@ -16,11 +16,14 @@ import com.junhetang.doctor.ui.bean.CommPaperInfoBean;
 import com.junhetang.doctor.ui.bean.DealDetailBean;
 import com.junhetang.doctor.ui.bean.HospitalBean;
 import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
+import com.junhetang.doctor.ui.bean.JobScheduleBean;
+import com.junhetang.doctor.ui.bean.JobSchedulePatientBean;
 import com.junhetang.doctor.ui.bean.LoginResponse;
 import com.junhetang.doctor.ui.bean.NewsInfoBean;
 import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
 import com.junhetang.doctor.ui.bean.OnlinePaperBackBean;
 import com.junhetang.doctor.ui.bean.OtherBean;
+import com.junhetang.doctor.ui.bean.PaperInfoBean;
 import com.junhetang.doctor.ui.bean.PatientBean;
 import com.junhetang.doctor.ui.bean.PatientFamilyBean;
 import com.junhetang.doctor.ui.bean.SearchDrugBean;
@@ -267,6 +270,10 @@ public interface HttpAPI {
     @POST("my_historyextra")
     Observable<HttpResponse<BasePageBean<CheckPaperBean>>> getPaperHistoryList(@Body Params params);
 
+    //历史处方详情
+    @POST("getPrescInfo")
+    Observable<HttpResponse<PaperInfoBean>> getPaperInfo(@Body Params params);
+
     //历史就诊人处方列表
     @POST("getpresc_patient")
     Observable<HttpResponse<BasePageBean<JiuZhenHistoryBean>>> getJiuZhenHistoryList(@Body Params params);
@@ -274,6 +281,13 @@ public interface HttpAPI {
     //添加患者（处方联系人）
     @POST("addprescpatient")
     Observable<HttpResponse<String>> addPatientJZR(@Body Params params);
+
+    //坐诊信息
+    @POST("visit_list")
+    Observable<HttpResponse<List<JobScheduleBean>>> getJobScheduleList(@Body Params params);//坐诊信息
+
+    @POST("visit_info")
+    Observable<HttpResponse<List<JobSchedulePatientBean>>> getJobSchedulePatientList(@Body Params params);
 
     //检查App更新
     @POST("getVersion")

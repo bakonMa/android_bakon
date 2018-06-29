@@ -33,7 +33,7 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, BaseViewHolder
     @Override
     protected void convert(BaseViewHolder helper, PatientBean item) {
         String name = TextUtils.isEmpty(item.remark_name) ? item.nick_name : item.remark_name;
-        helper.setText(R.id.tv_name, TextUtils.isEmpty(name) ? "": name)
+        helper.setText(R.id.tv_name, TextUtils.isEmpty(name) ? "" : name)
                 .setText(R.id.tv_from, TextUtils.isEmpty(item.memb_class) ? "" : item.memb_class)
                 .setGone(R.id.tv_redpoint, item.is_new == 1);
 
@@ -84,6 +84,7 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, BaseViewHolder
     private String getFirstLetter(int pos) {
         return CharacterParser.getInstance().getInitials(getItemSortLetter(pos));
     }
+
 
     @Override
     public int getItemCount() {

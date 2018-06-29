@@ -205,8 +205,9 @@ public class MainActivity extends BaseActivity implements BaseView{
         }
         switch (event.getCode()) {
             case EventConfig.EVENT_KEY_REDPOINT_HOME://底部红点 工作室
-                //是否有审核处方
-                int checkPaperNum = U.getRedPointExt();
+                //是否有审核处方，暂时不要了
+//                int checkPaperNum = U.getRedPointExt();
+                int checkPaperNum = 0;
                 //是否有系统消息
                 int systemMsgNum = U.getRedPointSys();
                 //未读消息数

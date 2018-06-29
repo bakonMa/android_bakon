@@ -33,6 +33,7 @@ import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
 import com.junhetang.doctor.ui.bean.SearchDrugBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
+import com.junhetang.doctor.utils.KeyBoardUtils;
 import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.RegexUtil;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
@@ -598,6 +599,13 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
         } else {
             drugBeans.get(position).drug_num = Integer.parseInt(editable.toString());
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //关闭键盘
+        KeyBoardUtils.hideKeyBoard(etSearch, this);
     }
 
     @Override

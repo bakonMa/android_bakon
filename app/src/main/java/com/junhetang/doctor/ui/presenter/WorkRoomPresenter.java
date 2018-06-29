@@ -9,8 +9,10 @@ import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.data.response.HttpResponse;
 import com.junhetang.doctor.ui.base.BaseObserver;
-import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.BannerBean;
+import com.junhetang.doctor.ui.bean.BasePageBean;
+import com.junhetang.doctor.ui.bean.JobScheduleBean;
+import com.junhetang.doctor.ui.bean.JobSchedulePatientBean;
 import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
 import com.junhetang.doctor.ui.bean.OtherBean;
 import com.junhetang.doctor.ui.bean.SystemMsgBean;
@@ -42,6 +44,9 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
     public static final int GET_AUTH_STATUS = 0x112;
     public static final int GET_BANNER_OK = 0x113;
     public static final int GET_SYSTEMMSG_LIST_OK = 0x114;
+    public static final int GET_JOBSCHEDULE_LIST_OK = 0x115;
+    public static final int GET_JOBSCHEDULE_PATIENT_COMPLETE = 0x116;
+    public static final int GET_JOBSCHEDULE_PATIENT_CANCLE = 0x117;
 
     public WorkRoomPresenter(WorkRoomContact.View mView) {
         this.mView = mView;
@@ -72,6 +77,7 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
                     public void onSuccess(HttpResponse<OtherBean> resultResponse) {
                         U.setAuthStatus(resultResponse.data.status);
                         U.setAuthStatusFailMsg(resultResponse.data.fail_msg);
+                        U.setUserType(resultResponse.data.user_type);//用户类型
                         mView.onSuccess(M.createMessage(resultResponse.data, GET_AUTH_STATUS));
                     }
 
@@ -230,6 +236,51 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<BasePageBean<SystemMsgBean>> response) {
                         mView.onSuccess(M.createMessage(response.data, GET_SYSTEMMSG_LIST_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void getJobScheduleList() {
+        Params params = new Params();
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getJobScheduleList(params))
+                .compose(mView.toLifecycle())
+                .subscribe(new BaseObserver<HttpResponse<List<JobScheduleBean>>>(null) {
+                    @Override
+                    public void onSuccess(HttpResponse<List<JobScheduleBean>> response) {
+                        mView.onSuccess(M.createMessage(response.data, GET_JOBSCHEDULE_LIST_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void getJobSchedulePatientList(String date, int store_id, int type) {
+        Params params = new Params();
+        params.put("date", date);
+        params.put("store_id", store_id);
+        params.put("status", type);//1：已预约 -1：已取消
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getJobSchedulePatientList(params))
+                .compose(mView.toLifecycle())
+                .subscribe(new BaseObserver<HttpResponse<List<JobSchedulePatientBean>>>(null) {
+                    @Override
+                    public void onSuccess(HttpResponse<List<JobSchedulePatientBean>> response) {
+                        mView.onSuccess(M.createMessage(response.data, type == 1 ? GET_JOBSCHEDULE_PATIENT_COMPLETE : GET_JOBSCHEDULE_PATIENT_CANCLE));
                     }
 
                     @Override

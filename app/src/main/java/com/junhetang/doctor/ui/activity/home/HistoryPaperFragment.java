@@ -2,12 +2,11 @@ package com.junhetang.doctor.ui.activity.home;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -22,9 +21,9 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.H5Config;
-import com.junhetang.doctor.injection.components.DaggerActivityComponent;
-import com.junhetang.doctor.injection.modules.ActivityModule;
-import com.junhetang.doctor.ui.base.BaseActivity;
+import com.junhetang.doctor.injection.components.DaggerFragmentComponent;
+import com.junhetang.doctor.injection.modules.FragmentModule;
+import com.junhetang.doctor.ui.base.BaseFragment;
 import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.CheckPaperBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
@@ -33,11 +32,8 @@ import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
 import com.junhetang.doctor.utils.KeyBoardUtils;
 import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
-import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
-import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,13 +44,10 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
 /**
- * PaperHistoryActivity 历史处方
- * Create at 2018/5/7 下午3:11 by mayakun
+ * HistoryPaperFragment 历史处方
+ * Create at 2018/6/26 上午10:22 by mayakun
  */
-public class PaperHistoryActivity extends BaseActivity implements OpenPaperContact.View {
-
-    @BindView(R.id.id_toolbar)
-    Toolbar idToolbar;
+public class HistoryPaperFragment extends BaseFragment implements OpenPaperContact.View {
     @BindView(R.id.id_swipe)
     SwipeRefreshLayout idSwipe;
     @BindView(R.id.recycleview)
@@ -70,17 +63,27 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
     private List<CheckPaperBean> checkPaperBeans = new ArrayList<>();
     private BaseQuickAdapter mAdapter;
     private int pageNum = 1;
+    private int status = 0;//status：0全部 1已支付 -1未支付
     private String searchStr = "";
+
+    //根据type，构造fragment
+    //status：0全部 1已支付 -1未支付
+    public static HistoryPaperFragment newInstance(int status) {
+        HistoryPaperFragment fragment = new HistoryPaperFragment();
+        Bundle args = new Bundle();
+        args.putInt("status", status);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     protected int provideRootLayout() {
-        return R.layout.activity_paper_history;
+        return R.layout.fragment_paper_history;
     }
 
     @Override
     protected void initView() {
-        initToolbar();
-
+        status = getArguments().getInt("status", 0);
         //下拉刷新
         idSwipe.setColorSchemeColors(getResources().getColor(R.color.color_main));
         idSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -88,11 +91,11 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
             public void onRefresh() {
                 //刷新数据
                 pageNum = 1;
-                mPresenter.getPaperHistoryList(pageNum, etSerch.getText().toString().trim());
+                mPresenter.getPaperHistoryList(pageNum, status, etSerch.getText().toString().trim());
             }
         });
 
-        recyvleview.setLayoutManager(new LinearLayoutManager(this));
+        recyvleview.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new BaseQuickAdapter<CheckPaperBean, BaseViewHolder>(R.layout.item_checkpaper, checkPaperBeans) {
             @Override
             protected void convert(BaseViewHolder helper, CheckPaperBean item) {
@@ -121,19 +124,22 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                mPresenter.getPaperHistoryList(pageNum + 1, searchStr);
+                mPresenter.getPaperHistoryList(pageNum + 1, status, searchStr);
             }
         }, recyvleview);
 
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter mAdapter, View view, int position) {
+                CheckPaperBean paperBean = checkPaperBeans.get(position);
+                boolean canuse = (paperBean.presc_type == 1 || (paperBean.presc_type == 2 && paperBean.z_status == 1));
                 Intent intent = new Intent(actContext(), PaperH5Activity.class);
                 intent.putExtra("hasTopBar", true);//是否包含toolbar
+                intent.putExtra("canuse", canuse);//是否显示【调用此方】
                 intent.putExtra("webType", PaperH5Activity.FORM_TYPE.H5_PAPER_DETAIL);
                 intent.putExtra("title", UIUtils.getString(R.string.str_paper_detail));
-                intent.putExtra("url", H5Config.H5_PAPER_DETAIL + checkPaperBeans.get(position).id);
-                intent.putExtra("checkid", checkPaperBeans.get(position).id);
+                intent.putExtra("url", H5Config.H5_PAPER_DETAIL + paperBean.id);
+                intent.putExtra("checkid", paperBean.id);
                 startActivity(intent);
             }
         });
@@ -150,29 +156,14 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
                         pageNum = 1;
                     }
                     searchStr = etSerch.getText().toString().trim();
-                    mPresenter.getPaperHistoryList(pageNum, searchStr);
+                    mPresenter.getPaperHistoryList(pageNum, status, searchStr);
                     return true;
                 }
                 return false;
             }
         });
         //请求数据
-        mPresenter.getPaperHistoryList(pageNum, etSerch.getText().toString().trim());
-    }
-
-    //共同头部处理
-    private void initToolbar() {
-        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
-                .setTitle("历史处方")
-                .setLeft(false)
-                .setStatuBar(R.color.white)
-                .setListener(new TitleOnclickListener() {
-                    @Override
-                    public void leftClick() {//返回
-                        super.leftClick();
-                        finish();
-                    }
-                }).bind();
+        mPresenter.getPaperHistoryList(pageNum, status, etSerch.getText().toString().trim());
     }
 
     //搜索监听
@@ -183,7 +174,7 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
             searchStr = "";
             //请求数据
             pageNum = 1;
-            mPresenter.getPaperHistoryList(pageNum, etSerch.getText().toString().trim());
+            mPresenter.getPaperHistoryList(pageNum, status, etSerch.getText().toString().trim());
         }
     }
 
@@ -200,15 +191,16 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
                     pageNum = 1;
                 }
                 searchStr = etSerch.getText().toString().trim();
-                mPresenter.getPaperHistoryList(pageNum, searchStr);
+                mPresenter.getPaperHistoryList(pageNum, status, searchStr);
                 break;
         }
     }
 
+
     @Override
     protected void setupActivityComponent() {
-        DaggerActivityComponent.builder()
-                .activityModule(new ActivityModule(this))
+        DaggerFragmentComponent.builder()
+                .fragmentModule(new FragmentModule(this))
                 .applicationComponent(DocApplication.getAppComponent())
                 .build()
                 .inject(this);
@@ -248,15 +240,15 @@ public class PaperHistoryActivity extends BaseActivity implements OpenPaperConta
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-        CommonDialog commonDialog = new CommonDialog(this, errorMsg);
+        CommonDialog commonDialog = new CommonDialog(getActivity(), errorMsg);
         commonDialog.show();
     }
 
+
     @Override
     public Activity provideContext() {
-        return this;
+        return getActivity();
     }
-
 
     @Override
     public <R> LifecycleTransformer<R> toLifecycle() {

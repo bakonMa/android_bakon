@@ -13,6 +13,7 @@ public interface SPConfig {
 
     String SP_STR_TOKEN = "token";
     String SP_INT_SUTH_STATUS = "auth_status";
+    String SP_INT_USER_TYPE = "user_type";
     String SP_SUTH_STATUS_FAIL_MSG = "auth_status_fail_msg";
     String SP_STR_PHONE = "phone";
     String SP_SERVICE_ACCID = "service_accid";

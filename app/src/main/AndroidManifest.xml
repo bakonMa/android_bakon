@@ -309,7 +309,7 @@
             android:name=".ui.activity.home.CheckPaperActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.home.PaperHistoryActivity"
+            android:name=".ui.activity.home.HistoryPaperActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
@@ -322,6 +322,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.home.SystemMsgListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.home.JobScheduleActivity"
             android:screenOrientation="portrait" />
 
 

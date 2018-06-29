@@ -18,6 +18,7 @@ import com.junhetang.doctor.config.EventConfig;
 import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.injection.components.DaggerFragmentComponent;
 import com.junhetang.doctor.injection.modules.FragmentModule;
+import com.junhetang.doctor.ui.activity.home.JiuZhenHistoryActivity;
 import com.junhetang.doctor.ui.activity.patient.PatientFamilyActivity;
 import com.junhetang.doctor.ui.adapter.PatientAdapter;
 import com.junhetang.doctor.ui.base.BaseFragment;
@@ -43,6 +44,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * PatientFragment 患者fragment
@@ -61,6 +63,8 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
     SideBar sideBar;
     @BindView(R.id.indicator)
     TextView indicator;
+    @BindView(R.id.tv_history_patient)
+    TextView tvHistoryPatient;
 
     @Inject
     PatientPresenter mPresenter;
@@ -89,6 +93,7 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
     @Override
     protected void initView() {
         initToolBar();
+        tvHistoryPatient.setVisibility(View.VISIBLE);
         //下拉刷新
         idSwipe.setColorSchemeColors(getResources().getColor(R.color.color_main));
         idSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -101,6 +106,7 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
 
         recycleView.setLayoutManager(mLayoutManager = new LinearLayoutManager(actContext()));
         mAdapter = new PatientAdapter(actContext(), dataList);
+
         recycleView.addItemDecoration(new StickyRecyclerHeadersDecoration(mAdapter));
 //        recycleView.addItemDecoration(new DividerItemDecoration(actContext(), RecyclerView.VERTICAL));
         recycleView.setAdapter(mAdapter);
@@ -113,6 +119,7 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
                 startActivity(intent);
             }
         });
+
 
         //是否显示侧边快捷栏
         sideBar.setTextView(indicator);
@@ -160,6 +167,11 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
                     }
                 })
                 .bind();
+    }
+
+    @OnClick(R.id.tv_history_patient)
+    void btnOnclick() {
+        startActivity(new Intent(getActivity(), JiuZhenHistoryActivity.class));
     }
 
     @Override

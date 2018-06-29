@@ -13,6 +13,7 @@ import com.junhetang.doctor.injection.modules.ApplicationModule;
 import com.junhetang.doctor.manager.ManagerRepository;
 import com.junhetang.doctor.nim.NimManager;
 import com.junhetang.doctor.receiver.XGInitManager;
+import com.junhetang.doctor.utils.U;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -54,8 +55,8 @@ public class DocApplication extends Application {
         XGInitManager.getInstance(this);
         //bugly isdebug（true/false）
         CrashReport.initCrashReport(getApplicationContext(), "cf03101aef", BuildConfig.DEBUG);
-        //todo 全部设置为测试设备 release 去掉
         CrashReport.setIsDevelopmentDevice(getApplicationContext(), BuildConfig.DEBUG);
+        CrashReport.setUserId(U.getPhone());//设置手机号为用户id，方便查找
         //内存泄漏检测
         refWatcher = setupLeakCanary();
         //db 初始化

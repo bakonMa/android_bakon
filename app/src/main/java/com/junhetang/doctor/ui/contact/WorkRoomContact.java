@@ -27,5 +27,9 @@ public interface WorkRoomContact {
         void bindXGToken(String xgToken);//把注册的信鸽token给后台
 
         void getSystemMsgList(int page);//系统消息列表
+
+        void getJobScheduleList();//坐诊信息
+        
+        void getJobSchedulePatientList(String date, int store_id, int type);//坐诊信息
     }
 }

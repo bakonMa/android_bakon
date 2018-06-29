@@ -1,25 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_bg_main">
 
     <ImageView
-        android:id="@+id/id_img"
+        android:id="@+id/iv_img"
         android:layout_width="191dp"
         android:layout_height="118dp"
+        android:layout_above="@+id/tv_title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="140dp"
         android:src="@drawable/msg_1" />
 
     <TextView
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/id_img"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
+        android:layout_centerInParent="true"
+        android:paddingBottom="10dp"
         android:text="暂无数据"
-        android:textColor="@color/color_999"
+        android:textColor="@color/color_666"
         android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_title"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/color_999"
+        android:textSize="12sp"
+        tools:text="暂无数据" />
 </RelativeLayout>
 

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_bg_corner_10">
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_alignParentRight="true"
+        android:padding="15dp"
+        android:src="@drawable/close" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="(已预约)患者目录"
+        android:textColor="@color/color_000"
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/temp_line"
+        style="@style/line_gray_hor"
+        android:layout_below="@+id/iv_close"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_patient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="250dp"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/temp_line" />
+</RelativeLayout>

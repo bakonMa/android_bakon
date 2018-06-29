@@ -16,18 +16,18 @@ import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.EventConfig;
 import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.data.eventbus.EventBusUtil;
+import com.junhetang.doctor.injection.components.DaggerActivityComponent;
+import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.ui.base.BaseActivity;
+import com.junhetang.doctor.ui.bean.UserBaseInfoBean;
+import com.junhetang.doctor.ui.contact.PersonalContact;
+import com.junhetang.doctor.ui.presenter.PersonalPresenter;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
-import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
-import com.junhetang.doctor.injection.components.DaggerActivityComponent;
-import com.junhetang.doctor.injection.modules.ActivityModule;
-import com.junhetang.doctor.ui.bean.UserBaseInfoBean;
-import com.junhetang.doctor.ui.contact.PersonalContact;
-import com.junhetang.doctor.ui.presenter.PersonalPresenter;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
+import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
 import java.lang.ref.WeakReference;
@@ -67,7 +67,9 @@ public class UserNoticeActivity extends BaseActivity implements PersonalContact.
         initToolbar();
         baseInfoBean = U.getUserInfo();
         if (baseInfoBean != null) {
-            edContent.setText(baseInfoBean.notice);
+            edContent.setText(TextUtils.isEmpty(baseInfoBean.notice) ? "" : baseInfoBean.notice);
+        } else {
+            mPresenter.getUserBasicInfo();
         }
     }
 
@@ -139,13 +141,27 @@ public class UserNoticeActivity extends BaseActivity implements PersonalContact.
 
     @Override
     public void onSuccess(Message message) {
-        //修改后保存
-        baseInfoBean.notice = edContent.getText().toString().trim();
-        U.saveUserInfo(new Gson().toJson(baseInfoBean));
-        //完善资料 刷新数据
-        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_UPDATE_NOTICE));
-        ToastUtil.showShort("保存成功");
-        finish();
+        if (message == null) {
+            return;
+        }
+        switch (message.what) {
+            case PersonalPresenter.GET_USEBASE_INFO://获取基本信息
+                baseInfoBean = U.getUserInfo();
+                if (baseInfoBean != null) {
+                    edContent.setText(TextUtils.isEmpty(baseInfoBean.notice) ? "" : baseInfoBean.notice);
+                }
+                break;
+            case PersonalPresenter.ADD_USER_BASEINFO://修改公告
+                //修改后保存
+                baseInfoBean.notice = edContent.getText().toString().trim();
+                U.saveUserInfo(new Gson().toJson(baseInfoBean));
+                //完善资料 刷新数据
+                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_UPDATE_NOTICE));
+                ToastUtil.showShort("保存成功");
+                finish();
+                break;
+        }
+
     }
 
     @Override

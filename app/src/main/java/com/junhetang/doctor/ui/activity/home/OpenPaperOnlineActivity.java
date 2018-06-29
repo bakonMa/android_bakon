@@ -22,6 +22,7 @@ import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.EventConfig;
 import com.junhetang.doctor.data.eventbus.Event;
+import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
@@ -34,6 +35,7 @@ import com.junhetang.doctor.ui.bean.DrugBean;
 import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
 import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
 import com.junhetang.doctor.ui.bean.OnlinePaperBackBean;
+import com.junhetang.doctor.ui.bean.PaperInfoBean;
 import com.junhetang.doctor.ui.bean.PatientFamilyBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
@@ -138,7 +140,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     private String docadviceStr = "";//医嘱
     private ArrayList<DrugBean> drugBeans = new ArrayList<>();
     private boolean isShowAll = false;//展开全部
-
+    private int checekId;//处方id，【调用此放】使用
     private OPenPaperBaseBean baseBean;
     private List<String> drugStoreList = new ArrayList<>();//药房
     private List<String> drugClassList = new ArrayList<>();//剂型
@@ -169,6 +171,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         formParent = getIntent().getIntExtra("formParent", 0);
         membNo = getIntent().getStringExtra("memb_no");//患者momb_no
         pAccid = getIntent().getStringExtra("p_accid");//患者accid
+        checekId = getIntent().getIntExtra("checkid", 0);//处方id，【调用此放】使用
 
         //初始基础数据
         initBaseData();
@@ -196,11 +199,28 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 //        adapter.bindToRecyclerView(recyclerview);
+
+        if (checekId > 0) {//判断是【调用此方】
+            mPresenter.getPaperInfo(checekId);
+        }
     }
 
     //初始base数据
     private void initBaseData() {
         baseBean = U.getOpenpapeBaseData();
+        //基础数据空的时候
+        if (null == baseBean || null == baseBean.store || null == baseBean.drug_class
+                || null == baseBean.usage || null == baseBean.frequency) {
+            commonDialog = new CommonDialog(this, true, "数据异常，请退出后重试", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_BASEDATA_NULL));
+                    finish();
+                }
+            });
+            commonDialog.show();
+        }
+
         //药房
         for (OPenPaperBaseBean.StoreBean bean : baseBean.store) {
             drugStoreList.add(bean.drug_store_name);
@@ -550,6 +570,10 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 commonDialog = new CommonDialog(this, "添加常用处方成功");
                 commonDialog.show();
                 break;
+            case OpenPaperPresenter.GET_PAPER_INFO_OK://获取处方详情ok
+                PaperInfoBean infoBean = (PaperInfoBean) message.obj;
+                editePaperInfoDate(infoBean);
+                break;
             case OpenPaperPresenter.OPENPAPER_ONLINE_OK://提交后
                 OnlinePaperBackBean bean = (OnlinePaperBackBean) message.obj;
                 if (bean == null) {//data为空  说明提交成功
@@ -583,6 +607,68 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 break;
         }
     }
+
+    //处理【调用此方】的数据
+    private void editePaperInfoDate(PaperInfoBean infoBean) {
+        if (infoBean == null) {
+            return;
+        }
+        membNo = infoBean.memb_no;
+        relationship = infoBean.relationship;
+        //就诊人
+        lltJZinfo.setVisibility(View.VISIBLE);
+        etName.setEditeText(TextUtils.isEmpty(infoBean.name) ? "" : infoBean.name);
+        etAge.setEditeText(TextUtils.isEmpty(infoBean.age) ? "" : infoBean.age);
+        etPhone.setEditeText(TextUtils.isEmpty(infoBean.phone) ? "" : infoBean.phone);
+        etSkillname.setText(TextUtils.isEmpty(infoBean.icd10) ? "" : infoBean.icd10); //病症
+        rgSex.check(infoBean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
+        etName.setEditeEnable(false);
+        etAge.setEditeEnable(false);
+        etPhone.setEditeEnable(false);
+        rbNan.setEnabled(false);
+        rbNv.setEnabled(false);
+        //药房id
+        storeId = infoBean.store_id;
+        for (OPenPaperBaseBean.StoreBean storeBean : baseBean.store) {
+            if (storeBean.drug_store_id == storeId) {
+                etDrugstore.setText(storeBean.drug_store_name);
+                break;
+            }
+        }
+        //剂型
+        drugClassId = infoBean.drug_class;
+        for (OPenPaperBaseBean.CommBean classBean : baseBean.drug_class) {
+            if (classBean.id == drugClassId) {
+                etDrugClass.setText(classBean.name);
+                break;
+            }
+        }
+        //代煎
+        daijianType = infoBean.boiled_type;
+        rgDaijian.check(daijianType == 0 ? R.id.rb_yes : R.id.rb_no);
+        //副数
+        etNum.setText(infoBean.drug_num > 0 ? String.valueOf(infoBean.drug_num) : "1");
+        //用法，用量
+        usagesStr = TextUtils.isEmpty(infoBean.usages) ? "" : infoBean.usages;
+        freqStr = TextUtils.isEmpty(infoBean.freq) ? "" : infoBean.freq;
+        if (!TextUtils.isEmpty(usagesStr) && !TextUtils.isEmpty(usagesStr)) {
+            etUsetype.setText(usagesStr + "-" + freqStr);
+        }
+        //诊疗费
+        etServerprice.setText(infoBean.service_price > 0 ? String.valueOf(infoBean.service_price) : "");
+        //医嘱
+        docadviceStr = TextUtils.isEmpty(infoBean.doc_remark) ? "" : infoBean.doc_remark;
+        etDocadvice.setText(docadviceStr);
+        //药材
+        if (infoBean.param != null && !infoBean.param.isEmpty()) {
+            drugBeans.clear();
+            drugBeans.addAll(infoBean.param);
+            adapter.notifyDataSetChanged();
+            //默认折叠
+            setOPenStatus(false);
+        }
+    }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventCome(Event event) {

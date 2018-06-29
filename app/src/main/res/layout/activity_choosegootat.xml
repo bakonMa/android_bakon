@@ -27,7 +27,7 @@
             android:id="@+id/tag_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/shape_bg_corner_5"
+            android:background="@drawable/shape_bg_corner_10"
             android:minHeight="100dp"
             android:overScrollMode="never"
             android:padding="10dp">

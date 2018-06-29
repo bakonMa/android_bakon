@@ -12,6 +12,7 @@ import com.junhetang.doctor.ui.bean.CommPaperBean;
 import com.junhetang.doctor.ui.bean.CommPaperInfoBean;
 import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
 import com.junhetang.doctor.ui.bean.OnlinePaperBackBean;
+import com.junhetang.doctor.ui.bean.PaperInfoBean;
 import com.junhetang.doctor.ui.bean.SearchDrugBean;
 import com.junhetang.doctor.ui.bean.UploadImgBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
@@ -57,6 +58,7 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
     public static final int GET_PAPER_HISTORYLIST_OK = 0x124;
     public static final int GET_JIUZHEN_HISTORYLIST_OK = 0x125;
     public static final int CLASSICSPAPER_UP = 0x126;
+    public static final int GET_PAPER_INFO_OK = 0x127;
 
     public OpenPaperPresenter(OpenPaperContact.View mView) {
         this.mView = mView;
@@ -382,9 +384,10 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
     }
 
     @Override
-    public void getPaperHistoryList(int page, String searchStr) {
+    public void getPaperHistoryList(int page, int status, String searchStr) {
         Params params = new Params();
         params.put("page", page);
+        params.put("status", status);
         params.put("search", searchStr);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
         Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
@@ -454,6 +457,31 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                 });
         mSubscription.add(subscription);
 
+    }
+
+    @Override
+    public void getPaperInfo(int id) {
+        Params params = new Params();
+        params.put("id", id);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getPaperInfo(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null)
+                        mDialog.show();
+                }).subscribe(new BaseObserver<HttpResponse<PaperInfoBean>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<PaperInfoBean> personalBeanHttpResponse) {
+                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_PAPER_INFO_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
     }
 
 }

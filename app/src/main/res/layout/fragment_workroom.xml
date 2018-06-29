@@ -27,7 +27,7 @@
         <LinearLayout
             android:id="@+id/llt_shownotice"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:background="@color/color_main"
             android:gravity="center"
             android:orientation="horizontal"
@@ -248,13 +248,6 @@
 
         </RelativeLayout>
 
-        <com.junhetang.doctor.widget.RelativeWithImage
-            android:id="@+id/id_patient_jzr"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            app:leftIamge="@drawable/icon_patient_book"
-            app:title="处方联系人" />
-
         <RelativeLayout
             android:id="@+id/id_notification"
             android:layout_width="match_parent"
@@ -315,7 +308,27 @@
                 android:layout_marginRight="15dp"
                 android:src="@drawable/icon_xuanze" />
 
+            <View
+                style="@style/line_gray_hor"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
         </RelativeLayout>
+
+        <com.junhetang.doctor.widget.RelativeWithImage
+            android:id="@+id/id_patient_history"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            app:leftIamge="@drawable/icon_patient_book"
+            app:title="处方联系人" />
+
+        <com.junhetang.doctor.widget.RelativeWithImage
+            android:id="@+id/id_job_schedule"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            app:isShowLine="false"
+            app:leftIamge="@drawable/icon_jon_schedule"
+            app:title="我的门诊" />
 
     </LinearLayout>
 </ScrollView>

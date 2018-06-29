@@ -37,6 +37,7 @@
     <color name="color_main">#f5a623</color>
     <color name="color_ada293">#ada293</color>
     <color name="color_b6b6b6">#b6b6b6</color>
+    <color name="blue">#10a6e2</color>
     <color name="red">#ff0000</color>
 
 </resources>

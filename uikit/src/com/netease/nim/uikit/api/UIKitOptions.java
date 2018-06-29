@@ -71,7 +71,7 @@ public class UIKitOptions {
     /**
      * 构建智能机器人缓存
      */
-    public boolean buildRobotInfoCache = true;
+    public boolean buildRobotInfoCache = false;
 
     /**
      * 构建聊天室成员缓存

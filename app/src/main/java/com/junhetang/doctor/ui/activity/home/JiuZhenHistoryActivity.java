@@ -49,7 +49,7 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
 /**
- * PaperHistoryActivity 历史处方
+ * HistoryPaperActivity 历史处方
  * Create at 2018/5/7 下午3:11 by mayakun
  */
 public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperContact.View {

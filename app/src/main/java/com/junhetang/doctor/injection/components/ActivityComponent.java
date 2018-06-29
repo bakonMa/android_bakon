@@ -11,10 +11,11 @@ import com.junhetang.doctor.ui.activity.home.AddDrugActivity;
 import com.junhetang.doctor.ui.activity.home.ChooseCommActivity;
 import com.junhetang.doctor.ui.activity.home.ChooseDocAdviceActivity;
 import com.junhetang.doctor.ui.activity.home.CommUsePaperActivity;
+import com.junhetang.doctor.ui.activity.home.HistoryPaperActivity;
 import com.junhetang.doctor.ui.activity.home.JiuZhenHistoryActivity;
+import com.junhetang.doctor.ui.activity.home.JobScheduleActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperCameraActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperOnlineActivity;
-import com.junhetang.doctor.ui.activity.home.PaperHistoryActivity;
 import com.junhetang.doctor.ui.activity.home.SearchSkillNameActivity;
 import com.junhetang.doctor.ui.activity.home.SystemMsgListActivity;
 import com.junhetang.doctor.ui.activity.login.LoginActivity;
@@ -122,7 +123,7 @@ public interface ActivityComponent extends ApplicationComponent {
 
     void inject(PaperH5Activity paperH5Activity);
 
-    void inject(PaperHistoryActivity paperHistoryActivity);
+    void inject(HistoryPaperActivity historyPaperActivity);
 
     void inject(GuildNewsListActivity guildNewsListActivity);
 
@@ -137,5 +138,7 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(ChooseCommActivity chooseCommActivity);
 
     void inject(AddPatientJZRActivity addPatientJZRActivity);
+
+    void inject(JobScheduleActivity jobScheduleActivity);
 
 }

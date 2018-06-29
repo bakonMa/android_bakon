@@ -27,6 +27,7 @@ import com.junhetang.doctor.nim.NimManager;
 import com.junhetang.doctor.nim.NimU;
 import com.junhetang.doctor.nim.message.extension.AskPaperAttachment;
 import com.junhetang.doctor.nim.message.extension.FollowPaperAttachment;
+import com.junhetang.doctor.ui.activity.home.OpenPaperOnlineActivity;
 import com.junhetang.doctor.ui.activity.patient.PatientListActivity;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.H5JsonBean;
@@ -44,9 +45,6 @@ import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.lang.ref.WeakReference;
 
 import javax.inject.Inject;
@@ -56,7 +54,7 @@ import butterknife.OnClick;
 
 /**
  * mayakun 2017/11/17
- * 共同webview画面
+ * 共同webview画面 【问诊单，随诊单，处方详情】使用
  */
 public class PaperH5Activity extends BaseActivity implements ProgressWebView.ErrorCallback, OpenPaperContact.View {
     private static final int REQUEST_CODE_CHOOSEPATIENT_ASKPAPER = 2040;//问诊单 选择患者
@@ -79,7 +77,9 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
     //标题，url
     private String titleStr, urlStr, webType;
     private String paccid;
+    private int checkid;//处方id
     private boolean hasTopBar;//带头部导航栏
+    private boolean canUseAgain;//是否已支付
     private int formParent = 0;//是否来自聊天(0 默认不是 1：聊天)
     private String askPapertypeID = "";//男性，女性，儿童  问诊单需要
     private ToolbarBuilder toolbarBuilder;
@@ -108,11 +108,13 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
     protected void initView() {
         //是否包含toolbar
         hasTopBar = getIntent().getBooleanExtra("hasTopBar", true);
+        canUseAgain = getIntent().getBooleanExtra("canuse", false);//是否已支付，是否可以在开一方
         titleStr = getIntent().getStringExtra("title");
         urlStr = getIntent().getStringExtra("url");
         webType = getIntent().getStringExtra("webType");
         paccid = getIntent().getStringExtra("paccid");//聊天才有
         formParent = getIntent().getIntExtra("formParent", 0);
+        checkid = getIntent().getIntExtra("checkid", 0);
 
         LogUtil.d(urlStr);
         wbWebview.setErrorCallback(this);
@@ -144,15 +146,8 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
         toolbarBuilder = ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
                 .setTitle(TextUtils.isEmpty(titleStr) ? wbWebview.getTitle() : titleStr)
                 .setLeft(false)
-                .isShowClose(false)//是否显示close
                 .setStatuBar(R.color.white)
                 .setListener(new TitleOnclickListener() {
-                    @Override
-                    public void closeClick() {//关闭
-                        super.closeClick();
-                        finish();
-                    }
-
                     @Override
                     public void leftClick() {//返回
                         super.leftClick();
@@ -162,24 +157,28 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
                             finish();
                         }
                     }
+
+                    @Override
+                    public void rightClick() {
+                        super.rightClick();
+                        onRightClick();
+                    }
                 }).bind();
-    }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onEventCome(Event event) {
-        if (event == null) {
-            return;
-        }
-        switch (event.getCode()) {
-//            case EventConfig.EVENT_KEY_H5_BOOKS_SHARE://书籍分享
-//                break;
+        //处方详情 是否显示再开一方
+        if (FORM_TYPE.H5_PAPER_DETAIL.equals(webType) && canUseAgain) {
+            toolbarBuilder.setRightText("调用此方", true, R.color.color_main);
         }
     }
 
-
-    @Override
-    protected boolean useEventBus() {
-        return true;
+    //右边title 点击处理
+    private void onRightClick() {
+        //调用此放
+        if (FORM_TYPE.H5_PAPER_DETAIL.equals(webType)) {
+            Intent intent = new Intent(this, OpenPaperOnlineActivity.class);
+            intent.putExtra("checkid", checkid);//处方id
+            startActivity(intent);
+        }
     }
 
     @Override
