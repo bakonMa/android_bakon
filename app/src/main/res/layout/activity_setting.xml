@@ -9,8 +9,9 @@
     <include layout="@layout/base_toolbar" />
 
     <RelativeLayout
+        android:id="@+id/rlt_message"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="54dp"
         android:background="@color/white"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
@@ -30,21 +31,69 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:checked="true"
-            android:padding="2dp"
+            android:padding="5dp"
             android:thumb="@drawable/switch_bg_thumb"
             android:track="@drawable/switch_bg_track" />
 
+        <View
+            style="@style/line_gray_hor"
+            android:layout_alignParentBottom="true" />
     </RelativeLayout>
 
-    <View
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        style="@style/line_gray_hor" />
+    <RelativeLayout
+        android:id="@+id/rlt_chat"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            android:id="@+id/temp_id1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="是否开通在线咨询"
+            android:textColor="@color/color_000"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/temp_id1"
+            android:gravity="center"
+            android:text="关闭后将无法与患者进行在线咨询"
+            android:textColor="@color/color_main"
+            android:textSize="14sp" />
+
+        <Switch
+            android:id="@+id/st_chatflag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:checked="false"
+            android:padding="5dp"
+            android:thumb="@drawable/switch_bg_thumb"
+            android:track="@drawable/switch_bg_track" />
+
+        <View
+            style="@style/line_gray_hor"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+
+    <com.junhetang.doctor.widget.RelativeWithText
+        android:id="@+id/tv_setprice"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        app:isShowTab="false"
+        app:titleT="咨询费设置" />
 
     <com.junhetang.doctor.widget.RelativeWithText
         android:id="@+id/tv_reset_password"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
+        android:layout_height="54dp"
         android:layout_marginBottom="20dp"
         app:isShowLineT="false"
         app:isShowTab="false"

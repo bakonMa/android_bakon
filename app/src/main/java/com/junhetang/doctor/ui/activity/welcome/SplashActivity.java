@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.junhetang.doctor.BuildConfig;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.SPConfig;
@@ -69,13 +70,31 @@ public class SplashActivity extends BaseActivity {
 
         viewPager.setOffscreenPageLimit(1);
         viewPager.setAdapter(welcomeAdapter);
+        //状态条
         idIndicator.setViewPager(viewPager);
+        //最后一页不显示 状态条
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                idIndicator.setVisibility(position == imgList.size() - 1 ? View.GONE : View.VISIBLE);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @OnClick(R.id.tv_enter)
     public void enterClick() {
         if (viewPager.getCurrentItem() == imgList.size() - 1) {
-            DocApplication.getAppComponent().dataRepo().appSP().setBoolean(SPConfig.FIRST_ENTER, false);
+            DocApplication.getAppComponent().dataRepo().appSP().setInteger(SPConfig.LAST_ENTER_CODE, BuildConfig.VERSION_CODE);
             startActivity(new Intent(this, TranslucentActivity.class));
             finish();
         }

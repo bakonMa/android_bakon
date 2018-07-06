@@ -23,6 +23,7 @@ public interface LoginContact {
 
         void setPushStatus(int status);
 
+        void setChatFlag(int flag);//是否开通在线咨询
 
     }
 

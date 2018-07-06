@@ -18,7 +18,7 @@
         android:paddingRight="15dp"
         app:editTextHint="姓名"
         app:leftText="持卡人"
-        app:maxLength="20"
+        app:maxLength="10"
         app:textMainSize="16sp" />
 
     <com.junhetang.doctor.widget.EditableLayout

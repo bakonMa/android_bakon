@@ -34,7 +34,7 @@ public interface SPConfig {
 
 
     int GENERAL_SP_MODE = Context.MODE_PRIVATE;
-    String FIRST_ENTER = "isFirstEnter";
+    String LAST_ENTER_CODE = "last_enter_code";//最近的版本code
     String SP_KEY_BASE_CONFIG = "base_config";//科室、职称、擅长等信息
 
     String SP_BOOL_LASTCHECK_FORCEUPDATE_NAME = "isForceUpdate";//上一次检查更新时，是否是检查到要强制更新

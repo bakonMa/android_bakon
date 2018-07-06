@@ -43,6 +43,8 @@ public class UserBaseInfoBean implements Parcelable {
     public String my_explain;
     public String first_diagnose;
     public String second_diagnose;
+    public int is_consult;//是否开通在线咨询：1：开通 0：不开通
+
 
     protected UserBaseInfoBean(Parcel in) {
         name = in.readString();
@@ -59,6 +61,7 @@ public class UserBaseInfoBean implements Parcelable {
         my_explain = in.readString();
         first_diagnose = in.readString();
         second_diagnose = in.readString();
+        is_consult = in.readInt();
     }
 
     @Override
@@ -77,6 +80,7 @@ public class UserBaseInfoBean implements Parcelable {
         dest.writeString(my_explain);
         dest.writeString(first_diagnose);
         dest.writeString(second_diagnose);
+        dest.writeInt(is_consult);
     }
 
     @Override

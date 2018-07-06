@@ -32,6 +32,7 @@ public class LoginPresenter implements LoginContact.Presenter {
     public static final int REGISTE_SUCCESS = 0x112;//注册
     public static final int RESETPWD_SUCCESS = 0x113;//注册
     public static final int SETPUSHSTATIS_SUCCESS = 0x114;//是否推送
+    public static final int SET_CHAT_FLAG_SUCCESS = 0x115;//是否开通在线咨询
 
     @Inject
     public LoginPresenter(LoginContact.View view) {
@@ -202,6 +203,32 @@ public class LoginPresenter implements LoginContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<String> loginResponseHttpResponse) {
                         mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, SETPUSHSTATIS_SUCCESS));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    //是否开通在线咨询
+    @Override
+    public void setChatFlag(int flag) {
+        Params params = new Params();
+        params.put("is_consult", flag);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().setChatFlag(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mdialog != null) mdialog.show();
+                })
+                .subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<String> loginResponseHttpResponse) {
+                        mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, SET_CHAT_FLAG_SUCCESS));
                     }
 
                     @Override

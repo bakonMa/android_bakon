@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -40,6 +41,7 @@ import com.junhetang.doctor.ui.bean.PatientFamilyBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
 import com.junhetang.doctor.utils.Constant;
+import com.junhetang.doctor.utils.RegexUtil;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
@@ -64,6 +66,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
 /**
  * OpenPaperOnlineActivity 在线开方
@@ -121,6 +124,12 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     TextView tvShowall;
     @BindView(R.id.tv_choose_history)
     TextView tvChooseHistory;
+    @BindView(R.id.tv_money_service)
+    TextView tvMoneyService;
+    @BindView(R.id.tv_money_drug)
+    TextView tvMoneyDrug;
+    @BindView(R.id.tv_money_total)
+    TextView tvMoneyTotal;
     @BindView(R.id.tv_next_step)
     TextView tvNextStep;
 
@@ -193,7 +202,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 daijianType = (i == R.id.rb_yes ? 0 : 1);
             }
         });
-
         //添加的药材列表处理
         adapter = new OPenPaperDrugAdapter(this, drugBeans, 3);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -203,6 +211,47 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         if (checekId > 0) {//判断是【调用此方】
             mPresenter.getPaperInfo(checekId);
         }
+    }
+
+    //服务费
+    private int serverMoney = 0;
+    //副数
+    private int drugNum = 1;
+    //单幅要的价格
+    private double drugMoney = 0d;
+
+    //输入服务费监听
+    @OnTextChanged(value = R.id.et_serverprice, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    void afterServerChanged(Editable s) {
+        if (TextUtils.isEmpty(s.toString().trim())) {
+            serverMoney = 0;
+        } else {
+            serverMoney = Integer.parseInt(s.toString().trim());
+        }
+        //费用明细-诊疗费
+        tvMoneyService.setText(serverMoney + "元");
+        updateTotalMoney();
+    }
+
+    @OnTextChanged(value = R.id.et_num, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    void afterNumChanged(Editable s) {
+        if (TextUtils.isEmpty(s.toString().trim())) {
+            drugNum = 1;
+        } else {
+            drugNum = Integer.parseInt(s.toString().trim());
+            if (drugNum < 1) {
+                drugNum = 1;
+            }
+        }
+        updateTotalMoney();
+    }
+
+    //计算总价
+    private void updateTotalMoney() {
+        //药材费用
+        tvMoneyDrug.setText(String.format("%s元/副x%s副=%s元", String.format("%.2f", drugMoney), drugNum, String.format("%.2f", drugMoney * drugNum)));
+        //总价
+        tvMoneyTotal.setText(String.format("%.2f", serverMoney + drugMoney * drugNum) + "元");
     }
 
     //初始base数据
@@ -398,7 +447,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     private void chooseJzInfo(PatientFamilyBean.JiuzhenBean bean) {
         lltJZinfo.setVisibility(View.VISIBLE);
         tvChooseHistory.setVisibility(View.GONE);
-        etName.setEditeText(TextUtils.isEmpty(bean.patient_name) ? "" : bean.patient_name);
+        etName.setEditeText(RegexUtil.getNameSubString(bean.patient_name));
         etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
         membNo = bean.id;
         relationship = bean.relationship;
@@ -445,7 +494,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
 
     //选择填写的历史就诊人（第二类）
     private void chooseJzHistoryInfo(JiuZhenHistoryBean bean) {
-        etName.setEditeText(TextUtils.isEmpty(bean.patient_name) ? "" : bean.patient_name);
+        etName.setEditeText(RegexUtil.getNameSubString(bean.patient_name));
         etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
         etAge.setEditeText(bean.age > 0 ? (bean.age + "") : "");
         rgSex.check(bean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
@@ -617,7 +666,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         relationship = infoBean.relationship;
         //就诊人
         lltJZinfo.setVisibility(View.VISIBLE);
-        etName.setEditeText(TextUtils.isEmpty(infoBean.name) ? "" : infoBean.name);
+        etName.setEditeText(RegexUtil.getNameSubString(infoBean.name));
         etAge.setEditeText(TextUtils.isEmpty(infoBean.age) ? "" : infoBean.age);
         etPhone.setEditeText(TextUtils.isEmpty(infoBean.phone) ? "" : infoBean.phone);
         etSkillname.setText(TextUtils.isEmpty(infoBean.icd10) ? "" : infoBean.icd10); //病症
@@ -660,15 +709,25 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         docadviceStr = TextUtils.isEmpty(infoBean.doc_remark) ? "" : infoBean.doc_remark;
         etDocadvice.setText(docadviceStr);
         //药材
-        if (infoBean.param != null && !infoBean.param.isEmpty()) {
+        setDrugBeans(infoBean.param);
+    }
+
+    //设置全部药材，计算药材价格
+    private void setDrugBeans(List<DrugBean> beans) {
+        if (beans != null && !beans.isEmpty()) {
             drugBeans.clear();
-            drugBeans.addAll(infoBean.param);
+            drugBeans.addAll(beans);
             adapter.notifyDataSetChanged();
             //默认折叠
             setOPenStatus(false);
+            //计算药品价格
+            drugMoney = 0;
+            for (DrugBean bean : drugBeans) {
+                drugMoney += bean.price * bean.drug_num;
+            }
+            updateTotalMoney();
         }
     }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventCome(Event event) {
@@ -699,11 +758,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         }
         switch (requestCode) {
             case REQUEST_CODE_ADDDRUG://添加药材
-                drugBeans.clear();
-                drugBeans.addAll(data.getParcelableArrayListExtra("druglist"));
-                adapter.notifyDataSetChanged();
-                //默认折叠
-                setOPenStatus(false);
+                setDrugBeans(data.getParcelableArrayListExtra("druglist"));
                 break;
             case REQUEST_CODE_DOCADVICE://医嘱
                 docadviceStr = data.getStringExtra("docadvice");

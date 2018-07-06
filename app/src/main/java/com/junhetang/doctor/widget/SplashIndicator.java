@@ -62,7 +62,7 @@ public class SplashIndicator extends View {
 
             @Override
             public void onPageSelected(int position) {
-//                trigger(position, 0);
+                //trigger(position, 0);
             }
 
             @Override

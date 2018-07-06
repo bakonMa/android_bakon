@@ -127,7 +127,7 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
 
     private void initToolbar() {
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
-                .setTitle("患者列表")
+                .setTitle("患者中心")
                 .setStatuBar(R.color.white)
                 .setLeft(false)
                 .setListener(new TitleOnclickListener() {

@@ -22,7 +22,6 @@ import com.junhetang.doctor.injection.modules.FragmentModule;
 import com.junhetang.doctor.ui.activity.mine.AboutUsActivity;
 import com.junhetang.doctor.ui.activity.mine.AuthStep1Activity;
 import com.junhetang.doctor.ui.activity.mine.AuthStep3Activity;
-import com.junhetang.doctor.ui.activity.mine.SetPriceActivity;
 import com.junhetang.doctor.ui.activity.mine.SettingActivity;
 import com.junhetang.doctor.ui.activity.mine.UserInfoActivity;
 import com.junhetang.doctor.ui.activity.mine.wallet.WalletActivity;
@@ -79,8 +78,6 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
     LinearLayout lltUserInfo;
     @BindView(R.id.id_wallet)
     RelativeWithImage idWallet;
-    @BindView(R.id.id_set_price)
-    RelativeWithImage idSetPrice;
 
     @Inject
     PersonalPresenter mPresenter;
@@ -120,7 +117,7 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
     }
 
     @OnClick({R.id.llt_auth_status, R.id.llt_user_info, R.id.id_collect,
-            R.id.id_wallet, R.id.id_set_price, R.id.id_setting, R.id.id_recommend, R.id.id_about})
+            R.id.id_wallet, R.id.id_setting, R.id.id_recommend, R.id.id_about})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.llt_user_info:
@@ -141,9 +138,6 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
                 break;
             case R.id.id_wallet:
                 startActivity(new Intent(actContext(), WalletActivity.class));
-                break;
-            case R.id.id_set_price:
-                startActivity(new Intent(actContext(), SetPriceActivity.class));
                 break;
             case R.id.id_setting:
                 startActivity(new Intent(actContext(), SettingActivity.class));
@@ -175,7 +169,6 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
                 lltAuthStatus.setVisibility(View.VISIBLE);
                 lltUserInfo.setVisibility(View.GONE);
                 idWallet.setVisibility(View.GONE);
-                idSetPrice.setVisibility(View.GONE);
                 tvAuthstatus.setText(R.string.str_auth_0);
                 tvAuthmsg.setText(R.string.str_auth_msg_0);
                 break;
@@ -183,7 +176,6 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
                 lltAuthStatus.setVisibility(View.VISIBLE);
                 lltUserInfo.setVisibility(View.GONE);
                 idWallet.setVisibility(View.GONE);
-                idSetPrice.setVisibility(View.GONE);
                 tvAuthstatus.setText(R.string.str_auth_1);
                 tvAuthmsg.setText(R.string.str_auth_msg_1);
                 break;
@@ -191,7 +183,6 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
                 lltAuthStatus.setVisibility(View.GONE);
                 lltUserInfo.setVisibility(View.VISIBLE);
                 idWallet.setVisibility(View.VISIBLE);
-                idSetPrice.setVisibility(View.VISIBLE);
                 //获取基本信息
                 mPresenter.getUserBasicInfo();
                 break;
@@ -199,7 +190,6 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
                 lltAuthStatus.setVisibility(View.VISIBLE);
                 lltUserInfo.setVisibility(View.GONE);
                 idWallet.setVisibility(View.GONE);
-                idSetPrice.setVisibility(View.GONE);
                 tvAuthstatus.setText(R.string.str_auth_3);
                 tvAuthmsg.setText(R.string.str_auth_msg_3);
                 break;

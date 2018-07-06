@@ -11,14 +11,13 @@
         android:id="@+id/dialog_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:padding="20dp"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="5"
         android:textColor="@color/color_666"
-        android:textSize="15sp"
+        android:textSize="16sp"
         tools:text="还没有通过认证哦，认证通过后体验更多优质服务" />
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +29,7 @@
 
         <Button
             android:id="@+id/btn_gotuauth"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:background="@drawable/selector_bg_button_login"
             android:text="去认证"
@@ -39,9 +38,9 @@
 
         <Button
             android:id="@+id/btn_no"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="50dp"
             android:background="@drawable/shape_bg_cancel"
             android:text="等一等"
             android:textColor="@color/white"

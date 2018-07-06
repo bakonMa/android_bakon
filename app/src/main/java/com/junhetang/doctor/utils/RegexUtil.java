@@ -60,7 +60,7 @@ public class RegexUtil {
      */
     public static String formatDoubleMoney(Double price) {
         DecimalFormat formater = new DecimalFormat();
-        formater.applyPattern("#.##");//style形式
+        formater.applyPattern("0.00");//style形式
         return formater.format(price);
     }
     /**
@@ -164,4 +164,17 @@ public class RegexUtil {
         //format="(\\d{1})\d{16}(\S{1})"
         return id.replaceAll(format.toString(), "$1****************$2");
     }
+
+    //获取姓名（最多10位）
+    public static String getNameSubString(String str){
+        if (null == str) {
+            return "";
+        }
+        if(str.length() <= 10){
+            return str;
+        } else {
+            return str.substring(0,10);
+        }
+    }
+
 }

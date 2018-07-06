@@ -47,6 +47,8 @@ public interface OpenPaperContact {
 
         void getPaperInfo(int id);//处方详情数据（调用此方 使用）
 
+        void changeDrugType(int storId, int type, String drugJson);//普药 精品转换
+
     }
 
 }

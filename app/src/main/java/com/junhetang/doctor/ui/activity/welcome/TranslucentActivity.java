@@ -55,7 +55,7 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
 
     @Override
     protected void initView() {
-        if (DocApplication.getAppComponent().dataRepo().appSP().getBoolean(SPConfig.FIRST_ENTER, true)) {
+        if (DocApplication.getAppComponent().dataRepo().appSP().getInteger(SPConfig.LAST_ENTER_CODE, 1) != BuildConfig.VERSION_CODE) {
             Intent intent = new Intent(this, SplashActivity.class);
             startActivity(intent);
             finish();

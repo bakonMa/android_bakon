@@ -28,6 +28,7 @@
         android:id="@+id/tv_guildnews"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:visibility="gone"
         app:leftIamge="@drawable/icon_guild"
         app:title="行业追踪" />
 
@@ -36,6 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginBottom="10dp"
+        android:visibility="gone"
         app:isShowLine="false"
         app:leftIamge="@drawable/icon_health_edu"
         app:title="健康教育" />

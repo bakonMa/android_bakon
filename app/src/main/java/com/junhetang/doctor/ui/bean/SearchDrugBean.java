@@ -20,6 +20,7 @@ public class SearchDrugBean {
     //搜索药材数据
     public int id;
     public String name;
+    public String mcode;
     public double price;
     public String unit;
     public String spec;

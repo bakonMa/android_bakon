@@ -20,6 +20,7 @@ import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
 import com.junhetang.doctor.ui.contact.PatientContact;
 import com.junhetang.doctor.ui.presenter.PatientPresenter;
+import com.junhetang.doctor.utils.RegexUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
@@ -76,7 +77,7 @@ public class AddPatientJZRActivity extends BaseActivity implements PatientContac
 
         //编辑状态 数据展示
         if (isEdite && bean != null) {
-            etName.setEditeText(TextUtils.isEmpty(bean.patient_name) ? "" : bean.patient_name);
+            etName.setEditeText(RegexUtil.getNameSubString(bean.patient_name));
             etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
             etAge.setEditeText(bean.age > 0 ? bean.age + "" : "");
             sexType = bean.sex;

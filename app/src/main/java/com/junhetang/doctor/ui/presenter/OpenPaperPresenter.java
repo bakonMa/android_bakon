@@ -10,6 +10,7 @@ import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.CheckPaperBean;
 import com.junhetang.doctor.ui.bean.CommPaperBean;
 import com.junhetang.doctor.ui.bean.CommPaperInfoBean;
+import com.junhetang.doctor.ui.bean.DrugBean;
 import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
 import com.junhetang.doctor.ui.bean.OnlinePaperBackBean;
 import com.junhetang.doctor.ui.bean.PaperInfoBean;
@@ -59,6 +60,7 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
     public static final int GET_JIUZHEN_HISTORYLIST_OK = 0x125;
     public static final int CLASSICSPAPER_UP = 0x126;
     public static final int GET_PAPER_INFO_OK = 0x127;
+    public static final int CHANGE_DRUG_OK = 0x128;
 
     public OpenPaperPresenter(OpenPaperContact.View mView) {
         this.mView = mView;
@@ -120,8 +122,8 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
-                    public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, OPENPAPER_CAMERA_OK));
+                    public void onSuccess(HttpResponse<String> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, OPENPAPER_CAMERA_OK));
                     }
 
                     @Override
@@ -168,8 +170,8 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<List<BaseConfigBean.Skill>>>(mDialog) {
                     @Override
-                    public void onSuccess(HttpResponse<List<BaseConfigBean.Skill>> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, SEARCH_SKILL_OK));
+                    public void onSuccess(HttpResponse<List<BaseConfigBean.Skill>> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, SEARCH_SKILL_OK));
                     }
 
                     @Override
@@ -192,8 +194,8 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                 //不需要dialog
                 .subscribe(new BaseObserver<HttpResponse<List<SearchDrugBean>>>(null) {
                     @Override
-                    public void onSuccess(HttpResponse<List<SearchDrugBean>> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, SEARCH_DRUG_OK));
+                    public void onSuccess(HttpResponse<List<SearchDrugBean>> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, SEARCH_DRUG_OK));
                     }
 
                     @Override
@@ -220,8 +222,8 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<List<CommPaperInfoBean>>>(mDialog) {
                     @Override
-                    public void onSuccess(HttpResponse<List<CommPaperInfoBean>> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_COMMPAPER_INFO_OK));
+                    public void onSuccess(HttpResponse<List<CommPaperInfoBean>> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, GET_COMMPAPER_INFO_OK));
                     }
 
                     @Override
@@ -244,8 +246,8 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                 .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<BasePageBean<CommPaperBean>>>(null) {
                     @Override
-                    public void onSuccess(HttpResponse<BasePageBean<CommPaperBean>> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_COMMPAPER_LIST_OK));
+                    public void onSuccess(HttpResponse<BasePageBean<CommPaperBean>> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, GET_COMMPAPER_LIST_OK));
                     }
 
                     @Override
@@ -267,8 +269,8 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
-                    public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, ADD_COMMPAPER_OK));
+                    public void onSuccess(HttpResponse<String> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, ADD_COMMPAPER_OK));
                     }
 
                     @Override
@@ -292,8 +294,8 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
-                    public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, DEL_COMMPAPER_OK));
+                    public void onSuccess(HttpResponse<String> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, DEL_COMMPAPER_OK));
                     }
 
                     @Override
@@ -318,8 +320,8 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
 //                .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<String>>(null) {
                     @Override
-                    public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, ADD_CHAT_RECORD_OK));
+                    public void onSuccess(HttpResponse<String> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, ADD_CHAT_RECORD_OK));
                     }
 
                     @Override
@@ -344,8 +346,8 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<List<CheckPaperBean>>>(mDialog) {
                     @Override
-                    public void onSuccess(HttpResponse<List<CheckPaperBean>> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_CHECKPAPERLIST_OK));
+                    public void onSuccess(HttpResponse<List<CheckPaperBean>> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, GET_CHECKPAPERLIST_OK));
                     }
 
                     @Override
@@ -371,8 +373,8 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
-                    public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, CHECKPAPER_OK));
+                    public void onSuccess(HttpResponse<String> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, CHECKPAPER_OK));
                     }
 
                     @Override
@@ -395,8 +397,8 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                 .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<BasePageBean<CheckPaperBean>>>(null) {
                     @Override
-                    public void onSuccess(HttpResponse<BasePageBean<CheckPaperBean>> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_PAPER_HISTORYLIST_OK));
+                    public void onSuccess(HttpResponse<BasePageBean<CheckPaperBean>> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, GET_PAPER_HISTORYLIST_OK));
                     }
 
                     @Override
@@ -421,8 +423,8 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<BasePageBean<JiuZhenHistoryBean>>>(mDialog) {
                     @Override
-                    public void onSuccess(HttpResponse<BasePageBean<JiuZhenHistoryBean>> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_JIUZHEN_HISTORYLIST_OK));
+                    public void onSuccess(HttpResponse<BasePageBean<JiuZhenHistoryBean>> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, GET_JIUZHEN_HISTORYLIST_OK));
                     }
 
                     @Override
@@ -446,8 +448,8 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
-                    public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, CLASSICSPAPER_UP));
+                    public void onSuccess(HttpResponse<String> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, CLASSICSPAPER_UP));
                     }
 
                     @Override
@@ -472,8 +474,35 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<PaperInfoBean>>(mDialog) {
                     @Override
-                    public void onSuccess(HttpResponse<PaperInfoBean> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_PAPER_INFO_OK));
+                    public void onSuccess(HttpResponse<PaperInfoBean> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, GET_PAPER_INFO_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void changeDrugType(int storId, int type, String drugJson) {
+        Params params = new Params();
+        params.put("store_id", storId);
+        params.put("type", type);//1：精品 2：普通
+        params.put("param", drugJson);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().changeDrugType(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null)
+                        mDialog.show();
+                }).subscribe(new BaseObserver<HttpResponse<List<DrugBean>>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<List<DrugBean>> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, CHANGE_DRUG_OK));
                     }
 
                     @Override

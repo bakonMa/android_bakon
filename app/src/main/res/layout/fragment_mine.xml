@@ -135,17 +135,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:visibility="gone"
+                    app:isShowLine="false"
                     app:leftIamge="@drawable/icon_wallet"
                     app:title="钱包" />
-
-                <com.junhetang.doctor.widget.RelativeWithImage
-                    android:id="@+id/id_set_price"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:visibility="gone"
-                    app:isShowLine="false"
-                    app:leftIamge="@drawable/icon_setprice"
-                    app:title="资费设置" />
 
                 <com.junhetang.doctor.widget.RelativeWithImage
                     android:id="@+id/id_setting"

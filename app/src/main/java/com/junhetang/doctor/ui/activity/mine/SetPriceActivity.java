@@ -17,7 +17,6 @@ import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.UserBaseInfoBean;
 import com.junhetang.doctor.ui.contact.PersonalContact;
 import com.junhetang.doctor.ui.presenter.PersonalPresenter;
-import com.junhetang.doctor.utils.RegexUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
@@ -41,8 +40,6 @@ public class SetPriceActivity extends BaseActivity implements PersonalContact.Vi
     Toolbar idToolbar;
     @BindView(R.id.et_firstprice)
     EditText etFirstprice;
-    @BindView(R.id.et_againprice)
-    EditText etAgainprice;
     @BindView(R.id.tv_topicinfo)
     TextView tvTopicinfo;
 
@@ -65,8 +62,6 @@ public class SetPriceActivity extends BaseActivity implements PersonalContact.Vi
             tvTopicinfo.setText(str);
             etFirstprice.setText(TextUtils.isEmpty(bean.first_diagnose) ? "" : bean.first_diagnose);
             etFirstprice.setSelection(etFirstprice.getText().length());
-            etAgainprice.setText(TextUtils.isEmpty(bean.second_diagnose) ? "" : bean.second_diagnose);
-            etAgainprice.setSelection(etAgainprice.getText().length());
         }
     }
 
@@ -108,13 +103,7 @@ public class SetPriceActivity extends BaseActivity implements PersonalContact.Vi
             ToastUtil.showShort("请输入初诊资费");
             return;
         }
-        if (TextUtils.isEmpty(etAgainprice.getText().toString().trim())
-                || Integer.parseInt(etAgainprice.getText().toString().trim()) < 0) {
-            ToastUtil.showShort("请输入复诊资费");
-            return;
-        }
-        mPresenter.setVisitInfo(Integer.parseInt(etFirstprice.getText().toString().trim()) + "",
-                Integer.parseInt(etAgainprice.getText().toString().trim()) + "");
+        mPresenter.setVisitInfo(Integer.parseInt(etFirstprice.getText().toString().trim()) + "");
     }
 
     @Override
@@ -122,8 +111,7 @@ public class SetPriceActivity extends BaseActivity implements PersonalContact.Vi
         if (message != null) {
             switch (message.what) {
                 case PersonalPresenter.SET_VISITINFO_OK:
-                    bean.first_diagnose = RegexUtil.formatDoubleMoney(etFirstprice.getText().toString().trim());
-                    bean.second_diagnose = RegexUtil.formatDoubleMoney(etAgainprice.getText().toString().trim());
+                    bean.first_diagnose = Integer.parseInt(etFirstprice.getText().toString().trim()) + "";
                     //修改sp本地数据
                     U.saveUserInfo(new Gson().toJson(bean));
                     ToastUtil.showShort("资费设置成功");

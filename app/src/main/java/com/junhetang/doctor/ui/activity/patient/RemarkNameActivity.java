@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.widget.EditText;
 
 import com.junhetang.doctor.R;
@@ -19,6 +18,7 @@ import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.PatientFamilyBean;
 import com.junhetang.doctor.ui.contact.PatientContact;
 import com.junhetang.doctor.ui.presenter.PatientPresenter;
+import com.junhetang.doctor.utils.RegexUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
@@ -57,7 +57,7 @@ public class RemarkNameActivity extends BaseActivity implements PatientContact.V
         initToolbar();
         patientinfoBean = getIntent().getParcelableExtra("patientinfo");
         if (patientinfoBean != null) {
-            edRemarkname.setText(TextUtils.isEmpty(patientinfoBean.remark_name) ? "" : patientinfoBean.remark_name);
+            edRemarkname.setText(RegexUtil.getNameSubString(patientinfoBean.remark_name));
         }
     }
 

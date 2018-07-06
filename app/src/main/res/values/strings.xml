@@ -122,5 +122,7 @@
     <!-- about -->
     <string name="about_clear_msg_history">清空所有聊天记录</string>
     <string name="clear_msg_history_success">聊天记录已清空</string>
+    <string name="str_adddrug_ps">提示：普通中药转换为精品中药时，如无对应精品中药，原处方普通中药将保留。\n例如：普通中药“葛根”转换成精品中药为“葛根(精品)”，如无对应精品中药仍保留为普通中药“葛根”。</string>
+    <string name="str_money_list">费用明细<font size='12' color='#f5a623'>(不含运费、代煎费、加工费)</font></string>
 
 </resources>

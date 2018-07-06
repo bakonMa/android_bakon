@@ -128,10 +128,9 @@ public class PersonalPresenter implements PersonalContact.Presenter {
     }
 
     @Override
-    public void setVisitInfo(String first, String again) {
+    public void setVisitInfo(String first) {
         Params params = new Params();
         params.put("first_diagnose", first);
-        params.put("second_diagnose", again);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
         Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().setVisitPrice(params))

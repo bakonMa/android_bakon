@@ -59,6 +59,7 @@
             android:background="@color/white"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
+            app:maxLength="10"
             app:leftText="姓名"
             app:textMainSize="14sp" />
 

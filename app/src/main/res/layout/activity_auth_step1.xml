@@ -115,7 +115,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     app:leftText="姓名"
-                    app:maxLength="20"
+                    app:maxLength="10"
                     app:textMainSize="16sp" />
 
                 <RelativeLayout

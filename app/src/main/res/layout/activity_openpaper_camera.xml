@@ -144,8 +144,52 @@
                 app:edit_editTextHint="请选择药房"
                 app:edit_leftText="药房"
                 app:edit_mode="select"
-                app:edit_textMainSize="16sp"
-                app:isShowLineBottom="false" />
+                app:edit_textMainSize="16sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:id="@+id/tv_drugtype"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="药材类型"
+                    android:textColor="@color/color_000"
+                    android:textSize="16sp" />
+
+                <RadioGroup
+                    android:id="@+id/rg_drugtype"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/tv_drugtype"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/rb_comm"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:button="@drawable/selector_radiobutton"
+                        android:checked="true"
+                        android:paddingLeft="10dp"
+                        android:text="普通中药"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/rb_good"
+                        android:layout_width="120dp"
+                        android:layout_height="match_parent"
+                        android:button="@drawable/selector_radiobutton"
+                        android:paddingLeft="10dp"
+                        android:text="精品中药"
+                        android:textSize="16sp" />
+                </RadioGroup>
+
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -284,6 +328,7 @@
                     android:paddingRight="15dp"
                     app:editTextHint="就诊人姓名"
                     app:leftText="姓名"
+                    app:maxLength="10"
                     app:textMainSize="16sp" />
 
                 <RelativeLayout

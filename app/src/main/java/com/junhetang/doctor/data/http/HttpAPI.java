@@ -14,6 +14,7 @@ import com.junhetang.doctor.ui.bean.CommMessageBean;
 import com.junhetang.doctor.ui.bean.CommPaperBean;
 import com.junhetang.doctor.ui.bean.CommPaperInfoBean;
 import com.junhetang.doctor.ui.bean.DealDetailBean;
+import com.junhetang.doctor.ui.bean.DrugBean;
 import com.junhetang.doctor.ui.bean.HospitalBean;
 import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
 import com.junhetang.doctor.ui.bean.JobScheduleBean;
@@ -85,6 +86,10 @@ public interface HttpAPI {
     //是否接收推送消息设置
     @POST("set_pushstatus")
     Observable<HttpResponse<String>> setPushStatus(@Body Params params);
+
+    //是否开通在线咨询
+    @POST("setis_consult")
+    Observable<HttpResponse<String>> setChatFlag(@Body Params params);
 
     //获取认证状态
     @POST("getUserIdentifyStatus")
@@ -288,6 +293,10 @@ public interface HttpAPI {
 
     @POST("visit_info")
     Observable<HttpResponse<List<JobSchedulePatientBean>>> getJobSchedulePatientList(@Body Params params);
+
+    //普药，精品切换
+    @POST("cut_medicinal")
+    Observable<HttpResponse<List<DrugBean>>> changeDrugType(@Body Params params);
 
     //检查App更新
     @POST("getVersion")

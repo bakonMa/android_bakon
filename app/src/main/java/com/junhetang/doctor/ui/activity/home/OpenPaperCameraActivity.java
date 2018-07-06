@@ -42,6 +42,7 @@ import com.junhetang.doctor.utils.ActivityUtil;
 import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.ImageUtil;
 import com.junhetang.doctor.utils.LogUtil;
+import com.junhetang.doctor.utils.RegexUtil;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
@@ -123,6 +124,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     TextView tvNextStep;
     @BindView(R.id.et_serverprice)
     EditText etServerprice;
+    @BindView(R.id.rb_comm)
+    RadioButton rbComm;
 
     @Inject
     OpenPaperPresenter mPresenter;
@@ -307,7 +310,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private void chooseJzInfo(PatientFamilyBean.JiuzhenBean bean) {
         lltJZinfo.setVisibility(View.VISIBLE);
         tvChooseHistory.setVisibility(View.GONE);
-        etName.setEditeText(TextUtils.isEmpty(bean.patient_name) ? "" : bean.patient_name);
+        etName.setEditeText(RegexUtil.getNameSubString(bean.patient_name));
         etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
         membNo = bean.id;
         relationship = bean.relationship;
@@ -355,7 +358,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
 
     //选择填写的历史就诊人（第二类）
     private void chooseJzHistoryInfo(JiuZhenHistoryBean bean) {
-        etName.setEditeText(TextUtils.isEmpty(bean.patient_name) ? "" : bean.patient_name);
+        etName.setEditeText(RegexUtil.getNameSubString(bean.patient_name));
         etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
         etAge.setEditeText(bean.age > 0 ? (bean.age + "") : "");
         rgSex.check(bean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
@@ -412,6 +415,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
 
         params.put("store_id", storeId);
         params.put("drug_class", drugClassId);
+        params.put("drug_type", rbComm.isChecked() ? 1 : 0);//0：精品 1：普药
         params.put("img_url", imgPath.toString());
         //补充收费
         if (!TextUtils.isEmpty(etServerprice.getText().toString().trim())) {
