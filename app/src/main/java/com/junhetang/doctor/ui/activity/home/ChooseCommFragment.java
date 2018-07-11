@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.EventConfig;
@@ -27,6 +29,7 @@ import com.junhetang.doctor.injection.modules.FragmentModule;
 import com.junhetang.doctor.ui.base.BaseFragment;
 import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.CommPaperBean;
+import com.junhetang.doctor.ui.bean.DrugBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
 import com.junhetang.doctor.utils.Constant;
@@ -122,18 +125,40 @@ public class ChooseCommFragment extends BaseFragment implements OpenPaperContact
         });
         //recycleview展示数据
         recyvleview.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new BaseQuickAdapter<CommPaperBean, BaseViewHolder>(R.layout.item_choose_usepaper, commPaperBeans) {
-            @Override
-            protected void convert(BaseViewHolder helper, CommPaperBean item) {
-                helper.setText(R.id.tv_papername, item.title)
-                        .setText(R.id.tv_paperremark, item.m_explain)
-                        .setGone(R.id.tv_paperremark, type == 1)//常用处方显示
-                        .setGone(R.id.iv_star, isCanEdite)//星是否显示
-                        .setGone(R.id.iv_right, false)//右箭头 不显示
-                        .addOnClickListener(R.id.iv_star);
-                helper.getView(R.id.iv_star).setSelected(item.is_star == 1);//星是否显示
-            }
-        };
+
+        if (type == 1) {//常用处方
+            mAdapter = new BaseQuickAdapter<CommPaperBean, BaseViewHolder>(R.layout.item_comm_usepaper, commPaperBeans) {
+                @Override
+                protected void convert(BaseViewHolder helper, CommPaperBean item) {
+                    helper.setText(R.id.tv_papername, item.title)
+                            .setText(R.id.tv_paperremark, item.m_explain)
+                            .setGone(R.id.cb_select, false)
+                            .setGone(R.id.iv_right, false);
+                }
+            };
+        } else {//经典处方
+            mAdapter = new BaseQuickAdapter<CommPaperBean, BaseViewHolder>(R.layout.item_classics_usepaper, commPaperBeans) {
+                @Override
+                protected void convert(BaseViewHolder helper, CommPaperBean item) {
+                    helper.setText(R.id.tv_papername, item.title)
+                            .setGone(R.id.iv_star, isCanEdite)//星是否显示
+                            .addOnClickListener(R.id.iv_star);
+                    helper.getView(R.id.iv_star).setSelected(item.is_star == 1);//星是否显示
+
+                    //详细药品展示
+                    RecyclerView recyclerView = helper.getView(R.id.drug_recycle);
+                    recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 4));
+                    BaseQuickAdapter adapter = new BaseQuickAdapter<DrugBean, BaseViewHolder>(R.layout.item_classic_text, item.druglist) {
+                        @Override
+                        protected void convert(BaseViewHolder helper, DrugBean bean) {
+                            helper.setText(R.id.tv_drug_name, bean.drug_name + " " + bean.drug_num + bean.unit);
+                        }
+                    };
+                    recyclerView.setAdapter(adapter);
+                }
+            };
+        }
+
 
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -142,15 +167,16 @@ public class ChooseCommFragment extends BaseFragment implements OpenPaperContact
             }
         }, recyvleview);
 
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        recyvleview.addOnItemTouchListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(BaseQuickAdapter mAdapter, View view, int position) {
+            public void onSimpleItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (!isCanEdite) {
                     mPresenter.searchDrugPaperById(drugStoreId, commPaperBeans.get(position).id,
                             type == 1 ? Constant.PAPER_TYPE_2 : Constant.PAPER_TYPE_3);
                 }
             }
         });
+
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {

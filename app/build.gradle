@@ -8,7 +8,7 @@ android {
         minSdkVersion 19  //16:4.1(99.1%) 19:4.4(90%)
         targetSdkVersion 27
         versionCode 7
-        versionName "1.0.6"
+        versionName "1.0.6_dev"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true //dex分包
         ndk {
@@ -191,6 +191,10 @@ dependencies {
 
     //bugly
     implementation 'com.tencent.bugly:crashreport:latest.release'
+    //选择照片
+    implementation 'com.zhihu.android:matisse:0.5.1'
+    //阿里云 oss
+    implementation 'com.aliyun.dpa:oss-android-sdk:+'
 
 
 }

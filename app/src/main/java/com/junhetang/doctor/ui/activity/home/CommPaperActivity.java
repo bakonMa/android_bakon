@@ -74,7 +74,6 @@ public class CommPaperActivity extends BaseActivity {
                     @Override
                     public void rightClick() {
                         super.rightClick();
-//                        updateEdite();
                         commUsePaperFragment.updataDelStatus();
                     }
                 }).bind();
@@ -87,8 +86,8 @@ public class CommPaperActivity extends BaseActivity {
         args.putBoolean("isCanEdite", true);//经典处方 是否可【置顶】
         fragment.setArguments(args);
 
-        fragmentList.add(commUsePaperFragment);
-        fragmentList.add(fragment);
+        fragmentList.add(commUsePaperFragment);//常用处方
+        fragmentList.add(fragment);//经典处方
 
         initViewpager();
     }

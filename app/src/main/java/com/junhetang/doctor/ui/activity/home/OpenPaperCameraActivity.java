@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Message;
@@ -46,7 +47,9 @@ import com.junhetang.doctor.utils.RegexUtil;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
+import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.utils.UriUtil;
+import com.junhetang.doctor.utils.imageloader.Glide4Engine;
 import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.EditableLayout;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
@@ -56,6 +59,9 @@ import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -453,8 +459,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                                 ActivityUtil.openCamera(OpenPaperCameraActivity.this, cameraPath, REQUEST_CAMERA_CODE);
                             } else {//打开相册
                                 ActivityUtil.openAlbum(OpenPaperCameraActivity.this, "image/*", REQUEST_ALBUM_CODE);
+//                                chooseImage();
                             }
-
                         } else {
                             ToastUtil.show(isCamera ? "请求照相机权限失败" : "请求相册权限失败");
                         }
@@ -471,6 +477,23 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                     }
 
                 });
+    }
+
+    //选择图片 多张
+    private void chooseImage() {
+        Matisse.from(this)
+//                .choose(MimeType.ofImage())
+                .choose(MimeType.ofImage(), false)
+                .capture(false)//是否提供拍照功能
+                .captureStrategy(new CaptureStrategy(true, getPackageName() + ".fileprovider"))//存储到哪里
+                .countable(true)//有序选择图片
+                .maxSelectable(3) //选择的最大数量
+                .gridExpectedSize(UIUtils.dp2px(this, 120))
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)//图像选择和预览活动所需的方向。
+                .thumbnailScale(0.85f) // 缩略图的比例
+                .theme(R.style.Matisse_Zhihu)//主题  暗色主题 R.style.Matisse_Dracula
+                .imageEngine(new Glide4Engine()) // 使用的图片加载引擎
+                .forResult(REQUEST_ALBUM_CODE); // 设置作为标记的请求码
     }
 
     //临时path  显示用，不需要再加载上传后的path
@@ -500,6 +523,11 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                         tempPath = imagePath;
                         mPresenter.uploadImg(imagePath, Constant.UPLOADIMG_TYPE_2);
                     }
+
+//                    List<Uri> mSelected = Matisse.obtainResult(data);
+//                    if (mSelected != null && !mSelected.isEmpty()) {
+//                      todo 循环上传，修改显示逻辑
+//                    }
                     break;
             }
         }

@@ -13,6 +13,7 @@ public class DrugBean implements Parcelable{
     public int drug_id;
     public String drug_name;
     public String unit;//单位
+    public String spec;//规格
     public String mcode;//药品唯一性code
     public int drug_num;//用量
     public double price;//价格
@@ -22,10 +23,12 @@ public class DrugBean implements Parcelable{
     public DrugBean() {
     }
 
+
     protected DrugBean(Parcel in) {
         drug_id = in.readInt();
         drug_name = in.readString();
         unit = in.readString();
+        spec = in.readString();
         mcode = in.readString();
         drug_num = in.readInt();
         price = in.readDouble();
@@ -38,6 +41,7 @@ public class DrugBean implements Parcelable{
         dest.writeInt(drug_id);
         dest.writeString(drug_name);
         dest.writeString(unit);
+        dest.writeString(spec);
         dest.writeString(mcode);
         dest.writeInt(drug_num);
         dest.writeDouble(price);

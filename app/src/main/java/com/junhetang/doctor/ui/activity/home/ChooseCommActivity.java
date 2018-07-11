@@ -69,8 +69,8 @@ public class ChooseCommActivity extends BaseActivity {
 
                 }).bind();
 
-        fragmentList.add(ChooseCommFragment.newInstance(1, drugStoreId));
-        fragmentList.add(ChooseCommFragment.newInstance(2, drugStoreId));
+        fragmentList.add(ChooseCommFragment.newInstance(1, drugStoreId));//常用处方
+        fragmentList.add(ChooseCommFragment.newInstance(2, drugStoreId));//经典处方
 
         initViewpager();
     }

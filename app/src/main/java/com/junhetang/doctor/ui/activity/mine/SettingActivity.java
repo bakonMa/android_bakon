@@ -2,9 +2,12 @@ package com.junhetang.doctor.ui.activity.mine;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
@@ -15,6 +18,7 @@ import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
+import com.junhetang.doctor.manager.OSSManager;
 import com.junhetang.doctor.nim.NimManager;
 import com.junhetang.doctor.ui.activity.login.LoginActivity;
 import com.junhetang.doctor.ui.activity.login.ResetPasswordActivity;
@@ -22,17 +26,26 @@ import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.UserBaseInfoBean;
 import com.junhetang.doctor.ui.contact.LoginContact;
 import com.junhetang.doctor.ui.presenter.LoginPresenter;
+import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
+import com.junhetang.doctor.utils.UIUtils;
+import com.junhetang.doctor.utils.UriUtil;
+import com.junhetang.doctor.utils.imageloader.Glide4Engine;
 import com.junhetang.doctor.widget.RelativeWithText;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
+import com.junhetang.doctor.widget.dialog.LoadingDialog;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.auth.AuthService;
 import com.trello.rxlifecycle.LifecycleTransformer;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -43,7 +56,7 @@ import butterknife.OnClick;
  * SettingActivity 设置
  * Create at 2018/4/13 下午2:13 by mayakun
  */
-public class SettingActivity extends BaseActivity implements LoginContact.View {
+public class SettingActivity extends BaseActivity implements LoginContact.View, OSSManager.OSSUploadCallback {
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
@@ -119,6 +132,7 @@ public class SettingActivity extends BaseActivity implements LoginContact.View {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_setprice:
+//                chooseImage();
                 startActivity(new Intent(this, SetPriceActivity.class));
                 break;
             case R.id.tv_reset_password:
@@ -186,5 +200,85 @@ public class SettingActivity extends BaseActivity implements LoginContact.View {
     @Override
     public <R> LifecycleTransformer<R> toLifecycle() {
         return bindToLifecycle();
+    }
+
+
+    private final int REQUEST_ALBUM_CODE = 102;//相册
+
+    //选择图片 多张
+    private void chooseImage() {
+        Matisse.from(this)
+//                .choose(MimeType.ofImage())
+                .choose(MimeType.ofImage(), false)
+                .capture(false)//是否提供拍照功能
+                .captureStrategy(new CaptureStrategy(true, getPackageName() + ".fileprovider"))//存储到哪里
+                .countable(true)//有序选择图片
+                .maxSelectable(3) //选择的最大数量
+                .gridExpectedSize(UIUtils.dp2px(this, 120))
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)//图像选择和预览活动所需的方向。
+                .thumbnailScale(0.85f) // 缩略图的比例
+                .theme(R.style.Matisse_Zhihu)//主题  暗色主题 R.style.Matisse_Dracula
+                .imageEngine(new Glide4Engine()) // 使用的图片加载引擎
+                .forResult(REQUEST_ALBUM_CODE); // 设置作为标记的请求码
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case REQUEST_ALBUM_CODE:
+                    List<Uri> mSelected = Matisse.obtainResult(data);
+                    if (mSelected == null || mSelected.isEmpty()) {
+                        return;
+                    }
+                    for (Uri uri : mSelected) {
+                        String imagePath;
+                        if (uri != null && !TextUtils.isEmpty(imagePath = UriUtil.getRealFilePath(this, uri))) {
+                            OSSManager.getInstance().uploadImageAsync("", imagePath, this);
+                        }
+                    }
+
+                    break;
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void uploadStatus(int type, Object obj) {
+        switch (type) {
+            case 1:
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressDialog(Integer.parseInt(obj.toString()));
+                    }
+                });
+
+                break;
+            case 2:
+                LogUtil.d(obj.toString());
+                break;
+            case 3:
+                LogUtil.d(obj.toString());
+                break;
+        }
+    }
+
+    private LoadingDialog loadingDialog;
+
+    private void showProgressDialog(int progress) {
+        if (progress == 100) {
+            if (loadingDialog != null) {
+                loadingDialog.dismiss();
+            }
+            return;
+        }
+        if (loadingDialog == null) {
+            loadingDialog = new LoadingDialog(this, "上传图片中...");
+            loadingDialog.show();
+        } else {
+            loadingDialog.setLoadingText(String.format("上传图片中...%s%%", progress));
+        }
     }
 }

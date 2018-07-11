@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -61,17 +62,23 @@ public class LoadingDialog extends Dialog implements DialogInterface.OnDismissLi
         setCancelable(false);
     }
 
+    public void setLoadingText(String showText) {
+        if (!TextUtils.isEmpty(showText)) {
+            tv_message.setText(showText);
+        }
+    }
+
     public void error(String errorMsg) {
         animation.cancel();
         rl_loading.setVisibility(View.GONE);
         iv_error.setVisibility(View.VISIBLE);
         tv_message.setText(errorMsg);
-        handler.sendEmptyMessageDelayed(DISMISS,DISMISSDELAY);
+        handler.sendEmptyMessageDelayed(DISMISS, DISMISSDELAY);
     }
 
     public static final int DISMISS = 0x110;
     public static final long DISMISSDELAY = 1000;
-    private Handler handler = new Handler(){
+    private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

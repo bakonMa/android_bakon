@@ -173,8 +173,16 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                         .setText(R.id.et_num, item.drug_num > 0 ? (item.drug_num + "") : "")
                         .setText(R.id.tv_usertype, item.decoction)
                         .setText(R.id.tv_unit, item.unit)
-                        .addOnClickListener(R.id.tv_drugname)
+                        .addOnClickListener(R.id.iv_del)
                         .addOnClickListener(R.id.tv_usertype);
+
+                if (TextUtils.isEmpty(item.spec) || item.unit.equals(item.spec)) {
+                    helper.setGone(R.id.tv_drugspec, false);
+                } else {
+                    helper.setGone(R.id.tv_drugspec, true)
+                            .setText(R.id.tv_drugspec, item.spec);
+                }
+
                 //是否可用或者重复状态
                 boolean isError = (item.use_flag == 0 || isHasInList(helper.getLayoutPosition()));
                 if (isError) {//发现有相同的就修改
@@ -224,7 +232,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()) {
-                    case R.id.tv_drugname:
+                    case R.id.iv_del:
                         upDataDrugList(drugBeans.get(position), false);
                         break;
                     case R.id.tv_usertype:
@@ -251,7 +259,11 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
             protected void convert(BaseViewHolder helper, SearchDrugBean item) {
                 helper.setText(R.id.tv_drugname, item.name);
                 if (item.datatype == 1) {//药物
-                    helper.setText(R.id.tv_drugprice, item.price + "元/" + item.unit);
+                    if (TextUtils.isEmpty(item.spec) || item.unit.equals(item.spec)) {
+                        helper.setText(R.id.tv_drugprice, item.price + "元/" + item.unit);
+                    } else {
+                        helper.setText(R.id.tv_drugprice, String.format("%s元/%s(%s)", item.price, item.unit, item.spec));
+                    }
                 } else {//处方
                     helper.setText(R.id.tv_drugprice, TextUtils.isEmpty(item.type_title) ? "" : item.type_title);
                 }
@@ -275,6 +287,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                     drugBean.use_flag = bean.use_flag;
                     drugBean.drug_name = bean.name;
                     drugBean.unit = bean.unit;
+                    drugBean.spec = bean.spec;
                     drugBean.price = bean.price;
                     drugBean.decoction = userTypeListStr.get(0);
                     upDataDrugList(drugBean, true);
@@ -524,6 +537,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                     tempDrugBean.mcode = bean.mcode;
                     tempDrugBean.drug_name = bean.name;
                     tempDrugBean.unit = bean.unit;
+                    tempDrugBean.spec = bean.spec;
                     tempDrugBean.price = bean.price;
                     tempDrugBean.decoction = bean.decoction;
                     tempDrugBean.use_flag = bean.use_flag;
@@ -547,7 +561,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                 finish();
                 break;
             case OpenPaperPresenter.CHANGE_DRUG_OK:
-                //普药 精品相互转弯成功
+                //普药 精品相互转成功
                 List<DrugBean> newBeans = (List<DrugBean>) message.obj;
                 if (newBeans != null && !newBeans.isEmpty()) {
                     drugBeans.clear();
@@ -618,6 +632,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
             tempBean.mcode = bean.mcode;
             tempBean.drug_name = bean.name;
             tempBean.unit = bean.unit;
+            tempBean.spec = bean.spec;
             tempBean.price = bean.price;
             tempBean.decoction = bean.decoction;
             tempBean.use_flag = bean.use_flag;

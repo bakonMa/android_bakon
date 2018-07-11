@@ -179,6 +179,8 @@
   **[] $VALUES;
   public *;
 }
+#知乎图片选择 使用glide
+-dontwarn com.bumptech.glide.**
 
 # Butterknife
 -keep class butterknife.** { *; }
@@ -308,6 +310,11 @@ public static java.lang.String TABLENAME;
 #bugly
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
+
+#阿里云oss
+-keep class com.alibaba.sdk.android.oss.** { *; }
+-dontwarn okio.**
+-dontwarn org.apache.commons.codec.binary.**
 
 #Umeng
 -dontshrink

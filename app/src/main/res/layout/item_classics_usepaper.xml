@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_bg_tab"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp">
+
+    <TextView
+        android:id="@+id/tv_papername"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_toStartOf="@+id/iv_star"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="@color/color_000"
+        android:textSize="16sp"
+        tools:text="药名" />
+
+    <ImageView
+        android:id="@+id/iv_star"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignEnd="@+id/drug_recycle"
+        android:layout_alignParentTop="true"
+        android:padding="15dp"
+        android:src="@drawable/selector_star_icon"
+        android:visibility="visible" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/drug_recycle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_papername" />
+
+    <View
+        style="@style/line_gray_hor"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>
