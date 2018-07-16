@@ -123,7 +123,7 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.data, OPENPAPER_CAMERA_OK));
+                        mView.onSuccess(M.createMessage(httpResponse.msg, OPENPAPER_CAMERA_OK));
                     }
 
                     @Override
@@ -146,7 +146,7 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                 }).subscribe(new BaseObserver<HttpResponse<OnlinePaperBackBean>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<OnlinePaperBackBean> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.data, OPENPAPER_ONLINE_OK));
+                        mView.onSuccess(M.createMessage(httpResponse, OPENPAPER_ONLINE_OK));
                     }
 
                     @Override

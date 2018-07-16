@@ -25,6 +25,7 @@ import com.junhetang.doctor.config.EventConfig;
 import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.data.http.Params;
+import com.junhetang.doctor.data.response.HttpResponse;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.nim.NimU;
@@ -601,20 +602,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     @Override
     public void onSuccess(Message message) {
         switch (message.what) {
-            case OpenPaperPresenter.OPENPAPER_CAMERA_OK://开方ok
-                if (formParent == 1) {//聊天开方
-                    setResult(RESULT_OK, new Intent());
-                    finish();
-                } else {//普通开方
-                    commonDialog = new CommonDialog(this, true, "处方已上传至药房", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            finish();
-                        }
-                    });
-                    commonDialog.show();
-                }
-                break;
             case OpenPaperPresenter.ADD_COMMPAPER_OK:
                 commonDialog = new CommonDialog(this, "添加常用处方成功");
                 commonDialog.show();
@@ -624,18 +611,19 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 editePaperInfoDate(infoBean);
                 break;
             case OpenPaperPresenter.OPENPAPER_ONLINE_OK://提交后
-                OnlinePaperBackBean bean = (OnlinePaperBackBean) message.obj;
-                if (bean == null) {//data为空  说明提交成功
+                HttpResponse<OnlinePaperBackBean> httpResponse = (HttpResponse<OnlinePaperBackBean>) message.obj;
+                OnlinePaperBackBean bean = httpResponse.data;
+                if (httpResponse.data == null) {//data为空  说明提交成功
                     //可以拿到paccid 就记录，没有就不记录
                     if (!TextUtils.isEmpty(pAccid)) {
                         mPresenter.addChatRecord(NimU.getNimAccount(), pAccid, Constant.CHAT_RECORD_TYPE_3, formParent);
                     }
-
                     if (formParent == 1) {//聊天开方
                         setResult(RESULT_OK, new Intent());
                         finish();
                     } else {//普通开方
-                        commonDialog = new CommonDialog(this, true, "处方已上传至药房", new View.OnClickListener() {
+                        String msgStr = TextUtils.isEmpty(httpResponse.msg) ? "处方提交成功，已通知患者支付" : httpResponse.msg;
+                        commonDialog = new CommonDialog(this, true, msgStr, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 finish();
@@ -650,7 +638,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                         drugBeans.addAll(bean.param);
                         adapter.notifyDataSetChanged();
                     }
-                    commonDialog = new CommonDialog(this, "药房缺少药材，请修改处方");
+                    String msgError = TextUtils.isEmpty(httpResponse.msg) ? "药房缺少药材，请修改处方" : httpResponse.msg;
+                    commonDialog = new CommonDialog(this, msgError);
                     commonDialog.show();
                 }
                 break;

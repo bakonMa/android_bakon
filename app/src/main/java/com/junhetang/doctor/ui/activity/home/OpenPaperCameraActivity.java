@@ -591,16 +591,16 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 ToastUtil.showShort("上传失败，请重新选择");
                 break;
             case OpenPaperPresenter.OPENPAPER_CAMERA_OK://开方ok
+                String msg = message.obj.toString();
                 //可以拿到paccid 就记录，没有就不记录
                 if (!TextUtils.isEmpty(pAccid)) {
                     mPresenter.addChatRecord(NimU.getNimAccount(), pAccid, Constant.CHAT_RECORD_TYPE_3, formParent);
                 }
-
                 if (formParent == 1) {//聊天开方
                     setResult(RESULT_OK, new Intent());
                     finish();
                 } else {//普通开方
-                    commonDialog = new CommonDialog(this, true, "处方已上传至药房", new View.OnClickListener() {
+                    commonDialog = new CommonDialog(this, true, TextUtils.isEmpty(msg) ? "处方已上传至药房" : msg, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             finish();
