@@ -35,6 +35,7 @@ import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
 import com.junhetang.doctor.ui.bean.SearchDrugBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
+import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.KeyBoardUtils;
 import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
@@ -284,6 +285,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                     drugBean.drug_num = 0;
                     drugBean.drug_id = bean.id;
                     drugBean.mcode = bean.mcode;
+                    drugBean.drug_type = bean.drug_type;
                     drugBean.use_flag = bean.use_flag;
                     drugBean.drug_name = bean.name;
                     drugBean.unit = bean.unit;
@@ -326,7 +328,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
             money += bean.price * bean.drug_num;
         }
         totalMoney = String.format("%.2f", money);
-        tvTotalmoney.setText(String.format("预计：%s元/副", totalMoney));
+        tvTotalmoney.setText(String.format("预计：%s元", totalMoney));
     }
 
     //更新药材列表
@@ -396,7 +398,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
     //头部处理
     private void initToolbar() {
         toolbarBuilder = ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
-                .setTitle("添加药材")
+                .setTitle("编辑药材")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
                 .setRightText("保存", true, R.color.color_main)
@@ -460,19 +462,22 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
         }
     }
 
+    private List<String> typeList = new ArrayList<>();
+
     //点击保存
     private void clickSave() {
-        if (hasError) {
-            commonDialog = new CommonDialog(this, "处方中有重复药材或者此药房药材不足");
-            commonDialog.show();
-            return;
-        }
         if (drugBeans.isEmpty()) {
             commonDialog = new CommonDialog(this, "请添加药材");
             commonDialog.show();
             return;
         }
-        //药材用量
+        //是否有重复药材
+        if (hasError) {
+            commonDialog = new CommonDialog(this, "处方中有重复药材或者此药房药材不足");
+            commonDialog.show();
+            return;
+        }
+        //药材用量是否填写
         for (DrugBean bean : drugBeans) {
             if (bean.drug_num <= 0) {
                 commonDialog = new CommonDialog(this, "请填写全部药材的用量");
@@ -482,10 +487,32 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
         }
 
         if (formtype == 1) {//返回 在线开放
-            Intent intent = new Intent();
-            intent.putParcelableArrayListExtra("druglist", drugBeans);
-            setResult(RESULT_OK, intent);
-            finish();
+            typeList.clear();
+            //药材用量
+            for (DrugBean bean : drugBeans) {
+                if (!typeList.contains(bean.drug_type)) {
+                    typeList.add(bean.drug_type);
+                }
+            }
+            if (typeList.size() == 1) {
+                Intent intent = new Intent();
+                intent.putParcelableArrayListExtra("druglist", drugBeans);
+                intent.putExtra("drug_type", typeList.get(0));//药材类型
+                setResult(RESULT_OK, intent);
+                finish();
+            } else {
+                //中草药，西药。。拼接
+                StringBuffer typeStr = new StringBuffer();
+                for (String s : typeList) {
+                    if (!TextUtils.isEmpty(typeStr)) {
+                        typeStr.append("、");
+                    }
+                    typeStr.append(Constant.DRUG_TYPE.get(s));
+                }
+                commonDialog = new CommonDialog(this, String.format(getString(R.string.str_drug_type), typeStr.toString()));
+                commonDialog.show();
+            }
+
         } else {
             savePaperDialog = new SavePaperDialog(this, new SavePaperDialog.ClickListener() {
                 @Override
@@ -535,6 +562,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                     DrugBean tempDrugBean = new DrugBean();
                     tempDrugBean.drug_id = bean.id;
                     tempDrugBean.mcode = bean.mcode;
+                    tempDrugBean.drug_type = bean.drug_type;
                     tempDrugBean.drug_name = bean.name;
                     tempDrugBean.unit = bean.unit;
                     tempDrugBean.spec = bean.spec;
@@ -570,7 +598,6 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                     //更新价格
                     updataTotalMoney();
                 }
-
                 break;
         }
     }
@@ -630,6 +657,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
             DrugBean tempBean = new DrugBean();
             tempBean.drug_id = bean.id;
             tempBean.mcode = bean.mcode;
+            tempBean.drug_type = bean.drug_type;
             tempBean.drug_name = bean.name;
             tempBean.unit = bean.unit;
             tempBean.spec = bean.spec;

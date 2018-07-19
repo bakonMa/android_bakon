@@ -124,6 +124,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     ImageView ivImg2Clean;
     @BindView(R.id.iv_img3_clean)
     ImageView ivImg3Clean;
+    @BindView(R.id.et_remark)
+    EditText etRemark;
     @BindView(R.id.tv_choose_history)
     TextView tvChooseHistory;
     @BindView(R.id.tv_next_step)
@@ -423,6 +425,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         params.put("drug_class", drugClassId);
         params.put("drug_type", rbComm.isChecked() ? 1 : 0);//0：精品 1：普药
         params.put("img_url", imgPath.toString());
+        params.put("remark", etRemark.getText().toString().trim());//备注
         //补充收费
         if (!TextUtils.isEmpty(etServerprice.getText().toString().trim())) {
             params.put("service_price", etServerprice.getText().toString().trim());

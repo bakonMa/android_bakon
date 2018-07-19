@@ -49,23 +49,12 @@
         android:paddingRight="15dp">
 
         <TextView
-            android:id="@+id/temp_id1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:text="是否开通在线咨询"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="@string/str_setting_price"
             android:textColor="@color/color_000"
             android:textSize="16sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/temp_id1"
-            android:gravity="center"
-            android:text="关闭后将无法与患者进行在线咨询"
-            android:textColor="@color/color_main"
-            android:textSize="14sp" />
 
         <Switch
             android:id="@+id/st_chatflag"

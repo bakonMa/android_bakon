@@ -61,6 +61,7 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
     public static final int CLASSICSPAPER_UP = 0x126;
     public static final int GET_PAPER_INFO_OK = 0x127;
     public static final int CHANGE_DRUG_OK = 0x128;
+    public static final int CHECK_DRUG_TYPE = 0x129;
 
     public OpenPaperPresenter(OpenPaperContact.View mView) {
         this.mView = mView;
@@ -512,5 +513,6 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                 });
         mSubscription.add(subscription);
     }
+
 
 }

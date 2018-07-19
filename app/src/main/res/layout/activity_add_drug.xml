@@ -40,7 +40,7 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:gravity="center"
-            android:text="煎法"
+            android:text="用法"
             android:textColor="@color/color_000"
             android:textSize="16sp" />
     </LinearLayout>
@@ -100,7 +100,7 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="15dp"
-                android:text="预计：0元/副"
+                android:text="预计：0元"
                 android:textColor="@color/color_000"
                 android:textSize="16sp" />
 

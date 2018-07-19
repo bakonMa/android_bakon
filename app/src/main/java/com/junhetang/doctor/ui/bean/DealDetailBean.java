@@ -17,4 +17,5 @@ public class DealDetailBean {
     public String type;
     public String money;
     public String deal_time;
+    public String patient_name;//就诊人
 }

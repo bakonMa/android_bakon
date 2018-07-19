@@ -1,5 +1,8 @@
 package com.junhetang.doctor.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Constant 常量
  * Create at 2018/4/9 下午4:43 by mayakun
@@ -14,7 +17,6 @@ public interface Constant {
     int PAPER_TYPE_3 = 3;//经典处方-查询药物列表详情
 
 
-
     //下载链接（可以使用应用宝的推广链接）
 //    String APP_SHARE_URL = "http://a.app.qq.com/o/simple.jsp?pkgname=com.junhetang.doctor";
 
@@ -27,5 +29,13 @@ public interface Constant {
     int CHAT_RECORD_TYPE_3 = 3;
     int CHAT_RECORD_TYPE_4 = 4;
 
-
+    //药材类型
+    Map<String, String> DRUG_TYPE = new HashMap<String, String>() {
+        {
+            put("ZY", "中草药");
+            put("ZCY", "中成药");
+            put("XY", "西药");
+            put("QC", "器材");
+        }
+    };
 }

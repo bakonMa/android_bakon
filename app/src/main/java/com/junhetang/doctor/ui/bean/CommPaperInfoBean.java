@@ -24,17 +24,20 @@ public class CommPaperInfoBean implements Parcelable{
     public String name;
     public int drug_num;
     public String mcode;//药品唯一性code
+    public String drug_type;//药品唯一类型（“ZY”：”中草药” “ZCY”：”中成药” “XY” ：”西药” “QC” ：”器材”）
     public String decoction;
     public String unit;
     public String spec;
     public double price;
     public int use_flag;
 
+
     protected CommPaperInfoBean(Parcel in) {
         id = in.readInt();
         name = in.readString();
         drug_num = in.readInt();
         mcode = in.readString();
+        drug_type = in.readString();
         decoction = in.readString();
         unit = in.readString();
         spec = in.readString();
@@ -48,6 +51,7 @@ public class CommPaperInfoBean implements Parcelable{
         dest.writeString(name);
         dest.writeInt(drug_num);
         dest.writeString(mcode);
+        dest.writeString(drug_type);
         dest.writeString(decoction);
         dest.writeString(unit);
         dest.writeString(spec);

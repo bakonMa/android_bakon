@@ -20,7 +20,8 @@ public class SearchDrugBean {
     //搜索药材数据
     public int id;
     public String name;
-    public String mcode;
+    public String mcode;//药品唯一性code
+    public String drug_type;//药品唯一类型（“ZY”：”中草药” “ZCY”：”中成药” “XY” ：”西药” “QC” ：”器材”）
     public double price;
     public String unit;
     public String spec;

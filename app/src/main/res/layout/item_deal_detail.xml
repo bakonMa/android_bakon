@@ -2,18 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="45dp"
+    android:layout_height="75dp"
     android:background="@color/white"
     android:paddingLeft="15dp"
-    android:paddingRight="15dp">
+    android:paddingRight="15dp"
+    android:paddingTop="15dp">
+
+    <TextView
+        android:id="@+id/tv_patient_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/color_000"
+        android:textSize="16sp"
+        tools:text="就诊人：黎明" />
 
     <TextView
         android:id="@+id/tv_dealtype"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:textColor="@color/color_000"
-        android:textSize="16sp"
+        android:layout_below="@+id/tv_patient_name"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/color_666"
+        android:textSize="14sp"
         tools:text="提现" />
 
     <TextView
@@ -21,20 +31,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:paddingTop="5dp"
-        android:textColor="@color/color_000"
-        android:textSize="12sp"
+        android:textColor="@color/color_666"
+        android:textSize="14sp"
         tools:text="2018-01-12" />
 
     <TextView
         android:id="@+id/tv_money"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:paddingBottom="5dp"
-        android:textColor="@color/color_000"
-        android:textSize="12sp"
+        android:layout_below="@+id/tv_date"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/color_main"
+        android:textSize="18sp"
+        android:textStyle="bold"
         tools:text="+12" />
 
     <View

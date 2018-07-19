@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -94,9 +96,10 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
                 if (isSingelBtn) {
                     buttonNo.setVisibility(View.GONE);
                 }
-                if(isInput){//显示输入框
+                if (isInput) {//显示输入框
                     commEditext.setVisibility(View.VISIBLE);
                     commEditext.setInputType(inputType);
+                    commEditext.setFilters(new InputFilter[]{new InputFilter.LengthFilter(inputType == InputType.TYPE_CLASS_NUMBER ? 5 : 20)});
                 } else {
                     commEditext.setVisibility(View.GONE);
                 }

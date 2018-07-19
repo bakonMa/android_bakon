@@ -44,7 +44,7 @@ public class HistoryPaperActivity extends BaseActivity {
     @BindView(R.id.viewPager)
     ViewPager viewPager;
 
-    private String[] titles = {"全部", "已支付", "未支付"};
+    private String[] titles = {"全部", "已支付", "未支付", "已关闭"};
     private List<Fragment> fragmentList = new ArrayList<>();
 
     @Override
@@ -70,6 +70,7 @@ public class HistoryPaperActivity extends BaseActivity {
         fragmentList.add(HistoryPaperFragment.newInstance(0));
         fragmentList.add(HistoryPaperFragment.newInstance(1));
         fragmentList.add(HistoryPaperFragment.newInstance(-1));
+        fragmentList.add(HistoryPaperFragment.newInstance(2));
 
         initViewpager();
     }

@@ -79,6 +79,7 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
             protected void convert(BaseViewHolder helper, DealDetailBean item) {
                 String montyType = "提现".equals(item.type) ? "-" : "+";
                 helper.setText(R.id.tv_dealtype, TextUtils.isEmpty(item.type) ? "" : item.type)
+                        .setText(R.id.tv_patient_name, TextUtils.isEmpty(item.patient_name) ? "" : "就诊人：" + item.patient_name)
                         .setText(R.id.tv_date, TextUtils.isEmpty(item.deal_time) ? "" : item.deal_time)
                         .setText(R.id.tv_money, TextUtils.isEmpty(item.money) ? "" : (montyType + item.money));
             }
@@ -92,7 +93,7 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
         }, recycleview);
 
         recycleview.setAdapter(mAdapter);
-        
+
         //请求数据
 //        idSwipe.setRefreshing(true);
         mPresenter.getDealFlow(pageNum);

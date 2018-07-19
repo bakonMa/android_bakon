@@ -28,8 +28,6 @@
         android:background="@drawable/shape_stroke_graybg_1"
         android:gravity="center"
         android:textCursorDrawable="@drawable/color_cursor"
-        android:maxLength="5"
-        android:inputType="number"
         android:singleLine="true"
         android:textColor="@color/color_000"
         android:textSize="15sp"
