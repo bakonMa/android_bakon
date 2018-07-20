@@ -66,11 +66,11 @@ public class HistoryPaperActivity extends BaseActivity {
                     }
 
                 }).bind();
-
+        //0：全部 1：已支付 -1：未支付 -2：已关闭
         fragmentList.add(HistoryPaperFragment.newInstance(0));
         fragmentList.add(HistoryPaperFragment.newInstance(1));
         fragmentList.add(HistoryPaperFragment.newInstance(-1));
-        fragmentList.add(HistoryPaperFragment.newInstance(2));
+        fragmentList.add(HistoryPaperFragment.newInstance(-2));
 
         initViewpager();
     }

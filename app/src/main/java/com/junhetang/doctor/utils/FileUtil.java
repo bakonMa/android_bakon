@@ -30,7 +30,7 @@ public class FileUtil {
      *
      * @param file
      * @param specifiedSize
-     * @return Observable<byte[]>
+     * @return Observable<byte       [       ]>
      */
     public static Observable<byte[]> zipImage(File file, long specifiedSize) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -283,7 +283,7 @@ public class FileUtil {
                 + File.separator + "Camera" + File.separator;
         //确定目录是否存在
         createDirByPath(peicurePath);
-        String fileName = TextUtils.isEmpty(filename) ? (System.currentTimeMillis() + ".jpg") : filename;
+        String fileName = TextUtils.isEmpty(filename) ? ("jht_" + System.currentTimeMillis() + ".jpg") : filename;
         File file = new File(peicurePath, fileName);
         LogUtil.d(peicurePath + fileName);
 

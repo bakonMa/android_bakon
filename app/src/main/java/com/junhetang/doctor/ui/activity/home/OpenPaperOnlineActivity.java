@@ -118,8 +118,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     RelativeLayout rltDaijian;
     @BindView(R.id.rg_daijian)
     RadioGroup rgDaijian;
-    @BindView(R.id.llt_num)
-    LinearLayout lltNum;
+    @BindView(R.id.rlt_num)
+    RelativeLayout rltNum;
     @BindView(R.id.et_num)
     EditText etNum;
     @BindView(R.id.et_serverprice)
@@ -837,7 +837,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         switch (drugType) {
             case "ZY"://中草药
                 etDrugClass.setVisibility(View.VISIBLE);//剂型
-                lltNum.setVisibility(View.VISIBLE);//副数
+                rltNum.setVisibility(View.VISIBLE);//副数
                 etUsetype.setVisibility(View.VISIBLE);//用法用量
                 //默认汤剂
                 if (drugClassId == -1) {
@@ -850,12 +850,13 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             case "XY"://西药
                 etDrugClass.setVisibility(View.GONE);//剂型
                 rltDaijian.setVisibility(View.GONE);//代煎
-                lltNum.setVisibility(View.GONE);//副数
+                rltNum.setVisibility(View.GONE);//副数
+                etUsetype.setVisibility(View.VISIBLE);//用法用量 显示
                 break;
             case "QC"://器材
                 etDrugClass.setVisibility(View.GONE);//剂型
                 rltDaijian.setVisibility(View.GONE);//代煎
-                lltNum.setVisibility(View.GONE);//副数
+                rltNum.setVisibility(View.GONE);//副数
                 etUsetype.setVisibility(View.GONE);//副数
                 break;
         }

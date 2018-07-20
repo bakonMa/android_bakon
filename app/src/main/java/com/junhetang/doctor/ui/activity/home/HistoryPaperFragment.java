@@ -63,11 +63,11 @@ public class HistoryPaperFragment extends BaseFragment implements OpenPaperConta
     private List<CheckPaperBean> checkPaperBeans = new ArrayList<>();
     private BaseQuickAdapter mAdapter;
     private int pageNum = 1;
-    private int status = 0;//status：0全部 1已支付 -1未支付
+    private int status = 0;//status：0：全部 1：已支付 -1：未支付 -2：已关闭
     private String searchStr = "";
 
     //根据type，构造fragment
-    //status：0全部 1已支付 -1未支付
+    //status：0：全部 1：已支付 -1：未支付 -2：已关闭
     public static HistoryPaperFragment newInstance(int status) {
         HistoryPaperFragment fragment = new HistoryPaperFragment();
         Bundle args = new Bundle();

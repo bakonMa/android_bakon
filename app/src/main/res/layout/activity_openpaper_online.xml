@@ -321,6 +321,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:background="@color/white"
                 android:orientation="vertical">
 
@@ -350,7 +351,7 @@
                     android:layout_width="120dp"
                     android:layout_height="44dp"
                     android:layout_gravity="center"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/shape_stroke_graybg_1"
                     android:gravity="center"
@@ -358,17 +359,6 @@
                     android:textColor="@color/color_main"
                     android:textSize="16sp" />
             </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white"
-                android:gravity="center_vertical"
-                android:paddingLeft="15dp"
-                android:text="温馨提示：汤剂代煎费及其他剂型加工费，以药房实际计算为准。"
-                android:textColor="@color/color_999"
-                android:textSize="10sp" />
 
             <com.junhetang.doctor.widget.EditableLayout
                 android:id="@+id/et_drugclass"
@@ -433,8 +423,8 @@
                     android:layout_alignParentBottom="true" />
             </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/llt_num"
+            <RelativeLayout
+                android:id="@+id/rlt_num"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:background="@color/white"
@@ -444,6 +434,7 @@
                 android:visibility="gone">
 
                 <TextView
+                    android:id="@+id/num_temp1"
                     android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
@@ -453,9 +444,10 @@
 
                 <EditText
                     android:id="@+id/et_num"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_toLeftOf="@+id/num_temp2"
+                    android:layout_toRightOf="@+id/num_temp1"
                     android:background="@null"
                     android:gravity="center_vertical|right"
                     android:hint="请输入副数"
@@ -468,19 +460,20 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/num_temp2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
                     android:gravity="center"
                     android:text="副"
                     android:textColor="@color/color_000"
                     android:textSize="16sp" />
 
-            </LinearLayout>
+                <View
+                    style="@style/line_gray_hor"
+                    android:layout_alignParentBottom="true" />
+            </RelativeLayout>
 
-            <View
-                style="@style/line_gray_hor"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp" />
 
             <com.junhetang.doctor.widget.EditableLayout
                 android:id="@+id/et_usetype"
@@ -643,11 +636,19 @@
             </RelativeLayout>
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="温馨提示：汤剂代煎费及其他剂型加工费，以药房实际计算为准。"
+                android:textColor="@color/color_999"
+                android:textSize="10sp" />
+
+            <TextView
                 android:id="@+id/tv_next_step"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:layout_margin="20dp"
-                android:layout_marginLeft="20dp"
                 android:background="@drawable/selector_bg_button_login"
                 android:clickable="true"
                 android:enabled="true"

@@ -105,7 +105,7 @@ public class ImageUtil {
         //防止 第一次操作后 一直显示同一张的问题
         String dirPath = Environment.getExternalStorageDirectory().getPath() + "/JHTIMG/";
         LogUtil.d("doCrop dirPath=" + dirPath);
-        String name = System.currentTimeMillis() + ".jpg";
+        String name = "jht_" + System.currentTimeMillis() + ".jpg";
         FileUtil.clearAllFile(dirPath);
         FileUtil.createDirByPath(dirPath);
 

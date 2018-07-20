@@ -237,7 +237,11 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                         upDataDrugList(drugBeans.get(position), false);
                         break;
                     case R.id.tv_usertype:
-                        mPopupWheel = new OnePopupWheel(AddDrugActivity.this, userTypeListStr, "请选择煎发", new OnePopupWheel.Listener() {
+                        //中成药、西药、器械“用法”不可选
+                        if (!"ZY".equals(drugBeans.get(position).drug_type)) {
+                            return;
+                        }
+                        mPopupWheel = new OnePopupWheel(AddDrugActivity.this, userTypeListStr, "请选择用法", new OnePopupWheel.Listener() {
                             @Override
                             public void completed(int i) {
                                 drugBeans.get(position).decoction = userTypeListStr.get(i);
