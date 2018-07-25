@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:gravity="center_horizontal"
+    android:layout_gravity="center"
+    android:gravity="center"
     android:orientation="vertical">
 
     <FrameLayout
@@ -45,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textColor="@android:color/white"
+                android:textColor="@color/color_main"
                 android:textSize="16sp" />
 
         </android.support.v7.widget.LinearLayoutCompat>
@@ -56,21 +57,21 @@
         android:id="@+id/tv_updatelog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:singleLine="false"
-        android:maxLines="6"
-        android:scrollbars="vertical"
+        android:background="@color/white"
         android:lineSpacingExtra="6dp"
+        android:maxLines="6"
         android:paddingBottom="10dp"
-        android:paddingLeft="34dp"
-        android:paddingRight="34dp"
-        android:paddingTop="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:scrollbars="vertical"
         android:textColor="#333333"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        tools:text="1：7月15日，国家药监局发布了 2：《关于长春长生生物科技有限责任公司违法违规生产冻干人用狂犬病疫苗的通告》
+        3：，根据线索，国家药品监督管理局组织对长春长生生物科技有限责任公司开展飞行检查" />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="45dp"
         android:background="#FBFBFB">
 
         <TextView
@@ -80,7 +81,7 @@
             android:gravity="center"
             android:onClick="onClick"
             android:text="立即升级"
-            android:textColor="#333333"
+            android:textColor="@color/color_main"
             android:textSize="16sp" />
 
         <FrameLayout
@@ -112,4 +113,4 @@
 
     </FrameLayout>
 
-</android.support.v7.widget.LinearLayoutCompat>
+</LinearLayout>

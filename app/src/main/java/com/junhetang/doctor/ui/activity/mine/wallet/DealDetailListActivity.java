@@ -20,6 +20,8 @@ import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.DealDetailBean;
 import com.junhetang.doctor.ui.contact.WalletContact;
 import com.junhetang.doctor.ui.presenter.WalletPresenter;
+import com.junhetang.doctor.utils.Constant;
+import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
@@ -77,11 +79,20 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
         mAdapter = new BaseQuickAdapter<DealDetailBean, BaseViewHolder>(R.layout.item_deal_detail, dealDetailBeans) {
             @Override
             protected void convert(BaseViewHolder helper, DealDetailBean item) {
-                String montyType = "提现".equals(item.type) ? "-" : "+";
+                String montyType = item.type_id == -1 ? "-" : "+";//提现类型
                 helper.setText(R.id.tv_dealtype, TextUtils.isEmpty(item.type) ? "" : item.type)
                         .setText(R.id.tv_patient_name, TextUtils.isEmpty(item.patient_name) ? "" : "就诊人：" + item.patient_name)
-                        .setText(R.id.tv_date, TextUtils.isEmpty(item.deal_time) ? "" : item.deal_time)
-                        .setText(R.id.tv_money, TextUtils.isEmpty(item.money) ? "" : (montyType + item.money));
+                        .setText(R.id.tv_date, TextUtils.isEmpty(item.deal_time) ? "" : item.deal_time);
+                if (item.type_id == -1) {//提现
+                    helper.setText(R.id.tv_patient_name, Constant.WITHDRAW_TYPE.get(item.status))
+                            .setText(R.id.tv_money, TextUtils.isEmpty(item.money) ? "" : ((item.status == 1 || item.status == 2) ? "-" : "") + item.money)
+                            .setTextColor(R.id.tv_patient_name, UIUtils.getColor(item.status == -1 ? R.color.red : R.color.color_main));
+                    //拒绝受理-红色
+                } else {
+                    helper.setText(R.id.tv_patient_name, TextUtils.isEmpty(item.patient_name) ? "" : "就诊人：" + item.patient_name)
+                            .setText(R.id.tv_money, TextUtils.isEmpty(item.money) ? "" : ("+" + item.money))
+                            .setTextColor(R.id.tv_patient_name, UIUtils.getColor(R.color.color_000));
+                }
             }
         };
 

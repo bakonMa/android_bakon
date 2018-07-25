@@ -38,4 +38,14 @@ public interface Constant {
             put("QC", "器材");
         }
     };
+
+    //提现类型 0:待受理 1：已受理 2：提现成功 -1:拒绝受理
+    Map<Integer, String> WITHDRAW_TYPE = new HashMap<Integer, String>() {
+        {
+            put(0, "待受理");
+            put(1, "已受理");
+            put(2, "提现成功");
+            put(-1, "拒绝受理");
+        }
+    };
 }
