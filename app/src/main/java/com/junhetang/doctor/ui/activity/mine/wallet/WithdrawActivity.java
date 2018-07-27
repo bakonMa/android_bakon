@@ -101,10 +101,27 @@ public class WithdrawActivity extends BaseActivity implements WalletContact.View
                     }
                 }).bind();
     }
+    
+    String POINT = ".";
 
-
-    @OnTextChanged(value = R.id.et_inputmoney, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    void afterContentChanged(Editable s) {
+    @OnTextChanged(value = R.id.et_inputmoney, callback = OnTextChanged.Callback.TEXT_CHANGED)
+    void editeChanged(Editable editable) {
+        //解决显示的问题
+        String s = editable.toString();
+        if (!TextUtils.isEmpty(s) && s.toString().contains(POINT)) {
+            boolean mustBeChange = false;
+            if (s.startsWith(POINT)) {// .  |  .01 这个要重置et的值
+                s = "0" + s;
+                mustBeChange = true;
+            } else if (!s.endsWith(POINT) && s.indexOf(POINT) + 2 < s.length() - 1) { // 10.234 这个是重置et值
+                s = s.substring(0, s.toString().indexOf(POINT) + 2 + 1);
+                mustBeChange = true;
+            }
+            if (mustBeChange) {
+                etInputmoney.setText(s);
+                etInputmoney.setSelection(etInputmoney.getText().length());
+            }
+        }
         btnComplete.setEnabled(s.length() > 0
                 && Double.parseDouble(s.toString()) > 0
                 && Double.parseDouble(s.toString()) <= Double.parseDouble(canUseMoney));
