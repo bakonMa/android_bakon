@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.utils.StatusBarUtil;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 
@@ -67,6 +68,20 @@ public abstract class BaseActivity extends RxAppCompatActivity implements BasicP
     @Override
     public Context actContext() {
         return this;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Umeng 统计
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //Umeng 统计
+        MobclickAgent.onPause(this);
     }
 
     @Override

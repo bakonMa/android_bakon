@@ -46,6 +46,7 @@ import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.utils.UIUtils;
+import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.utils.imageloader.BannerImageLoader;
 import com.junhetang.doctor.widget.RelativeWithImage;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
@@ -68,6 +69,7 @@ import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.uinfo.model.UserInfo;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
+import com.umeng.analytics.MobclickAgent;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
@@ -374,6 +376,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         banner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), UmengKey.workroom_banner);
                 //URL为空不跳转
                 if (TextUtils.isEmpty(bannerBeans.get(position).url)) {
                     return;
@@ -411,16 +415,24 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
 
         switch (view.getId()) {
             case R.id.tv_add_patient://添加患者
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), UmengKey.workroom_addpatient);
                 //个人卡片
                 WebViewActivity.startAct(actContext(), true, WebViewActivity.WEB_TYPE.WEB_TYPE_MYCARD, H5Config.H5_USERCARD_TITLE, H5Config.H5_USERCARD);
                 break;
             case R.id.tv_online_paper://在线开方
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), UmengKey.workroom_online);
                 startActivity(new Intent(actContext(), OpenPaperOnlineActivity.class));
                 break;
             case R.id.tv_camera_patient://拍照开方
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), UmengKey.workroom_camera);
                 startActivity(new Intent(actContext(), OpenPaperCameraActivity.class));
                 break;
             case R.id.tv_ask_paper://问诊单
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), UmengKey.workroom_ask_paper);
                 Intent intent = new Intent(actContext(), PaperH5Activity.class);
                 intent.putExtra("hasTopBar", true);//是否包含toolbar
                 intent.putExtra("webType", PaperH5Activity.FORM_TYPE.H5_ASKPAPER);
@@ -429,6 +441,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 startActivity(intent);
                 break;
             case R.id.tv_flow_paper://随诊单
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), UmengKey.workroom_follow_paper);
                 Intent intentFollow = new Intent(actContext(), PaperH5Activity.class);
                 intentFollow.putExtra("hasTopBar", true);//是否包含toolbar
                 intentFollow.putExtra("webType", PaperH5Activity.FORM_TYPE.H5_FOLLOWPAPER);
@@ -440,12 +454,18 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
 //                startActivity(new Intent(actContext(), CheckPaperActivity.class));
 //                break;
             case R.id.tv_notice://公告
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), UmengKey.workroom_notice);
                 startActivity(new Intent(actContext(), UserNoticeActivity.class));
                 break;
             case R.id.tv_comm_paper://常用处方
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), UmengKey.workroom_comm_paper);
                 startActivity(new Intent(actContext(), CommPaperActivity.class));
                 break;
             case R.id.id_job_schedule://坐诊信息
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), UmengKey.workroom_job_schedule);
                 startActivity(new Intent(actContext(), JobScheduleActivity.class));
                 break;
         }
@@ -458,12 +478,18 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 SessionHelper.startP2PSession(actContext(), accid, true);
                 break;
             case R.id.tv_history_paper://历史处方
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), UmengKey.workroom_history_paper);
                 startActivity(new Intent(actContext(), HistoryPaperActivity.class));
                 break;
             case R.id.id_patient_history://处方联系人列表
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), UmengKey.workroom_patient_history);
                 startActivity(new Intent(actContext(), JiuZhenHistoryActivity.class));
                 break;
             case R.id.id_notification://消息通知
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), UmengKey.workroom_chatlist);
                 startActivity(new Intent(actContext(), RecentActivity.class));
                 break;
         }

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/bg_white_radius_5"
+    android:orientation="vertical"
+    android:paddingBottom="6dp">
+
+    <TextView
+        android:id="@+id/paper_type"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/bg_yellow_top_radius_5"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:text="处方" />
+
+    <TextView
+        android:id="@+id/patient_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/paper_type"
+        android:ellipsize="end"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:singleLine="true"
+        android:textColor="@color/color_000"
+        android:textSize="16sp"
+        tools:text="就诊人：患者姓名（本人）   男    27岁" />
+
+    <TextView
+        android:id="@+id/skill_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/patient_name"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:textColor="@color/color_000"
+        android:textSize="16sp"
+        tools:text="主述挤辩证：累的，闲的，无聊的 累的，闲的，无聊的 累的，闲的，无聊的 累的，闲的，无聊的 累的，闲的，无聊的 累的，闲的，无聊的 " />
+
+    <TextView
+        android:id="@+id/service_money"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/skill_name"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:textColor="@color/color_000"
+        android:textSize="16sp"
+        tools:text="诊疗费：20元" />
+
+    <TextView
+        android:id="@+id/drug_money"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/service_money"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:textColor="@color/color_000"
+        android:textSize="16sp"
+        tools:text="药材费：222元" />
+
+    <TextView
+        android:id="@+id/paper_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/drug_money"
+        android:layout_toLeftOf="@+id/goto_ddetail"
+        android:ellipsize="end"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:singleLine="true"
+        android:textColor="@color/color_000"
+        android:textSize="16sp"
+        tools:text="开方时间：2018-07-31" />
+
+    <TextView
+        android:id="@+id/goto_ddetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/paper_date"
+        android:layout_alignParentRight="true"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:textColor="@color/color_main"
+        android:textSize="14sp"
+        android:text="点击查看" />
+
+</RelativeLayout>

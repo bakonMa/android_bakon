@@ -192,11 +192,12 @@
                     android:gravity="top|start"
                     android:hint="患者病症描述（非必填）"
                     android:lineSpacingExtra="5dp"
+                    android:maxLength="150"
                     android:minLines="3"
-                    android:paddingBottom="10dp"
+                    android:paddingBottom="5dp"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
-                    android:paddingTop="10dp"
+                    android:paddingTop="5dp"
                     android:textColor="@color/color_000"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:textSize="16sp" />
@@ -543,8 +544,35 @@
                 app:edit_editTextHint="（必填）"
                 app:edit_leftText="医嘱"
                 app:edit_mode="select"
-                app:edit_textMainSize="16sp"
-                app:isShowLineBottom="false" />
+                app:edit_textMainSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="备注"
+                android:textColor="@color/color_000"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/et_remark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="top|start"
+                android:hint="请填写备注信息（非必填）"
+                android:lineSpacingExtra="5dp"
+                android:maxLength="150"
+                android:minLines="2"
+                android:paddingBottom="5dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="5dp"
+                android:textColor="@color/color_000"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="match_parent"

@@ -15,26 +15,28 @@ import android.widget.ScrollView;
 
 import com.junhetang.doctor.BuildConfig;
 import com.junhetang.doctor.R;
-import com.junhetang.doctor.ui.bean.UploadImgBean;
-import com.junhetang.doctor.utils.LogUtil;
-import com.junhetang.doctor.utils.ToastUtil;
-import com.junhetang.doctor.widget.EditTextlayout;
-import com.junhetang.doctor.widget.popupwindow.CameraPopupView;
-import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.ui.base.BaseActivity;
+import com.junhetang.doctor.ui.bean.UploadImgBean;
 import com.junhetang.doctor.ui.contact.AuthContact;
 import com.junhetang.doctor.ui.presenter.AuthPresenter;
 import com.junhetang.doctor.utils.ActivityUtil;
 import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.ImageUtil;
+import com.junhetang.doctor.utils.LogUtil;
+import com.junhetang.doctor.utils.ToastUtil;
+import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.utils.UriUtil;
+import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
+import com.junhetang.doctor.widget.popupwindow.CameraPopupView;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
+import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -118,6 +120,9 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View 
                 cameraPopupView.show(scrollView);
                 break;
             case R.id.tv_next_step:
+                //Umeng 埋点
+                MobclickAgent.onEvent(this, UmengKey.auth_step2);
+
                 if (TextUtils.isEmpty(etSfz.getEditText().getText().toString().trim())) {
                     ToastUtil.showShort("请输入身份证号码");
                     return;

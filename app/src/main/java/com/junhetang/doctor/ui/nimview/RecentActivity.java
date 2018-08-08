@@ -35,6 +35,7 @@ import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.base.BaseView;
 import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.U;
+import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
@@ -69,6 +70,7 @@ import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.team.model.Team;
 import com.netease.nimlib.sdk.team.model.TeamMember;
 import com.trello.rxlifecycle.LifecycleTransformer;
+import com.umeng.analytics.MobclickAgent;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -244,6 +246,9 @@ public class RecentActivity extends BaseActivity implements BaseView {
                     commonDialog.show();
                     return;
                 }
+
+                //Umeng 埋点
+                MobclickAgent.onEvent(RecentActivity.this, UmengKey.recentlist_chat);
 
                 // 回调函数，以供打开会话窗口时传入定制化参数，或者做其他动作
                 LogUtil.d("accid=" + recent.getContactId());

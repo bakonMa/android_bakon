@@ -37,6 +37,7 @@ import com.junhetang.doctor.ui.activity.mine.wallet.WalletActivity;
 import com.junhetang.doctor.ui.activity.mine.wallet.WithdrawActivity;
 import com.junhetang.doctor.ui.activity.patient.AddPatientJZRActivity;
 import com.junhetang.doctor.ui.activity.patient.PatienHealthRecordActivity;
+import com.junhetang.doctor.ui.activity.patient.PatientCenterActivity;
 import com.junhetang.doctor.ui.activity.patient.PatientFamilyActivity;
 import com.junhetang.doctor.ui.activity.patient.PatientListActivity;
 import com.junhetang.doctor.ui.activity.patient.RemarkNameActivity;
@@ -140,5 +141,7 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(AddPatientJZRActivity addPatientJZRActivity);
 
     void inject(JobScheduleActivity jobScheduleActivity);
+
+    void inject(PatientCenterActivity patientCenterActivity);
 
 }

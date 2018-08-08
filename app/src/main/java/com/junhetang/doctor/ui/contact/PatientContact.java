@@ -26,5 +26,7 @@ public interface PatientContact {
 
         void addPatientJZR(Params params);//添加患者（处方联系人）
 
+        void getPatientPaper(int page, String patient_id, String memb_no);//患者处方列表
+
     }
 }

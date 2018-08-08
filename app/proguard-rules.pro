@@ -316,7 +316,7 @@ public static java.lang.String TABLENAME;
 -dontwarn okio.**
 -dontwarn org.apache.commons.codec.binary.**
 
-#Umeng
+#Umeng 分享
 -dontshrink
 -dontoptimize
 -dontwarn com.google.android.maps.**
@@ -399,3 +399,12 @@ public static java.lang.String TABLENAME;
 -keep class com.linkedin.** { *; }
 -keep class com.android.dingtalk.share.ddsharemodule.** { *; }
 -keepattributes Signature
+#umeng统计
+-keep class com.umeng.** {*;}
+-keepclassmembers class * {
+   public <init> (org.json.JSONObject);
+}
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}

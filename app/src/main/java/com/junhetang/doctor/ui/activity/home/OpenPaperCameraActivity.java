@@ -48,6 +48,7 @@ import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.utils.UIUtils;
+import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.utils.UriUtil;
 import com.junhetang.doctor.utils.imageloader.Glide4Engine;
 import com.junhetang.doctor.widget.EditTextlayout;
@@ -59,6 +60,7 @@ import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
+import com.umeng.analytics.MobclickAgent;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.internal.entity.CaptureStrategy;
@@ -242,6 +244,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     public void tabOnClick(View view) {
         switch (view.getId()) {
             case R.id.tv_addpatient://选择患者
+                //Umeng 埋点
+                MobclickAgent.onEvent(this, UmengKey.camera_choosepatient);
                 Intent intent = new Intent();
                 if (formParent == 1) {
                     intent.setClass(this, PatientFamilyActivity.class);
@@ -253,9 +257,13 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 startActivity(intent);
                 break;
             case R.id.tv_editepatient://编辑就诊人
+                //Umeng 埋点
+                MobclickAgent.onEvent(this, UmengKey.camera_writepatient);
                 writeJzInfo();
                 break;
             case R.id.tv_choose_history://选择历史就诊人
+                //Umeng 埋点
+                MobclickAgent.onEvent(this, UmengKey.camera_historypatient);
                 Intent intentChoose = new Intent(this, JiuZhenHistoryActivity.class);
                 intentChoose.putExtra("isChoose", true);
                 startActivity(intentChoose);
@@ -281,6 +289,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 mPopupWheel.show(scrollView);
                 break;
             case R.id.tv_next_step://提交
+                //Umeng 埋点
+                MobclickAgent.onEvent(this, UmengKey.camera_submit);
                 checkData();
                 break;
             case R.id.iv_img1_clean:

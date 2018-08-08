@@ -42,12 +42,14 @@ import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.utils.UIUtils;
+import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.dialog.SavePaperDialog;
 import com.junhetang.doctor.widget.popupwindow.OnePopupWheel;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -382,6 +384,8 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                 tvTotalmoney.setText("预计：0元");
                 break;
             case R.id.tv_commpaper://常用处方
+                //Umeng 埋点
+                MobclickAgent.onEvent(this, UmengKey.online_commpaper);
                 Intent intent = new Intent(this, ChooseCommActivity.class);
 //                intent.putExtra("form", 1);//进入选择方子
                 intent.putExtra("store_id", drugStoreId);//药房id
@@ -696,7 +700,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         //关闭键盘
         KeyBoardUtils.hideKeyBoard(etSearch, this);

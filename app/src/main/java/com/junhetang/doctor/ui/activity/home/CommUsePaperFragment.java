@@ -29,8 +29,10 @@ import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
 import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.ToastUtil;
+import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.trello.rxlifecycle.LifecycleTransformer;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -156,6 +158,8 @@ public class CommUsePaperFragment extends BaseFragment implements OpenPaperConta
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rlt_add://添加
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), UmengKey.commpaper_save);
                 Intent intent = new Intent(actContext(), AddDrugActivity.class);
                 intent.putExtra("formtype", 0);
                 startActivity(intent);

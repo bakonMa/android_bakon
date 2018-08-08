@@ -17,6 +17,7 @@ import com.junhetang.doctor.utils.U;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -58,16 +59,21 @@ public class DocApplication extends Application {
         CrashReport.setIsDevelopmentDevice(getApplicationContext(), BuildConfig.DEBUG);
         CrashReport.setUserId(U.getPhone());//设置手机号为用户id，方便查找
         //内存泄漏检测
-        refWatcher = setupLeakCanary();
+//        refWatcher = setupLeakCanary();
         //db 初始化
 //        GreenDaoManager.getInstance();
 
+        //Umeng初始化
+        UMConfigure.init(this, HttpConfig.UMENG_APPKEY, "yingyongbao", UMConfigure.DEVICE_TYPE_PHONE, "");
+        //Umeng统计 设置场景（普通统计场景）
+        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
         //Umeng分享
-        UMConfigure.init(this, HttpConfig.UMENG_APPKEY, "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
         umShareAPI = UMShareAPI.get(this);
         PlatformConfig.setWeixin(HttpConfig.WX_APP_ID, HttpConfig.WX_APP_SECRET);
         PlatformConfig.setQQZone(HttpConfig.QQ_APP_ID, HttpConfig.QQ_APP_ID_Key);
 
+        //打开统计SDK调试模式
+        UMConfigure.setLogEnabled(BuildConfig.DEBUG);
     }
 
     public static DocApplication getInstance() {

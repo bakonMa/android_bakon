@@ -7,16 +7,6 @@ package com.junhetang.doctor.ui.bean;
  */
 public class CheckPaperBean {
 
-
-    /**
-     * id : 98
-     * patient_name : 开心果
-     * sex : 1
-     * age : 12
-     * phone : 12357122365
-     * create_time :
-     */
-
     public int id;
     public String patient_name;
     public int sex;//男：0、女：1
@@ -27,4 +17,8 @@ public class CheckPaperBean {
     public int presc_type;//1、手工开方；2、拍照开方
     public int z_status;//0：未转方 1：已转方
 
+    //健康档案使用
+    public String bz_remark;//主述及辩证型
+    public String service_price;//诊疗费
+    public String total_drug;//药品费
 }

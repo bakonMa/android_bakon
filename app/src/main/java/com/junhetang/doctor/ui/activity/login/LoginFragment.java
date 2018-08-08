@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.junhetang.doctor.R;
-import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.injection.components.DaggerFragmentComponent;
 import com.junhetang.doctor.injection.modules.FragmentModule;
@@ -23,8 +22,11 @@ import com.junhetang.doctor.ui.activity.fragment.MainActivity;
 import com.junhetang.doctor.ui.base.BaseFragment;
 import com.junhetang.doctor.ui.contact.LoginContact;
 import com.junhetang.doctor.ui.presenter.LoginPresenter;
+import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
+import com.junhetang.doctor.utils.UmengKey;
 import com.trello.rxlifecycle.LifecycleTransformer;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.concurrent.TimeUnit;
 
@@ -104,7 +106,7 @@ public class LoginFragment extends BaseFragment implements LoginContact.View {
         lltPassword.setVisibility(type == 1 ? View.VISIBLE : View.GONE);
         tvFrogetpwd.setVisibility(type == 1 ? View.VISIBLE : View.GONE);
         //上次登录的手机号
-        etPhone.setText( U.getPhone());
+        etPhone.setText(U.getPhone());
         etPhone.setSelection(etPhone.getText().length());
     }
 
@@ -119,9 +121,14 @@ public class LoginFragment extends BaseFragment implements LoginContact.View {
                 startActivity(intent);
                 break;
             case R.id.tv_registe://注册
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), UmengKey.login_registe);
                 startActivity(new Intent(actContext(), RegisteActivity.class));
                 break;
             case R.id.btn_login://登录
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), type == 0 ? UmengKey.login_code : UmengKey.login_password);
+
                 mPresenter.login(etPhone.getText().toString().trim(),
                         type == 0 ? etCode.getText().toString().trim() : etPassword.getText().toString().trim(),
                         type);

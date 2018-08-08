@@ -13,6 +13,7 @@
         android:id="@+id/rlt_head"
         android:layout_width="match_parent"
         android:layout_height="70dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:background="@color/white"
         android:paddingBottom="10dp"
@@ -50,6 +51,18 @@
             tools:text="手机号：18202199999" />
 
         <TextView
+            android:id="@+id/tv_remark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingBottom="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="备注"
+            android:textColor="@color/color_main"
+            android:textSize="12sp" />
+
+        <TextView
             android:id="@+id/tv_class"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,19 +75,55 @@
 
     </RelativeLayout>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:text="就诊人"
-        android:textColor="@color/color_999"
-        android:textSize="14sp" />
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="就诊人"
+            android:textColor="@color/color_000"
+            android:textSize="16sp" />
+
+        <RelativeLayout
+            android:layout_width="220dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/shape_stroke_bg_5">
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:dropDownWidth="220dp"
+                android:overlapAnchor="false"
+                android:padding="0dp"
+                android:spinnerMode="dropdown" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycleview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/tv_gotochat"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/selector_bg_button_login"
+        android:gravity="center"
+        android:text="进入咨询"
+        android:textColor="@color/white" />
 
 </LinearLayout>

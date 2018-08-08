@@ -47,6 +47,7 @@ import com.junhetang.doctor.utils.RegexUtil;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
+import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.EditableLayout;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
@@ -56,6 +57,7 @@ import com.junhetang.doctor.widget.popupwindow.TwoPopupWheel;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -136,6 +138,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     TextView tvMoneyDrug;
     @BindView(R.id.tv_money_total)
     TextView tvMoneyTotal;
+    @BindView(R.id.et_remark)
+    EditText etRemark;
     @BindView(R.id.tv_next_step)
     TextView tvNextStep;
 
@@ -356,6 +360,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     public void tabOnClick(View view) {
         switch (view.getId()) {
             case R.id.tv_addpatient://选择患者
+                //Umeng 埋点
+                MobclickAgent.onEvent(this, UmengKey.online_choosepatient);
                 Intent intent = new Intent();
                 if (formParent == 1) {
                     intent.setClass(this, PatientFamilyActivity.class);
@@ -367,14 +373,20 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 startActivity(intent);
                 break;
             case R.id.tv_editepatient://编辑就诊人
+                //Umeng 埋点
+                MobclickAgent.onEvent(this, UmengKey.online_writepatient);
                 writeJzInfo();
                 break;
             case R.id.tv_choose_history://选择历史就诊人
+                //Umeng 埋点
+                MobclickAgent.onEvent(this, UmengKey.online_historypatient);
                 Intent intentChoose = new Intent(this, JiuZhenHistoryActivity.class);
                 intentChoose.putExtra("isChoose", true);
                 startActivity(intentChoose);
                 break;
             case R.id.tv_addcommpaper://添加为常用处方
+                //Umeng 埋点
+                MobclickAgent.onEvent(this, UmengKey.online_add_commpaper);
                 if (drugBeans == null || drugBeans.isEmpty()) {
                     ToastUtil.showShort("请添加药材");
                     return;
@@ -466,6 +478,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 startActivityForResult(addDrugIntent, REQUEST_CODE_ADDDRUG);
                 break;
             case R.id.tv_next_step://提交
+                //Umeng 埋点
+                MobclickAgent.onEvent(this, UmengKey.online_submit);
                 checkData();
                 break;
         }
@@ -636,7 +650,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         }
         params.put("store_id", storeId);
         params.put("param", new Gson().toJson(drugBeans));
-
+        //备注
+        params.put("remark", etRemark.getText().toString().trim());
 
         switch (drugType) {
             case "ZY"://中草药
@@ -811,6 +826,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         //医嘱
         docadviceStr = TextUtils.isEmpty(infoBean.doc_remark) ? "" : infoBean.doc_remark;
         etDocadvice.setText(docadviceStr);
+        //备注
+        etRemark.setText(TextUtils.isEmpty(infoBean.remark) ? "" : infoBean.remark); //备注
         //药材
         setDrugBeans(infoBean.param);
     }

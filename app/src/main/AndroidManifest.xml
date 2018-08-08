@@ -265,6 +265,9 @@
             android:name=".ui.activity.patient.PatientFamilyActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activity.patient.PatientCenterActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activity.patient.RemarkNameActivity"
             android:screenOrientation="portrait" />
         <activity

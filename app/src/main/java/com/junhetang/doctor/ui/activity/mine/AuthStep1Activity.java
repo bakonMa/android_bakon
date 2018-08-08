@@ -39,6 +39,7 @@ import com.junhetang.doctor.utils.ImageUtil;
 import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
 import com.junhetang.doctor.utils.ToastUtil;
+import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.utils.UriUtil;
 import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.EditableLayout;
@@ -50,6 +51,7 @@ import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -217,6 +219,8 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                 startActivityForResult(intent, REQUEST_CHOOSE_GOODAT);
                 break;
             case R.id.tv_next_step:
+                //Umeng 埋点
+                MobclickAgent.onEvent(this, UmengKey.auth_step1);
                 checkData();
                 break;
 

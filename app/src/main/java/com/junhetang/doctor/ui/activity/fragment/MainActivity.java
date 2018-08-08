@@ -70,7 +70,7 @@ public class MainActivity extends BaseActivity implements BaseView{
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         //处理intent 分发进入不同activity
         if (firstEnter) {

@@ -26,11 +26,13 @@ import com.junhetang.doctor.ui.bean.H5JsonBean;
 import com.junhetang.doctor.utils.FileUtil;
 import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.ShareSDKUtils;
+import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.widget.ProgressWebView;
 import com.junhetang.doctor.widget.popupwindow.MenuPopupView;
 import com.junhetang.doctor.widget.popupwindow.SharePopupWindow;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -117,6 +119,8 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
                 wbWebview.reload();
                 break;
             case R.id.tv_add_jzr:
+                //Umeng 埋点
+                MobclickAgent.onEvent(this, UmengKey.personcard_add);
                 startActivity(new Intent(this, AddPatientJZRActivity.class));
                 break;
         }
@@ -155,6 +159,8 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
                                     public void onClicked(View view) {
                                         switch (view.getId()) {
                                             case R.id.tv_share:
+                                                //Umeng 埋点
+                                                MobclickAgent.onEvent(actContext(), UmengKey.personcard_share);
                                                 //分享 获取share json数据
                                                 //wbWebview.loadUrl("javascript:(function(){window.Android.jsEvent(document.getElementById('shareValue').value);})()");
                                                 wbWebview.loadUrl("javascript:share_card()");

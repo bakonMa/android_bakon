@@ -6,6 +6,8 @@ import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.data.response.HttpResponse;
 import com.junhetang.doctor.nim.NimU;
 import com.junhetang.doctor.ui.base.BaseObserver;
+import com.junhetang.doctor.ui.bean.BasePageBean;
+import com.junhetang.doctor.ui.bean.CheckPaperBean;
 import com.junhetang.doctor.ui.bean.PatientBean;
 import com.junhetang.doctor.ui.bean.PatientFamilyBean;
 import com.junhetang.doctor.ui.contact.PatientContact;
@@ -35,6 +37,7 @@ public class PatientPresenter implements PatientContact.Presenter {
     public static final int SET_PRICE_0K = 0x112;
     public static final int TOTALK_OK = 0x113;
     public static final int ADD_PATIENT_JZR_OK = 0x114;
+    public static final int GET_PATIEN_PAPER_TLIST_0K = 0x115;
 
     public PatientPresenter(PatientContact.View mView) {
         this.mView = mView;
@@ -196,6 +199,33 @@ public class PatientPresenter implements PatientContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
 
+                });
+        compositeSubscription.add(subscription);
+    }
+
+    @Override
+    public void getPatientPaper(int page, String patient_id, String memb_no) {
+        Params params = new Params();
+        params.put("page", page);
+        params.put("patient_id", patient_id);
+        params.put("memb_no", memb_no);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getPatientPaperlist(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null)
+                        mDialog.show();
+                }).subscribe(new BaseObserver<HttpResponse<BasePageBean<CheckPaperBean>>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<BasePageBean<CheckPaperBean>> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, GET_PATIEN_PAPER_TLIST_0K));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
                 });
         compositeSubscription.add(subscription);
     }

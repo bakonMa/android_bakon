@@ -31,8 +31,10 @@ import com.junhetang.doctor.ui.nimview.PaperH5Activity;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
 import com.junhetang.doctor.utils.KeyBoardUtils;
 import com.junhetang.doctor.utils.UIUtils;
+import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.trello.rxlifecycle.LifecycleTransformer;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,6 +133,9 @@ public class HistoryPaperFragment extends BaseFragment implements OpenPaperConta
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter mAdapter, View view, int position) {
+                //Umeng 埋点
+                MobclickAgent.onEvent(getActivity(), UmengKey.historypaper_itemclick);
+                
                 CheckPaperBean paperBean = checkPaperBeans.get(position);
                 boolean canuse = (paperBean.presc_type == 1 || (paperBean.presc_type == 2 && paperBean.z_status == 1));
                 Intent intent = new Intent(actContext(), PaperH5Activity.class);
@@ -185,6 +190,22 @@ public class HistoryPaperFragment extends BaseFragment implements OpenPaperConta
                 etSerch.setText("");
                 break;
             case R.id.tv_search:
+                //Umeng 埋点
+                switch (status){//0：全部 1：已支付 -1：未支付 -2：已关闭
+                    case 0:
+                        MobclickAgent.onEvent(actContext(), UmengKey.historypaper_all_search);
+                        break;
+                    case 1:
+                        MobclickAgent.onEvent(actContext(), UmengKey.historypaper_haspay_search);
+                        break;
+                    case -1:
+                        MobclickAgent.onEvent(actContext(), UmengKey.historypaper_unpay_search);
+                        break;
+                    case -2:
+                        MobclickAgent.onEvent(actContext(), UmengKey.historypaper_closed_search);
+                        break;
+                }
+
                 KeyBoardUtils.hideKeyBoard(etSerch, actContext());
                 if (TextUtils.isEmpty(etSerch.getText().toString().trim())
                         || !searchStr.equals(etSerch.getText().toString().trim())) {

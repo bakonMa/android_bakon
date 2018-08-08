@@ -12,8 +12,10 @@ import com.junhetang.doctor.R;
 import com.junhetang.doctor.ui.adapter.CommonViewpageFragmentAdapter;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.utils.UIUtils;
+import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
+import com.umeng.analytics.MobclickAgent;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -97,6 +99,22 @@ public class HistoryPaperActivity extends BaseActivity {
                 clipPagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //Umeng 埋点
+                        switch (index){
+                            case 0:
+                                MobclickAgent.onEvent(actContext(), UmengKey.historypaper_all);
+                                break;
+                            case 1:
+                                MobclickAgent.onEvent(actContext(), UmengKey.historypaper_haspay);
+                                break;
+                            case 2:
+                                MobclickAgent.onEvent(actContext(), UmengKey.historypaper_unpay);
+                                break;
+                            case 3:
+                                MobclickAgent.onEvent(actContext(), UmengKey.historypaper_closed);
+                                break;
+                        }
+
                         viewPager.setCurrentItem(index);
                     }
                 });

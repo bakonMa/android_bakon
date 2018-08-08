@@ -26,6 +26,7 @@ public class PaperInfoBean {
     public String freq;//用量
     public int service_price;//补充收费
     public String doc_remark;//医嘱
+    public String remark;//备注
     public List<DrugBean> param;//药材
 
 }

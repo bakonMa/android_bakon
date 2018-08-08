@@ -175,6 +175,10 @@ public interface HttpAPI {
     @POST("getPatientlist")
     Observable<HttpResponse<List<PatientBean>>> getpatientlist(@Body Params params);
 
+    //就诊人处方列表
+    @POST("healthrecord")
+    Observable<HttpResponse<BasePageBean<CheckPaperBean>>> getPatientPaperlist(@Body Params params);
+
     //患者详情 和就诊人列表
     @POST("getpatientinfo")
     Observable<HttpResponse<PatientFamilyBean>> getpatientinfo(@Body Params params);

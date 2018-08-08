@@ -37,6 +37,7 @@ import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.UIUtils;
+import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.widget.ProgressWebView;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
@@ -44,6 +45,7 @@ import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.trello.rxlifecycle.LifecycleTransformer;
+import com.umeng.analytics.MobclickAgent;
 
 import java.lang.ref.WeakReference;
 
@@ -175,6 +177,8 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
     private void onRightClick() {
         //调用此放
         if (FORM_TYPE.H5_PAPER_DETAIL.equals(webType)) {
+            //Umeng 埋点
+            MobclickAgent.onEvent(this, UmengKey.paperdetail_again);
             Intent intent = new Intent(this, OpenPaperOnlineActivity.class);
             intent.putExtra("checkid", checkid);//处方id
             startActivity(intent);
@@ -283,6 +287,9 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
             }
             switch (bean.jstype) {
                 case "edit_inquiry"://医生【发送问诊单】
+                    //Umeng 埋点
+                    MobclickAgent.onEvent(actContext(), formParent == 1 ? UmengKey.askpaper_send_chat : UmengKey.askpaper_send);
+
                     if (formParent == 1) {//聊天列表
                         //发送自定义消息记录
                         mPresenter.addChatRecord(NimU.getNimAccount(),
@@ -305,6 +312,9 @@ public class PaperH5Activity extends BaseActivity implements ProgressWebView.Err
                     finish();
                     break;
                 case "web_checkups"://医生【发送随诊单】
+                    //Umeng 埋点
+                    MobclickAgent.onEvent(actContext(), formParent == 1 ? UmengKey.followpaper_send_chat : UmengKey.followpaper_send);
+
                     if (formParent == 1) {//聊天列表
                         //发送自定义消息记录
                         mPresenter.addChatRecord(NimU.getNimAccount(),
