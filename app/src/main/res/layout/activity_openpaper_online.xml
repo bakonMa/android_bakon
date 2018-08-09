@@ -542,7 +542,7 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 app:edit_editTextHint="（必填）"
-                app:edit_leftText="医嘱"
+                app:edit_leftText="服药说明"
                 app:edit_mode="select"
                 app:edit_textMainSize="16sp" />
 
@@ -552,7 +552,7 @@
                 android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingLeft="15dp"
-                android:text="备注"
+                android:text="处方备注"
                 android:textColor="@color/color_000"
                 android:textSize="16sp" />
 
@@ -565,7 +565,7 @@
                 android:hint="请填写备注信息（非必填）"
                 android:lineSpacingExtra="5dp"
                 android:maxLength="150"
-                android:minLines="2"
+                android:minLines="3"
                 android:paddingBottom="5dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"

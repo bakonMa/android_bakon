@@ -7,8 +7,8 @@ android {
         applicationId "com.junhetang.doctor"
         minSdkVersion 19  //16:4.1(99.1%) 19:4.4(90%)
         targetSdkVersion 27
-        versionCode 10
-        versionName "1.1.0_dev"
+        versionCode 11
+        versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true //dex分包
         ndk {
@@ -24,7 +24,6 @@ android {
                     // 默认是[应用宝]的渠道
                     UMENG_CHANNEL_VALUE: "yingyongbao"
             ]
-
         }
 
         aaptOptions {//检查是否修改过文件后缀
@@ -80,8 +79,8 @@ def devAddress() {
 }
 
 def onLineAddress() {
-    "\"http://dev.dr.jhtcm.com/\""  //测试环境
-//    "\"https://dr.jhtcm.vip/\""//正式线上环境
+//    "\"http://dev.dr.jhtcm.com/\""  //测试环境
+    "\"https://dr.jhtcm.vip/\""//正式线上环境
 //    "\"https://dr.beta.jhtcm.vip/\""//beta测试环境
 }
 
@@ -194,7 +193,7 @@ dependencies {
     //选择照片
     implementation 'com.zhihu.android:matisse:0.5.1'
     //阿里云 oss
-    implementation 'com.aliyun.dpa:oss-android-sdk:+'
+    implementation 'com.aliyun.dpa:oss-android-sdk:2.8.4'
     //友盟 统计
     implementation 'com.umeng.sdk:analytics:7.5.0'
 

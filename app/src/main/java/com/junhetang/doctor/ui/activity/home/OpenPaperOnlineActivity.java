@@ -628,7 +628,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         }
 
         if (TextUtils.isEmpty(docadviceStr)) {
-            commonDialog = new CommonDialog(this, "请填写医嘱");
+            commonDialog = new CommonDialog(this, "请填写服药说明");
             commonDialog.show();
             return;
         }

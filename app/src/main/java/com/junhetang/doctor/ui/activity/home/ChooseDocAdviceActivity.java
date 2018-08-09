@@ -104,7 +104,7 @@ public class ChooseDocAdviceActivity extends BaseActivity {
     //共同头部处理
     private void initToolbar() {
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
-                .setTitle("医嘱")
+                .setTitle("服药说明")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
                 .setRightText("保存", true, R.color.color_main)
@@ -119,7 +119,7 @@ public class ChooseDocAdviceActivity extends BaseActivity {
                     public void rightClick() {
                         super.rightClick();
                         if (TextUtils.isEmpty(etAdvidce.getText().toString())) {
-                            ToastUtil.showShort("请填写医嘱内容");
+                            ToastUtil.showShort("请填写服药说明");
                             return;
                         }
                         Intent intent = new Intent();
