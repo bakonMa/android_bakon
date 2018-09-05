@@ -44,7 +44,7 @@ import com.junhetang.doctor.utils.UriUtil;
 import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.EditableLayout;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
-import com.junhetang.doctor.widget.popupwindow.CameraPopupView;
+import com.junhetang.doctor.widget.popupwindow.BottomChoosePopupView;
 import com.junhetang.doctor.widget.popupwindow.OnePopupWheel;
 import com.junhetang.doctor.widget.popupwindow.ProvCityPopupView;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
@@ -165,13 +165,13 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     public void tabOnClick(View view) {
         switch (view.getId()) {
             case R.id.iv_img1:
-                CameraPopupView cameraPopupView = new CameraPopupView(this, new View.OnClickListener() {
+                BottomChoosePopupView bottomChoosePopupView = new BottomChoosePopupView(this, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        openCameraOrPhoto(view.getId() == R.id.llt_camera);
+                        openCameraOrPhoto(view.getId() == R.id.dtv_one);
                     }
                 });
-                cameraPopupView.show(scrollView);
+                bottomChoosePopupView.show(scrollView);
 
                 break;
             case R.id.et_address:

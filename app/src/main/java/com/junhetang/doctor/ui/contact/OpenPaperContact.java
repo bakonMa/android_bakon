@@ -43,11 +43,15 @@ public interface OpenPaperContact {
 
         void getJiuZhenHistoryList(int page, String searchStr);//历史就诊人和搜索
 
+        void getJZRList(int page, String searchStr);//就诊人列表和搜索
+
         void classicsPaperUp(int id);//经典处方 置顶/取消置顶
 
         void getPaperInfo(int id);//处方详情数据（调用此方 使用）
 
         void changeDrugType(int storId, int type, String drugJson);//普药 精品转换
+
+        void getJZRByPhone(String phone);//根据手机号 显示所有就诊人
 
     }
 

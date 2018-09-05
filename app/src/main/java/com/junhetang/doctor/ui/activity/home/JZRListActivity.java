@@ -1,7 +1,6 @@
 package com.junhetang.doctor.ui.activity.home;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -26,10 +25,9 @@ import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
-import com.junhetang.doctor.ui.activity.patient.AddPatientJZRActivity;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.BasePageBean;
-import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
+import com.junhetang.doctor.ui.bean.PatientFamilyBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
 import com.junhetang.doctor.utils.KeyBoardUtils;
@@ -52,7 +50,7 @@ import butterknife.OnTextChanged;
  * HistoryPaperActivity 历史处方
  * Create at 2018/5/7 下午3:11 by mayakun
  */
-public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperContact.View {
+public class JZRListActivity extends BaseActivity implements OpenPaperContact.View {
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
@@ -68,20 +66,18 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
     @Inject
     OpenPaperPresenter mPresenter;
 
-    private List<JiuZhenHistoryBean> jiuZhenHistoryBeans = new ArrayList<>();
+    private List<PatientFamilyBean.JiuzhenBean> jiuzhenBeans = new ArrayList<>();
     private BaseQuickAdapter mAdapter;
     private int pageNum = 1;
     private String searchStr = "";
-    private boolean isChoose = false;//是否是选择操作
 
     @Override
     protected int provideRootLayout() {
-        return R.layout.activity_paper_history;
+        return R.layout.activity_choose_jzr;
     }
 
     @Override
     protected void initView() {
-        isChoose = getIntent().getBooleanExtra("isChoose", false);
         initToolbar();
 
         //下拉刷新
@@ -91,14 +87,14 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
             public void onRefresh() {
                 //刷新数据
                 pageNum = 1;
-                mPresenter.getJiuZhenHistoryList(pageNum, etSerch.getText().toString().trim());
+                mPresenter.getJZRList(pageNum, etSerch.getText().toString().trim());
             }
         });
 
         recyvleview.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new BaseQuickAdapter<JiuZhenHistoryBean, BaseViewHolder>(R.layout.item_jiuzhen_history, jiuZhenHistoryBeans) {
+        mAdapter = new BaseQuickAdapter<PatientFamilyBean.JiuzhenBean, BaseViewHolder>(R.layout.item_jiuzhen_history, jiuzhenBeans) {
             @Override
-            protected void convert(BaseViewHolder helper, JiuZhenHistoryBean item) {
+            protected void convert(BaseViewHolder helper, PatientFamilyBean.JiuzhenBean item) {
                 helper.setText(R.id.tv_name, TextUtils.isEmpty(item.patient_name) ? "" : item.patient_name)
                         .setText(R.id.tv_sex_age, (item.sex == 0 ? "男" : "女") + "        " + item.age + "岁")
                         .setText(R.id.tv_phone, TextUtils.isEmpty(item.phone) ? "" : item.phone);
@@ -108,22 +104,16 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                mPresenter.getJiuZhenHistoryList(pageNum + 1, searchStr);
+                mPresenter.getJZRList(pageNum + 1, searchStr);
             }
         }, recyvleview);
 
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter mAdapter, View view, int position) {
-                if (isChoose) {
-                    EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_CHOOSE_JIUZHEN_HISTORY, jiuZhenHistoryBeans.get(position)));
-                    finish();
-                } else {
-                    Intent intent = new Intent(JiuZhenHistoryActivity.this, AddPatientJZRActivity.class);
-                    intent.putExtra("bean", jiuZhenHistoryBeans.get(position));
-                    intent.putExtra("isEdite", true);
-                    startActivity(intent);
-                }
+                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_CHOOSE_JZR, jiuzhenBeans.get(position)));
+                finish();
+
             }
         });
 
@@ -139,20 +129,20 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
                         pageNum = 1;
                     }
                     searchStr = etSerch.getText().toString().trim();
-                    mPresenter.getJiuZhenHistoryList(pageNum, searchStr);
+                    mPresenter.getJZRList(pageNum, searchStr);
                     return true;
                 }
                 return false;
             }
         });
         //请求数据
-        mPresenter.getJiuZhenHistoryList(pageNum, etSerch.getText().toString().trim());
+        mPresenter.getJZRList(pageNum, etSerch.getText().toString().trim());
     }
 
     //共同头部处理
     private void initToolbar() {
-        ToolbarBuilder toolbarBuilder = ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
-                .setTitle("处方联系人")
+        ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
+                .setTitle("选择就诊人")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
                 .setListener(new TitleOnclickListener() {
@@ -161,17 +151,7 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
                         super.leftClick();
                         finish();
                     }
-
-                    @Override
-                    public void rightClick() {
-                        super.rightClick();
-                        startActivity(new Intent(JiuZhenHistoryActivity.this, AddPatientJZRActivity.class));
-                    }
                 }).bind();
-
-        if (!isChoose) {
-            toolbarBuilder.setRightImg(R.drawable.icon_add_bank, true);
-        }
     }
 
     //搜索监听
@@ -182,7 +162,7 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
             searchStr = "";
             //请求数据
             pageNum = 1;
-            mPresenter.getJiuZhenHistoryList(pageNum, etSerch.getText().toString().trim());
+            mPresenter.getJZRList(pageNum, etSerch.getText().toString().trim());
         }
     }
 
@@ -199,7 +179,7 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
                     pageNum = 1;
                 }
                 searchStr = etSerch.getText().toString().trim();
-                mPresenter.getJiuZhenHistoryList(pageNum, searchStr);
+                mPresenter.getJZRList(pageNum, searchStr);
                 break;
         }
     }
@@ -222,14 +202,14 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
             return;
         }
         switch (message.what) {
-            case OpenPaperPresenter.GET_JIUZHEN_HISTORYLIST_OK:
-                BasePageBean<JiuZhenHistoryBean> beans = (BasePageBean<JiuZhenHistoryBean>) message.obj;
+            case OpenPaperPresenter.GET_JZR_LIST:
+                BasePageBean<PatientFamilyBean.JiuzhenBean> beans = (BasePageBean<PatientFamilyBean.JiuzhenBean>) message.obj;
                 if (beans != null && beans.list != null) {
                     pageNum = beans.page;
                     if (pageNum == 1) {
-                        jiuZhenHistoryBeans.clear();
+                        jiuzhenBeans.clear();
                     }
-                    jiuZhenHistoryBeans.addAll(beans.list);
+                    jiuzhenBeans.addAll(beans.list);
                     mAdapter.notifyDataSetChanged();
 
                     if (beans.is_last == 1) {//最后一页
@@ -238,20 +218,20 @@ public class JiuZhenHistoryActivity extends BaseActivity implements OpenPaperCon
                         mAdapter.loadMoreComplete();
                     }
                 }
-                if (jiuZhenHistoryBeans.isEmpty()) {
-                    mAdapter.setEmptyView(R.layout.empty_view);
+                if (jiuzhenBeans.isEmpty()) {
+                    mAdapter.setEmptyView(R.layout.empty_view, recyvleview);
                 }
                 break;
         }
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        //刷新数据
-        pageNum = 1;
-        mPresenter.getJiuZhenHistoryList(pageNum, etSerch.getText().toString().trim());
-    }
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        super.onNewIntent(intent);
+//        //刷新数据
+//        pageNum = 1;
+//        mPresenter.getJZRList(pageNum, etSerch.getText().toString().trim());
+//    }
 
     @Override
     public void onError(String errorCode, String errorMsg) {

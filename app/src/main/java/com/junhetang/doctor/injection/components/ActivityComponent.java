@@ -12,10 +12,11 @@ import com.junhetang.doctor.ui.activity.home.ChooseCommActivity;
 import com.junhetang.doctor.ui.activity.home.ChooseDocAdviceActivity;
 import com.junhetang.doctor.ui.activity.home.CommUsePaperActivity;
 import com.junhetang.doctor.ui.activity.home.HistoryPaperActivity;
-import com.junhetang.doctor.ui.activity.home.JiuZhenHistoryActivity;
+import com.junhetang.doctor.ui.activity.home.JZRListActivity;
 import com.junhetang.doctor.ui.activity.home.JobScheduleActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperCameraActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperOnlineActivity;
+import com.junhetang.doctor.ui.activity.home.PersonCardActivity;
 import com.junhetang.doctor.ui.activity.home.SearchSkillNameActivity;
 import com.junhetang.doctor.ui.activity.home.SystemMsgListActivity;
 import com.junhetang.doctor.ui.activity.login.LoginActivity;
@@ -35,12 +36,13 @@ import com.junhetang.doctor.ui.activity.mine.wallet.DeleteBankCardActivity;
 import com.junhetang.doctor.ui.activity.mine.wallet.MyBankCardActivity;
 import com.junhetang.doctor.ui.activity.mine.wallet.WalletActivity;
 import com.junhetang.doctor.ui.activity.mine.wallet.WithdrawActivity;
-import com.junhetang.doctor.ui.activity.patient.AddPatientJZRActivity;
+import com.junhetang.doctor.ui.activity.patient.AddPatientActivity;
 import com.junhetang.doctor.ui.activity.patient.PatienHealthRecordActivity;
 import com.junhetang.doctor.ui.activity.patient.PatientCenterActivity;
 import com.junhetang.doctor.ui.activity.patient.PatientFamilyActivity;
 import com.junhetang.doctor.ui.activity.patient.PatientListActivity;
 import com.junhetang.doctor.ui.activity.patient.RemarkNameActivity;
+import com.junhetang.doctor.ui.activity.patient.SearchPatientActivity;
 import com.junhetang.doctor.ui.activity.welcome.TranslucentActivity;
 import com.junhetang.doctor.ui.nimview.AddCommMessageActivity;
 import com.junhetang.doctor.ui.nimview.CheckPaperH5Activity;
@@ -134,14 +136,18 @@ public interface ActivityComponent extends ApplicationComponent {
 
     void inject(ChooseDocAdviceActivity chooseDocAdviceActivity);
 
-    void inject(JiuZhenHistoryActivity jiuZhenHistoryActivity);
+    void inject(JZRListActivity jzrListActivity);
+
+    void inject(SearchPatientActivity searchPatientActivity);
 
     void inject(ChooseCommActivity chooseCommActivity);
 
-    void inject(AddPatientJZRActivity addPatientJZRActivity);
+    void inject(AddPatientActivity addPatientActivity);
 
     void inject(JobScheduleActivity jobScheduleActivity);
 
     void inject(PatientCenterActivity patientCenterActivity);
+
+    void inject(PersonCardActivity personCardActivity);
 
 }

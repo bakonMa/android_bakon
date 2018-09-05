@@ -22,4 +22,9 @@ public class OtherBean {
     public int sys_status;//系统消息红点 1:有 0：无
 
 
+    public int rcode;//添加患者 使用 1：成功 -2：该患者已经存在 -3：手机号格式不正确 -4：请填写完整参数 -5：请输入正常年龄
+    public String msg;//添加患者 msg
+
+
+
 }

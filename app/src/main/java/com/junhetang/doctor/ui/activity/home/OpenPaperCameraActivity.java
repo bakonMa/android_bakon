@@ -10,8 +10,11 @@ import android.os.Environment;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,9 +34,8 @@ import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.nim.NimU;
 import com.junhetang.doctor.ui.activity.patient.PatientFamilyActivity;
-import com.junhetang.doctor.ui.activity.patient.PatientListActivity;
+import com.junhetang.doctor.ui.adapter.JzrPopupAdapter;
 import com.junhetang.doctor.ui.base.BaseActivity;
-import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
 import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
 import com.junhetang.doctor.ui.bean.PatientFamilyBean;
 import com.junhetang.doctor.ui.bean.UploadImgBean;
@@ -42,6 +44,7 @@ import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
 import com.junhetang.doctor.utils.ActivityUtil;
 import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.ImageUtil;
+import com.junhetang.doctor.utils.KeyBoardUtils;
 import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.RegexUtil;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
@@ -54,8 +57,8 @@ import com.junhetang.doctor.utils.imageloader.Glide4Engine;
 import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.EditableLayout;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
-import com.junhetang.doctor.widget.popupwindow.CameraPopupView;
-import com.junhetang.doctor.widget.popupwindow.OnePopupWheel;
+import com.junhetang.doctor.widget.popupwindow.BottomChoosePopupView;
+import com.junhetang.doctor.widget.popupwindow.BottomListPopupView;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -77,6 +80,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 import rx.Observer;
 
 /**
@@ -99,7 +103,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     @BindView(R.id.llt_jzinfo)
     LinearLayout lltJZinfo;
     @BindView(R.id.et_name)
-    EditTextlayout etName;
+    AutoCompleteTextView etName;
     @BindView(R.id.rb_nan)
     RadioButton rbNan;
     @BindView(R.id.rb_nv)
@@ -109,7 +113,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     @BindView(R.id.et_age)
     EditTextlayout etAge;
     @BindView(R.id.et_phone)
-    EditTextlayout etPhone;
+    EditText etPhone;
     @BindView(R.id.et_drugclass)
     EditableLayout etDrugClass;
     @BindView(R.id.et_drugstore)
@@ -128,8 +132,6 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     ImageView ivImg3Clean;
     @BindView(R.id.et_remark)
     EditText etRemark;
-    @BindView(R.id.tv_choose_history)
-    TextView tvChooseHistory;
     @BindView(R.id.tv_next_step)
     TextView tvNextStep;
     @BindView(R.id.et_serverprice)
@@ -151,8 +153,10 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private OPenPaperBaseBean baseBean;
     private List<String> drugStoreList = new ArrayList<>();//药房
     private List<String> drugClassList = new ArrayList<>();//剂型
-    private OnePopupWheel mPopupWheel;
-    private CameraPopupView cameraPopupView;
+    private BottomChoosePopupView bottomChoosePopupView;
+    private BottomListPopupView bottomPopupView;
+    private boolean isChoosePatient = false;//是否点击的选择就诊人
+    private List<PatientFamilyBean.JiuzhenBean> jzrList = new ArrayList<>();//手机号的就诊人
 
     //带有返回的startActivityForResult-仅限nim中使用 formParent=1
     public static void startResultActivity(Context context, int requestCode, int formParent, String p_accid, String membNo) {
@@ -235,23 +239,51 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 }).bind();
     }
 
+
+    private JzrPopupAdapter jzrPopupAdapter;
+    //填写就诊人 动态提示
+    private void initJzrPopup() {
+        if (jzrPopupAdapter != null) {
+            jzrPopupAdapter.notifyDataSetChanged();
+        }
+
+        jzrPopupAdapter = new JzrPopupAdapter(this, jzrList);
+        etName.setAdapter(jzrPopupAdapter);
+        etName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                PatientFamilyBean.JiuzhenBean bean = (PatientFamilyBean.JiuzhenBean) parent.getAdapter().getItem(position);
+                chooseJzrPopup(bean);
+            }
+        });
+    }
+
+    //输入手机号监听
+    @OnTextChanged(value = R.id.et_phone, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    void afterPhoneChanged(Editable s) {
+        if (s.length() == 11 && !isChoosePatient) {//填写时 匹配手机号
+            mPresenter.getJZRByPhone(s.toString());
+        }
+    }
+
     private String imgPath1, imgPath2, imgPath3;
     private int currImg;
 
     @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugclass, R.id.et_drugstore,
             R.id.iv_img1, R.id.iv_img2, R.id.iv_img3, R.id.iv_img1_clean, R.id.iv_img2_clean,
-            R.id.iv_img3_clean, R.id.tv_choose_history, R.id.tv_next_step})
+            R.id.iv_img3_clean, R.id.tv_next_step})
     public void tabOnClick(View view) {
         switch (view.getId()) {
             case R.id.tv_addpatient://选择患者
                 //Umeng 埋点
                 MobclickAgent.onEvent(this, UmengKey.camera_choosepatient);
+                isChoosePatient = true;
                 Intent intent = new Intent();
                 if (formParent == 1) {
                     intent.setClass(this, PatientFamilyActivity.class);
                     intent.putExtra("memb_no", membNo);
                 } else {
-                    intent.setClass(this, PatientListActivity.class);
+                    intent.setClass(this, JZRListActivity.class);
                 }
                 intent.putExtra("formtype", 1);//来自 选择患者
                 startActivity(intent);
@@ -259,34 +291,28 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
             case R.id.tv_editepatient://编辑就诊人
                 //Umeng 埋点
                 MobclickAgent.onEvent(this, UmengKey.camera_writepatient);
+                isChoosePatient = false;
                 writeJzInfo();
                 break;
-            case R.id.tv_choose_history://选择历史就诊人
-                //Umeng 埋点
-                MobclickAgent.onEvent(this, UmengKey.camera_historypatient);
-                Intent intentChoose = new Intent(this, JiuZhenHistoryActivity.class);
-                intentChoose.putExtra("isChoose", true);
-                startActivity(intentChoose);
-                break;
             case R.id.et_drugclass://剂型
-                mPopupWheel = new OnePopupWheel(this, drugClassList, "请选择剂型", new OnePopupWheel.Listener() {
+                bottomPopupView = new BottomListPopupView(this, "请选择剂型", drugClassList, new BottomListPopupView.OnClickListener() {
                     @Override
-                    public void completed(int position) {
+                    public void selectItem(int position) {
                         drugClassId = baseBean.drug_class.get(position).id;
                         etDrugClass.setText(drugClassList.get(position));
                     }
                 });
-                mPopupWheel.show(scrollView);
+                bottomPopupView.show(scrollView);
                 break;
             case R.id.et_drugstore://选择药房
-                mPopupWheel = new OnePopupWheel(this, drugStoreList, "请选择药房", new OnePopupWheel.Listener() {
+                bottomPopupView = new BottomListPopupView(this, "请选择药房", drugStoreList, new BottomListPopupView.OnClickListener() {
                     @Override
-                    public void completed(int position) {
+                    public void selectItem(int position) {
                         storeId = baseBean.store.get(position).drug_store_id;
                         etDrugstore.setText(drugStoreList.get(position));
                     }
                 });
-                mPopupWheel.show(scrollView);
+                bottomPopupView.show(scrollView);
                 break;
             case R.id.tv_next_step://提交
                 //Umeng 埋点
@@ -311,15 +337,15 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
             case R.id.iv_img1:
             case R.id.iv_img2:
             case R.id.iv_img3:
-                cameraPopupView = new CameraPopupView(this, new View.OnClickListener() {
+                bottomChoosePopupView = new BottomChoosePopupView(this, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //标识点击的哪一个
                         currImg = view.getId();
-                        openCameraOrPhoto(v.getId() == R.id.llt_camera);
+                        openCameraOrPhoto(v.getId() == R.id.dtv_one);
                     }
                 });
-                cameraPopupView.show(scrollView);
+                bottomChoosePopupView.show(scrollView);
                 break;
         }
     }
@@ -327,14 +353,13 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     //选择的患者的就诊人（第一类）
     private void chooseJzInfo(PatientFamilyBean.JiuzhenBean bean) {
         lltJZinfo.setVisibility(View.VISIBLE);
-        tvChooseHistory.setVisibility(View.GONE);
-        etName.setEditeText(RegexUtil.getNameSubString(bean.patient_name));
-        etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
+        etName.setText(RegexUtil.getNameSubString(bean.patient_name));
+        etPhone.setText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
         membNo = bean.id;
         relationship = bean.relationship;
         pAccid = bean.getIm_accid();
-        etName.setEditeEnable(false);
-        etPhone.setEditeEnable(false);
+        etName.setEnabled(false);
+        etPhone.setEnabled(false);
 
         //默认及就诊人的时候（性别，年龄 是空，可以修改）
         //默认及就诊人的时候（性别，年龄 是空，可以修改）
@@ -359,36 +384,32 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     //手写就诊人信息
     private void writeJzInfo() {
         lltJZinfo.setVisibility(View.VISIBLE);
-        tvChooseHistory.setVisibility(View.VISIBLE);
-        etName.setEditeEnable(true);
+        etName.setEnabled(true);
         etAge.setEditeEnable(true);
-        etPhone.setEditeEnable(true);
+        etPhone.setEnabled(true);
         rbNan.setEnabled(true);
         rbNv.setEnabled(true);
         membNo = "";
         relationship = 4;
         pAccid = "";
-        etName.setEditeText("");
+        etName.setText("");
         etAge.setEditeText("");
-        etPhone.setEditeText("");
+        etPhone.setText("");
         rgSex.check(R.id.rb_nan);
+        KeyBoardUtils.showKeyBoard(etPhone, this);
     }
 
-    //选择填写的历史就诊人（第二类）
-    private void chooseJzHistoryInfo(JiuZhenHistoryBean bean) {
-        etName.setEditeText(RegexUtil.getNameSubString(bean.patient_name));
-        etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
+    //选择 匹配的就诊人（第二类）
+    private void chooseJzrPopup(PatientFamilyBean.JiuzhenBean bean) {
+//        etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
+        etName.setText(RegexUtil.getNameSubString(bean.patient_name));
+        etName.setSelection(etName.getText().length());
         etAge.setEditeText(bean.age > 0 ? (bean.age + "") : "");
         rgSex.check(bean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
         relationship = 4;//关系 其他
         membNo = "";
         pAccid = "";
-        //不可修改
-        etName.setEditeEnable(false);
-        etAge.setEditeEnable(false);
-        etPhone.setEditeEnable(false);
-        rbNan.setEnabled(false);
-        rbNv.setEnabled(false);
+        KeyBoardUtils.hideKeyBoard(etName, this);
     }
 
     //数据检测
@@ -426,10 +447,10 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         }
         params.put("relationship", relationship);
         //就诊人信息
-        params.put("name", etName.getEditText().getText());
+        params.put("name", etName.getText().toString().trim());
         params.put("sex", sexType);
         params.put("age", etAge.getEditText().getText());
-        params.put("phone", etPhone.getEditText().getText());
+        params.put("phone", etPhone.getText().toString().trim());
 
         params.put("store_id", storeId);
         params.put("drug_class", drugClassId);
@@ -603,6 +624,16 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 }
                 ToastUtil.showShort("上传失败，请重新选择");
                 break;
+            case OpenPaperPresenter.GET_JZR_BY_PHONE://提示 就诊人数据
+                jzrList.clear();
+                List<PatientFamilyBean.JiuzhenBean> list = (List<PatientFamilyBean.JiuzhenBean>) message.obj;
+                if (list == null || list.isEmpty()) {//没有查询到 不显示
+                    return;
+                } else {
+                    jzrList.addAll(list);
+                    initJzrPopup();
+                }
+                break;
             case OpenPaperPresenter.OPENPAPER_CAMERA_OK://开方ok
                 String msg = message.obj.toString();
                 //可以拿到paccid 就记录，没有就不记录
@@ -631,16 +662,11 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
             return;
         }
         switch (event.getCode()) {
-            case EventConfig.EVENT_KEY_CHOOSE_PATIENT://选择就诊人
+            case EventConfig.EVENT_KEY_CHOOSE_PATIENT://选择患者-就诊人
+            case EventConfig.EVENT_KEY_CHOOSE_JZR://选择就诊人
                 PatientFamilyBean.JiuzhenBean bean = (PatientFamilyBean.JiuzhenBean) event.getData();
                 if (bean != null) {
                     chooseJzInfo(bean);
-                }
-                break;
-            case EventConfig.EVENT_KEY_CHOOSE_JIUZHEN_HISTORY://选择历史就诊人
-                JiuZhenHistoryBean jiuZhenHistoryBean = (JiuZhenHistoryBean) event.getData();
-                if (jiuZhenHistoryBean != null) {
-                    chooseJzHistoryInfo(jiuZhenHistoryBean);
                 }
                 break;
         }

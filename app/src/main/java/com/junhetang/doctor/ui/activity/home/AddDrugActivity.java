@@ -45,6 +45,7 @@ import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.dialog.SavePaperDialog;
+import com.junhetang.doctor.widget.popupwindow.BottomListPopupView;
 import com.junhetang.doctor.widget.popupwindow.OnePopupWheel;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
@@ -116,6 +117,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
     private ToolbarBuilder toolbarBuilder;
     private Gson gson;
     private CommonDialog commonDialog;
+    private BottomListPopupView bottomPopupView;
 
     @Override
     protected int provideRootLayout() {
@@ -243,14 +245,16 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                         if (!"ZY".equals(drugBeans.get(position).drug_type)) {
                             return;
                         }
-                        mPopupWheel = new OnePopupWheel(AddDrugActivity.this, userTypeListStr, "请选择用法", new OnePopupWheel.Listener() {
+
+                        bottomPopupView = new BottomListPopupView(AddDrugActivity.this, "请选择用法", userTypeListStr, new BottomListPopupView.OnClickListener() {
                             @Override
-                            public void completed(int i) {
+                            public void selectItem(int i) {
                                 drugBeans.get(position).decoction = userTypeListStr.get(i);
                                 ((TextView) view).setText(userTypeListStr.get(i));
                             }
                         });
-                        mPopupWheel.show(view);
+                        bottomPopupView.show(scrollView);
+
                         break;
                 }
             }

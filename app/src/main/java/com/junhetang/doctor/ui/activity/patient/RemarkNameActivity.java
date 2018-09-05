@@ -96,7 +96,7 @@ public class RemarkNameActivity extends BaseActivity implements PatientContact.V
         if(message == null) {
             return;
         }
-        ToastUtil.showShort("设置备注成功");
+        ToastUtil.showCenterToast("设置备注成功");
         Intent intent = new Intent();
         intent.putExtra("remarkname", edRemarkname.getText().toString().trim());
         setResult(RESULT_OK, intent);

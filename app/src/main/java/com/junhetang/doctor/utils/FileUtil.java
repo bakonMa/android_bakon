@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Environment;
@@ -244,6 +245,70 @@ public class FileUtil {
         LogUtil.d("Delete file----file is not exists----" + dirPath);
         return true;
     }
+
+    /**
+     * view 生成图片保存相册
+     * @param context
+     * @param view
+     */
+    public static void saveViewToImage(Context context, View view) {
+        saveViewToImage(context, view, "");
+    }
+
+    /**
+     * view 生成图片保存相册
+     * @param context
+     * @param view
+     * @param filename
+     */
+    public static void saveViewToImage(Context context, View view, String filename) {
+        view.setDrawingCacheEnabled(true);
+        view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        view.setDrawingCacheBackgroundColor(Color.WHITE);
+
+        // 把一个View转换成图片
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+
+        //系统相册目录
+        String peicurePath = Environment.getExternalStorageDirectory()
+                + File.separator + Environment.DIRECTORY_DCIM
+                + File.separator + "Camera" + File.separator;
+        //确定目录是否存在
+        createDirByPath(peicurePath);
+        String fileName = TextUtils.isEmpty(filename) ? ("jht_" + System.currentTimeMillis() + ".jpg") : filename;
+        File file = new File(peicurePath, fileName);
+        LogUtil.d(peicurePath + fileName);
+
+        if (file.exists()) {
+            file.delete();
+        }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(file.getAbsoluteFile());
+            if (fos != null) {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                fos.close();
+
+                ToastUtil.showCenterToast("名片已保存到相册");
+                //通知相册更新
+//                MediaStore.Images.Media.insertImage(context.getContentResolver(), longImage, fileName, null);
+                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                Uri uri = Uri.fromFile(file);
+                intent.setData(uri);
+                context.sendBroadcast(intent);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            ToastUtil.showShort("保存失败");
+        }
+
+    }
+
+
+
+
 
 
     /**

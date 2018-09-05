@@ -23,7 +23,7 @@
                 android:layout_height="70dp"
                 android:background="@color/color_main">
 
-                <com.junhetang.doctor.widget.ScheduleView_jht
+                <com.junhetang.doctor.widget.ScheduleView
                     android:id="@+id/id_step"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -20,11 +20,14 @@ public class PatientBean implements Comparable<PatientBean> {
 
     public int id;
     public String head_url;
+    public String phone;
     public String nick_name;
     public String memb_no;
     public String im_accid;
     public String remark_name;
     public String memb_class;
+    public String valid_name;
+    public int is_valid;//1：微信患者 0：处方患者
     public int is_new;//是否是新添加的 显示红点 1：新患者 0：老患者
 
     @Override

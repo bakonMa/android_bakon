@@ -28,11 +28,11 @@ import com.junhetang.doctor.receiver.XGInitManager;
 import com.junhetang.doctor.ui.activity.WebViewActivity;
 import com.junhetang.doctor.ui.activity.home.CommPaperActivity;
 import com.junhetang.doctor.ui.activity.home.HistoryPaperActivity;
-import com.junhetang.doctor.ui.activity.home.JiuZhenHistoryActivity;
 import com.junhetang.doctor.ui.activity.home.JobScheduleActivity;
 import com.junhetang.doctor.ui.activity.home.LogoutActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperCameraActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperOnlineActivity;
+import com.junhetang.doctor.ui.activity.home.PersonCardActivity;
 import com.junhetang.doctor.ui.activity.mine.AuthStep1Activity;
 import com.junhetang.doctor.ui.activity.mine.UserNoticeActivity;
 import com.junhetang.doctor.ui.base.BaseFragment;
@@ -183,7 +183,6 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 }
             }
         }, true);
-
     }
 
 
@@ -333,7 +332,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                IMMessage msg = MessageBuilder.createTipMessage(imMessage.getFromAccount(), SessionTypeEnum.P2P);
+                                IMMessage msg = MessageBuilder.createTipMessage(imMessage.getSessionId(), SessionTypeEnum.P2P);
                                 msg.setContent("请给患者发送问诊单或者随诊单，待患者填写完成，详细了解患者的情况");
                                 CustomMessageConfig config = new CustomMessageConfig();
                                 config.enablePush = false; // 不推送
@@ -418,7 +417,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 //Umeng 埋点
                 MobclickAgent.onEvent(getActivity(), UmengKey.workroom_addpatient);
                 //个人卡片
-                WebViewActivity.startAct(actContext(), true, WebViewActivity.WEB_TYPE.WEB_TYPE_MYCARD, H5Config.H5_USERCARD_TITLE, H5Config.H5_USERCARD);
+                startActivity(new Intent(actContext(), PersonCardActivity.class));
+//                WebViewActivity.startAct(actContext(), true, WebViewActivity.WEB_TYPE.WEB_TYPE_MYCARD, H5Config.H5_USERCARD_TITLE, H5Config.H5_USERCARD);
                 break;
             case R.id.tv_online_paper://在线开方
                 //Umeng 埋点
@@ -471,7 +471,8 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
         }
     }
 
-    @OnClick({R.id.rlt_service, R.id.tv_history_paper, R.id.id_notification, R.id.id_patient_history})
+
+    @OnClick({R.id.rlt_service, R.id.tv_history_paper, R.id.id_notification})
     void unCheckBtnOnClick(View view) {
         switch (view.getId()) {
             case R.id.rlt_service://客服
@@ -481,11 +482,6 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 //Umeng 埋点
                 MobclickAgent.onEvent(getActivity(), UmengKey.workroom_history_paper);
                 startActivity(new Intent(actContext(), HistoryPaperActivity.class));
-                break;
-            case R.id.id_patient_history://处方联系人列表
-                //Umeng 埋点
-                MobclickAgent.onEvent(getActivity(), UmengKey.workroom_patient_history);
-                startActivity(new Intent(actContext(), JiuZhenHistoryActivity.class));
                 break;
             case R.id.id_notification://消息通知
                 //Umeng 埋点

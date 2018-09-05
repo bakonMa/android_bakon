@@ -1,9 +1,15 @@
 package com.junhetang.doctor.utils;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.TextUtils;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 
 /**
@@ -33,6 +39,37 @@ public class ToastUtil {
         }
         Toast.makeText(context, no_result, Toast.LENGTH_SHORT).show();
     }
+
+    /**
+     * 显示在中间的toast
+     * @param msg
+     */
+    public static void showCenterToast(String msg) {
+        if (TextUtils.isEmpty(msg)) {
+            return;
+        }
+        int padding = UIUtils.dp2px(DocApplication.getInstance(), 10);
+        Toast mDefaultGravityToast = new Toast(DocApplication.getInstance());
+        mDefaultGravityToast.setGravity(Gravity.CENTER, 0, 0);
+        mDefaultGravityToast.setDuration(Toast.LENGTH_SHORT);
+
+        TextView title = new TextView(DocApplication.getInstance());
+        title.setBackgroundResource(R.drawable.bg_loading_dialog);
+        title.setPadding(2 * padding, (int) (1.5f * padding), 2 * padding, (int) (1.5f * padding));
+        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        title.setId(R.id.title);
+        title.setTextColor(Color.WHITE);
+        int width = FrameLayout.LayoutParams.WRAP_CONTENT;
+        int height = FrameLayout.LayoutParams.WRAP_CONTENT;
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) new FrameLayout.LayoutParams(width, height);
+        title.setLayoutParams(lp);
+        title.setText(msg);
+        mDefaultGravityToast.setView(title);
+        mDefaultGravityToast.show();
+    }
+
+
+
 
     //整个App内共用的Toast提示
 //    public static Toast showToast(String msg) {

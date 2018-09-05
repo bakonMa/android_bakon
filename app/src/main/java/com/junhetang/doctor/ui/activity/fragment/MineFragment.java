@@ -224,7 +224,7 @@ public class MineFragment extends BaseFragment implements PersonalContact.View {
             case PersonalPresenter.GET_USEBASE_INFO://个人基本资料
                 baseInfoBean = (UserBaseInfoBean) message.obj;
                 ImageUtil.showCircleImage(baseInfoBean.header, idIvHead);
-                tvUsername.setText((TextUtils.isEmpty(baseInfoBean.name) ? "" : (baseInfoBean.name + "  ")) + (baseInfoBean.sex == 0 ? "男" : "女"));
+                tvUsername.setText(TextUtils.isEmpty(baseInfoBean.name) ? "" : (baseInfoBean.name + "  "));
                 tvUsersex.setText(TextUtils.isEmpty(baseInfoBean.hospital) ? "" : baseInfoBean.hospital);
                 tvUserinfo.setText((TextUtils.isEmpty(baseInfoBean.department) ? "" : baseInfoBean.department + "  ") +
                         (TextUtils.isEmpty(baseInfoBean.title) ? "" : baseInfoBean.title));

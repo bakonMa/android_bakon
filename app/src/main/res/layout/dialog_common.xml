@@ -15,7 +15,7 @@
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="5"
-        android:textColor="@color/color_666"
+        android:textColor="@color/color_000"
         android:textSize="15sp"
         tools:text="这里显示要内容" />
 

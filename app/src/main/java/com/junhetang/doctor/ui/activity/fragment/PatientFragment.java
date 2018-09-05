@@ -18,22 +18,20 @@ import com.junhetang.doctor.config.EventConfig;
 import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.injection.components.DaggerFragmentComponent;
 import com.junhetang.doctor.injection.modules.FragmentModule;
-import com.junhetang.doctor.ui.activity.home.JiuZhenHistoryActivity;
+import com.junhetang.doctor.ui.activity.patient.AddPatientActivity;
 import com.junhetang.doctor.ui.activity.patient.PatientCenterActivity;
+import com.junhetang.doctor.ui.activity.patient.SearchPatientActivity;
 import com.junhetang.doctor.ui.adapter.PatientAdapter;
 import com.junhetang.doctor.ui.base.BaseFragment;
 import com.junhetang.doctor.ui.bean.PatientBean;
 import com.junhetang.doctor.ui.contact.PatientContact;
 import com.junhetang.doctor.ui.presenter.PatientPresenter;
-import com.junhetang.doctor.utils.ToastUtil;
-import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.widget.SideBar;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import com.trello.rxlifecycle.LifecycleTransformer;
-import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -65,8 +63,6 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
     SideBar sideBar;
     @BindView(R.id.indicator)
     TextView indicator;
-    @BindView(R.id.tv_history_patient)
-    TextView tvHistoryPatient;
 
     @Inject
     PatientPresenter mPresenter;
@@ -95,7 +91,6 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
     @Override
     protected void initView() {
         initToolBar();
-        tvHistoryPatient.setVisibility(View.VISIBLE);
         //下拉刷新
         idSwipe.setColorSchemeColors(getResources().getColor(R.color.color_main));
         idSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -115,14 +110,12 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
         mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                Intent intent = new Intent(actContext(), PatientFamilyActivity.class);
                 Intent intent = new Intent(actContext(), PatientCenterActivity.class);
                 intent.putExtra("memb_no", dataList.get(position).memb_no);
                 intent.putExtra("im_accid", dataList.get(position).im_accid);
                 startActivity(intent);
             }
         });
-
 
         //是否显示侧边快捷栏
         sideBar.setTextView(indicator);
@@ -159,24 +152,23 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(getActivity()))
                 .setTitle("患者列表")
                 .setStatuBar(R.color.white)
-//                .setRightImg(R.drawable.icon_add_main, true)
+                .setRightImg(R.drawable.icon_add_bank, true)
                 .blank()
                 .setLeft(false)
                 .setListener(new TitleOnclickListener() {
                     @Override
                     public void rightClick() {
                         super.rightClick();
-                        ToastUtil.show("search");
+                        startActivity(new Intent(actContext(), AddPatientActivity.class));
                     }
                 })
                 .bind();
     }
 
-    @OnClick(R.id.tv_history_patient)
+    @OnClick(R.id.rlt_search)
     void btnOnclick() {
-        //Umeng 埋点
-        MobclickAgent.onEvent(getActivity(), UmengKey.patient_history);
-        startActivity(new Intent(getActivity(), JiuZhenHistoryActivity.class));
+        //患者搜索页
+        startActivity(new Intent(getActivity(), SearchPatientActivity.class));
     }
 
     @Override

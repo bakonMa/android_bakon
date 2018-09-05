@@ -14,6 +14,7 @@ import com.junhetang.doctor.ui.bean.DrugBean;
 import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
 import com.junhetang.doctor.ui.bean.OnlinePaperBackBean;
 import com.junhetang.doctor.ui.bean.PaperInfoBean;
+import com.junhetang.doctor.ui.bean.PatientFamilyBean;
 import com.junhetang.doctor.ui.bean.SearchDrugBean;
 import com.junhetang.doctor.ui.bean.UploadImgBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
@@ -62,6 +63,8 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
     public static final int GET_PAPER_INFO_OK = 0x127;
     public static final int CHANGE_DRUG_OK = 0x128;
     public static final int CHECK_DRUG_TYPE = 0x129;
+    public static final int GET_JZR_BY_PHONE = 0x130;
+    public static final int GET_JZR_LIST = 0x131;
 
     public OpenPaperPresenter(OpenPaperContact.View mView) {
         this.mView = mView;
@@ -437,6 +440,32 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
     }
 
     @Override
+    public void getJZRList(int page, String searchStr) {
+        Params params = new Params();
+        params.put("page", page);
+        params.put("search", searchStr);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getJZRList(params))
+                .compose(mView.toLifecycle())
+                .doOnSubscribe(() -> {
+                    if (mDialog != null)
+                        mDialog.show();
+                }).subscribe(new BaseObserver<HttpResponse<BasePageBean<PatientFamilyBean.JiuzhenBean>>>(mDialog) {
+                    @Override
+                    public void onSuccess(HttpResponse<BasePageBean<PatientFamilyBean.JiuzhenBean>> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, GET_JZR_LIST));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
     public void classicsPaperUp(int id) {
         Params params = new Params();
         params.put("id", id);
@@ -504,6 +533,28 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<List<DrugBean>> httpResponse) {
                         mView.onSuccess(M.createMessage(httpResponse.data, CHANGE_DRUG_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        mSubscription.add(subscription);
+    }
+
+    @Override
+    public void getJZRByPhone(String phone) {
+        Params params = new Params();
+        params.put("phone", phone);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getPatientByPhone(params))
+                .compose(mView.toLifecycle())
+                .subscribe(new BaseObserver<HttpResponse<List<PatientFamilyBean.JiuzhenBean>>>(null) {
+                    @Override
+                    public void onSuccess(HttpResponse<List<PatientFamilyBean.JiuzhenBean>> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, GET_JZR_BY_PHONE));
                     }
 
                     @Override

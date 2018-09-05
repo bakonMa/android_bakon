@@ -8,6 +8,7 @@ import com.junhetang.doctor.nim.NimU;
 import com.junhetang.doctor.ui.base.BaseObserver;
 import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.CheckPaperBean;
+import com.junhetang.doctor.ui.bean.OtherBean;
 import com.junhetang.doctor.ui.bean.PatientBean;
 import com.junhetang.doctor.ui.bean.PatientFamilyBean;
 import com.junhetang.doctor.ui.contact.PatientContact;
@@ -38,6 +39,8 @@ public class PatientPresenter implements PatientContact.Presenter {
     public static final int TOTALK_OK = 0x113;
     public static final int ADD_PATIENT_JZR_OK = 0x114;
     public static final int GET_PATIEN_PAPER_TLIST_0K = 0x115;
+    public static final int SEARCH_PATIENT_OK = 0x116;
+    public static final int ADD_PATIENT_OK = 0x117;
 
     public PatientPresenter(PatientContact.View mView) {
         this.mView = mView;
@@ -67,6 +70,32 @@ public class PatientPresenter implements PatientContact.Presenter {
                     @Override
                     public void onSuccess(HttpResponse<List<PatientBean>> personalBeanHttpResponse) {
                         mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_PATIENTLIST_0K));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
+        compositeSubscription.add(subscription);
+    }
+
+    @Override
+    public void searchPatient(String search) {
+        Params params = new Params();
+        params.put("search", search);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getpatientlist(params))
+                .compose(mView.toLifecycle())
+//                .doOnSubscribe(() -> {
+//                    if (mDialog != null)
+//                        mDialog.show();
+//                })
+                .subscribe(new BaseObserver<HttpResponse<List<PatientBean>>>(null) {
+                    @Override
+                    public void onSuccess(HttpResponse<List<PatientBean>> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, SEARCH_PATIENT_OK));
                     }
 
                     @Override
@@ -176,6 +205,27 @@ public class PatientPresenter implements PatientContact.Presenter {
                     public void onError(String errorCode, String errorMsg) {
                         LogUtil.d("docToTalk error=" + errorMsg);
 //                        mView.onError(errorCode, errorMsg);
+                    }
+
+                });
+        compositeSubscription.add(subscription);
+    }
+
+    @Override
+    public void addPatient(Params params) {
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().addPatient(params))
+                .compose(mView.toLifecycle())
+                .subscribe(new BaseObserver<HttpResponse<OtherBean>>(null) {
+                    @Override
+                    public void onSuccess(HttpResponse<OtherBean> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, ADD_PATIENT_OK));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
                     }
 
                 });

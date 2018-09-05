@@ -19,7 +19,9 @@ public class KeyBoardUtils {
     public static void hideKeyBoard(View view, Context context) {
         InputMethodManager inputMethodManager = (InputMethodManager)
                 context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        if (inputMethodManager.isActive()) {
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     public static void showKeyBoard(EditText editText, Context context) {
@@ -31,8 +33,8 @@ public class KeyBoardUtils {
             public void run() {
                 InputMethodManager inputMethodManager = (InputMethodManager) ((Activity) context).
                         getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.toggleSoftInput(0,
-                        InputMethodManager.HIDE_NOT_ALWAYS);
+                inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+//                inputMethodManager.showSoftInput(editText, InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
     }

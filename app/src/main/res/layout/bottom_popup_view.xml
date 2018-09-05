@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_f6f6f6"
+    android:orientation="vertical">
+
+    <com.junhetang.doctor.widget.DrawableTextView
+        android:id="@+id/dtv_one"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/selector_bg_tab"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:text="拍摄照片"
+        android:textColor="@color/color_000"
+        android:textSize="16sp"
+        app:leftDrawable="@drawable/icon_camera"
+        app:leftDrawableHeight="21dp"
+        app:leftDrawableWidth="26dp" />
+
+    <View
+        style="@style/line_gray_hor"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp" />
+
+    <com.junhetang.doctor.widget.DrawableTextView
+        android:id="@+id/dtv_two"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/selector_bg_tab"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:text="手机相册"
+        android:textColor="@color/color_000"
+        android:textSize="16sp"
+        app:leftDrawable="@drawable/icon_photo"
+        app:leftDrawableHeight="21dp"
+        app:leftDrawableWidth="26dp" />
+
+    <TextView
+        android:id="@+id/tv_cancle"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/selector_bg_tab"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="@color/color_000"
+        android:textSize="16sp" />
+</LinearLayout>

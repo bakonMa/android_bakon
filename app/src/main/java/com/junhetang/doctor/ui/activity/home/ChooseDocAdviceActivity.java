@@ -17,6 +17,7 @@ import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
+import com.junhetang.doctor.utils.KeyBoardUtils;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
@@ -122,6 +123,7 @@ public class ChooseDocAdviceActivity extends BaseActivity {
                             ToastUtil.showShort("请填写服药说明");
                             return;
                         }
+                        KeyBoardUtils.hideKeyBoard(etAdvidce, actContext());
                         Intent intent = new Intent();
                         intent.putExtra("docadvice", etAdvidce.getText().toString());
                         setResult(RESULT_OK, intent);

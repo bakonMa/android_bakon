@@ -280,6 +280,9 @@ public static java.lang.String TABLENAME;
 -keep class com.ut.*
 
 #网易云IM
+-dontwarn com.junhetang.doctor.nim.**
+-keep class com.junhetang.doctor.nim.** {*;}
+
 -dontwarn com.netease.**
 -keep class com.netease.** {*;}
 #如果你使用全文检索插件，需要加入

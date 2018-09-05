@@ -44,6 +44,8 @@ android {
 
     buildTypes {
         debug {
+//            applicationIdSuffix ".dubug"
+            versionNameSuffix "-dev"
             buildConfigField "String", "BASE_URL", devAddress()
             buildConfigField "boolean", "LOG_DEBUG", "true"
             minifyEnabled false

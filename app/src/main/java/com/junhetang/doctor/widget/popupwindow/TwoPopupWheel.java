@@ -11,6 +11,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.junhetang.doctor.R;
+import com.junhetang.doctor.utils.KeyBoardUtils;
 import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.widget.PickerView;
 
@@ -86,6 +87,7 @@ public class TwoPopupWheel extends PopupWindow implements PopupWindow.OnDismissL
 
     public void show(View parent) {
         UIUtils.lightOff(mActivity);
+        KeyBoardUtils.hideKeyBoard(parent, mActivity);
         showAtLocation(parent, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
     }
 

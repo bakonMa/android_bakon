@@ -3,6 +3,7 @@ package com.junhetang.doctor.ui.adapter;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.junhetang.doctor.R;
 import com.junhetang.doctor.ui.bean.PatientBean;
 import com.junhetang.doctor.utils.CharacterParser;
 import com.junhetang.doctor.utils.ImageUtil;
+import com.junhetang.doctor.utils.UIUtils;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 
 import java.util.List;
@@ -34,8 +36,12 @@ public class PatientAdapter extends BaseQuickAdapter<PatientBean, BaseViewHolder
     protected void convert(BaseViewHolder helper, PatientBean item) {
         String name = TextUtils.isEmpty(item.remark_name) ? item.nick_name : item.remark_name;
         helper.setText(R.id.tv_name, TextUtils.isEmpty(name) ? "" : name)
-                .setText(R.id.tv_from, TextUtils.isEmpty(item.memb_class) ? "" : item.memb_class)
+                .setText(R.id.tv_from, TextUtils.isEmpty(item.valid_name) ? "" : item.valid_name)
                 .setGone(R.id.tv_redpoint, item.is_new == 1);
+
+        helper.setTextColor(R.id.tv_from, UIUtils.getColor(item.is_valid == 1 ? R.color.color_30ad37 : R.color.color_main));
+        UIUtils.setCompoundDrawable(helper.getView(R.id.tv_from),12,5,
+                (item.is_valid == 1 ? R.drawable.icon_patient_wx : R.drawable.icon_patient_paper), Gravity.LEFT);
 
         ImageUtil.showCircleImage(item.head_url, helper.getView(R.id.iv_headerimg));
 

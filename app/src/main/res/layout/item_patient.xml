@@ -23,19 +23,39 @@
         android:background="@drawable/shape_red_point"
         android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/tv_name"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/iv_headerimg"
+        android:gravity="center"
+        android:orientation="vertical"
         android:layout_toStartOf="@+id/tv_from"
-        android:paddingLeft="12dp"
-        android:singleLine="true"
-        android:ellipsize="end"
-        android:textColor="@color/color_000"
-        android:textSize="16sp"
-        tools:text="患者1name" />
+        android:paddingLeft="12dp">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/color_000"
+            android:textSize="16sp"
+            tools:text="患者1name" />
+
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:visibility="gone"
+            android:singleLine="true"
+            android:textColor="@color/color_black_333333"
+            android:textSize="14sp"
+            tools:text="1828888888888" />
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/tv_from"
@@ -45,10 +65,9 @@
         android:layout_centerVertical="true"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:textColor="@color/color_main"
-        android:textSize="12sp"
-        tools:text="患者1name" />
-
+        android:textColor="@color/color_30ad37"
+        android:textSize="10sp"
+        tools:text="患者name" />
 
     <View
         android:id="@+id/bottom_line"

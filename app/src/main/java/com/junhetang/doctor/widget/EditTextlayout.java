@@ -160,8 +160,7 @@ public class EditTextlayout extends RelativeLayout implements View.OnClickListen
     private class TextWatcherImpl implements TextWatcher {
         @Override
         public void afterTextChanged(Editable s) {
-            boolean isVisible = mEditText.getText().toString().length() >= 1;
-            setClearImageVisible(isVisible);
+            setClearImageVisible(s.toString().trim().length() > 1 && isFocused());
         }
 
         @Override

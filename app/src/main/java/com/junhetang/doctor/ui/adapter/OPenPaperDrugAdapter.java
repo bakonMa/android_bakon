@@ -19,25 +19,33 @@ public class OPenPaperDrugAdapter extends BaseQuickAdapter<DrugBean, BaseViewHol
     private int showMaxNum = 3;
     private boolean isShowAll = false;
 
+    //展开 收起
     public OPenPaperDrugAdapter(Context context, @Nullable List<DrugBean> data, int showMaxNum) {
-        super(R.layout.item_show_drug, data);
+        super(R.layout.item_show_drug_grid, data);
+        this.showMaxNum = showMaxNum;
+    }
+
+    public OPenPaperDrugAdapter(Context context, @Nullable List<DrugBean> data) {
+        super(R.layout.item_show_drug_grid, data);
         this.showMaxNum = showMaxNum;
     }
 
     @Override
     protected void convert(BaseViewHolder helper, DrugBean item) {
-        helper.setText(R.id.tv_drugname, item.drug_name)
-                .setText(R.id.tv_num, item.drug_num + item.unit)
-                .setText(R.id.tv_usertype, item.decoction);
+        //常规 不显示
+        String decoction = "常规".equals(item.decoction) ? "" : String.format(" (%s)", item.decoction);
+        helper.setText(R.id.tv_druginfo, String.format("%s %s%s%s", item.drug_name, item.drug_num, item.unit, decoction));
     }
 
     @Override
     public int getItemCount() {
-        if (isShowAll) {
-            return mData == null ? 0 : mData.size();
-        } else {
-            return mData.size() > showMaxNum ? showMaxNum : mData.size();
-        }
+        return mData == null ? 0 : mData.size();
+
+//        if (isShowAll) {
+//            return mData == null ? 0 : mData.size();
+//        } else {
+//            return mData.size() > showMaxNum ? showMaxNum : mData.size();
+//        }
     }
 
     //是否显示全部

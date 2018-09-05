@@ -23,7 +23,10 @@ import com.junhetang.doctor.config.H5Config;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.nim.message.SessionHelper;
+import com.junhetang.doctor.ui.activity.home.OpenPaperCameraActivity;
+import com.junhetang.doctor.ui.activity.home.OpenPaperOnlineActivity;
 import com.junhetang.doctor.ui.activity.mine.AuthStep1Activity;
+import com.junhetang.doctor.ui.adapter.MySpinnerAdapter;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.CheckPaperBean;
@@ -31,12 +34,12 @@ import com.junhetang.doctor.ui.bean.PatientFamilyBean;
 import com.junhetang.doctor.ui.contact.PatientContact;
 import com.junhetang.doctor.ui.nimview.PaperH5Activity;
 import com.junhetang.doctor.ui.presenter.PatientPresenter;
-import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.ImageUtil;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
+import com.junhetang.doctor.widget.popupwindow.BottomChoosePopupView;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
@@ -52,7 +55,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * PatientFamilyActivity 患者列表
+ * PatientCenterActivity 患者列表
  * Create at 2018/4/21 下午10:23 by mayakun
  */
 public class PatientCenterActivity extends BaseActivity implements PatientContact.View {
@@ -63,10 +66,14 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
     ImageView ivHead;
     @BindView(R.id.tv_name)
     TextView tvName;
+    @BindView(R.id.tv_remarkname)
+    TextView tvRemarkName;
     @BindView(R.id.tv_phone)
     TextView tvPhone;
     @BindView(R.id.tv_class)
     TextView tvClass;
+    @BindView(R.id.tv_gotochat)
+    TextView tvGotochat;
     @BindView(R.id.spinner)
     AppCompatSpinner spinner;
     @BindView(R.id.recycleview)
@@ -75,7 +82,6 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
     @Inject
     PatientPresenter mPresenter;
 
-    private int formType = 0;//是否来自选择患者(0 默认不是 1：选择患者)
     private String membNo;
     private PatientFamilyBean bean;
     private List<PatientFamilyBean.JiuzhenBean> jiuzhenBeans = new ArrayList<>();//就诊人数据
@@ -83,10 +89,13 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
     private List<CheckPaperBean> paperList = new ArrayList<>();//处方数据
     private BaseQuickAdapter mAdapter;
     private ArrayAdapter<String> spinnerAdapter;
+    private MySpinnerAdapter mySpinnerAdapter;
     private CommonDialog commonDialog;
     private String im_accid;//选择就诊人时需要
     private int pageNum = 1;
     private int tempPos = 0;//spinner pos
+    private String patientName;//添加患者成功，新患者姓名
+    private boolean isnew;//添加患者成功，是否展示new
 
     @Override
     protected int provideRootLayout() {
@@ -97,18 +106,22 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
     protected void initView() {
         initToolbar();
         membNo = getIntent().getStringExtra("memb_no");
-        formType = getIntent().getIntExtra("formtype", 0);
-        im_accid = getIntent().getStringExtra("im_accid");
+        patientName = getIntent().getStringExtra("patientname");
+        isnew = getIntent().getBooleanExtra("isnew", false);//添加患者成功，是否展示new
 
 
-        spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, patientLsit);
-        spinner.setAdapter(spinnerAdapter);//绑定适配器到Spinner
+        mySpinnerAdapter = new MySpinnerAdapter(this, jiuzhenBeans, patientName);
+        spinner.setAdapter(mySpinnerAdapter);//绑定适配器到Spinner
+
+//        spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, patientLsit);
+//        spinner.setAdapter(spinnerAdapter);//绑定适配器到Spinner
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 tempPos = position;
                 pageNum = 1;
-                mPresenter.getPatientPaper(pageNum, tempPos == 0 ? "0" : jiuzhenBeans.get(tempPos - 1).id, membNo);
+//                mPresenter.getPatientPaper(pageNum, tempPos == 0 ? "0" : jiuzhenBeans.get(tempPos - 1).id, membNo);
+                mPresenter.getPatientPaper(pageNum, jiuzhenBeans.get(position).id, membNo);
             }
 
             @Override
@@ -132,7 +145,7 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                mPresenter.getPatientPaper(pageNum + 1, tempPos == 0 ? "0" : jiuzhenBeans.get(tempPos - 1).id, membNo);
+                mPresenter.getPatientPaper(pageNum + 1, jiuzhenBeans.get(tempPos).id, membNo);
             }
         }, recycleview);
 
@@ -173,12 +186,8 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
                 }).bind();
     }
 
-    @OnClick({R.id.tv_remark, R.id.tv_gotochat})
+    @OnClick({R.id.iv_remark, R.id.tv_gotochat, R.id.tv_openpaper})
     public void btnOnClick(View view) {
-        //选择患者时不能修改其他都行
-        if (formType == 1) {
-            return;
-        }
         switch (view.getId()) {
             case R.id.tv_gotochat:
                 //Umeng 埋点
@@ -200,12 +209,29 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
                     commonDialog.show();
                 }
                 break;
-            case R.id.tv_remark://设置备注
+            case R.id.iv_remark://设置备注
                 //Umeng 埋点
                 MobclickAgent.onEvent(this, UmengKey.patientcenter_remark);
                 Intent intent = new Intent(this, RemarkNameActivity.class);
                 intent.putExtra("patientinfo", bean.patientinfo);
                 startActivityForResult(intent, REQUEST_CODE_REMARKNAME);
+                break;
+            case R.id.tv_openpaper://开方
+                BottomChoosePopupView bottomChoosePopupView = new BottomChoosePopupView(this, BottomChoosePopupView.BOTTOM_TYPE.TYPE_OPEN_PAPER, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intentOpen = new Intent();
+                        if (v.getId() == R.id.dtv_one) {//在线开方
+                            intentOpen.setClass(actContext(), OpenPaperOnlineActivity.class);
+                        } else {//拍照开方
+                            intentOpen.setClass(actContext(), OpenPaperCameraActivity.class);
+                        }
+                        intentOpen.putExtra("formParent", 1);
+                        intentOpen.putExtra("memb_no", bean.patientinfo.memb_no);
+                        startActivity(intentOpen);
+                    }
+                });
+                bottomChoosePopupView.show(idToolbar);
                 break;
         }
     }
@@ -228,20 +254,39 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
             case PatientPresenter.GET_PATIENTFAMILY_0K:
                 bean = (PatientFamilyBean) message.obj;
                 if (bean != null && bean.patientinfo != null) {
+                    //进入聊天使用
+                    im_accid = bean.patientinfo.im_accid;
+
                     ImageUtil.showCircleImage(bean.patientinfo.head_url, ivHead);
-                    tvName.setText(TextUtils.isEmpty(bean.patientinfo.remark_name) ? bean.patientinfo.nick_name : bean.patientinfo.remark_name);
+                    tvName.setText(TextUtils.isEmpty(bean.patientinfo.nick_name) ? "" : bean.patientinfo.nick_name);
+                    tvRemarkName.setText("备注：" + (TextUtils.isEmpty(bean.patientinfo.remark_name) ? "暂无" : bean.patientinfo.remark_name));
                     tvPhone.setText("手机号：" + (TextUtils.isEmpty(bean.patientinfo.phone) ? "" : bean.patientinfo.phone));
-                    tvClass.setText(TextUtils.isEmpty(bean.patientinfo.memb_class) ? "" : bean.patientinfo.memb_class);
+                    tvClass.setText(TextUtils.isEmpty(bean.patientinfo.valid_name) ? "" : bean.patientinfo.valid_name);
+
+                    //是否可以聊天
+                    tvGotochat.setEnabled(!TextUtils.isEmpty(im_accid));
                 }
                 if (bean != null && bean.jiuzhen != null) {
                     jiuzhenBeans.clear();
+
+                    PatientFamilyBean.JiuzhenBean firstBean = new PatientFamilyBean.JiuzhenBean();
+                    firstBean.patient_name = "全部";
+                    firstBean.id = "0";
+                    jiuzhenBeans.add(firstBean);
+
                     jiuzhenBeans.addAll(bean.jiuzhen);
-                    //spinner数据
-                    patientLsit.add("全部");
-                    for (PatientFamilyBean.JiuzhenBean jiuzhenBean : jiuzhenBeans) {
-                        patientLsit.add(String.format("%s(%s)", jiuzhenBean.patient_name, Constant.RELATION_TYPE[jiuzhenBean.relationship]));
+//                    //spinner数据
+//                    patientLsit.add("全部");
+//                    for (PatientFamilyBean.JiuzhenBean jiuzhenBean : jiuzhenBeans) {
+//                        patientLsit.add(String.format("%s(%s)", jiuzhenBean.patient_name, Constant.RELATION_TYPE[jiuzhenBean.relationship]));
+//                    }
+//                    spinnerAdapter.notifyDataSetChanged();
+                    mySpinnerAdapter.notifyDataSetChanged();
+
+                    //刚刚添加处方进来，自动展开
+                    if (isnew && bean.jiuzhen.size() > 0) {
+                        spinner.performClick();
                     }
-                    spinnerAdapter.notifyDataSetChanged();
                 }
                 break;
             case PatientPresenter.GET_PATIEN_PAPER_TLIST_0K:
@@ -273,7 +318,7 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_REMARKNAME) {
             if (data != null) {
                 bean.patientinfo.remark_name = data.getStringExtra("remarkname");
-                tvName.setText(TextUtils.isEmpty(bean.patientinfo.remark_name) ? bean.patientinfo.nick_name : bean.patientinfo.remark_name);
+                tvRemarkName.setText("备注：" + (TextUtils.isEmpty(bean.patientinfo.remark_name) ? "暂无" : bean.patientinfo.remark_name));
             }
         }
     }

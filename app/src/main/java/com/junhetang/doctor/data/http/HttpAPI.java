@@ -285,7 +285,14 @@ public interface HttpAPI {
 
     //历史就诊人处方列表
     @POST("getpresc_patient")
-    Observable<HttpResponse<BasePageBean<JiuZhenHistoryBean>>> getJiuZhenHistoryList(@Body Params params);
+    Observable<HttpResponse<BasePageBean<JiuZhenHistoryBean>>> getJiuZhenHistoryList(@Body Params params); //历史就诊人处方列表
+
+    @POST("select_patient")
+    Observable<HttpResponse<BasePageBean<PatientFamilyBean.JiuzhenBean>>> getJZRList(@Body Params params);//就诊人列表
+
+    //添加患者
+    @POST("addprescmember")
+    Observable<HttpResponse<OtherBean>> addPatient(@Body Params params);
 
     //添加患者（处方联系人）
     @POST("addprescpatient")
@@ -301,6 +308,10 @@ public interface HttpAPI {
     //普药，精品切换
     @POST("cut_medicinal")
     Observable<HttpResponse<List<DrugBean>>> changeDrugType(@Body Params params);
+
+    //根据手机号 显示所有就诊人
+    @POST("phone_getmempatient")
+    Observable<HttpResponse<List<PatientFamilyBean.JiuzhenBean>>> getPatientByPhone(@Body Params params);
 
     //检查App更新
     @POST("getVersion")

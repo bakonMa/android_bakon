@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ScheduleView">
-        <attr name="step" format="integer">
-            <enum name="fisrt" value="1" />
-            <enum name="second" value="2" />
-            <enum name="third" value="3" />
+        <attr name="step1" format="integer">
+            <enum name="one" value="1" />
+            <enum name="two" value="2" />
+            <enum name="three" value="3" />
+            <enum name="four" value="4" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="DrawableTextView">
+        <attr name="leftDrawable" format="reference|color"/>
+        <attr name="rightDrawable" format="reference|color"/>
+        <attr name="topDrawable" format="reference|color"/>
+        <attr name="bottomDrawable" format="reference|color"/>
+
+        <attr name="leftDrawableWidth" format="reference|dimension"/>
+        <attr name="rightDrawableWidth" format="reference|dimension"/>
+        <attr name="topDrawableWidth" format="reference|dimension"/>
+        <attr name="bottomDrawableWidth" format="reference|dimension"/>
+
+        <attr name="leftDrawableHeight" format="reference|dimension"/>
+        <attr name="rightDrawableHeight" format="reference|dimension"/>
+        <attr name="topDrawableHeight" format="reference|dimension"/>
+        <attr name="bottomDrawableHeight" format="reference|dimension"/>
     </declare-styleable>
 
     <declare-styleable name="EditTextlayout">
@@ -96,13 +114,6 @@
         <attr name="unreadThreshold" format="integer" />
     </declare-styleable>
 
-    <declare-styleable name="ScheduleView_jht">
-        <attr name="step1" format="integer">
-            <enum name="one" value="1" />
-            <enum name="two" value="2" />
-            <enum name="three" value="3" />
-            <enum name="four" value="4" />
-        </attr>
-    </declare-styleable>
+
 
 </resources>

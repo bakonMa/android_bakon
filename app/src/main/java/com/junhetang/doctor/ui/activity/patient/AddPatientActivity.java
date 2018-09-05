@@ -6,7 +6,6 @@ import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -15,15 +14,12 @@ import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
-import com.junhetang.doctor.ui.activity.home.JiuZhenHistoryActivity;
 import com.junhetang.doctor.ui.base.BaseActivity;
-import com.junhetang.doctor.ui.bean.JiuZhenHistoryBean;
+import com.junhetang.doctor.ui.bean.OtherBean;
 import com.junhetang.doctor.ui.contact.PatientContact;
 import com.junhetang.doctor.ui.presenter.PatientPresenter;
-import com.junhetang.doctor.utils.RegexUtil;
-import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.widget.EditTextlayout;
-import com.junhetang.doctor.widget.dialog.CommonDialog;
+import com.junhetang.doctor.widget.dialog.CommSuperDialog;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
@@ -36,10 +32,10 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
- * AddPatientJZRActivity 手动添加患者（就诊人）
+ * AddPatientActivity 手动添加患者（就诊人）
  * Create at 2018/6/13 下午3:30 by mayakun
  */
-public class AddPatientJZRActivity extends BaseActivity implements PatientContact.View {
+public class AddPatientActivity extends BaseActivity implements PatientContact.View {
 
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
@@ -59,10 +55,8 @@ public class AddPatientJZRActivity extends BaseActivity implements PatientContac
     @Inject
     PatientPresenter mPresenter;
 
-    private boolean isEdite = false;//是否是编辑
-    private JiuZhenHistoryBean bean;
-    private CommonDialog commonDialog;
     private int sexType = 0;
+    private CommSuperDialog commSuperDialog;
 
     @Override
     protected int provideRootLayout() {
@@ -71,20 +65,7 @@ public class AddPatientJZRActivity extends BaseActivity implements PatientContac
 
     @Override
     protected void initView() {
-        isEdite = getIntent().getBooleanExtra("isEdite", false);
-        bean = getIntent().getParcelableExtra("bean");
         initToolbar();
-
-        //编辑状态 数据展示
-        if (isEdite && bean != null) {
-            etName.setEditeText(RegexUtil.getNameSubString(bean.patient_name));
-            etPhone.setEditeText(TextUtils.isEmpty(bean.phone) ? "" : bean.phone);
-            etAge.setEditeText(bean.age > 0 ? bean.age + "" : "");
-            sexType = bean.sex;
-            rgSex.check(bean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
-            etPhone.setClearImageVisible(false);
-            etAge.setClearImageVisible(false);
-        }
         //性别
         rgSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -96,7 +77,7 @@ public class AddPatientJZRActivity extends BaseActivity implements PatientContac
 
     private void initToolbar() {
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
-                .setTitle(isEdite ? "患者信息" : "添加患者")
+                .setTitle("添加患者")
                 .setStatuBar(R.color.white)
                 .setLeft(false)
                 .setListener(new TitleOnclickListener() {
@@ -123,19 +104,17 @@ public class AddPatientJZRActivity extends BaseActivity implements PatientContac
                 || TextUtils.isEmpty(etAge.getEditText().getText().toString().trim())
                 || TextUtils.isEmpty(etPhone.getEditText().getText().toString().trim())
                 ) {
-            commonDialog = new CommonDialog(this, true, "请输入患者的全部信息", null);
-            commonDialog.show();
+
+            commSuperDialog = new CommSuperDialog(this, "请输入患者的全部信息");
+            commSuperDialog.show();
         } else {
             Params params = new Params();
-            if (isEdite) {
-                params.put("id", bean.id);
-            }
             params.put("name", etName.getEditText().getText().toString().trim());
             params.put("age", etAge.getEditText().getText().toString().trim());
             params.put("phone", etPhone.getEditText().getText().toString().trim());
             params.put("sex", sexType);
 
-            mPresenter.addPatientJZR(params);
+            mPresenter.addPatient(params);
         }
     }
 
@@ -145,57 +124,56 @@ public class AddPatientJZRActivity extends BaseActivity implements PatientContac
             return;
         }
         switch (message.what) {
-            case PatientPresenter.ADD_PATIENT_JZR_OK:
-                ToastUtil.show(isEdite ? "患者信息保存成功" : "添加患者成功");
-                startActivity(new Intent(this, JiuZhenHistoryActivity.class));
-                finish();
-                break;
+            case PatientPresenter.ADD_PATIENT_OK://提交后
+                OtherBean bean = (OtherBean) message.obj;
 
+                if (bean.rcode == 1 || bean.rcode == -2) {//成功、已存在
+                    commSuperDialog = new CommSuperDialog(this, bean.msg,
+                            "关  闭", "查  看", new CommSuperDialog.ClickListener() {
+                        @Override
+                        public void btnOnClick(int btnId) {
+                            if (btnId == R.id.btn_right) {//进入患者中心
+                                Intent intent = new Intent(actContext(), PatientCenterActivity.class);
+                                intent.putExtra("memb_no", bean.memb_no);
+                                intent.putExtra("isnew", bean.rcode == 1);//重复添加不显示new
+                                intent.putExtra("patientname", etName.getEditText().getText().toString().trim());//患者姓名
+                                startActivity(intent);
+                            }
+                            finish();
+                        }
+                    });
+                } else {//只有【确定】
+                    commSuperDialog = new CommSuperDialog(this, bean.msg);
+                }
+                commSuperDialog.show();
+                break;
         }
     }
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-        CommonDialog commonDialog = new CommonDialog(this, errorMsg);
-        commonDialog.show();
+        commSuperDialog = new CommSuperDialog(this, errorMsg);
+        commSuperDialog.show();
     }
 
     @Override
     public void onBackPressed() {
-        if (isEdite) {
-            if (!etName.getEditText().getText().toString().trim().equals(bean.patient_name)
-                    || !etAge.getEditText().getText().toString().trim().equals(bean.age + "")
-                    || !etPhone.getEditText().getText().toString().trim().equals(bean.phone)
-                    || sexType != bean.sex
-                    ) {
-                showDialog("患者信息尚未保存，是否确定退出？");
-            } else {
-                finish();
-            }
-        } else {
-            if (!TextUtils.isEmpty(etName.getEditText().getText().toString().trim())
-                    || !TextUtils.isEmpty(etAge.getEditText().getText().toString().trim())
-                    || !TextUtils.isEmpty(etPhone.getEditText().getText().toString().trim())) {
-                showDialog("患者信息尚未保存，是否确定退出？");
-            } else {
-                finish();
-            }
-        }
-    }
+        if (!TextUtils.isEmpty(etName.getEditText().getText().toString().trim())
+                || !TextUtils.isEmpty(etAge.getEditText().getText().toString().trim())
+                || !TextUtils.isEmpty(etPhone.getEditText().getText().toString().trim())) {
 
-    /**
-     * 展示dialog
-     */
-    private void showDialog(String dialogStr) {
-        commonDialog = new CommonDialog(this, false, dialogStr, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (view.getId() == R.id.btn_ok) {
-                    finish();
+            commSuperDialog = new CommSuperDialog(this, "患者信息尚未保存，是否确定退出？", new CommSuperDialog.ClickListener() {
+                @Override
+                public void btnOnClick(int btnId) {
+                    if (btnId == R.id.btn_right) {//点击【确定】
+                        finish();
+                    }
                 }
-            }
-        });
-        commonDialog.show();
+            });
+            commSuperDialog.show();
+        } else {
+            finish();
+        }
     }
 
 

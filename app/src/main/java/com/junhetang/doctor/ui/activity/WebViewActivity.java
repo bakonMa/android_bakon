@@ -20,7 +20,7 @@ import com.junhetang.doctor.R;
 import com.junhetang.doctor.config.EventConfig;
 import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.data.eventbus.EventBusUtil;
-import com.junhetang.doctor.ui.activity.patient.AddPatientJZRActivity;
+import com.junhetang.doctor.ui.activity.patient.AddPatientActivity;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.H5JsonBean;
 import com.junhetang.doctor.utils.FileUtil;
@@ -121,7 +121,7 @@ public class WebViewActivity extends BaseActivity implements ProgressWebView.Err
             case R.id.tv_add_jzr:
                 //Umeng 埋点
                 MobclickAgent.onEvent(this, UmengKey.personcard_add);
-                startActivity(new Intent(this, AddPatientJZRActivity.class));
+                startActivity(new Intent(this, AddPatientActivity.class));
                 break;
         }
     }

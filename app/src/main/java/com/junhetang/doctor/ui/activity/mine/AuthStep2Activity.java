@@ -31,7 +31,7 @@ import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.utils.UriUtil;
 import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
-import com.junhetang.doctor.widget.popupwindow.CameraPopupView;
+import com.junhetang.doctor.widget.popupwindow.BottomChoosePopupView;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.tbruyelle.rxpermissions.RxPermissions;
@@ -109,15 +109,15 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View 
             case R.id.iv_img1:
             case R.id.iv_img2:
             case R.id.iv_img3:
-                CameraPopupView cameraPopupView = new CameraPopupView(this, new View.OnClickListener() {
+                BottomChoosePopupView bottomChoosePopupView = new BottomChoosePopupView(this, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //标识点击的哪一个
                         currImg = view.getId();
-                        openCameraOrPhoto(v.getId() == R.id.llt_camera);
+                        openCameraOrPhoto(v.getId() == R.id.dtv_one);
                     }
                 });
-                cameraPopupView.show(scrollView);
+                bottomChoosePopupView.show(scrollView);
                 break;
             case R.id.tv_next_step:
                 //Umeng 埋点

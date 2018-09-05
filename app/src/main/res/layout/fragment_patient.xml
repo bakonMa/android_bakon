@@ -21,18 +21,29 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_history_patient"
+                <RelativeLayout
+                    android:id="@+id/rlt_search"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:background="@drawable/selector_bg_tab"
-                    android:drawableLeft="@drawable/icon_history_patient"
-                    android:drawablePadding="12dp"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="15dp"
-                    android:text="处方联系人"
-                    android:textColor="@color/color_000"
-                    android:visibility="gone" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/shape_stroke_bg_5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_centerInParent="true"
+                        android:drawableLeft="@drawable/icon_search_gray"
+                        android:drawablePadding="10dp"
+                        android:gravity="center"
+                        android:text="患者姓名，联系电话"
+                        android:textColor="@color/color_666"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
+
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyvleview"
@@ -41,7 +52,6 @@
                     android:layout_weight="1"
                     android:background="@color/color_f6f6f6" />
             </LinearLayout>
-
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -52,8 +62,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginTop="35dp"
             android:visibility="gone" />
 
         <TextView

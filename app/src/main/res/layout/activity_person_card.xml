@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/base_toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/llt_root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rlt_person_info"
+                android:layout_width="match_parent"
+                android:layout_height="410dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_personcar">
+
+                <ImageView
+                    android:id="@+id/iv_headimg"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/default_head" />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv_headimg"
+                    android:layout_centerHorizontal="true"
+                    android:text="蔡医生"
+                    android:textColor="@color/color_000"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_name"
+                    android:layout_centerHorizontal="true"
+                    android:text="主任医师"
+                    android:textColor="@color/color_black_333333"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/tv_cardimg"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_below="@+id/tv_title"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/default_img" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:lineSpacingExtra="5dp"
+                    android:text="扫码关注\n在线咨询、复诊调方"
+                    android:textColor="@color/color_black_333333"
+                    android:textSize="16sp" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.junhetang.doctor.widget.DrawableTextView
+                    android:id="@+id/dtv_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:drawablePadding="5dp"
+                    android:text="分享名片"
+                    android:textColor="@color/color_000"
+                    android:textSize="16sp"
+                    app:topDrawable="@drawable/icon_card_share"
+                    app:topDrawableHeight="44dp"
+                    app:topDrawableWidth="44dp" />
+
+                <com.junhetang.doctor.widget.DrawableTextView
+                    android:id="@+id/dtv_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="80dp"
+                    android:drawablePadding="5dp"
+                    android:text="保存名片"
+                    android:textColor="@color/color_000"
+                    android:textSize="16sp"
+                    app:topDrawable="@drawable/icon_card_save"
+                    app:topDrawableHeight="44dp"
+                    app:topDrawableWidth="44dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_add"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/selector_bg_button_login"
+                android:gravity="center"
+                android:text="手动添加患者"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+
+
+
+
+

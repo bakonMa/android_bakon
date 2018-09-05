@@ -17,11 +17,12 @@
     <color name="tab_unselected">#EDAF4A</color>
     <color name="color_trade_failure">#E96464</color>
     <color name="color_loading_bg">#80000000</color>
-    <color name="transparent50">#30000000</color>
+    <color name="transparent50">#80000000</color>
     <color name="transparent">#00000000</color>
     <color name="indicator_bg_color">#EEEEEE</color>
     <color name="color_bg_toast">#b3000000</color>
     <color name="color_000">#000000</color>
+    <color name="color_333">#333333</color>
     <color name="color_666">#666666</color>
     <color name="color_999">#999999</color>
     <color name="color_f0f0f0">#F0F0F0</color>
@@ -35,6 +36,7 @@
     <color name="color_d6d6d6">#d6d6d6</color>
     <color name="color_cacaca">#CACACA</color>
     <color name="color_main">#f5a623</color>
+    <color name="color_30ad37">#30AD37</color>
     <color name="color_ada293">#ada293</color>
     <color name="color_b6b6b6">#b6b6b6</color>
     <color name="blue">#10a6e2</color>

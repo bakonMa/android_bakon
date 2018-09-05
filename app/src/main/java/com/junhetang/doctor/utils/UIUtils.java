@@ -9,6 +9,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,7 +19,11 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * UIUtils
@@ -163,6 +170,25 @@ public class UIUtils {
         return height;
     }
 
+    /**
+     * 设置搜索关键字高亮
+     * @param content 原文本内容
+     * @param keyword 关键字
+     */
+    public static SpannableString setKeyWordColor(String content, String keyword){
+        SpannableString s = new SpannableString(content);
+        Pattern p = Pattern.compile(keyword);
+        Matcher m = p.matcher(s);
+        while (m.find()){
+            int start = m.start();
+            int end = m.end();
+            s.setSpan(new ForegroundColorSpan(getColor(R.color.color_main)),start,end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return s;
+    }
+
+
+    //添加上下左右图标
     public static void setCompoundDrawable(View view, int widthdp, int paddingdp, int resId, int gravity) {
         if (resId > 0) {
             int width = dp2px(DocApplication.getInstance(), widthdp);

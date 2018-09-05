@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:background="@color/color_main">
-    <LinearLayout
-        android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    android:background="@color/color_f6f6f6"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="请选择"
+        android:textColor="@color/color_main"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <View style="@style/line_gray_hor" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycleview"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="当前应还"
-            android:textSize="16sp"
-            android:textColor="@color/white"/>
-        <TextView
-            android:id="@+id/id_tv_remain_money"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="18sp"
-            android:textColor="@color/white"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="元"
-            android:textSize="16sp"
-            android:textColor="@color/white"/>
-    </LinearLayout>
-</RelativeLayout>
+        android:background="@drawable/bg_white_radius_5" />
+
+    <TextView
+        android:id="@+id/tv_cancle"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/selector_bg_radius_5"
+        android:gravity="center"
+        android:text="取消"
+        android:textColor="@color/color_main"
+        android:textSize="16sp" />
+</LinearLayout>

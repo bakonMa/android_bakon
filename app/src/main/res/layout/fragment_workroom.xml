@@ -60,9 +60,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:background="@color/white"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_add_patient"
@@ -72,7 +71,8 @@
                 android:drawablePadding="5dp"
                 android:drawableTop="@drawable/selector_add_patient_icon"
                 android:gravity="center"
-                android:padding="12dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:text="添加患者"
                 android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
@@ -85,7 +85,8 @@
                 android:drawablePadding="5dp"
                 android:drawableTop="@drawable/selector_online_icon"
                 android:gravity="center"
-                android:padding="12dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:text="在线开方"
                 android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
@@ -98,7 +99,8 @@
                 android:drawablePadding="5dp"
                 android:drawableTop="@drawable/selector_camera_icon"
                 android:gravity="center"
-                android:padding="12dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:text="拍照开方"
                 android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
@@ -111,7 +113,8 @@
                 android:drawablePadding="5dp"
                 android:drawableTop="@drawable/selector_commpaper_icon"
                 android:gravity="center"
-                android:padding="12dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:text="处方模板"
                 android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
@@ -121,9 +124,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp">
+            android:background="@color/white"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_ask_paper"
@@ -133,7 +136,8 @@
                 android:drawablePadding="5dp"
                 android:drawableTop="@drawable/selector_askpaper_icon"
                 android:gravity="center"
-                android:padding="12dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:text="问诊单"
                 android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
@@ -146,7 +150,8 @@
                 android:drawablePadding="5dp"
                 android:drawableTop="@drawable/selector_followpaper_icon"
                 android:gravity="center"
-                android:padding="12dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:text="随诊单"
                 android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
@@ -159,7 +164,8 @@
                 android:drawablePadding="5dp"
                 android:drawableTop="@drawable/selector_history_icon"
                 android:gravity="center"
-                android:padding="12dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:text="历史处方"
                 android:textColor="@drawable/selector_textcolor_blackmain" />
 
@@ -171,7 +177,8 @@
                 android:drawablePadding="5dp"
                 android:drawableTop="@drawable/selector_notice_icon"
                 android:gravity="center"
-                android:padding="12dp"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
                 android:text="公告"
                 android:textColor="@drawable/selector_textcolor_blackmain"
                 android:textSize="14sp" />
@@ -314,13 +321,6 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp" />
         </RelativeLayout>
-
-        <com.junhetang.doctor.widget.RelativeWithImage
-            android:id="@+id/id_patient_history"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            app:leftIamge="@drawable/icon_patient_book"
-            app:title="处方联系人" />
 
         <com.junhetang.doctor.widget.RelativeWithImage
             android:id="@+id/id_job_schedule"
