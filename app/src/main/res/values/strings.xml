@@ -128,13 +128,10 @@
     <string name="str_setting_price">是否开通在线咨询\n<font color='#f5a623' size='14'>关闭后将无法与患者进行在线咨询</font></string>
 
 
-    <string-array name="patient">
-        <item>患者1</item>
-        <item>患者2</item>
-        <item>患者3</item>
-        <item>患者4</item>
-        <item>患者5</item>
-        <item>患者6</item>
+    <string-array name="guide_1">
+        <item>引导1</item>
+        <item>引导2</item>
+        <item>引导3</item>
     </string-array>
 
 </resources>

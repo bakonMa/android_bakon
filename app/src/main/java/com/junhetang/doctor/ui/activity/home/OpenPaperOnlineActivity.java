@@ -29,6 +29,7 @@ import com.google.gson.Gson;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.EventConfig;
+import com.junhetang.doctor.config.SPConfig;
 import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.data.http.Params;
@@ -56,10 +57,10 @@ import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.EditableLayout;
-import com.junhetang.doctor.widget.dialog.ChoosePatientDialog;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.dialog.SavePaperDialog;
 import com.junhetang.doctor.widget.popupwindow.BottomListPopupView;
+import com.junhetang.doctor.widget.popupwindow.GuidePopupView;
 import com.junhetang.doctor.widget.popupwindow.TwoPopupWheel;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
@@ -174,7 +175,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     private SavePaperDialog savePaperDialog;
     private GestureDetectorCompat mDetector;//手势
     private BottomListPopupView bottomPopupView;
-    private ChoosePatientDialog choosePatientDialog;//匹配手机号 提示就诊人列表
     private boolean isChoosePatient = false;//是否点击的选择就诊人
     private List<PatientFamilyBean.JiuzhenBean> jzrList = new ArrayList<>();//手机号的就诊人
 
@@ -280,6 +280,25 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 return false;
             }
         });
+
+        //是否显示 guide
+        showGuide();
+    }
+
+    /**
+     * guide是否显示
+     */
+    private void showGuide() {
+        if (DocApplication.getAppComponent().dataRepo().appSP().getBoolean(SPConfig.SP_GUIDE_V120_3, false)) {
+            return;
+        }
+        scrollView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                GuidePopupView guidePopupView = new GuidePopupView(actContext(), GuidePopupView.GUIDE_TYPE.GUIDE_TYPE_3);
+                guidePopupView.show(scrollView);
+            }
+        }, 500);
 
     }
 
@@ -457,7 +476,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 break;
             case R.id.et_drugstore://药房
                 //是否选过了药房 切换药房 要提醒
-                if (TextUtils.isEmpty(etDrugstore.getText())) {
+                if (TextUtils.isEmpty(etDrugstore.getText()) || drugBeans.size() == 0) {
                     chooseDrugStore();
                 } else {
                     commonDialog = new CommonDialog(this, false, "切换药房会导致药品信息变更，\n是否确定切换药房？", new View.OnClickListener() {
@@ -505,7 +524,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 });
                 mTwoWheel.show(scrollView);
                 break;
-            case R.id.et_docadvice://医嘱
+            case R.id.et_docadvice://服药时间和禁忌
                 Intent intentDocAdvice = new Intent(this, ChooseDocAdviceActivity.class);
                 intentDocAdvice.putParcelableArrayListExtra("beanlist", baseBean.docadvice);
                 intentDocAdvice.putExtra("docadvice", docadviceStr);
@@ -659,7 +678,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         }
 
         if (TextUtils.isEmpty(docadviceStr)) {
-            commonDialog = new CommonDialog(this, "请填写服药说明");
+            commonDialog = new CommonDialog(this, "请填写服药时间和禁忌");
             commonDialog.show();
             return;
         }
@@ -807,9 +826,9 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         rbNan.setEnabled(false);
         rbNv.setEnabled(false);
         //药房id
-        storeId = infoBean.store_id;
         for (OPenPaperBaseBean.StoreBean storeBean : baseBean.store) {
             if (storeBean.drug_store_id == infoBean.store_id) {
+                storeId = infoBean.store_id;
                 etDrugstore.setText(storeBean.drug_store_name);
                 break;
             }

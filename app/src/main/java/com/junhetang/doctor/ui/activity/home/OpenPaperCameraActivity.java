@@ -9,10 +9,14 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -150,6 +154,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private String pAccid = "";//患者云信 accid
     private int storeId = -1;//药房id
 
+    private GestureDetectorCompat mDetector;//手势
     private OPenPaperBaseBean baseBean;
     private List<String> drugStoreList = new ArrayList<>();//药房
     private List<String> drugClassList = new ArrayList<>();//剂型
@@ -192,6 +197,29 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 sexType = (i == R.id.rb_nan ? 0 : 1);
             }
         });
+
+        //手势监听，滑动关闭软键盘
+        mDetector = new GestureDetectorCompat(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                InputMethodManager manager = (InputMethodManager) actContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                //滑动距离超过**像素就收起键盘
+                if (manager.isActive() && Math.abs(distanceY) > 5) {
+                    KeyBoardUtils.hideKeyBoard(scrollView, actContext());
+                }
+                return Math.abs(distanceY) > 5;
+            }
+        });
+
+        //添加手势监听
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mDetector.onTouchEvent(event);
+                return false;
+            }
+        });
+
     }
 
     //初始base数据

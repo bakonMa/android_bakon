@@ -105,7 +105,7 @@ public class ChooseDocAdviceActivity extends BaseActivity {
     //共同头部处理
     private void initToolbar() {
         ToolbarBuilder.builder(idToolbar, new WeakReference<FragmentActivity>(this))
-                .setTitle("服药说明")
+                .setTitle("服药时间和禁忌")
                 .setLeft(false)
                 .setStatuBar(R.color.white)
                 .setRightText("保存", true, R.color.color_main)

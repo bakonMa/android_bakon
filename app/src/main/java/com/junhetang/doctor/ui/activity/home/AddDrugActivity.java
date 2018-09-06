@@ -1,16 +1,21 @@
 package com.junhetang.doctor.ui.activity.home;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -118,6 +123,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
     private Gson gson;
     private CommonDialog commonDialog;
     private BottomListPopupView bottomPopupView;
+    private GestureDetectorCompat mDetector;//手势
 
     @Override
     protected int provideRootLayout() {
@@ -310,6 +316,29 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                 etSearch.setText("");
             }
         });
+
+        //手势监听，滑动关闭软键盘
+        mDetector = new GestureDetectorCompat(this, new GestureDetector.SimpleOnGestureListener() {
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                InputMethodManager manager = (InputMethodManager) actContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                //滑动距离超过**像素就收起键盘
+                if (manager.isActive() && Math.abs(distanceY) > 5) {
+                    KeyBoardUtils.hideKeyBoard(etSearch, actContext());
+                }
+                return Math.abs(distanceY) > 5;
+            }
+        });
+
+        //添加手势监听
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mDetector.onTouchEvent(event);
+                return false;
+            }
+        });
+
     }
 
     //当前list中是否已经存在相同id的药材

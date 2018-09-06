@@ -38,6 +38,8 @@ public class PatientFamilyBean {
         public String remark_name;
         public String head_url;
         public String nick_name;
+        public int sex;//0 男 1 女
+        public int age;
         public String memb_name;
         public String phone;
         public String memb_class;
@@ -51,6 +53,8 @@ public class PatientFamilyBean {
             remark_name = in.readString();
             head_url = in.readString();
             nick_name = in.readString();
+            sex = in.readInt();
+            age = in.readInt();
             memb_name = in.readString();
             phone = in.readString();
             memb_class = in.readString();
@@ -65,6 +69,8 @@ public class PatientFamilyBean {
             dest.writeString(remark_name);
             dest.writeString(head_url);
             dest.writeString(nick_name);
+            dest.writeInt(sex);
+            dest.writeInt(age);
             dest.writeString(memb_name);
             dest.writeString(phone);
             dest.writeString(memb_class);

@@ -50,6 +50,7 @@ import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.utils.imageloader.BannerImageLoader;
 import com.junhetang.doctor.widget.RelativeWithImage;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
+import com.junhetang.doctor.widget.popupwindow.GuidePopupView;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.util.sys.TimeUtil;
@@ -183,7 +184,28 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 }
             }
         }, true);
+
+        //是否显示 guide1
+        showGuide();
     }
+
+    /**
+     * guide是否显示
+     */
+    private void showGuide() {
+        if (DocApplication.getAppComponent().dataRepo().appSP().getBoolean(SPConfig.SP_GUIDE_V120_1, false)) {
+            return;
+        }
+        idLlTop.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                GuidePopupView guidePopupView = new GuidePopupView(getContext(), GuidePopupView.GUIDE_TYPE.GUIDE_TYPE_1);
+                guidePopupView.show(idLlTop);
+            }
+        }, 500);
+
+    }
+
 
 
     /**

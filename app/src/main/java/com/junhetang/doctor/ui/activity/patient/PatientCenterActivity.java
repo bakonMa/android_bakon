@@ -20,6 +20,7 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.H5Config;
+import com.junhetang.doctor.config.SPConfig;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.nim.message.SessionHelper;
@@ -40,6 +41,7 @@ import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.popupwindow.BottomChoosePopupView;
+import com.junhetang.doctor.widget.popupwindow.GuidePopupView;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle.LifecycleTransformer;
@@ -170,6 +172,26 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
         });
 
         mPresenter.getpatientFamily(membNo);
+
+        //是否显示 guide
+        showGuide();
+    }
+
+    /**
+     * guide是否显示
+     */
+    private void showGuide() {
+        if (DocApplication.getAppComponent().dataRepo().appSP().getBoolean(SPConfig.SP_GUIDE_V120_4, false)) {
+            return;
+        }
+        idToolbar.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                GuidePopupView guidePopupView = new GuidePopupView(actContext(), GuidePopupView.GUIDE_TYPE.GUIDE_TYPE_4);
+                guidePopupView.show(idToolbar);
+            }
+        }, 500);
+
     }
 
     private void initToolbar() {

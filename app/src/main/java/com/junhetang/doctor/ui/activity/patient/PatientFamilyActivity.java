@@ -92,10 +92,11 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 //选择就诊人
-                PatientFamilyBean.JiuzhenBean bean = jiuzhenBeans.get(position);
-                bean.id = membNo;//讨巧，后台需要的是患者的id
-                bean.setIm_accid(im_accid);
-                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_CHOOSE_PATIENT, bean));
+                PatientFamilyBean.JiuzhenBean jzrbean = jiuzhenBeans.get(position);
+                jzrbean.id = membNo;//讨巧，后台需要的是患者的id
+                jzrbean.phone = bean.patientinfo.phone;//统一使用患者手机号
+                jzrbean.setIm_accid(im_accid);
+                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_CHOOSE_PATIENT, jzrbean));
                 finish();
             }
         });
@@ -124,9 +125,10 @@ public class PatientFamilyActivity extends BaseActivity implements PatientContac
         PatientFamilyBean.JiuzhenBean jzrBean = new PatientFamilyBean.JiuzhenBean();
         jzrBean.id = membNo;//讨巧，后台需要的是患者的id
         jzrBean.setIm_accid(im_accid);
-        jzrBean.patient_name = TextUtils.isEmpty(bean.patientinfo.remark_name) ? bean.patientinfo.nick_name : bean.patientinfo.remark_name;
+        jzrBean.patient_name = TextUtils.isEmpty(bean.patientinfo.nick_name) ? "" : bean.patientinfo.nick_name;
         jzrBean.relationship = 0;//0：本人
-        jzrBean.sex = -1;//-1
+        jzrBean.sex = bean.patientinfo.sex;
+        jzrBean.age = bean.patientinfo.age;
         jzrBean.phone = bean.patientinfo.phone;
         EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_CHOOSE_PATIENT, jzrBean));
         finish();

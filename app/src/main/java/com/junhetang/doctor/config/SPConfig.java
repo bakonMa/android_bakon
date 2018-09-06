@@ -40,4 +40,10 @@ public interface SPConfig {
     String SP_BOOL_LASTCHECK_FORCEUPDATE_NAME = "isForceUpdate";//上一次检查更新时，是否是检查到要强制更新
     String SP_LONG_LASTCHECKUPDATE_TIME_NAME = "lastCheckUpdateTime";//上一次检查更新的时间戳
 
+    //v1.2.0 guide 是否展示过
+    String SP_GUIDE_V120_1 = "guide_v120_1";
+    String SP_GUIDE_V120_2 = "guide_v120_2";
+    String SP_GUIDE_V120_3 = "guide_v120_3";
+    String SP_GUIDE_V120_4 = "guide_v120_4";
+
 }
