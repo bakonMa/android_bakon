@@ -15,6 +15,19 @@
         android:orientation="vertical">
 
         <com.junhetang.doctor.widget.EditTextlayout
+            android:id="@+id/et_phone"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@color/white"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            app:editTextHint="请输入患者手机号"
+            app:editTextType="number"
+            app:leftText="联系电话"
+            app:maxLength="11"
+            app:textMainSize="16sp" />
+
+        <com.junhetang.doctor.widget.EditTextlayout
             android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -83,22 +96,9 @@
             android:paddingRight="15dp"
             app:editTextHint="请输入患者年龄"
             app:editTextType="number"
+            app:isShowBottomLine="false"
             app:leftText="年龄"
             app:maxLength="3"
-            app:textMainSize="16sp" />
-
-        <com.junhetang.doctor.widget.EditTextlayout
-            android:id="@+id/et_phone"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:background="@color/white"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            app:editTextHint="请输入患者手机号"
-            app:editTextType="number"
-            app:isShowBottomLine="false"
-            app:leftText="联系电话"
-            app:maxLength="11"
             app:textMainSize="16sp" />
 
     </LinearLayout>

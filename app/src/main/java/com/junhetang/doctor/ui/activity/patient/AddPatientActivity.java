@@ -11,6 +11,9 @@ import android.widget.RadioGroup;
 
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
+import com.junhetang.doctor.config.EventConfig;
+import com.junhetang.doctor.data.eventbus.Event;
+import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
@@ -126,7 +129,8 @@ public class AddPatientActivity extends BaseActivity implements PatientContact.V
         switch (message.what) {
             case PatientPresenter.ADD_PATIENT_OK://提交后
                 OtherBean bean = (OtherBean) message.obj;
-
+                //通知添加患者成功
+                EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_ADD_PATIENT));
                 if (bean.rcode == 1 || bean.rcode == -2) {//成功、已存在
                     commSuperDialog = new CommSuperDialog(this, bean.msg,
                             "关  闭", "查  看", new CommSuperDialog.ClickListener() {

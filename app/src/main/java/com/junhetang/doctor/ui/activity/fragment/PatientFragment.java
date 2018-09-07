@@ -235,6 +235,7 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
         }
         switch (event.getCode()) {
             case EventConfig.EVENT_KEY_REMARKNAME://备注修改
+            case EventConfig.EVENT_KEY_ADD_PATIENT://备注修改
                 mPresenter.getPatientlist();
                 break;
 

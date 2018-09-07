@@ -122,8 +122,9 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().photoExtractionNew(params))
                 .compose(mView.toLifecycle())
                 .doOnSubscribe(() -> {
-                    if (mDialog != null)
+                    if (mDialog != null){
                         mDialog.show();
+                    }
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {

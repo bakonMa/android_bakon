@@ -223,7 +223,7 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:paddingLeft="15dp"
-                    android:text="主述及辩证型"
+                    android:text="主诉及辩证"
                     android:textColor="@color/color_000"
                     android:textSize="16sp" />
 

@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -90,7 +89,6 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
     private ArrayList<String> patientLsit = new ArrayList<>();//就诊人数据
     private List<CheckPaperBean> paperList = new ArrayList<>();//处方数据
     private BaseQuickAdapter mAdapter;
-    private ArrayAdapter<String> spinnerAdapter;
     private MySpinnerAdapter mySpinnerAdapter;
     private CommonDialog commonDialog;
     private String im_accid;//选择就诊人时需要
@@ -115,14 +113,11 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
         mySpinnerAdapter = new MySpinnerAdapter(this, jiuzhenBeans, patientName);
         spinner.setAdapter(mySpinnerAdapter);//绑定适配器到Spinner
 
-//        spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, patientLsit);
-//        spinner.setAdapter(spinnerAdapter);//绑定适配器到Spinner
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 tempPos = position;
                 pageNum = 1;
-//                mPresenter.getPatientPaper(pageNum, tempPos == 0 ? "0" : jiuzhenBeans.get(tempPos - 1).id, membNo);
                 mPresenter.getPatientPaper(pageNum, jiuzhenBeans.get(position).id, membNo);
             }
 
@@ -137,7 +132,7 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
             @Override
             protected void convert(BaseViewHolder helper, CheckPaperBean item) {
                 helper.setText(R.id.patient_name, "就诊人：" + item.patient_name + "     " + (item.sex == 0 ? "男" : "女") + "     " + item.age + "岁")
-                        .setText(R.id.skill_name, "主述挤辩证：" + (TextUtils.isEmpty(item.bz_remark) ? "" : item.bz_remark))
+                        .setText(R.id.skill_name, "主诉挤辩证：" + (TextUtils.isEmpty(item.bz_remark) ? "" : item.bz_remark))
                         .setText(R.id.service_money, "诊疗费：" + (TextUtils.isEmpty(item.service_price) ? "" : (item.service_price + "元")))
                         .setText(R.id.drug_money, "药材费：" + (TextUtils.isEmpty(item.total_drug) ? "" : (item.total_drug + "元")))
                         .setText(R.id.paper_date, "开方时间：" + (TextUtils.isEmpty(item.create_time) ? "" : item.create_time));

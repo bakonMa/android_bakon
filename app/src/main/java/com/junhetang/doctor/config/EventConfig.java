@@ -44,4 +44,6 @@ public interface EventConfig {
     int EVENT_KEY_ADD_COMMMEPAPER= 0x135;//添加常用处方
     int EVENT_KEY_BASEDATA_NULL= 0x136;//基础数据空异常
 
+    int EVENT_KEY_ADD_PATIENT= 0x137;//添加患者成功
+
 }

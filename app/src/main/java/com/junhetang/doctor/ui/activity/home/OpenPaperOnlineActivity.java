@@ -694,7 +694,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         params.put("sex", sexType);
         params.put("age", etAge.getEditText().getText());
         params.put("phone", etPhone.getText().toString().trim());
-        //主述及辩证型
+        //主诉及辩证型
         if (!TextUtils.isEmpty(etSkillname.getText().toString().trim())) {
             params.put("icd10", etSkillname.getText().toString().trim());
         }

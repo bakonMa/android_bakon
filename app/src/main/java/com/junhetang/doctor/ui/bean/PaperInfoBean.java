@@ -17,7 +17,7 @@ public class PaperInfoBean {
     public String age;
     public String phone;
     public int relationship;//与会员的关系0：本人 1：父母 2：子女 3：其他亲属 4：其他
-    public String icd10;//主述及辩证型 病症描述
+    public String icd10;//主诉及辩证 病症描述
     public int store_id;//药房id
     public int drug_class;//剂型
     public int boiled_type;//代煎(0：代煎药1：自己煎药)

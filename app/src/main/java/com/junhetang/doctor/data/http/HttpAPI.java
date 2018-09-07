@@ -38,6 +38,8 @@ import java.util.List;
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -212,12 +214,14 @@ public interface HttpAPI {
     Observable<HttpResponse<OtherBean>> updateToken(@Body Params params);
 
     //拍照开方
+    @FormUrlEncoded
     @POST("newphoto_extraction")
-    Observable<HttpResponse<String>> photoExtractionNew(@QueryMap Params params);
+    Observable<HttpResponse<String>> photoExtractionNew(@FieldMap Params params);
 
     //在线开方
+    @FormUrlEncoded
     @POST("line_extraction")
-    Observable<HttpResponse<OnlinePaperBackBean>> lineExtraction(@QueryMap Params params);
+    Observable<HttpResponse<OnlinePaperBackBean>> lineExtraction(@FieldMap Params params);
 
     //accid 换 memb_no
     @POST("getmemb_no")

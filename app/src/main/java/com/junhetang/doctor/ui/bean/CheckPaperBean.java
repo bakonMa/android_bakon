@@ -18,7 +18,7 @@ public class CheckPaperBean {
     public int z_status;//0：未转方 1：已转方
 
     //健康档案使用
-    public String bz_remark;//主述及辩证型
+    public String bz_remark;//主诉及辩证
     public String service_price;//诊疗费
     public String total_drug;//药品费
 }
