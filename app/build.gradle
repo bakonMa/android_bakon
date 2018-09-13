@@ -7,8 +7,8 @@ android {
         applicationId "com.junhetang.doctor"
         minSdkVersion 19  //16:4.1(99.1%) 19:4.4(90%)
         targetSdkVersion 27
-        versionCode 12
-        versionName "1.2.0"
+        versionCode 13
+        versionName "1.2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true //dex分包
         ndk {

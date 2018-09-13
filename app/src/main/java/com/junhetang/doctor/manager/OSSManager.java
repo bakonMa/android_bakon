@@ -17,7 +17,10 @@ import com.alibaba.sdk.android.oss.model.OSSRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
 import com.junhetang.doctor.application.DocApplication;
+import com.junhetang.doctor.utils.DateUtil;
+import com.junhetang.doctor.utils.FileUtil;
 import com.junhetang.doctor.utils.LogUtil;
+import com.junhetang.doctor.utils.ToastUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -29,19 +32,17 @@ import java.util.HashMap;
 public final class OSSManager {
 
 //    oss-upload accesskey
-//    AccessKeyID：LTAI4yR653kEJ42Y
-//    AccessKeySecret：CnIaqrPVRHsYroZ6sI0YQARUBCCgzv
+//    AccessKeyID：LTAIOIVy4MUt26E7
+//    AccessKeySecret：bEePtgCWWyPrekmlOQvORJzU2ljfjh
 //    EndPoint: oss-cn-shanghai-internal.aliyuncs.com
 //    bucket: jhtpri
 //    访问域名：https://osspub-pic.jhtcm.vip/
 //    bucket: jhtpub
-//    访问域名：https://osspub-pic.jhtcm.vip/
-//    测试目录：/test
 
     private OSS oss;
-    private String bucket = "jhtpub";
+    private String bucket_pub = "jhtpub";//其他路径
+    private String bucket_pri = "jhtpri";//处方私密路径
     private String endpoint = "https://oss-cn-shanghai.aliyuncs.com";
-    private String path = "https://osspub-pic.jhtcm.vip/";//地址(后台告诉)
 
     public static OSSManager getInstance() {
         return OssInstance.instance;
@@ -66,8 +67,10 @@ public final class OSSManager {
 //        } catch (ClientException e) {
 //            e.printStackTrace();
 //        }
-
-        OSSCredentialProvider credentialProvider = new OSSPlainTextAKSKCredentialProvider("LTAI4yR653kEJ42Y", "CnIaqrPVRHsYroZ6sI0YQARUBCCgzv");
+        //pc端账户
+        //OSSCredentialProvider credentialProvider = new OSSPlainTextAKSKCredentialProvider("LTAI4yR653kEJ42Y", "CnIaqrPVRHsYroZ6sI0YQARUBCCgzv");
+        //分离出移动端端账户
+        OSSCredentialProvider credentialProvider = new OSSPlainTextAKSKCredentialProvider("LTAIOIVy4MUt26E7", "bEePtgCWWyPrekmlOQvORJzU2ljfjh");
 
         //设置网络参数
         ClientConfiguration conf = new ClientConfiguration();
@@ -75,29 +78,56 @@ public final class OSSManager {
         conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
         conf.setMaxConcurrentRequest(5); // 最大并发请求书，默认5个
         conf.setMaxErrorRetry(2); // 失败后最大重试次数，默认2次
+        // oss为全局变量，endpoint是一个OSS区域地址
         oss = new OSSClient(DocApplication.getInstance(), endpoint, credentialProvider, conf);
     }
 
     /**
-     * imageUpPath 图片的上传地址（具体地址的前缀后端给，这个是拼起来的一个路径）
+     * imageUpPath 图片的上传地址（具体地址的前缀后端给，这个是相对路径）（使用完整图片路径，接口中拼接）
      * localFile   图片的本地地址
+     * type   0:头像 1：认证 2：处方
+     * pub:
+     * 头像：app/header/yyyymmdd/name.jpg
+     * pri:
+     * 认证：app/identify/yyyymmdd/name.jpg
+     * 拍照开方：app/extraction/yyyymmdd/name.jpg
      */
-    public void uploadImageAsync(String imageUpPath, String localImagePath, OSSUploadCallback callback) {
-        if (TextUtils.isEmpty(imageUpPath)) {
-            imageUpPath = "test/jht_" + System.currentTimeMillis() + ".jpg";
+    public void uploadImageAsync(int type, String localImagePath, OSSUploadCallback callback) {
+//        StringBuffer imageUpPath = new StringBuffer("test/");
+        StringBuffer imageUpPath = new StringBuffer("app/");
+        switch (type) {
+            case 0:
+                imageUpPath.append("header/");
+                break;
+            case 1:
+                imageUpPath.append("identify/");
+                break;
+            case 2:
+                imageUpPath.append("extraction/");
+                break;
         }
+        imageUpPath.append(DateUtil.getNowString(DateUtil.FORMAT_4))
+                .append("/jht_").append(System.currentTimeMillis()).append(".jpg");
+
         if (TextUtils.isEmpty(localImagePath)) {
-            LogUtil.w("uploadimg", "本地图片路径空异常");
+            LogUtil.d("uploadImageAsync", "本地图片路径空异常");
+            ToastUtil.showCenterToast("图片不存在，请重新选择");
+            //callback.uploadStatus(3, "图片不存在，请重新选择");
             return;
         }
         File file = new File(localImagePath);
-        if (!file.exists()) {
-            LogUtil.w("uploadimg", "FileNotExist");
-            LogUtil.d("uploadimg", localImagePath);
+        if (!file.exists() || file.length() <= 0) {
+            LogUtil.d("uploadImageAsync", "图片不存在，请重新选择");
+            ToastUtil.showCenterToast("图片不存在，请重新选择");
+            //callback.uploadStatus(3, "图片不存在，请重新选择");
             return;
         }
+        //压缩
+        String uploadPath = FileUtil.zipImageFile(file, FileUtil.MAX_UPLOAD_SIZE);
+        LogUtil.d("uploadImageAsync", uploadPath);
+
         // 构造上传请求
-        PutObjectRequest put = new PutObjectRequest(bucket, imageUpPath, localImagePath);
+        PutObjectRequest put = new PutObjectRequest(type == 0 ? bucket_pub : bucket_pri, imageUpPath.toString(), uploadPath);
         put.setCRC64(OSSRequest.CRC64Config.YES);
         // 异步上传时可以设置进度回调
         put.setProgressCallback(new OSSProgressCallback<PutObjectRequest>() {
@@ -107,7 +137,7 @@ public final class OSSManager {
                 //回调上传进度
                 if (callback != null) {
                     callback.uploadStatus(1, progress);
-                    LogUtil.d("progress", progress + "");
+                    LogUtil.d("onProgress", progress + "");
                 }
             }
         });
@@ -118,19 +148,20 @@ public final class OSSManager {
                         HashMap map = new HashMap();
                         map.put("result", request.getObjectKey());//线上文件路径
                         map.put("localImagePath", localImagePath);//本地路径
+                        //删除压缩后的临时文件
+                        FileUtil.deleteFile(uploadPath);
                         callback.uploadStatus(2, map);
                     }
 
                     @Override
                     public void onFailure(PutObjectRequest request, ClientException clientExcepion, ServiceException serviceException) {
-                        String info = "";
                         // 请求异常
                         if (clientExcepion != null) {
                             // 本地异常如网络异常等
                             clientExcepion.printStackTrace();
-                            info = clientExcepion.toString();
-                            LogUtil.d(info);
-                            callback.uploadStatus(3, "网络异常，请检查网络");
+                            LogUtil.d("onFailure", clientExcepion.toString());
+                            ToastUtil.showCenterToast("网络异常，请检查网络");
+                            //callback.uploadStatus(3, "网络异常，请检查网络");
                         }
                         if (serviceException != null) {
                             // 服务异常
@@ -138,9 +169,9 @@ public final class OSSManager {
                             Log.e("RequestId", serviceException.getRequestId());
                             Log.e("HostId", serviceException.getHostId());
                             Log.e("RawMessage", serviceException.getRawMessage());
-                            info = serviceException.toString();
-                            LogUtil.d(info);
-                            callback.uploadStatus(3, "服务器异常，请稍后重试");
+                            LogUtil.d("onFailure", serviceException.toString());
+                            ToastUtil.showCenterToast("服务器异常，请重试");
+                            //callback.uploadStatus(3, "服务器异常，请重试");
                         }
                     }
                 });

@@ -4,12 +4,13 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -20,13 +21,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.junhetang.doctor.BuildConfig;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
@@ -36,31 +37,30 @@ import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
+import com.junhetang.doctor.manager.OSSManager;
 import com.junhetang.doctor.nim.NimU;
 import com.junhetang.doctor.ui.activity.patient.PatientFamilyActivity;
+import com.junhetang.doctor.ui.adapter.ChoosePhotoAdapter;
 import com.junhetang.doctor.ui.adapter.JzrPopupAdapter;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.OPenPaperBaseBean;
 import com.junhetang.doctor.ui.bean.PatientFamilyBean;
-import com.junhetang.doctor.ui.bean.UploadImgBean;
 import com.junhetang.doctor.ui.contact.OpenPaperContact;
 import com.junhetang.doctor.ui.presenter.OpenPaperPresenter;
 import com.junhetang.doctor.utils.ActivityUtil;
 import com.junhetang.doctor.utils.Constant;
-import com.junhetang.doctor.utils.ImageUtil;
 import com.junhetang.doctor.utils.KeyBoardUtils;
 import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.RegexUtil;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
-import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.utils.UriUtil;
-import com.junhetang.doctor.utils.imageloader.Glide4Engine;
 import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.EditableLayout;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
+import com.junhetang.doctor.widget.dialog.LoadingDialog;
 import com.junhetang.doctor.widget.popupwindow.BottomChoosePopupView;
 import com.junhetang.doctor.widget.popupwindow.BottomListPopupView;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
@@ -68,9 +68,6 @@ import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.umeng.analytics.MobclickAgent;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -78,7 +75,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.inject.Inject;
 
@@ -91,7 +90,7 @@ import rx.Observer;
  * OpenPaperCameraActivity  拍照开方
  * Create at 2018/4/23 下午5:29 by mayakun
  */
-public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperContact.View {
+public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperContact.View, OSSManager.OSSUploadCallback {
 
     private final int REQUEST_CAMERA_CODE = 101;//拍照
     private final int REQUEST_ALBUM_CODE = 102;//相册
@@ -122,18 +121,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     EditableLayout etDrugClass;
     @BindView(R.id.et_drugstore)
     EditableLayout etDrugstore;
-    @BindView(R.id.iv_img1)
-    ImageView ivImg1;
-    @BindView(R.id.iv_img2)
-    ImageView ivImg2;
-    @BindView(R.id.iv_img3)
-    ImageView ivImg3;
-    @BindView(R.id.iv_img1_clean)
-    ImageView ivImg1Clean;
-    @BindView(R.id.iv_img2_clean)
-    ImageView ivImg2Clean;
-    @BindView(R.id.iv_img3_clean)
-    ImageView ivImg3Clean;
+    @BindView(R.id.recycleview_img)
+    RecyclerView recyclerView;
     @BindView(R.id.et_remark)
     EditText etRemark;
     @BindView(R.id.tv_next_step)
@@ -162,6 +151,10 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private BottomListPopupView bottomPopupView;
     private boolean isChoosePatient = false;//是否点击的选择就诊人
     private List<PatientFamilyBean.JiuzhenBean> jzrList = new ArrayList<>();//手机号的就诊人
+    private List<String> imgLocalList = new CopyOnWriteArrayList<>();//图片 有删除  防止错误
+    private List<String> imgUploadList = new ArrayList<>();
+    private ChoosePhotoAdapter photoAdapter;
+    private LoadingDialog loadingDialog;
 
     //带有返回的startActivityForResult-仅限nim中使用 formParent=1
     public static void startResultActivity(Context context, int requestCode, int formParent, String p_accid, String membNo) {
@@ -195,6 +188,29 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 sexType = (i == R.id.rb_nan ? 0 : 1);
+            }
+        });
+        //选择图片上传
+        photoAdapter = new ChoosePhotoAdapter(this, imgLocalList, 3);
+        recyclerView.setAdapter(photoAdapter);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        photoAdapter.changeNotifyData();//默认图片
+        photoAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.iv_img://点击选择
+                        if (TextUtils.isEmpty(imgLocalList.get(position))) {
+                            chooseImage();
+                        }
+                        break;
+                    case R.id.tv_close://点击红点  删除
+                        imgLocalList.remove(position);
+                        imgUploadList.remove(position);
+                        photoAdapter.changeNotifyData();
+                        break;
+                }
+
             }
         });
 
@@ -269,6 +285,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
 
 
     private JzrPopupAdapter jzrPopupAdapter;
+
     //填写就诊人 动态提示
     private void initJzrPopup() {
         if (jzrPopupAdapter != null) {
@@ -294,12 +311,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         }
     }
 
-    private String imgPath1, imgPath2, imgPath3;
-    private int currImg;
-
-    @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugclass, R.id.et_drugstore,
-            R.id.iv_img1, R.id.iv_img2, R.id.iv_img3, R.id.iv_img1_clean, R.id.iv_img2_clean,
-            R.id.iv_img3_clean, R.id.tv_next_step})
+    @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugclass, R.id.et_drugstore, R.id.tv_next_step})
     public void tabOnClick(View view) {
         switch (view.getId()) {
             case R.id.tv_addpatient://选择患者
@@ -346,34 +358,6 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 //Umeng 埋点
                 MobclickAgent.onEvent(this, UmengKey.camera_submit);
                 checkData();
-                break;
-            case R.id.iv_img1_clean:
-                imgPath1 = "";
-                ivImg1.setImageResource(0);
-                ivImg1Clean.setVisibility(View.GONE);
-                break;
-            case R.id.iv_img2_clean:
-                imgPath2 = "";
-                ivImg2.setImageResource(0);
-                ivImg2Clean.setVisibility(View.GONE);
-                break;
-            case R.id.iv_img3_clean:
-                imgPath3 = "";
-                ivImg3.setImageResource(0);
-                ivImg3Clean.setVisibility(View.GONE);
-                break;
-            case R.id.iv_img1:
-            case R.id.iv_img2:
-            case R.id.iv_img3:
-                bottomChoosePopupView = new BottomChoosePopupView(this, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //标识点击的哪一个
-                        currImg = view.getId();
-                        openCameraOrPhoto(v.getId() == R.id.dtv_one);
-                    }
-                });
-                bottomChoosePopupView.show(scrollView);
                 break;
         }
     }
@@ -442,29 +426,20 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
 
     //数据检测
     private void checkData() {
-        if (TextUtils.isEmpty(imgPath1)
-                && TextUtils.isEmpty(imgPath2)
-                && TextUtils.isEmpty(imgPath3)) {
-            ToastUtil.showShort("请上传处方照片");
+        if (null == imgUploadList || imgUploadList.isEmpty()) {
+            ToastUtil.showCenterToast("请上传处方照片");
             return;
         }
 
         if (TextUtils.isEmpty(etDrugstore.getText())) {
-            commonDialog = new CommonDialog(this, "请选择药房");
-            commonDialog.show();
+            ToastUtil.showCenterToast("请选择药房");
             return;
         }
 
         //图片路径拼接
         StringBuffer imgPath = new StringBuffer();
-        if (!TextUtils.isEmpty(imgPath1)) {
-            imgPath.append(imgPath1).append(",");
-        }
-        if (!TextUtils.isEmpty(imgPath2)) {
-            imgPath.append(imgPath2).append(",");
-        }
-        if (!TextUtils.isEmpty(imgPath3)) {
-            imgPath.append(imgPath3);
+        for (String s : imgUploadList) {
+            imgPath.append(s).append(",");
         }
 
         Params params = new Params();
@@ -510,9 +485,9 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                             if (isCamera) {//打开照相机
                                 File dir;
                                 if (Environment.MEDIA_MOUNTED.equals(DocApplication.getAppComponent().dataRepo().storage().externalRootDirState())) {
-                                    dir = DocApplication.getAppComponent().dataRepo().storage().externalPublicDir(Environment.DIRECTORY_PICTURES);
+                                    dir = DocApplication.getAppComponent().dataRepo().storage().externalPublicDir(Environment.DIRECTORY_DCIM);
                                 } else {
-                                    dir = DocApplication.getAppComponent().dataRepo().storage().internalCustomDir(Environment.DIRECTORY_PICTURES);
+                                    dir = DocApplication.getAppComponent().dataRepo().storage().internalCustomDir(Environment.DIRECTORY_DCIM);
                                 }
                                 if (!dir.exists()) {
                                     dir.mkdirs();
@@ -521,10 +496,9 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                                 ActivityUtil.openCamera(OpenPaperCameraActivity.this, cameraPath, REQUEST_CAMERA_CODE);
                             } else {//打开相册
                                 ActivityUtil.openAlbum(OpenPaperCameraActivity.this, "image/*", REQUEST_ALBUM_CODE);
-//                                chooseImage();
                             }
                         } else {
-                            ToastUtil.show(isCamera ? "请求照相机权限失败" : "请求相册权限失败");
+                            ToastUtil.showCenterToast(isCamera ? "请求照相机权限失败" : "请求相册权限失败");
                         }
                     }
 
@@ -543,59 +517,41 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
 
     //选择图片 多张
     private void chooseImage() {
-        Matisse.from(this)
-//                .choose(MimeType.ofImage())
-                .choose(MimeType.ofImage(), false)
-                .capture(false)//是否提供拍照功能
-                .captureStrategy(new CaptureStrategy(true, getPackageName() + ".fileprovider"))//存储到哪里
-                .countable(true)//有序选择图片
-                .maxSelectable(3) //选择的最大数量
-                .gridExpectedSize(UIUtils.dp2px(this, 120))
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)//图像选择和预览活动所需的方向。
-                .thumbnailScale(0.85f) // 缩略图的比例
-                .theme(R.style.Matisse_Zhihu)//主题  暗色主题 R.style.Matisse_Dracula
-                .imageEngine(new Glide4Engine()) // 使用的图片加载引擎
-                .forResult(REQUEST_ALBUM_CODE); // 设置作为标记的请求码
+        bottomChoosePopupView = new BottomChoosePopupView(this, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openCameraOrPhoto(v.getId() == R.id.dtv_one);
+            }
+        });
+        bottomChoosePopupView.show(scrollView);
     }
-
-    //临时path  显示用，不需要再加载上传后的path
-    private String tempPath;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 //裁剪
-//                case REQUEST_CROP_CODE:
-//                break;
+                //case REQUEST_CROP_CODE:
+                //break;
                 //拍照
                 case REQUEST_CAMERA_CODE:
                     LogUtil.d("cameraPath=" + cameraPath.getAbsolutePath());
-                    if (cameraPath.exists()) {
-                        tempPath = cameraPath.getAbsolutePath();
-                        mPresenter.uploadImg(tempPath, Constant.UPLOADIMG_TYPE_2);
-                    }
+                    OSSManager.getInstance().uploadImageAsync(2, cameraPath.getAbsolutePath(), this);
                     break;
                 //相册
                 case REQUEST_ALBUM_CODE:
                     Uri uri = data.getData();
                     String imagePath;
                     if (uri != null && !TextUtils.isEmpty(imagePath = UriUtil.getRealFilePath(this, uri))) {
-                        LogUtil.d("headerPath=" + imagePath);
-                        tempPath = imagePath;
-                        mPresenter.uploadImg(imagePath, Constant.UPLOADIMG_TYPE_2);
+                        LogUtil.d("imagePath=" + imagePath);
+                        OSSManager.getInstance().uploadImageAsync(2, imagePath, this);
                     }
 
-//                    List<Uri> mSelected = Matisse.obtainResult(data);
-//                    if (mSelected != null && !mSelected.isEmpty()) {
-//                      todo 循环上传，修改显示逻辑
-//                    }
                     break;
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 
     @Override
     protected void setupActivityComponent() {
@@ -617,41 +573,6 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     @Override
     public void onSuccess(Message message) {
         switch (message.what) {
-            case OpenPaperPresenter.UPLOADIMF_OK://上传成功
-                UploadImgBean uploadImgBean = (UploadImgBean) message.obj;
-                switch (currImg) {
-                    case R.id.iv_img1:
-                        imgPath1 = uploadImgBean.url;
-                        ImageUtil.showImage(tempPath, ivImg1);
-                        ivImg1Clean.setVisibility(View.VISIBLE);
-                        break;
-                    case R.id.iv_img2:
-                        imgPath2 = uploadImgBean.url;
-                        ImageUtil.showImage(tempPath, ivImg2);
-                        ivImg2Clean.setVisibility(View.VISIBLE);
-                        break;
-                    case R.id.iv_img3:
-                        imgPath3 = uploadImgBean.url;
-                        ImageUtil.showImage(tempPath, ivImg3);
-                        ivImg3Clean.setVisibility(View.VISIBLE);
-                        break;
-                }
-                ToastUtil.showShort("上传成功");
-                break;
-            case OpenPaperPresenter.UPLOADIMF_ERROR://上传失败
-                switch (currImg) {
-                    case R.id.iv_img1:
-                        imgPath1 = "";
-                        break;
-                    case R.id.iv_img2:
-                        imgPath2 = "";
-                        break;
-                    case R.id.iv_img3:
-                        imgPath3 = "";
-                        break;
-                }
-                ToastUtil.showShort("上传失败，请重新选择");
-                break;
             case OpenPaperPresenter.GET_JZR_BY_PHONE://提示 就诊人数据
                 jzrList.clear();
                 List<PatientFamilyBean.JiuzhenBean> list = (List<PatientFamilyBean.JiuzhenBean>) message.obj;
@@ -728,4 +649,47 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         return bindToLifecycle();
     }
 
+    @Override
+    public void uploadStatus(int type, Object obj) {
+        //1:上传中 2：上传完成 3：上传失败
+        switch (type) {
+            case 1:
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressDialog(Integer.parseInt(obj.toString()));
+                    }
+                });
+                break;
+            case 2:
+                HashMap<String, String> map = (HashMap<String, String>) obj;
+                imgUploadList.add(map.get("result"));
+                imgLocalList.add(map.get("localImagePath"));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        photoAdapter.changeNotifyData();
+                    }
+                });
+                break;
+            case 3:
+                ToastUtil.showCenterToast(obj.toString());
+                break;
+        }
+    }
+
+    private void showProgressDialog(int progress) {
+        if (progress == 100) {
+            if (loadingDialog != null) {
+                loadingDialog.dismiss();
+            }
+            return;
+        }
+        if (loadingDialog == null) {
+            loadingDialog = new LoadingDialog(this, String.format("上传图片中%s%%", progress));
+        } else {
+            loadingDialog.setLoadingText(String.format("上传图片中%s%%", progress));
+        }
+        loadingDialog.show();
+    }
 }

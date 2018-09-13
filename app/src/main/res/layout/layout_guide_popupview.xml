@@ -10,10 +10,17 @@
 
     <TextView
         android:id="@+id/tv_iknow"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="55dp"
+        android:background="@drawable/select_bg_corner_30"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:text="知道了"
         android:layout_alignParentBottom="true"
-        android:visibility="gone" />
+        android:textColor="@color/color_000"
+        android:visibility="visible" />
 
 </RelativeLayout>
 

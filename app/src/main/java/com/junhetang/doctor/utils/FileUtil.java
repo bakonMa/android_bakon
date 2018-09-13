@@ -90,6 +90,16 @@ public class FileUtil {
         return bytes;
     }
 
+    public static String zipImageFile(File file, long maxSize) {
+        byte[] fileByte = zipImageToSize(file, maxSize);
+        //系统相册目录
+        String peicurePath = Environment.getExternalStorageDirectory()
+                + File.separator + Environment.DIRECTORY_PICTURES
+                + File.separator;
+        String fileName = "jhtzip_" + file.getName();
+        byte2File(fileByte, peicurePath, fileName);
+        return peicurePath + fileName;
+    }
 
     public static void byte2File(byte[] buf, String filePath, String fileName) {
         BufferedOutputStream bos = null;

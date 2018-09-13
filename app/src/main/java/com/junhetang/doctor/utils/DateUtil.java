@@ -45,6 +45,7 @@ public class DateUtil {
     public static String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public static String FORMAT_2 = "yyyy-MM-dd HH:mm";
     public static String FORMAT_3 = "yyyy-MM-dd";
+    public static String FORMAT_4 = "yyyyMMdd";
 
     /**
      * 获取当前时间

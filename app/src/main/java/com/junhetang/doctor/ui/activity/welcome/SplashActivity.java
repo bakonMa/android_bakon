@@ -11,6 +11,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.junhetang.doctor.BuildConfig;
 import com.junhetang.doctor.R;
@@ -37,6 +38,8 @@ public class SplashActivity extends BaseActivity {
     ViewPager viewPager;
     @BindView(R.id.id_indicator)
     SplashIndicator idIndicator;
+    @BindView(R.id.tv_enter)
+    TextView tvEnter;
 
     List<Integer> imgList = new ArrayList<>();
     private WelcomeAdapter welcomeAdapter;
@@ -82,6 +85,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 idIndicator.setVisibility(position == imgList.size() - 1 ? View.GONE : View.VISIBLE);
+                tvEnter.setVisibility(position == imgList.size() - 1 ? View.VISIBLE : View.GONE);
             }
 
             @Override

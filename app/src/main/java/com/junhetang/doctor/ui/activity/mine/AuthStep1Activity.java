@@ -27,14 +27,13 @@ import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
 import com.junhetang.doctor.injection.modules.ActivityModule;
+import com.junhetang.doctor.manager.OSSManager;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.bean.BaseConfigBean;
 import com.junhetang.doctor.ui.bean.HospitalBean;
-import com.junhetang.doctor.ui.bean.UploadImgBean;
 import com.junhetang.doctor.ui.contact.AuthContact;
 import com.junhetang.doctor.ui.presenter.AuthPresenter;
 import com.junhetang.doctor.utils.ActivityUtil;
-import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.ImageUtil;
 import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
@@ -44,7 +43,9 @@ import com.junhetang.doctor.utils.UriUtil;
 import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.EditableLayout;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
+import com.junhetang.doctor.widget.dialog.LoadingDialog;
 import com.junhetang.doctor.widget.popupwindow.BottomChoosePopupView;
+import com.junhetang.doctor.widget.popupwindow.BottomListPopupView;
 import com.junhetang.doctor.widget.popupwindow.OnePopupWheel;
 import com.junhetang.doctor.widget.popupwindow.ProvCityPopupView;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
@@ -56,6 +57,7 @@ import com.umeng.analytics.MobclickAgent;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -69,7 +71,7 @@ import rx.Observer;
  * AuthStep1Activity
  * Create at 2018/4/3 下午3:58 by mayakun
  */
-public class AuthStep1Activity extends BaseActivity implements AuthContact.View {
+public class AuthStep1Activity extends BaseActivity implements AuthContact.View, OSSManager.OSSUploadCallback {
 
     private final int REQUEST_CAMERA_CODE = 101;//拍照
     private final int REQUEST_ALBUM_CODE = 102;//相册
@@ -120,6 +122,9 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     private List<String> departmentStrList = new ArrayList<>();//科室
     //擅长疾病 中间传递使用
     private ArrayList<BaseConfigBean.Skill> selectSkills = new ArrayList<>();
+    private LoadingDialog loadingDialog;
+    private BottomChoosePopupView bottomChoosePopupView;
+    private BottomListPopupView bottomPopupView;
 
     @Override
     protected int provideRootLayout() {
@@ -139,7 +144,6 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                 sexType = (i == R.id.rb_nan ? 0 : 1);
             }
         });
-
     }
 
     //获取当前界面可用高度
@@ -148,7 +152,6 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                 .setTitle("认证")
                 .setStatuBar(R.color.white)
                 .setLeft(false)
-//                .setRightText("认证", true, R.color.color_popup_btn)
                 .setListener(new TitleOnclickListener() {
                     @Override
                     public void leftClick() {
@@ -165,14 +168,13 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     public void tabOnClick(View view) {
         switch (view.getId()) {
             case R.id.iv_img1:
-                BottomChoosePopupView bottomChoosePopupView = new BottomChoosePopupView(this, new View.OnClickListener() {
+                bottomChoosePopupView = new BottomChoosePopupView(this, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         openCameraOrPhoto(view.getId() == R.id.dtv_one);
                     }
                 });
                 bottomChoosePopupView.show(scrollView);
-
                 break;
             case R.id.et_address:
                 mProvCityPopupView = new ProvCityPopupView(this, new ProvCityPopupView.ClickedListener() {
@@ -187,29 +189,29 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                 break;
             case R.id.et_organization:
                 if (TextUtils.isEmpty(provinceStr) || TextUtils.isEmpty(cityStr)) {
-                    ToastUtil.showShort("请先选择地区");
+                    ToastUtil.showCenterToast("请先选择地区");
                     return;
                 }
                 mPresenter.getHospital(provinceStr, cityStr);
                 break;
             case R.id.et_lab_type:
-                mPopupWheel = new OnePopupWheel(this, departmentStrList, "请选择科室", new OnePopupWheel.Listener() {
+                bottomPopupView = new BottomListPopupView(this, "请选择科室", departmentStrList, new BottomListPopupView.OnClickListener() {
                     @Override
-                    public void completed(int position) {
+                    public void selectItem(int position) {
                         labId = baseConfigBean.department.get(position).id;
                         etLabType.setText(departmentStrList.get(position));
                     }
                 });
-                mPopupWheel.show(scrollView);
+                bottomPopupView.show(scrollView);
                 break;
             case R.id.et_title:
-                mPopupWheel = new OnePopupWheel(this, titleList, "请选择职称", new OnePopupWheel.Listener() {
+                bottomPopupView = new BottomListPopupView(this, "请选择职称", titleList, new BottomListPopupView.OnClickListener() {
                     @Override
-                    public void completed(int position) {
+                    public void selectItem(int position) {
                         etTitle.setText(titleList.get(position));
                     }
                 });
-                mPopupWheel.show(scrollView);
+                bottomPopupView.show(scrollView);
 
                 break;
             case R.id.et_goodat:
@@ -231,31 +233,31 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
     //数据检测
     private void checkData() {
         if (TextUtils.isEmpty(headImgURL)) {
-            ToastUtil.showShort("请选择头像");
+            ToastUtil.showCenterToast("请选择头像");
             return;
         }
         if (TextUtils.isEmpty(etName.getEditText().getText())) {
-            ToastUtil.showShort("请填写姓名");
+            ToastUtil.showCenterToast("请填写姓名");
             return;
         }
         if (TextUtils.isEmpty(provinceStr) || TextUtils.isEmpty(cityStr)) {
-            ToastUtil.showShort("请选择地区");
+            ToastUtil.showCenterToast("请选择地区");
             return;
         }
         if (TextUtils.isEmpty(etOrganization.getText())) {
-            ToastUtil.showShort("请选择医疗机构");
+            ToastUtil.showCenterToast("请选择医疗机构");
             return;
         }
         if (TextUtils.isEmpty(etLabType.getText())) {
-            ToastUtil.showShort("请选择科室");
+            ToastUtil.showCenterToast("请选择科室");
             return;
         }
         if (TextUtils.isEmpty(etTitle.getText())) {
-            ToastUtil.showShort("请选择职称");
+            ToastUtil.showCenterToast("请选择职称");
             return;
         }
         if (TextUtils.isEmpty(etGoodat.getText())) {
-            ToastUtil.showShort("请选择擅长疾病");
+            ToastUtil.showCenterToast("请选择擅长疾病");
             return;
         }
 
@@ -325,12 +327,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
             switch (requestCode) {
                 //裁剪
                 case REQUEST_CROP_CODE:
-                    String outPath = ImageUtil.cropUri.getPath();
-                    LogUtil.d("doCrop outPath=" + outPath);
-                    if (!TextUtils.isEmpty(outPath)) {
-                        ImageUtil.showImage(outPath, ivImg);
-                        mPresenter.uploadImg(outPath, Constant.UPLOADIMG_TYPE_0);
-                    }
+                    OSSManager.getInstance().uploadImageAsync(0, ImageUtil.cropUri.getPath(), this);
                     break;
                 //拍照
                 case REQUEST_CAMERA_CODE:
@@ -397,15 +394,6 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                     departmentStrList.add(bean.name);
                 }
                 break;
-            case AuthPresenter.UPLOADIMF_OK://上传成功
-                UploadImgBean uploadImgBean = (UploadImgBean) message.obj;
-                headImgURL = uploadImgBean.url;
-                ToastUtil.showShort("上传成功");
-                break;
-            case AuthPresenter.UPLOADIMF_ERROR://上传失败
-                headImgURL = "";
-                ToastUtil.showShort("上传失败，请重新选择");
-                break;
             case AuthPresenter.GETHOSPITAL_OK://获取医院列表
                 hospitalBeans = (List<HospitalBean>) message.obj;
                 hospitalStr.clear();
@@ -413,12 +401,12 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                     hospitalStr.add(hospitalBean.name);
                 }
                 hospitalStr.add("其他");//最后追加
-                mPopupWheel = new OnePopupWheel(this, hospitalStr, "请选择医院", new OnePopupWheel.Listener() {
+                bottomPopupView = new BottomListPopupView(this, "请选择医疗机构", hospitalStr, new BottomListPopupView.OnClickListener() {
                     @Override
-                    public void completed(int position) {
+                    public void selectItem(int position) {
                         //选择其他后，弹出dialog填写
                         if (position == hospitalStr.size() - 1) {
-                            commonDialog = new CommonDialog(AuthStep1Activity.this, "填写医院名称", InputType.TYPE_CLASS_TEXT,
+                            commonDialog = new CommonDialog(AuthStep1Activity.this, "填写医疗机构名称", InputType.TYPE_CLASS_TEXT,
                                     new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
@@ -435,10 +423,10 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
                         }
                     }
                 });
-                mPopupWheel.show(scrollView);
+                bottomPopupView.show(scrollView);
                 break;
             case AuthPresenter.USER_IDENTIFY_OK://认证信息提交
-                ToastUtil.showShort("认证基础信息提交成功");
+                //ToastUtil.showCenterToast("认证基础信息提交成功");
                 //刷新个人认证状态
                 EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_AUTH_STATUS));
                 startActivity(new Intent(this, AuthStep2Activity.class));
@@ -457,4 +445,50 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View 
         return bindToLifecycle();
     }
 
+    @Override
+    public void uploadStatus(int type, Object obj) {
+        //1:上传中 2：上传完成 3：上传失败
+        switch (type) {
+            case 1:
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressDialog(Integer.parseInt(obj.toString()));
+                    }
+                });
+                break;
+            case 2:
+                HashMap<String, String> map = (HashMap<String, String>) obj;
+                //oss 图片路径
+                headImgURL = map.get("result");
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //显示本地图片路径
+                        ImageUtil.showImage(map.get("localImagePath"), ivImg);
+                    }
+                });
+
+                break;
+            case 3:
+                ToastUtil.showCenterToast(obj.toString());
+                break;
+        }
+    }
+
+    private void showProgressDialog(int progress) {
+        if (progress == 100) {
+            if (loadingDialog != null) {
+                loadingDialog.dismiss();
+            }
+            return;
+        }
+        if (loadingDialog == null) {
+            loadingDialog = new LoadingDialog(this, String.format("上传图片中%s%%", progress));
+        } else {
+            loadingDialog.setLoadingText(String.format("上传图片中%s%%", progress));
+        }
+        loadingDialog.show();
+    }
 }
