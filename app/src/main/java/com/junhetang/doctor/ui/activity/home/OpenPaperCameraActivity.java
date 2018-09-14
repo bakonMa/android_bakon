@@ -3,6 +3,7 @@ package com.junhetang.doctor.ui.activity.home;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -15,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -27,6 +29,7 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.junhetang.doctor.BuildConfig;
 import com.junhetang.doctor.R;
@@ -155,6 +158,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private List<String> imgUploadList = new ArrayList<>();
     private ChoosePhotoAdapter photoAdapter;
     private LoadingDialog loadingDialog;
+    private OSSAsyncTask upLoadTask;
 
     //带有返回的startActivityForResult-仅限nim中使用 formParent=1
     public static void startResultActivity(Context context, int requestCode, int formParent, String p_accid, String membNo) {
@@ -536,7 +540,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 //拍照
                 case REQUEST_CAMERA_CODE:
                     LogUtil.d("cameraPath=" + cameraPath.getAbsolutePath());
-                    OSSManager.getInstance().uploadImageAsync(2, cameraPath.getAbsolutePath(), this);
+                    upLoadTask = OSSManager.getInstance().uploadImageAsync(2, cameraPath.getAbsolutePath(), this);
                     break;
                 //相册
                 case REQUEST_ALBUM_CODE:
@@ -544,7 +548,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                     String imagePath;
                     if (uri != null && !TextUtils.isEmpty(imagePath = UriUtil.getRealFilePath(this, uri))) {
                         LogUtil.d("imagePath=" + imagePath);
-                        OSSManager.getInstance().uploadImageAsync(2, imagePath, this);
+                        upLoadTask = OSSManager.getInstance().uploadImageAsync(2, imagePath, this);
                     }
 
                     break;
@@ -623,6 +627,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
 
     @Override
     public void onBackPressed() {
+        //关闭activity 提示
         commonDialog = new CommonDialog(this, false, "确定要退出开方吗？", new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -657,7 +662,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        showProgressDialog(Integer.parseInt(obj.toString()));
+                        showUpLoadDialog(Integer.parseInt(obj.toString()));
                     }
                 });
                 break;
@@ -671,6 +676,10 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                         photoAdapter.changeNotifyData();
                     }
                 });
+
+                if (loadingDialog != null) {
+                    loadingDialog.dismiss();
+                }
                 break;
             case 3:
                 ToastUtil.showCenterToast(obj.toString());
@@ -678,18 +687,35 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         }
     }
 
-    private void showProgressDialog(int progress) {
-        if (progress == 100) {
-            if (loadingDialog != null) {
-                loadingDialog.dismiss();
-            }
-            return;
-        }
+    //图片上传dialog
+    private void showUpLoadDialog(int progress) {
         if (loadingDialog == null) {
             loadingDialog = new LoadingDialog(this, String.format("上传图片中%s%%", progress));
+            loadingDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                        //主动关闭图片上传
+                        if (loadingDialog != null && loadingDialog.isShowing()) {
+                            LogUtil.d("onKey", "KEYCODE_BACK ACTION_DOWN");
+                            if (upLoadTask != null && !upLoadTask.isCompleted() && !upLoadTask.isCanceled()) {
+                                upLoadTask.cancel();
+                            }
+                            loadingDialog.dismiss();
+                        }
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            loadingDialog.show();
         } else {
+            if (!loadingDialog.isShowing()) {
+                loadingDialog.show();
+            }
             loadingDialog.setLoadingText(String.format("上传图片中%s%%", progress));
         }
-        loadingDialog.show();
     }
+
+
 }

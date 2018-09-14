@@ -84,7 +84,7 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
         //type：0：头像 1：其他认证图片  upload：图片文件
         MultipartBody.Part partType = MultipartBody.Part.createFormData("type", type);
         File file = new File(path);
-        byte[] bytes = FileUtil.zipImageToSize(file, FileUtil.MAX_UPLOAD_SIZE);
+        byte[] bytes = FileUtil.zipImageToSize(file, FileUtil.MAX_UPLOAD_SIZE_1M);
         LogUtil.d("bytes after size=" + bytes.length);
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), bytes);
         MultipartBody.Part partFile = MultipartBody.Part.createFormData("upload", file.getName(), requestBody);

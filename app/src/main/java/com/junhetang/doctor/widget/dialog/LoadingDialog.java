@@ -58,6 +58,7 @@ public class LoadingDialog extends Dialog implements DialogInterface.OnDismissLi
         tv_message = view.findViewById(R.id.id_tv_message);
         rl_loading = view.findViewById(R.id.id_rl_loading);
         imageView = view.findViewById(R.id.id_image);
+        setLoadingText(mMessage);
         setOnDismissListener(this);
         setCancelable(false);
     }
@@ -107,4 +108,5 @@ public class LoadingDialog extends Dialog implements DialogInterface.OnDismissLi
             handler.removeCallbacksAndMessages(null);
         }
     }
+
 }

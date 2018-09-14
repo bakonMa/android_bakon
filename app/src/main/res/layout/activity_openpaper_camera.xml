@@ -45,89 +45,14 @@
                 android:textColor="@color/color_999"
                 android:textSize="12sp" />
 
-            <LinearLayout
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycleview_img"
                 android:layout_width="match_parent"
-                android:layout_height="85dp"
+                android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:orientation="horizontal"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp">
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:id="@+id/iv_img1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/img_default_1"
-                        android:scaleType="centerInside" />
-
-                    <ImageView
-                        android:id="@+id/iv_img1_clean"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginRight="6dp"
-                        android:background="@drawable/icon_img_del"
-                        android:visibility="gone" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:id="@+id/iv_img2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/img_default_1"
-                        android:scaleType="centerInside" />
-
-                    <ImageView
-                        android:id="@+id/iv_img2_clean"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginRight="6dp"
-                        android:background="@drawable/icon_img_del"
-                        android:visibility="gone" />
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1">
-
-                    <ImageView
-                        android:id="@+id/iv_img3"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="6dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@drawable/img_default_1"
-                        android:scaleType="centerInside" />
-
-                    <ImageView
-                        android:id="@+id/iv_img3_clean"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
-                        android:background="@drawable/icon_img_del"
-                        android:visibility="gone" />
-                </RelativeLayout>
-
-            </LinearLayout>
+                android:paddingRight="15dp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -249,11 +174,11 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="请输入诊疗费"
                     android:gravity="right|center_vertical"
-                    android:paddingRight="15dp"
+                    android:hint="请输入诊疗费"
                     android:inputType="number"
                     android:maxLength="5"
+                    android:paddingRight="15dp"
                     android:textCursorDrawable="@drawable/color_cursor"
                     android:textSize="16sp" />
 
@@ -445,8 +370,8 @@
                             android:button="@drawable/selector_radiobutton"
                             android:checked="true"
                             android:paddingLeft="20dp"
-                            android:textColor="@color/color_000"
                             android:text="男"
+                            android:textColor="@color/color_000"
                             android:textSize="16sp" />
 
                         <RadioButton
@@ -455,8 +380,8 @@
                             android:layout_height="match_parent"
                             android:button="@drawable/selector_radiobutton"
                             android:paddingLeft="20dp"
-                            android:textColor="@color/color_000"
                             android:text="女"
+                            android:textColor="@color/color_000"
                             android:textSize="16sp" />
                     </RadioGroup>
 

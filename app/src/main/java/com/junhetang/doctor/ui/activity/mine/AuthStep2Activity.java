@@ -2,6 +2,7 @@ package com.junhetang.doctor.ui.activity.mine;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -9,10 +10,12 @@ import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 
+import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.junhetang.doctor.BuildConfig;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
@@ -75,6 +78,7 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View,
     AuthPresenter mPresenter;
     private BottomChoosePopupView bottomChoosePopupView;
     private LoadingDialog loadingDialog;
+    private OSSAsyncTask upLoadTask;
 
     @Override
     protected int provideRootLayout() {
@@ -192,7 +196,7 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View,
                 //拍照
                 case REQUEST_CAMERA_CODE:
                     LogUtil.d("cameraPath=" + cameraPath.getAbsolutePath());
-                    OSSManager.getInstance().uploadImageAsync(1, cameraPath.getAbsolutePath(), this);
+                    upLoadTask = OSSManager.getInstance().uploadImageAsync(1, cameraPath.getAbsolutePath(), this);
                     break;
                 //相册
                 case REQUEST_ALBUM_CODE:
@@ -200,7 +204,7 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View,
                     String imagePath;
                     if (uri != null && !TextUtils.isEmpty(imagePath = UriUtil.getRealFilePath(this, uri))) {
                         LogUtil.d("imagePath=" + imagePath);
-                        OSSManager.getInstance().uploadImageAsync(1, imagePath, this);
+                        upLoadTask = OSSManager.getInstance().uploadImageAsync(1, imagePath, this);
                     }
                     break;
                 default:
@@ -254,7 +258,7 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View,
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        showProgressDialog(Integer.parseInt(obj.toString()));
+                        showUpLoadDialog(Integer.parseInt(obj.toString()));
                     }
                 });
                 break;
@@ -278,7 +282,9 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View,
                         ImageUtil.showImage(map.get("localImagePath"), findViewById(currImg));
                     }
                 });
-
+                if (loadingDialog != null) {
+                    loadingDialog.dismiss();
+                }
                 break;
             case 3:
                 ToastUtil.showCenterToast(obj.toString());
@@ -286,18 +292,33 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View,
         }
     }
 
-    private void showProgressDialog(int progress) {
-        if (progress == 100) {
-            if (loadingDialog != null) {
-                loadingDialog.dismiss();
-            }
-            return;
-        }
+    //图片上传dialog
+    private void showUpLoadDialog(int progress) {
         if (loadingDialog == null) {
             loadingDialog = new LoadingDialog(this, String.format("上传图片中%s%%", progress));
+            loadingDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                        //主动关闭图片上传
+                        if (loadingDialog != null && loadingDialog.isShowing()) {
+                            LogUtil.d("onKey", "KEYCODE_BACK ACTION_DOWN");
+                            if (upLoadTask != null && !upLoadTask.isCompleted() && !upLoadTask.isCanceled()) {
+                                upLoadTask.cancel();
+                            }
+                            loadingDialog.dismiss();
+                        }
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            loadingDialog.show();
         } else {
+            if (!loadingDialog.isShowing()) {
+                loadingDialog.show();
+            }
             loadingDialog.setLoadingText(String.format("上传图片中%s%%", progress));
         }
-        loadingDialog.show();
     }
 }

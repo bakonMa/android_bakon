@@ -2,6 +2,7 @@ package com.junhetang.doctor.ui.activity.mine;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -11,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -18,6 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.junhetang.doctor.BuildConfig;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
@@ -46,7 +49,6 @@ import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.dialog.LoadingDialog;
 import com.junhetang.doctor.widget.popupwindow.BottomChoosePopupView;
 import com.junhetang.doctor.widget.popupwindow.BottomListPopupView;
-import com.junhetang.doctor.widget.popupwindow.OnePopupWheel;
 import com.junhetang.doctor.widget.popupwindow.ProvCityPopupView;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
@@ -110,7 +112,6 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View,
     AuthPresenter mPresenter;
 
     private String headImgURL, provinceStr, cityStr;
-    private OnePopupWheel mPopupWheel;
     private ProvCityPopupView mProvCityPopupView;
     private int labId;//科室
 
@@ -125,6 +126,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View,
     private LoadingDialog loadingDialog;
     private BottomChoosePopupView bottomChoosePopupView;
     private BottomListPopupView bottomPopupView;
+    private OSSAsyncTask upLoadTask;
 
     @Override
     protected int provideRootLayout() {
@@ -327,7 +329,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View,
             switch (requestCode) {
                 //裁剪
                 case REQUEST_CROP_CODE:
-                    OSSManager.getInstance().uploadImageAsync(0, ImageUtil.cropUri.getPath(), this);
+                    upLoadTask = OSSManager.getInstance().uploadImageAsync(0, ImageUtil.cropUri.getPath(), this);
                     break;
                 //拍照
                 case REQUEST_CAMERA_CODE:
@@ -453,7 +455,7 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View,
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        showProgressDialog(Integer.parseInt(obj.toString()));
+                        showUpLoadDialog(Integer.parseInt(obj.toString()));
                     }
                 });
                 break;
@@ -461,7 +463,6 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View,
                 HashMap<String, String> map = (HashMap<String, String>) obj;
                 //oss 图片路径
                 headImgURL = map.get("result");
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -469,7 +470,9 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View,
                         ImageUtil.showImage(map.get("localImagePath"), ivImg);
                     }
                 });
-
+                if (loadingDialog != null) {
+                    loadingDialog.dismiss();
+                }
                 break;
             case 3:
                 ToastUtil.showCenterToast(obj.toString());
@@ -477,18 +480,33 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View,
         }
     }
 
-    private void showProgressDialog(int progress) {
-        if (progress == 100) {
-            if (loadingDialog != null) {
-                loadingDialog.dismiss();
-            }
-            return;
-        }
+    //图片上传dialog
+    private void showUpLoadDialog(int progress) {
         if (loadingDialog == null) {
             loadingDialog = new LoadingDialog(this, String.format("上传图片中%s%%", progress));
+            loadingDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                        //主动关闭图片上传
+                        if (loadingDialog != null && loadingDialog.isShowing()) {
+                            LogUtil.d("onKey", "KEYCODE_BACK ACTION_DOWN");
+                            if (upLoadTask != null && !upLoadTask.isCompleted() && !upLoadTask.isCanceled()) {
+                                upLoadTask.cancel();
+                            }
+                            loadingDialog.dismiss();
+                        }
+                        return true;
+                    }
+                    return false;
+                }
+            });
+            loadingDialog.show();
         } else {
+            if (!loadingDialog.isShowing()) {
+                loadingDialog.show();
+            }
             loadingDialog.setLoadingText(String.format("上传图片中%s%%", progress));
         }
-        loadingDialog.show();
     }
 }

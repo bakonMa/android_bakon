@@ -16,10 +16,12 @@ import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.OSSRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
+import com.junhetang.doctor.BuildConfig;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.utils.DateUtil;
 import com.junhetang.doctor.utils.FileUtil;
 import com.junhetang.doctor.utils.LogUtil;
+import com.junhetang.doctor.utils.NetUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 
 import java.io.File;
@@ -92,9 +94,25 @@ public final class OSSManager {
      * 认证：app/identify/yyyymmdd/name.jpg
      * 拍照开方：app/extraction/yyyymmdd/name.jpg
      */
-    public void uploadImageAsync(int type, String localImagePath, OSSUploadCallback callback) {
-//        StringBuffer imageUpPath = new StringBuffer("test/");
-        StringBuffer imageUpPath = new StringBuffer("app/");
+    public OSSAsyncTask uploadImageAsync(int type, String localImagePath, OSSUploadCallback callback) {
+        //上传图片时 网络提示  2G,3G网络 提示，其他不提示
+        switch (NetUtil.getNetworkSpeedMode()) {
+            case NetUtil.NETWORK_UNKNOW:
+            case NetUtil.NETWORK_NONE:
+                ToastUtil.showCenterToast("当前网络不可用，请检测网络");
+                return null;
+            case NetUtil.NETWORK_2G:
+                ToastUtil.show("当前网络为2G，网速较慢");
+                break;
+            case NetUtil.NETWORK_3G:
+                ToastUtil.show("当前网络为3G，网速较慢");
+                break;
+            case NetUtil.NETWORK_WIFI:
+            case NetUtil.NETWORK_4G:
+                break;
+        }
+
+        StringBuffer imageUpPath = new StringBuffer(BuildConfig.DEBUG ? "test/" : "app/");
         switch (type) {
             case 0:
                 imageUpPath.append("header/");
@@ -113,17 +131,17 @@ public final class OSSManager {
             LogUtil.d("uploadImageAsync", "本地图片路径空异常");
             ToastUtil.showCenterToast("图片不存在，请重新选择");
             //callback.uploadStatus(3, "图片不存在，请重新选择");
-            return;
+            return null;
         }
         File file = new File(localImagePath);
         if (!file.exists() || file.length() <= 0) {
             LogUtil.d("uploadImageAsync", "图片不存在，请重新选择");
             ToastUtil.showCenterToast("图片不存在，请重新选择");
             //callback.uploadStatus(3, "图片不存在，请重新选择");
-            return;
+            return null;
         }
         //压缩
-        String uploadPath = FileUtil.zipImageFile(file, FileUtil.MAX_UPLOAD_SIZE);
+        String uploadPath = FileUtil.zipImageFile(file, FileUtil.MAX_UPLOAD_SIZE_500K);
         LogUtil.d("uploadImageAsync", uploadPath);
 
         // 构造上传请求
@@ -175,6 +193,37 @@ public final class OSSManager {
                         }
                     }
                 });
+        //立即显示loading
+        callback.uploadStatus(1, 0);
+        return task;
+//        Observable.interval(0, 1, TimeUnit.SECONDS)
+//                .take(10) //设置循环次数 10s
+//                .map(new Func1<Long, Long>() {
+//                    @Override
+//                    public Long call(Long aLong) {
+//                        return 10 - aLong;
+//                    }
+//                })
+//                .observeOn(AndroidSchedulers.mainThread())//操作UI主要在UI线程
+//                .subscribe(new Observer<Long>() {
+//                    @Override
+//                    public void onCompleted() {
+//                        task.cancel();
+//                        callback.uploadStatus(1, -1);//失败
+////                        callback.uploadStatus(3, "网络异常，请检测网络");
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    @Override
+//                    public void onNext(Long aLong) {
+//                        //接受到一条就是会操作一次UI
+//                    }
+//                });
+
     }
 
     //成功的回调接口

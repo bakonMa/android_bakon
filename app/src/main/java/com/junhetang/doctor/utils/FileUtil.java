@@ -24,7 +24,8 @@ import rx.Observable;
 
 public class FileUtil {
 
-    public static long MAX_UPLOAD_SIZE = 1 * 1024 * 1024;
+    public static long MAX_UPLOAD_SIZE_1M = 1 * 1024 * 1024;
+    public static long MAX_UPLOAD_SIZE_500K = 1024 * 500;
 
     /**
      * 压缩文件到指定大小以下
@@ -93,9 +94,10 @@ public class FileUtil {
     public static String zipImageFile(File file, long maxSize) {
         byte[] fileByte = zipImageToSize(file, maxSize);
         //系统相册目录
-        String peicurePath = Environment.getExternalStorageDirectory()
-                + File.separator + Environment.DIRECTORY_PICTURES
-                + File.separator;
+//        String peicurePath = Environment.getExternalStorageDirectory()
+//                + File.separator + Environment.DIRECTORY_PICTURES
+//                + File.separator;
+        String peicurePath = Environment.getExternalStorageDirectory().getPath() + "/JHTIMG/";
         String fileName = "jhtzip_" + file.getName();
         byte2File(fileByte, peicurePath, fileName);
         return peicurePath + fileName;
