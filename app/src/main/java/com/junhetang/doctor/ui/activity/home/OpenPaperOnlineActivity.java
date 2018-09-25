@@ -14,7 +14,6 @@ import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -29,7 +28,6 @@ import com.google.gson.Gson;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.EventConfig;
-import com.junhetang.doctor.config.SPConfig;
 import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.data.http.Params;
@@ -54,13 +52,13 @@ import com.junhetang.doctor.utils.RegexUtil;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
+import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.EditableLayout;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.dialog.SavePaperDialog;
 import com.junhetang.doctor.widget.popupwindow.BottomListPopupView;
-import com.junhetang.doctor.widget.popupwindow.GuidePopupView;
 import com.junhetang.doctor.widget.popupwindow.TwoPopupWheel;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
@@ -72,6 +70,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -124,6 +123,10 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     RadioButton rbYes;
     @BindView(R.id.rb_no)
     RadioButton rbNo;
+    @BindView(R.id.tv_addcommpaper)
+    TextView tvAddcommpaper;
+    @BindView(R.id.et_memb_see)
+    EditableLayout etMembSee;
     @BindView(R.id.rlt_daijian)
     RelativeLayout rltDaijian;
     @BindView(R.id.rg_daijian)
@@ -159,6 +162,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     private String freqStr = "";//用量str
     private int sexType = 0;
     private int daijianType = 1;
+    private int membSee = 0;//购药前患者是否可见，默认0 不可见
     private String membNo = "";//患者编号，选择患者才有
     private int relationship = 4;//就诊人关系（不是选择 默认4-其他）
     private String pAccid = "";//患者云信 accid
@@ -169,6 +173,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     private OPenPaperBaseBean baseBean;
     private List<String> drugStoreList = new ArrayList<>();//药房
     private List<String> drugClassList = new ArrayList<>();//剂型
+    private List<String> menbSeeList = new ArrayList<>();//是否可见
     private List<String> drugUseList = new ArrayList<>();//用法
     private List<String> frequencyList = new ArrayList<>();//用量
     private OPenPaperDrugAdapter adapter;
@@ -207,6 +212,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         initToolbar();
         //聊天进来不能填写
         tv_editepatient.setVisibility(formParent == 0 ? View.VISIBLE : View.GONE);
+        //默认 不可见
+        etMembSee.setText(menbSeeList.get(membSee));
         //性别
         rgSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -263,9 +270,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         mDetector = new GestureDetectorCompat(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                InputMethodManager manager = (InputMethodManager) actContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 //滑动距离超过**像素就收起键盘
-                if (manager.isActive() && Math.abs(distanceY) > 5) {
+                if (Math.abs(distanceY) > 5) {
                     KeyBoardUtils.hideKeyBoard(scrollView, actContext());
                 }
                 return Math.abs(distanceY) > 5;
@@ -280,25 +286,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 return false;
             }
         });
-
-        //是否显示 guide
-        showGuide();
-    }
-
-    /**
-     * guide是否显示
-     */
-    private void showGuide() {
-        if (DocApplication.getAppComponent().dataRepo().appSP().getBoolean(SPConfig.SP_GUIDE_V120_3, false)) {
-            return;
-        }
-        scrollView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                GuidePopupView guidePopupView = new GuidePopupView(actContext(), GuidePopupView.GUIDE_TYPE.GUIDE_TYPE_3);
-                guidePopupView.show(scrollView);
-            }
-        }, 500);
 
     }
 
@@ -412,6 +399,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         for (OPenPaperBaseBean.CommBean bean : baseBean.frequency) {
             frequencyList.add(bean.name);
         }
+        //是否可见
+        menbSeeList = Arrays.asList(UIUtils.getArray(R.array.memb_see));
     }
 
     //获取当前界面可用高度
@@ -431,8 +420,12 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     }
 
     @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugstore, R.id.et_drugclass,
-            R.id.tv_adddrug, R.id.et_usetype, R.id.tv_addcommpaper, R.id.et_docadvice, R.id.tv_next_step})
+            R.id.tv_adddrug, R.id.et_usetype, R.id.tv_addcommpaper, R.id.et_memb_see, R.id.et_docadvice, R.id.tv_next_step})
     public void tabOnClick(View view) {
+        //防止多次点击
+        if (UIUtils.isDoubleClick()) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.tv_addpatient://选择患者
                 //Umeng 埋点
@@ -508,6 +501,16 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                             rltDaijian.setVisibility(View.GONE);
                             daijianType = 0;
                         }
+                    }
+                });
+                bottomPopupView.show(scrollView);
+                break;
+            case R.id.et_memb_see://购药前是否可见
+                bottomPopupView = new BottomListPopupView(this, "购药前是否可见", menbSeeList, new BottomListPopupView.OnClickListener() {
+                    @Override
+                    public void selectItem(int position) {
+                        membSee = position;
+                        etMembSee.setText(menbSeeList.get(position));
                     }
                 });
                 bottomPopupView.show(scrollView);
@@ -725,6 +728,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             params.put("service_price", etServerprice.getText().toString().trim());
         }
         params.put("doc_remark", docadviceStr);//医嘱
+        params.put("memb_see", membSee);//处方是否可见
         mPresenter.openPaperOnline(params);
     }
 
@@ -776,7 +780,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                         mPresenter.addChatRecord(NimU.getNimAccount(), pAccid, Constant.CHAT_RECORD_TYPE_3, formParent);
                     }
                     if (formParent == 1) {//聊天开方
-                        //TODO 删除临时处方数据
                         DocApplication.getAppComponent().dataRepo().appSP().remove(membNo);
                         setResult(RESULT_OK, new Intent());
                         finish();
@@ -870,8 +873,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                     etUsetype.setText(usagesStr + "-" + freqStr);
                 }
                 break;
-            case "ZCY"://中成药
             case "XY"://西药
+            case "ZCY"://中成药
                 //用法，用量
                 usagesStr = TextUtils.isEmpty(infoBean.usages) ? "" : infoBean.usages;
                 freqStr = TextUtils.isEmpty(infoBean.freq) ? "" : infoBean.freq;
@@ -882,6 +885,10 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             case "QC"://器材
                 break;
         }
+        //是否可见
+        membSee = infoBean.memb_see >= 0 ? infoBean.memb_see : 0;
+        etMembSee.setText(menbSeeList.get(membSee));
+
         //诊疗费
         etServerprice.setText(infoBean.service_price > 0 ? String.valueOf(infoBean.service_price) : "");
         //医嘱
@@ -906,6 +913,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             }
             updateTotalMoney();
         }
+        //保存长用处方 是否显示
+        tvAddcommpaper.setVisibility(drugBeans.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
     //不同的type UI展示不同

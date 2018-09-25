@@ -7,6 +7,7 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.junhetang.doctor.R;
+import com.junhetang.doctor.utils.UIUtils;
 
 
 /**
@@ -27,6 +29,7 @@ public class EditableLayout extends RelativeLayout {
     private float mTextMainSize;
 
     private String leftTextStr;
+    private int leftIcon;
 
     private String editTextHint;
 
@@ -59,6 +62,7 @@ public class EditableLayout extends RelativeLayout {
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.EditableLayout, defStyleAttr, 0);
         mTextMainSize = ta.getDimension(R.styleable.EditableLayout_edit_textMainSize, 14);
         leftTextStr = ta.getString(R.styleable.EditableLayout_edit_leftText);
+        leftIcon = ta.getResourceId(R.styleable.EditableLayout_edit_leftIcon, 0);
         editTextHint = ta.getString(R.styleable.EditableLayout_edit_editTextHint);
         editTextType = ta.getInt(R.styleable.EditableLayout_edit_editTextType, 1);
         mode = ta.getInt(R.styleable.EditableLayout_edit_mode, 1);
@@ -78,6 +82,11 @@ public class EditableLayout extends RelativeLayout {
         iv_arrow = findViewById(R.id.id_iv_arrow);
         tv_yuan = findViewById(R.id.id_yuan);
         line = findViewById(R.id.id_line);
+
+        //left icon
+        if (leftIcon > 0) {
+            UIUtils.setCompoundDrawable(tv_left, 12, 2, leftIcon, Gravity.LEFT);
+        }
     }
 
     private void initEvent() {

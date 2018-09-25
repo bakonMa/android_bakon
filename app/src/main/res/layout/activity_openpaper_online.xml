@@ -314,6 +314,7 @@
                     android:layout_alignParentRight="true"
                     android:gravity="center"
                     android:text="保存为常用处方"
+                    android:visibility="gone"
                     android:textColor="@color/color_main"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -470,6 +471,19 @@
                     style="@style/line_gray_hor"
                     android:layout_alignParentBottom="true" />
             </RelativeLayout>
+
+            <com.junhetang.doctor.widget.EditableLayout
+                android:id="@+id/et_memb_see"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                app:edit_editTextHint="不可见"
+                app:edit_leftIcon="@drawable/icon_memb_see"
+                app:edit_leftText="患者购药前处方是否可见"
+                app:edit_mode="select"
+                app:edit_textMainSize="16sp" />
 
             <TextView
                 android:layout_width="match_parent"

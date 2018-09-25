@@ -99,21 +99,26 @@ public class PatientListActivity extends BaseActivity implements PatientContact.
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 if (formType == 0) {
-                    commonDialog = new CommonDialog(PatientListActivity.this,
-                            false,
-                            ("确认发送给:\n" + (TextUtils.isEmpty(dataList.get(position).remark_name) ? dataList.get(position).nick_name : dataList.get(position).remark_name)),
-                            new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if (view.getId() == R.id.btn_ok) {
-                                        Intent intent = new Intent();
-                                        intent.putExtra("accid", dataList.get(position).im_accid);
-                                        setResult(RESULT_OK, intent);
-                                        finish();
+                    if (dataList.get(position).is_valid == 0) {//处方患者，不能发发送
+                        commonDialog = new CommonDialog(PatientListActivity.this, "患者尚未关注公众号，无法发送");
+                    } else {
+                        commonDialog = new CommonDialog(PatientListActivity.this,
+                                false,
+                                ("确认发送给:\n" + (TextUtils.isEmpty(dataList.get(position).remark_name) ? dataList.get(position).nick_name : dataList.get(position).remark_name)),
+                                new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if (view.getId() == R.id.btn_ok) {
+                                            Intent intent = new Intent();
+                                            intent.putExtra("accid", dataList.get(position).im_accid);
+                                            setResult(RESULT_OK, intent);
+                                            finish();
+                                        }
                                     }
                                 }
-                            }
-                    );
+                        );
+                    }
+
                     commonDialog.show();
                 } else {//选择就诊人
                     Intent intent = new Intent(actContext(), PatientFamilyActivity.class);

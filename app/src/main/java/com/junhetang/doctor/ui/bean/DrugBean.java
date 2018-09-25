@@ -20,9 +20,11 @@ public class DrugBean implements Parcelable {
     public double price;//价格
     public String decoction;//用法（常规）
     public int use_flag;//是否可用 1：能使用；0：不能使用
+    public int sub_drug_type;//0：普通 1：精品
 
     public DrugBean() {
     }
+
 
     protected DrugBean(Parcel in) {
         drug_id = in.readInt();
@@ -35,6 +37,7 @@ public class DrugBean implements Parcelable {
         price = in.readDouble();
         decoction = in.readString();
         use_flag = in.readInt();
+        sub_drug_type = in.readInt();
     }
 
     @Override
@@ -49,6 +52,7 @@ public class DrugBean implements Parcelable {
         dest.writeDouble(price);
         dest.writeString(decoction);
         dest.writeInt(use_flag);
+        dest.writeInt(sub_drug_type);
     }
 
     @Override

@@ -15,7 +15,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.EventConfig;
-import com.junhetang.doctor.config.SPConfig;
 import com.junhetang.doctor.data.eventbus.Event;
 import com.junhetang.doctor.injection.components.DaggerFragmentComponent;
 import com.junhetang.doctor.injection.modules.FragmentModule;
@@ -29,7 +28,6 @@ import com.junhetang.doctor.ui.contact.PatientContact;
 import com.junhetang.doctor.ui.presenter.PatientPresenter;
 import com.junhetang.doctor.widget.SideBar;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
-import com.junhetang.doctor.widget.popupwindow.GuidePopupView;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
@@ -135,26 +133,8 @@ public class PatientFragment extends BaseFragment implements PatientContact.View
         });
 
         mPresenter.getPatientlist();
-
-        //是否显示 guide
-        showGuide();
     }
 
-    /**
-     * guide是否显示
-     */
-    private void showGuide() {
-        if (DocApplication.getAppComponent().dataRepo().appSP().getBoolean(SPConfig.SP_GUIDE_V120_2, false)) {
-            return;
-        }
-        idSwipe.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                GuidePopupView guidePopupView = new GuidePopupView(getContext(), GuidePopupView.GUIDE_TYPE.GUIDE_TYPE_2);
-                guidePopupView.show(idSwipe);
-            }
-        }, 500);
-    }
 
     /**
      * fragment 是否隐藏

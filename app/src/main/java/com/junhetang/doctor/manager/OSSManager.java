@@ -196,34 +196,6 @@ public final class OSSManager {
         //立即显示loading
         callback.uploadStatus(1, 0);
         return task;
-//        Observable.interval(0, 1, TimeUnit.SECONDS)
-//                .take(10) //设置循环次数 10s
-//                .map(new Func1<Long, Long>() {
-//                    @Override
-//                    public Long call(Long aLong) {
-//                        return 10 - aLong;
-//                    }
-//                })
-//                .observeOn(AndroidSchedulers.mainThread())//操作UI主要在UI线程
-//                .subscribe(new Observer<Long>() {
-//                    @Override
-//                    public void onCompleted() {
-//                        task.cancel();
-//                        callback.uploadStatus(1, -1);//失败
-////                        callback.uploadStatus(3, "网络异常，请检测网络");
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    @Override
-//                    public void onNext(Long aLong) {
-//                        //接受到一条就是会操作一次UI
-//                    }
-//                });
-
     }
 
     //成功的回调接口

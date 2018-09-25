@@ -2,11 +2,14 @@ package com.junhetang.doctor.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
+import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.ui.bean.DrugBean;
+import com.junhetang.doctor.utils.UIUtils;
 
 import java.util.List;
 
@@ -34,7 +37,15 @@ public class OPenPaperDrugAdapter extends BaseQuickAdapter<DrugBean, BaseViewHol
     protected void convert(BaseViewHolder helper, DrugBean item) {
         //常规 不显示
         String decoction = "常规".equals(item.decoction) ? "" : String.format(" (%s)", item.decoction);
-        helper.setText(R.id.tv_druginfo, String.format("%s %s%s%s", item.drug_name, item.drug_num, item.unit, decoction));
+        helper.setText(R.id.tv_druginfo,
+                String.format("%s %s%s%s", UIUtils.formateDrugName(item.drug_name),
+                        item.drug_num, item.unit, decoction));
+        if (item.sub_drug_type == 1) {
+            UIUtils.setCompoundDrawable(helper.getView(R.id.tv_druginfo), 13, 2, R.drawable.icon_jing, Gravity.LEFT);
+        } else {
+            TextView textView = helper.getView(R.id.tv_druginfo);
+            textView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        }
     }
 
     @Override

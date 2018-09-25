@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.view.View;
@@ -113,6 +114,12 @@ public class UIUtils {
     public static String getString(int res) {
         return DocApplication.getInstance().getResources().getString(res);
     }
+    /**
+     * 获取String
+     */
+    public static String[] getArray(int res) {
+        return DocApplication.getInstance().getResources().getStringArray(res);
+    }
 
     /**
      * 获取资源文件
@@ -187,6 +194,30 @@ public class UIUtils {
         return s;
     }
 
+    /**
+     * 药品名称处理
+     * ps:党参[精品](紫丹参)-> 党参
+     * ps:党参(紫丹参)-> 党参
+     * @param drugName
+     * @return
+     */
+    public static String formateDrugName(String drugName) {
+        if (TextUtils.isEmpty(drugName)) {
+            return "";
+        }
+        //包含"["
+        int starPos = drugName.indexOf("[");
+        if (starPos > 0) {
+            return drugName.substring(0, starPos);
+        }
+        //包含"("
+        starPos = drugName.indexOf("(");
+        if (starPos > 0) {
+            return drugName.substring(0, starPos);
+        }
+
+        return drugName;
+    }
 
     //添加上下左右图标
     public static void setCompoundDrawable(View view, int widthdp, int paddingdp, int resId, int gravity) {

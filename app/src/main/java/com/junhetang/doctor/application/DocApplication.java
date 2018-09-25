@@ -14,8 +14,6 @@ import com.junhetang.doctor.manager.ManagerRepository;
 import com.junhetang.doctor.nim.NimManager;
 import com.junhetang.doctor.receiver.XGInitManager;
 import com.junhetang.doctor.utils.U;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
@@ -31,12 +29,8 @@ import javax.inject.Inject;
 public class DocApplication extends Application {
 
     private static ApplicationComponent mApplicationComponent;
-
     private static DocApplication mAppInstance;
-    //Application为整个应用保存全局的RefWatcher
-    private RefWatcher refWatcher;
     public static UMShareAPI umShareAPI;
-
 
     @Inject
     public ManagerRepository managerRepository;
@@ -50,6 +44,8 @@ public class DocApplication extends Application {
                 .applicationModule(new ApplicationModule(this))
                 .build();
         mApplicationComponent.inject(this);
+        //LeakCanary
+        mApplicationComponent.refWatcher();
         //网易云IM 初始化
         NimManager.getInstance(this);
         //信鸽推送 初始化
@@ -58,10 +54,8 @@ public class DocApplication extends Application {
         CrashReport.initCrashReport(getApplicationContext(), "cf03101aef", BuildConfig.DEBUG);
         CrashReport.setIsDevelopmentDevice(getApplicationContext(), BuildConfig.DEBUG);
         CrashReport.setUserId(U.getPhone());//设置手机号为用户id，方便查找
-        //内存泄漏检测
-//        refWatcher = setupLeakCanary();
         //db 初始化
-//        GreenDaoManager.getInstance();
+        //GreenDaoManager.getInstance();
 
         //Umeng初始化
         UMConfigure.init(this, HttpConfig.UMENG_APPKEY, "yingyongbao", UMConfigure.DEVICE_TYPE_PHONE, "");
@@ -90,13 +84,4 @@ public class DocApplication extends Application {
         //方法数超过分包
         MultiDex.install(this);
     }
-
-    //内存泄漏检测
-    protected RefWatcher setupLeakCanary() {
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return RefWatcher.DISABLED;
-        }
-        return LeakCanary.install(this);
-    }
-
 }

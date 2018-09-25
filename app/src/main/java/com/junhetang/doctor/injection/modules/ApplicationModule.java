@@ -58,12 +58,12 @@ public final class ApplicationModule {
     @Provides
     public RefWatcher provideRefWatcher() {
         if (LeakCanary.isInAnalyzerProcess(mApplication)) {
-            return null;
+            return RefWatcher.DISABLED;
         }
         if (BuildConfig.DEBUG) {
             return LeakCanary.install(mApplication);
         }
-        return null;
+        return RefWatcher.DISABLED;
     }
 
     @Singleton

@@ -16,6 +16,7 @@ public class SearchDrugBean {
      * spec : g
      * use_flag : 1
      * datatype : 1
+     * sub_drug_type 0：普通 1：精品
      */
     //搜索药材数据
     public int id;
@@ -28,6 +29,7 @@ public class SearchDrugBean {
     public int use_flag;
     //数据类型，1:药品，2：处方
     public int datatype;
+    public int sub_drug_type;//0：普通 1：精品
     public String type_title;//处方的类型（处方）
 
 }

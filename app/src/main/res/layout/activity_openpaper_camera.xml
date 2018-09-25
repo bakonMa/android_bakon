@@ -196,6 +196,19 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp" />
 
+            <com.junhetang.doctor.widget.EditableLayout
+                android:id="@+id/et_memb_see"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                app:edit_editTextHint="不可见"
+                app:edit_leftIcon="@drawable/icon_memb_see"
+                app:edit_leftText="患者购药前处方是否可见"
+                app:edit_mode="select"
+                app:edit_textMainSize="16sp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="35dp"

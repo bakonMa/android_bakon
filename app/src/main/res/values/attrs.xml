@@ -42,6 +42,7 @@
     </declare-styleable>
 
     <declare-styleable name="EditableLayout">
+        <attr name="edit_leftIcon" format="reference" />
         <attr name="edit_leftText" format="string" />
         <attr name="edit_editTextHint" format="string" />
         <attr name="edit_textMainSize" format="dimension" />

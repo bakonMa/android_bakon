@@ -18,6 +18,7 @@ public class CommPaperInfoBean implements Parcelable{
      spec	string	规格
      price	string	单价
      use_flag	int	1：能使用；0：不能使用
+     sub_drug_type;//0：普通 1：精品
      */
 
     public int id;
@@ -30,6 +31,7 @@ public class CommPaperInfoBean implements Parcelable{
     public String spec;
     public double price;
     public int use_flag;
+    public int sub_drug_type;//0：普通 1：精品
 
 
     protected CommPaperInfoBean(Parcel in) {
@@ -43,6 +45,7 @@ public class CommPaperInfoBean implements Parcelable{
         spec = in.readString();
         price = in.readDouble();
         use_flag = in.readInt();
+        sub_drug_type = in.readInt();
     }
 
     @Override
@@ -57,6 +60,7 @@ public class CommPaperInfoBean implements Parcelable{
         dest.writeString(spec);
         dest.writeDouble(price);
         dest.writeInt(use_flag);
+        dest.writeInt(sub_drug_type);
     }
 
     @Override

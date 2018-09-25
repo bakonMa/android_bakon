@@ -19,7 +19,6 @@ import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -58,6 +57,7 @@ import com.junhetang.doctor.utils.RegexUtil;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
+import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.utils.UriUtil;
 import com.junhetang.doctor.widget.EditTextlayout;
@@ -78,9 +78,9 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.inject.Inject;
 
@@ -124,6 +124,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     EditableLayout etDrugClass;
     @BindView(R.id.et_drugstore)
     EditableLayout etDrugstore;
+    @BindView(R.id.et_memb_see)
+    EditableLayout etMembSee;
     @BindView(R.id.recycleview_img)
     RecyclerView recyclerView;
     @BindView(R.id.et_remark)
@@ -145,6 +147,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private int relationship = 4;//就诊人关系（不是选择 默认4-其他）
     private String pAccid = "";//患者云信 accid
     private int storeId = -1;//药房id
+    private int membSee = 0;//购药前患者是否可见，默认0 不可见
 
     private GestureDetectorCompat mDetector;//手势
     private OPenPaperBaseBean baseBean;
@@ -154,8 +157,9 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private BottomListPopupView bottomPopupView;
     private boolean isChoosePatient = false;//是否点击的选择就诊人
     private List<PatientFamilyBean.JiuzhenBean> jzrList = new ArrayList<>();//手机号的就诊人
-    private List<String> imgLocalList = new CopyOnWriteArrayList<>();//图片 有删除  防止错误
+    private List<String> imgLocalList = new ArrayList<>();//图片 有删除  防止错误
     private List<String> imgUploadList = new ArrayList<>();
+    private List<String> menbSeeList = new ArrayList<>();//是否可见
     private ChoosePhotoAdapter photoAdapter;
     private LoadingDialog loadingDialog;
     private OSSAsyncTask upLoadTask;
@@ -187,6 +191,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         initToolbar();
         //聊天进来不能填写
         tv_editepatient.setVisibility(formParent == 0 ? View.VISIBLE : View.GONE);
+        //默认 不可见
+        etMembSee.setText(menbSeeList.get(membSee));
         //性别
         rgSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -222,9 +228,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         mDetector = new GestureDetectorCompat(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                InputMethodManager manager = (InputMethodManager) actContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 //滑动距离超过**像素就收起键盘
-                if (manager.isActive() && Math.abs(distanceY) > 5) {
+                if (Math.abs(distanceY) > 5) {
                     KeyBoardUtils.hideKeyBoard(scrollView, actContext());
                 }
                 return Math.abs(distanceY) > 5;
@@ -269,6 +274,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         for (OPenPaperBaseBean.CommBean bean : baseBean.drug_class) {
             drugClassList.add(bean.name);
         }
+        //是否可见
+        menbSeeList = Arrays.asList(UIUtils.getArray(R.array.memb_see));
     }
 
     //获取当前界面可用高度
@@ -315,8 +322,13 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         }
     }
 
-    @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugclass, R.id.et_drugstore, R.id.tv_next_step})
+    @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugclass,
+            R.id.et_drugstore, R.id.et_memb_see, R.id.tv_next_step})
     public void tabOnClick(View view) {
+        //防止多次点击
+        if (UIUtils.isDoubleClick()) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.tv_addpatient://选择患者
                 //Umeng 埋点
@@ -344,6 +356,16 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                     public void selectItem(int position) {
                         drugClassId = baseBean.drug_class.get(position).id;
                         etDrugClass.setText(drugClassList.get(position));
+                    }
+                });
+                bottomPopupView.show(scrollView);
+                break;
+            case R.id.et_memb_see://购药前是否可见
+                bottomPopupView = new BottomListPopupView(this, "购药前是否可见", menbSeeList, new BottomListPopupView.OnClickListener() {
+                    @Override
+                    public void selectItem(int position) {
+                        membSee = position;
+                        etMembSee.setText(menbSeeList.get(membSee));
                     }
                 });
                 bottomPopupView.show(scrollView);
@@ -468,6 +490,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         if (!TextUtils.isEmpty(etServerprice.getText().toString().trim())) {
             params.put("service_price", etServerprice.getText().toString().trim());
         }
+        params.put("memb_see", membSee);//处方是否可见
 
         mPresenter.openPaperCamera(params);
     }
@@ -676,7 +699,6 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                         photoAdapter.changeNotifyData();
                     }
                 });
-
                 if (loadingDialog != null) {
                     loadingDialog.dismiss();
                 }

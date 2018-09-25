@@ -50,7 +50,6 @@ import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.utils.imageloader.BannerImageLoader;
 import com.junhetang.doctor.widget.RelativeWithImage;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
-import com.junhetang.doctor.widget.popupwindow.GuidePopupView;
 import com.netease.nim.uikit.api.NimUIKit;
 import com.netease.nim.uikit.business.uinfo.UserInfoHelper;
 import com.netease.nim.uikit.common.util.sys.TimeUtil;
@@ -185,28 +184,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
             }
         }, true);
 
-        //是否显示 guide1
-        showGuide();
     }
-
-    /**
-     * guide是否显示
-     */
-    private void showGuide() {
-        if (DocApplication.getAppComponent().dataRepo().appSP().getBoolean(SPConfig.SP_GUIDE_V120_1, false)) {
-            return;
-        }
-        idLlTop.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                GuidePopupView guidePopupView = new GuidePopupView(getContext(), GuidePopupView.GUIDE_TYPE.GUIDE_TYPE_1);
-                guidePopupView.show(idLlTop);
-            }
-        }, 500);
-
-    }
-
-
 
     /**
      * fragment 是否隐藏
@@ -346,14 +324,17 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     private Observer<List<IMMessage>> messageReceiverObserver = new Observer<List<IMMessage>>() {
         @Override
         public void onEvent(List<IMMessage> imMessages) {
+            LogUtil.d("messageReceiverObserver", "size=" + imMessages.size());
             if (imMessages != null) {
                 for (IMMessage imMessage : imMessages) {
                     //第一条消息，自动回复一条，tip
                     if (imMessage.getAttachment() instanceof FirstMessageAttachment) {
+                        LogUtil.d("messageReceiverObserver", "imMessage=" + imMessage.getAttachment().toString());
 //                    if (imMessage.getContent().equals("123456789")) {//测试
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
+                                LogUtil.d("messageReceiverObserver", "createTipMessage");
                                 IMMessage msg = MessageBuilder.createTipMessage(imMessage.getSessionId(), SessionTypeEnum.P2P);
                                 msg.setContent("请给患者发送问诊单或者随诊单，待患者填写完成，详细了解患者的情况");
                                 CustomMessageConfig config = new CustomMessageConfig();

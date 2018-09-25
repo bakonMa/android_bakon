@@ -14,6 +14,7 @@ public class PaperInfoBean {
     public String memb_no;//患者编号
     public String name;
     public int sex;//男：0、女：1
+    public int memb_see;//0:不可见 1 可见
     public String age;
     public String phone;
     public int relationship;//与会员的关系0：本人 1：父母 2：子女 3：其他亲属 4：其他

@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
-import com.junhetang.doctor.config.SPConfig;
 import com.junhetang.doctor.ui.adapter.GuideAdapter;
 import com.junhetang.doctor.utils.UIUtils;
 
@@ -62,24 +61,24 @@ public class GuidePopupView extends PopupWindow {
         ButterKnife.bind(this, view);
 
         switch (type) {
-            case GUIDE_TYPE.GUIDE_TYPE_1:
-                spKey = SPConfig.SP_GUIDE_V120_1;
-                guideImage.add(R.drawable.guide1_1);
-                guideImage.add(R.drawable.guide1_2);
-                break;
-            case GUIDE_TYPE.GUIDE_TYPE_2:
-                spKey = SPConfig.SP_GUIDE_V120_2;
-                guideImage.add(R.drawable.guide2_1);
-                guideImage.add(R.drawable.guide2_2);
-                break;
-            case GUIDE_TYPE.GUIDE_TYPE_3:
-                spKey = SPConfig.SP_GUIDE_V120_3;
-                guideImage.add(R.drawable.guide3_1);
-                break;
-            case GUIDE_TYPE.GUIDE_TYPE_4:
-                spKey = SPConfig.SP_GUIDE_V120_4;
-                guideImage.add(R.drawable.guide4_1);
-                break;
+//            case GUIDE_TYPE.GUIDE_TYPE_1:
+//                spKey = SPConfig.SP_GUIDE_V120_1;
+//                guideImage.add(R.drawable.guide1_1);
+//                guideImage.add(R.drawable.guide1_2);
+//                break;
+//            case GUIDE_TYPE.GUIDE_TYPE_2:
+//                spKey = SPConfig.SP_GUIDE_V120_2;
+//                guideImage.add(R.drawable.guide2_1);
+//                guideImage.add(R.drawable.guide2_2);
+//                break;
+//            case GUIDE_TYPE.GUIDE_TYPE_3:
+//                spKey = SPConfig.SP_GUIDE_V120_3;
+//                guideImage.add(R.drawable.guide3_1);
+//                break;
+//            case GUIDE_TYPE.GUIDE_TYPE_4:
+//                spKey = SPConfig.SP_GUIDE_V120_4;
+//                guideImage.add(R.drawable.guide4_1);
+//                break;
         }
 
         guideAdapter = new GuideAdapter(mContext, guideImage);

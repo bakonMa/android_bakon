@@ -1,7 +1,6 @@
 package com.junhetang.doctor.ui.activity.home;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
@@ -15,7 +14,6 @@ import android.text.TextWatcher;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -244,7 +242,9 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 switch (view.getId()) {
                     case R.id.iv_del:
-                        upDataDrugList(drugBeans.get(position), false);
+                        if (position < drugBeans.size()) {//快速删除的时候 会有bug
+                            upDataDrugList(drugBeans.get(position), false);
+                        }
                         break;
                     case R.id.tv_usertype:
                         //中成药、西药、器械“用法”不可选
@@ -307,6 +307,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                     drugBean.unit = bean.unit;
                     drugBean.spec = bean.spec;
                     drugBean.price = bean.price;
+                    drugBean.sub_drug_type = bean.sub_drug_type;
                     drugBean.decoction = userTypeListStr.get(0);
                     upDataDrugList(drugBean, true);
                 } else {
@@ -321,9 +322,8 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
         mDetector = new GestureDetectorCompat(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                InputMethodManager manager = (InputMethodManager) actContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 //滑动距离超过**像素就收起键盘
-                if (manager.isActive() && Math.abs(distanceY) > 5) {
+                if (Math.abs(distanceY) > 5) {
                     KeyBoardUtils.hideKeyBoard(etSearch, actContext());
                 }
                 return Math.abs(distanceY) > 5;
@@ -338,7 +338,6 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                 return false;
             }
         });
-
     }
 
     //当前list中是否已经存在相同id的药材
