@@ -44,4 +44,10 @@ public class MsgViewHolderFirstMessage extends MsgViewHolderBase {
                     + "\n年龄 " + (TextUtils.isEmpty(attachment.getPatients_age()) ? "" : attachment.getPatients_age()));
         }
     }
+
+    //不显示长按菜单
+    @Override
+    protected boolean onItemLongClick() {
+        return true;
+    }
 }

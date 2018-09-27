@@ -228,7 +228,7 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
                             intentOpen.setClass(actContext(), OpenPaperCameraActivity.class);
                         }
                         intentOpen.putExtra("formParent", 1);
-                        intentOpen.putExtra("memb_no", bean.patientinfo.memb_no);
+                        intentOpen.putExtra("memb_no", membNo);
                         startActivity(intentOpen);
                     }
                 });

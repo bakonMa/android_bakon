@@ -616,7 +616,9 @@ public class NimUIKit {
      */
     public static void deleteRecentContact2(String account) {
         // 以P2P类型为例
+        // 删除会话，删除后，消息历史被一起删除
         NIMClient.getService(MsgService.class).deleteRecentContact2(account, SessionTypeEnum.P2P);
+//        NIMClient.getService(MsgService.class).clearChattingHistory(account, SessionTypeEnum.P2P);
     }
 
 

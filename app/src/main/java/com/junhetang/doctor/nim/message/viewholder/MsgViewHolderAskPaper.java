@@ -5,15 +5,15 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.netease.nim.uikit.business.session.constant.RequestCode;
-import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderBase;
-import com.netease.nim.uikit.common.ui.recyclerview.adapter.BaseMultiItemFetchLoadAdapter;
-import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.config.H5Config;
 import com.junhetang.doctor.nim.message.extension.AskPaperAttachment;
 import com.junhetang.doctor.ui.nimview.PaperH5Activity;
 import com.junhetang.doctor.utils.UIUtils;
+import com.netease.nim.uikit.business.session.constant.RequestCode;
+import com.netease.nim.uikit.business.session.viewholder.MsgViewHolderBase;
+import com.netease.nim.uikit.common.ui.recyclerview.adapter.BaseMultiItemFetchLoadAdapter;
+import com.netease.nimlib.sdk.msg.constant.MsgDirectionEnum;
 
 /**
  * MsgViewHolderAskPaper 问诊单
@@ -45,6 +45,9 @@ public class MsgViewHolderAskPaper extends MsgViewHolderBase {
     // 此条消息点击时响应事件
     @Override
     protected void onItemClick() {
+        if (message.getDirect() == MsgDirectionEnum.Out) {//发出的不可以点击
+            return;
+        }
         PaperH5Activity.startResultActivity(context,
                 RequestCode.SEND_ASKPAPER_INFO,
                 true,
@@ -83,5 +86,11 @@ public class MsgViewHolderAskPaper extends MsgViewHolderBase {
     protected boolean shouldDisplayReceipt() {
         //收到的显示已读，发出不显示
         return message.getDirect() == MsgDirectionEnum.In;
+    }
+
+    //不显示长按菜单
+    @Override
+    protected boolean onItemLongClick() {
+        return true;
     }
 }

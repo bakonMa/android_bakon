@@ -200,6 +200,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 sexType = (i == R.id.rb_nan ? 0 : 1);
             }
         });
+
         //选择图片上传
         photoAdapter = new ChoosePhotoAdapter(this, imgLocalList, 3);
         recyclerView.setAdapter(photoAdapter);
@@ -399,7 +400,6 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         etName.setEnabled(false);
         etPhone.setEnabled(false);
 
-        //默认及就诊人的时候（性别，年龄 是空，可以修改）
         //默认及就诊人的时候（性别，年龄 是空，可以修改）
         if (bean.sex == 0 || bean.sex == 1) {
             sexType = bean.sex;

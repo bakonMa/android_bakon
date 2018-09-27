@@ -43,4 +43,10 @@ public class MsgViewHolderCloseChat extends MsgViewHolderBase {
         //已读，不显示
         return false;
     }
+
+    //不显示长按菜单
+    @Override
+    protected boolean onItemLongClick() {
+        return true;
+    }
 }

@@ -45,6 +45,9 @@ public class MsgViewHolderFollowPaper extends MsgViewHolderBase {
     // 此条消息点击时响应事件
     @Override
     protected void onItemClick() {
+        if (message.getDirect() == MsgDirectionEnum.Out) {//发出的不可以点击
+            return;
+        }
         PaperH5Activity.startResultActivity(context,
                 RequestCode.SEND_FOLLOWPAPER_INFO,
                 true,
@@ -84,5 +87,11 @@ public class MsgViewHolderFollowPaper extends MsgViewHolderBase {
     protected boolean shouldDisplayReceipt() {
         //收到的显示已读，发出不显示
         return message.getDirect() == MsgDirectionEnum.In;
+    }
+
+    //不显示长按菜单
+    @Override
+    protected boolean onItemLongClick() {
+        return true;
     }
 }

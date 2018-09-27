@@ -328,9 +328,9 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
             if (imMessages != null) {
                 for (IMMessage imMessage : imMessages) {
                     //第一条消息，自动回复一条，tip
+                    LogUtil.d("messageReceiverObserver", "imMessage.getStatus=" + imMessage.getStatus());
+                    LogUtil.d("messageReceiverObserver", imMessage.toString());
                     if (imMessage.getAttachment() instanceof FirstMessageAttachment) {
-                        LogUtil.d("messageReceiverObserver", "imMessage=" + imMessage.getAttachment().toString());
-//                    if (imMessage.getContent().equals("123456789")) {//测试
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -346,9 +346,10 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                                 // 保存消息到本地数据库，但不发送到服务器
                                 NIMClient.getService(MsgService.class).saveMessageToLocal(msg, true);
                             }
-                        }, 2000);
+                        }, 1000);
+
                     }
-                    break;
+                    return;
                 }
             }
         }

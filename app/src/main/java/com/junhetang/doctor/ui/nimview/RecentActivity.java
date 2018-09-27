@@ -11,7 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
@@ -57,7 +56,6 @@ import com.netease.nim.uikit.common.ui.recyclerview.listener.SimpleClickListener
 import com.netease.nim.uikit.impl.NimUIKitImpl;
 import com.netease.nimlib.sdk.NIMClient;
 import com.netease.nimlib.sdk.Observer;
-import com.netease.nimlib.sdk.RequestCallback;
 import com.netease.nimlib.sdk.RequestCallbackWrapper;
 import com.netease.nimlib.sdk.ResponseCode;
 import com.netease.nimlib.sdk.msg.MsgService;
@@ -358,29 +356,29 @@ public class RecentActivity extends BaseActivity implements BaseView {
             }
         });
 
-        alertDialog.addItem("删除该聊天（仅服务器）", new CustomAlertDialog.onSeparateItemClickListener() {
-            @Override
-            public void onClick() {
-                NIMClient.getService(MsgService.class)
-                        .deleteRoamingRecentContact(recent.getContactId(), recent.getSessionType())
-                        .setCallback(new RequestCallback<Void>() {
-                            @Override
-                            public void onSuccess(Void param) {
-                                Toast.makeText(actContext(), "delete success", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onFailed(int code) {
-                                Toast.makeText(actContext(), "delete failed, code:" + code, Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onException(Throwable exception) {
-
-                            }
-                        });
-            }
-        });
+//        alertDialog.addItem("删除该聊天（仅服务器）", new CustomAlertDialog.onSeparateItemClickListener() {
+//            @Override
+//            public void onClick() {
+//                NIMClient.getService(MsgService.class)
+//                        .deleteRoamingRecentContact(recent.getContactId(), recent.getSessionType())
+//                        .setCallback(new RequestCallback<Void>() {
+//                            @Override
+//                            public void onSuccess(Void param) {
+//                                Toast.makeText(actContext(), "delete success", Toast.LENGTH_SHORT).show();
+//                            }
+//
+//                            @Override
+//                            public void onFailed(int code) {
+//                                Toast.makeText(actContext(), "delete failed, code:" + code, Toast.LENGTH_SHORT).show();
+//                            }
+//
+//                            @Override
+//                            public void onException(Throwable exception) {
+//
+//                            }
+//                        });
+//            }
+//        });
         alertDialog.show();
     }
 
@@ -478,6 +476,7 @@ public class RecentActivity extends BaseActivity implements BaseView {
 
         @Override
         public void onItemLongClick(RecentContactAdapter adapter, View view, int position) {
+            //会话列表-长按显示菜单
             showLongClickMenu(adapter.getItem(position), position);
         }
 

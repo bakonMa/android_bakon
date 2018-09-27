@@ -248,7 +248,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         //判断是【调用此方】
-        if (checekId > 0) {
+        if (formParent == 0 && checekId > 0) {
             mPresenter.getPaperInfo(checekId);
         }
         //聊天开方，是否有未完成的处方，可以继续开方
@@ -817,17 +817,20 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         relationship = infoBean.relationship;
         //就诊人
         isChoosePatient = true;
-        lltJZinfo.setVisibility(View.VISIBLE);
-        etName.setText(RegexUtil.getNameSubString(infoBean.name));
-        etAge.setEditeText(TextUtils.isEmpty(infoBean.age) ? "" : infoBean.age);
-        etPhone.setText(TextUtils.isEmpty(infoBean.phone) ? "" : infoBean.phone);
-        etSkillname.setText(TextUtils.isEmpty(infoBean.icd10) ? "" : infoBean.icd10); //病症
-        rgSex.check(infoBean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
-        etName.setEnabled(false);
-        etAge.setEditeEnable(false);
-        etPhone.setEnabled(false);
-        rbNan.setEnabled(false);
-        rbNv.setEnabled(false);
+        if (!TextUtils.isEmpty(infoBean.name) && !TextUtils.isEmpty(infoBean.phone)) {
+            lltJZinfo.setVisibility(View.VISIBLE);
+            etName.setText(RegexUtil.getNameSubString(infoBean.name));
+            etAge.setEditeText(TextUtils.isEmpty(infoBean.age) ? "" : infoBean.age);
+            etPhone.setText(TextUtils.isEmpty(infoBean.phone) ? "" : infoBean.phone);
+            etSkillname.setText(TextUtils.isEmpty(infoBean.icd10) ? "" : infoBean.icd10); //病症
+            rgSex.check(infoBean.sex == 0 ? R.id.rb_nan : R.id.rb_nv);
+            etName.setEnabled(false);
+            etAge.setEditeEnable(false);
+            etPhone.setEnabled(false);
+            rbNan.setEnabled(false);
+            rbNv.setEnabled(false);
+        }
+
         //药房id
         for (OPenPaperBaseBean.StoreBean storeBean : baseBean.store) {
             if (storeBean.drug_store_id == infoBean.store_id) {
