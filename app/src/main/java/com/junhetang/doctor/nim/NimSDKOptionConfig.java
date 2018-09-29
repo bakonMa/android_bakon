@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import com.junhetang.doctor.R;
+import com.junhetang.doctor.ui.activity.fragment.MainActivity;
+import com.junhetang.doctor.utils.UIUtils;
 import com.netease.nim.uikit.api.wrapper.MessageRevokeTip;
 import com.netease.nim.uikit.api.wrapper.NimUserInfoProvider;
 import com.netease.nimlib.sdk.SDKOptions;
@@ -13,9 +16,6 @@ import com.netease.nimlib.sdk.StatusBarNotificationConfig;
 import com.netease.nimlib.sdk.mixpush.MixPushConfig;
 import com.netease.nimlib.sdk.msg.MessageNotifierCustomization;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
-import com.junhetang.doctor.R;
-import com.junhetang.doctor.ui.activity.fragment.MainActivity;
-import com.junhetang.doctor.utils.UIUtils;
 
 import java.io.IOException;
 
@@ -64,14 +64,13 @@ class NimSDKOptionConfig {
         options.reducedIM = false;
 
         // 是否检查manifest 配置，调试阶段打开，调试通过之后请关掉
-        //todo
-        options.checkManifestConfig = true;
+        options.checkManifestConfig = false;
 
         // 是否启用群消息已读功能，默认关闭
         options.enableTeamMsgAck = false;
 
         // 配置第三方推送
-//        options.mixPushConfig = buildMixPushConfig();
+        options.mixPushConfig = buildMixPushConfig();
 
         // 云信私有化配置项
         configServerAddress(options);
@@ -182,22 +181,21 @@ class NimSDKOptionConfig {
 
         // 第三方推送配置
         MixPushConfig config = new MixPushConfig();
-
         // 小米推送
-        config.xmAppId = "2882303761517502883";
-        config.xmAppKey = "5671750254883";
-        config.xmCertificateName = "DEMO_MI_PUSH";
+        config.xmAppId = "2882303761517794100";
+        config.xmAppKey = "5831779458100";
+        config.xmCertificateName = "JHT_MI_PUSH";
 
         // 华为推送
-        config.hwCertificateName = "DEMO_HW_PUSH";
+        config.hwCertificateName = "JHT_HW_PUSH";
 
-        // 魅族推送
-        config.mzAppId = "111710";
-        config.mzAppKey = "282bdd3a37ec4f898f47c5bbbf9d2369";
-        config.mzCertificateName = "DEMO_MZ_PUSH";
-
-        // fcm 推送，适用于海外用户
-        config.fcmCertificateName = "DEMO_FCM_PUSH";
+//        // 魅族推送
+//        config.mzAppId = "111710";
+//        config.mzAppKey = "282bdd3a37ec4f898f47c5bbbf9d2369";
+//        config.mzCertificateName = "DEMO_MZ_PUSH";
+//
+//        // fcm 推送，适用于海外用户
+//        config.fcmCertificateName = "DEMO_FCM_PUSH";
 
         return config;
     }

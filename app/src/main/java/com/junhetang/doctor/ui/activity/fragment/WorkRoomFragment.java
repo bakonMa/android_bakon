@@ -347,9 +347,9 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                                 NIMClient.getService(MsgService.class).saveMessageToLocal(msg, true);
                             }
                         }, 1000);
-
+                        return;
                     }
-                    return;
+
                 }
             }
         }

@@ -81,8 +81,8 @@ def devAddress() {
 }
 
 def onLineAddress() {
-//    "\"http://dev.dr.jhtcm.com/\""  //测试环境
-    "\"https://dr.jhtcm.vip/\""//正式线上环境
+    "\"http://dev.dr.jhtcm.com/\""  //测试环境
+//    "\"https://dr.jhtcm.vip/\""//正式线上环境
 //    "\"https://dr.beta.jhtcm.vip/\""//beta测试环境
 }
 
@@ -99,9 +99,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     implementation project(':uikit')
     //Android
-    implementation "com.android.support:appcompat-v7:$support_version"
-    implementation "com.android.support.constraint:constraint-layout:$constraintlayout_version"
-    implementation "com.android.support:design:$support_version"
+//    implementation "com.android.support:appcompat-v7:$support_version"
+//    implementation "com.android.support.constraint:constraint-layout:$constraintlayout_version"
+//    implementation "com.android.support:design:$support_version"
     implementation "com.android.support:recyclerview-v7:$support_version"
     //banner
     implementation 'com.youth.banner:banner:1.4.10'

@@ -116,9 +116,9 @@ public abstract class MsgViewHolderBase extends RecyclerViewHolder<BaseMultiItem
         return true;
     }
 
-    // 是否显示已读，默认为显示
+    // 是否显示已读，默认为不显示
     protected boolean shouldDisplayReceipt() {
-        return true;
+        return false;
     }
 
     /// -- 以下接口可由子类调用

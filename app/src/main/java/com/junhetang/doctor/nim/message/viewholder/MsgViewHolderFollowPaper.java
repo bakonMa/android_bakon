@@ -86,7 +86,8 @@ public class MsgViewHolderFollowPaper extends MsgViewHolderBase {
     @Override
     protected boolean shouldDisplayReceipt() {
         //收到的显示已读，发出不显示
-        return message.getDirect() == MsgDirectionEnum.In;
+//        return message.getDirect() == MsgDirectionEnum.In;
+        return false;
     }
 
     //不显示长按菜单
