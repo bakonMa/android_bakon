@@ -362,7 +362,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 bottomPopupView.show(scrollView);
                 break;
             case R.id.et_memb_see://购药前是否可见
-                bottomPopupView = new BottomListPopupView(this, "购药前是否可见", menbSeeList, new BottomListPopupView.OnClickListener() {
+                bottomPopupView = new BottomListPopupView(this, "患者购药前是否可见", menbSeeList, new BottomListPopupView.OnClickListener() {
                     @Override
                     public void selectItem(int position) {
                         membSee = position;
