@@ -5,9 +5,9 @@ import com.junhetang.doctor.config.HttpConfig;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.data.response.HttpResponse;
 import com.junhetang.doctor.ui.base.BaseObserver;
-import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.BankCardBean;
 import com.junhetang.doctor.ui.bean.BankTypeBean;
+import com.junhetang.doctor.ui.bean.BasePageBean;
 import com.junhetang.doctor.ui.bean.DealDetailBean;
 import com.junhetang.doctor.ui.bean.WalletBean;
 import com.junhetang.doctor.ui.contact.WalletContact;
@@ -18,8 +18,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * WalletPresenter 钱包
@@ -35,35 +35,44 @@ public class WalletPresenter implements WalletContact.Presenter {
     public static final int WITHDRAW_OK = 0x115;
     public static final int GET_DEAL_LIST_OK = 0x116;
 
-    private final WalletContact.View mView;
-    private CompositeSubscription mSubscription;
+    private WalletContact.View mView;
+    private CompositeDisposable mDisposable;
     private LoadingDialog mDialog;
 
     @Inject
     public WalletPresenter(WalletContact.View view) {
         this.mView = view;
-        mSubscription = new CompositeSubscription();
+        mDisposable = new CompositeDisposable();
         mDialog = new LoadingDialog(mView.provideContext());
     }
 
     @Override
     public void unsubscribe() {
-        if (!mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
+        if (!mDisposable.isDisposed()) {
+            mDisposable.dispose();
         }
+        if (null != mDialog) {
+            mDialog = null;
+        }
+        mView = null;
     }
 
     @Override
     public void getWallet() {
         Params params = new Params();
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getWallet(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null) mDialog.show();
                 })
                 .subscribe(new BaseObserver<HttpResponse<WalletBean>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<WalletBean> response) {
                         mView.onSuccess(M.createMessage(response.data, GET_WALLET_OK));
@@ -74,20 +83,25 @@ public class WalletPresenter implements WalletContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
+
     }
 
     @Override
     public void userBankList() {
         Params params = new Params();
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().userbanklist(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null) mDialog.show();
                 })
                 .subscribe(new BaseObserver<HttpResponse<List<BankCardBean>>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<List<BankCardBean>> response) {
                         mView.onSuccess(M.createMessage(response.data, GET_BANKCARD_OK));
@@ -98,20 +112,25 @@ public class WalletPresenter implements WalletContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
+
     }
 
     @Override
     public void getBankType() {
         Params params = new Params();
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getBankType(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null) mDialog.show();
                 })
                 .subscribe(new BaseObserver<HttpResponse<List<BankTypeBean>>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<List<BankTypeBean>> response) {
                         mView.onSuccess(M.createMessage(response.data, GET_BANKTYPE_OK));
@@ -122,7 +141,7 @@ public class WalletPresenter implements WalletContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
+
     }
 
     @Override
@@ -133,13 +152,18 @@ public class WalletPresenter implements WalletContact.Presenter {
         params.put("bank_number", bank_number);
         params.put("openingbank", openingbank);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().useraddbank(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null) mDialog.show();
                 })
                 .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<String> response) {
                         mView.onSuccess(M.createMessage(response.data, ADD_BANKCARD_OK));
@@ -150,7 +174,7 @@ public class WalletPresenter implements WalletContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
+
     }
 
     @Override
@@ -158,13 +182,18 @@ public class WalletPresenter implements WalletContact.Presenter {
         Params params = new Params();
         params.put("id", id);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().deleteBankCard(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null) mDialog.show();
                 })
                 .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<String> response) {
                         mView.onSuccess(M.createMessage(response.data, DELETE_BANKCARD_OK));
@@ -175,7 +204,7 @@ public class WalletPresenter implements WalletContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
+
     }
 
     @Override
@@ -184,13 +213,18 @@ public class WalletPresenter implements WalletContact.Presenter {
         params.put("bound_bank_id", bound_bank_id);
         params.put("money", money);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().exmoneySubmit(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null) mDialog.show();
                 })
                 .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<String> response) {
                         mView.onSuccess(M.createMessage(response.data, WITHDRAW_OK));
@@ -201,7 +235,7 @@ public class WalletPresenter implements WalletContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
+
     }
 
     @Override
@@ -209,10 +243,15 @@ public class WalletPresenter implements WalletContact.Presenter {
         Params params = new Params();
         params.put("page", pageNum);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getDealFlow(params))
                 .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<BasePageBean<DealDetailBean>>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<BasePageBean<DealDetailBean>> response) {
                         mView.onSuccess(M.createMessage(response.data, GET_DEAL_LIST_OK));
@@ -223,6 +262,6 @@ public class WalletPresenter implements WalletContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
+
     }
 }

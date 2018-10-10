@@ -31,7 +31,7 @@ import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.popupwindow.SharePopupWindow;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 

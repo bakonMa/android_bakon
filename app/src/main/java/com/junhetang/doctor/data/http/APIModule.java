@@ -2,11 +2,11 @@ package com.junhetang.doctor.data.http;
 
 import com.google.gson.Gson;
 import com.junhetang.doctor.BuildConfig;
+import com.junhetang.doctor.application.DocApplication;
+import com.junhetang.doctor.config.HttpConfig;
 import com.junhetang.doctor.config.SPConfig;
 import com.junhetang.doctor.data.localdata.SharePreferencesWrapper;
 import com.junhetang.doctor.data.localdata.StorageOperator;
-import com.junhetang.doctor.application.DocApplication;
-import com.junhetang.doctor.config.HttpConfig;
 
 import java.util.concurrent.TimeUnit;
 
@@ -18,7 +18,7 @@ import dagger.Provides;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -97,7 +97,7 @@ public final class APIModule {
         builder.client(okHttpClient)
                 .baseUrl(HttpConfig.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create());
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
         return builder.build();
     }
 

@@ -25,7 +25,7 @@ import com.junhetang.doctor.ui.presenter.LoginPresenter;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.utils.UmengKey;
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.concurrent.TimeUnit;
@@ -35,12 +35,12 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-import rx.Observable;
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * mayakun 2017/11/15
@@ -82,7 +82,7 @@ public class LoginFragment extends BaseFragment implements LoginContact.View {
      * 验证码倒计时时间
      */
     private int time = 60;//每次验证请求需要间隔60S
-    private Subscription subscription;
+    private Disposable disposable;
     private int type = 0;//0：验证码 1：密码
 
     //根据type，构造fragment
@@ -218,26 +218,31 @@ public class LoginFragment extends BaseFragment implements LoginContact.View {
 
     //倒计时
     public void timeDown() {
-        subscription = Observable.interval(0, 1, TimeUnit.SECONDS)
+        Observable.interval(0, 1, TimeUnit.SECONDS)
                 .take(time) //设置循环次数
-                .map(new Func1<Long, Long>() {
+                .map(new Function<Long, Long>() {
                     @Override
-                    public Long call(Long aLong) {
+                    public Long apply(Long aLong) throws Exception {
                         return time - aLong;
                     }
                 })
-                .doOnSubscribe(new Action0() {
+                .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
-                    public void call() {
+                    public void accept(Disposable disposable) throws Exception {
                         tvSendcode.setEnabled(false);//不可点击
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())//操作UI主要在UI线程
                 .subscribe(new Observer<Long>() {
                     @Override
-                    public void onCompleted() {
-                        tvSendcode.setText("重新获取验证码");//数据发送完后设置为原来的文字
-                        tvSendcode.setEnabled(true);
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onNext(Long aLong) {//接受到一条就是会操作一次UI
+                        tvSendcode.setText(aLong + "s后可重发");
+
                     }
 
                     @Override
@@ -246,8 +251,9 @@ public class LoginFragment extends BaseFragment implements LoginContact.View {
                     }
 
                     @Override
-                    public void onNext(Long aLong) { //接受到一条就是会操作一次UI
-                        tvSendcode.setText(aLong + "s后可重发");
+                    public void onComplete() {
+                        tvSendcode.setText("重新获取验证码");//数据发送完后设置为原来的文字
+                        tvSendcode.setEnabled(true);
                     }
                 });
     }
@@ -269,8 +275,8 @@ public class LoginFragment extends BaseFragment implements LoginContact.View {
     public void onDestroyView() {
         super.onDestroyView();
         //取消订阅
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
         }
         mPresenter.unsubscribe();
     }

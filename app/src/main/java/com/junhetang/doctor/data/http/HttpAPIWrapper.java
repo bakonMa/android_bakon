@@ -16,9 +16,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.Observable;
+
 
 /**
  * @author: ZhaoYun
@@ -67,20 +70,20 @@ public final class HttpAPIWrapper {
     /**
      * 给任何Http的Observable加上在Activity中运行的线程调度器
      */
-    public static <T> Observable.Transformer<T, T> SCHEDULERS_TRANSFORMER() {
+    public static <T> ObservableTransformer<T, T> SCHEDULERS_TRANSFORMER() {
         return tObservable -> tObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     public <T extends HttpResponse> Observable<T> wrapper(Observable<T> resourceObservable) {
         return resourceObservable
                 .flatMap((T baseResponse) -> Observable.create(
-                        (Observable.OnSubscribe<T>) subscriber -> {
+                        (ObservableOnSubscribe<T>) subscriber -> {
                             //system code
                             if (BuildConfig.DEBUG) {
                                 Log.d("token", DocApplication.getAppComponent().dataRepo().appSP().getString(SPConfig.SP_STR_TOKEN, ""));
                             }
                             if (baseResponse == null) {
-                                subscriber.onCompleted();
+                                subscriber.onComplete();
                             } else {//success
                                 if (baseResponse.code == null
                                         || ApiException.ERROR_API_1001.equals(baseResponse.code)

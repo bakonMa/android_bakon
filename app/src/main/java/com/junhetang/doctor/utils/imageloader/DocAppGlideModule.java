@@ -1,5 +1,8 @@
 package com.junhetang.doctor.utils.imageloader;
 
+import android.content.Context;
+
+import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;
 
@@ -12,19 +15,10 @@ import com.bumptech.glide.module.AppGlideModule;
 @GlideModule
 public final class DocAppGlideModule extends AppGlideModule {
 
-//    @Override
-//    public void registerComponents(Context context, Glide glide, Registry registry) {
-//        super.registerComponents(context, glide, registry);
-//    }
-//
-//    @Override
-//    public void applyOptions(Context context, GlideBuilder builder) {
-//        super.applyOptions(context, builder);
-//    }
-//
-//    @Override
-//    public boolean isManifestParsingEnabled() {
-//        return true;
-//    }
+    @Override
+    public void applyOptions(Context context, GlideBuilder builder) {
+        super.applyOptions(context, builder);
+    }
+
 
 }

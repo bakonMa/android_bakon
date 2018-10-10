@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
-import com.junhetang.doctor.BuildConfig;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.injection.components.DaggerActivityComponent;
@@ -37,8 +36,8 @@ import com.junhetang.doctor.widget.dialog.LoadingDialog;
 import com.junhetang.doctor.widget.popupwindow.BottomChoosePopupView;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
-import com.tbruyelle.rxpermissions.RxPermissions;
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
@@ -49,7 +48,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import rx.Observer;
+import io.reactivex.functions.Consumer;
 
 /**
  * 认证 上传图片
@@ -149,12 +148,11 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View,
     private void openCameraOrPhoto(boolean isCamera) {
         //根据路径拍照并存储照片
         RxPermissions rxPermissions = new RxPermissions(this);
-        rxPermissions.setLogging(BuildConfig.DEBUG);
         rxPermissions
                 .request(isCamera ? new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA} : new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
-                .subscribe(new Observer<Boolean>() {
+                .subscribe(new Consumer<Boolean>() {
                     @Override
-                    public void onNext(Boolean aBoolean) {
+                    public void accept(Boolean aBoolean) throws Exception {
                         if (aBoolean) {
                             if (isCamera) {//打开照相机
                                 File dir;
@@ -177,15 +175,7 @@ public class AuthStep2Activity extends BaseActivity implements AuthContact.View,
                         }
                     }
 
-                    @Override
-                    public void onCompleted() {
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
                 });
     }
 

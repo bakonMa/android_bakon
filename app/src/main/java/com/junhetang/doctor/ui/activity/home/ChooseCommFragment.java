@@ -36,7 +36,7 @@ import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.KeyBoardUtils;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 
 import java.util.ArrayList;
 import java.util.List;

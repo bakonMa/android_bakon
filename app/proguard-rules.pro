@@ -158,7 +158,7 @@
 # -----------------------------------END---------------------------------
 
 
-#---------------------------------三方包---------------------------------
+#---------------------------------第三方包---------------------------------
 
 #-ignorewarnings
 # QuickAdapter
@@ -226,22 +226,48 @@
 
 # RxJava RxAndroid
 -dontwarn sun.misc.**
--keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+-keep class sun.misc.Unsafe { *; }
+
+-dontwarn java.lang.invoke.*
+
+-keep class io.reactivex.schedulers.Schedulers {
+    public static <methods>;
+}
+-keep class io.reactivex.schedulers.ImmediateScheduler {
+    public <methods>;
+}
+-keep class io.reactivex.schedulers.TestScheduler {
+    public <methods>;
+}
+-keep class io.reactivex.schedulers.Schedulers {
+    public static ** test();
+}
+-keepclassmembers class io.reactivex.internal.util.unsafe.*ArrayQueue*Field* {
     long producerIndex;
     long consumerIndex;
 }
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode producerNode;
+-keepclassmembers class io.reactivex.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    long producerNode;
+    long consumerNode;
 }
--keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
-    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+
+-keepclassmembers class io.reactivex.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    io.reactivex.internal.util.atomic.LinkedQueueNode producerNode;
 }
--dontnote rx.internal.util.PlatformDependent
+-keepclassmembers class io.reactivex.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    io.reactivex.internal.util.atomic.LinkedQueueNode consumerNode;
+}
+
+-dontwarn io.reactivex.internal.util.unsafe.**
 
 
 # RxLifeCycle
 -keep class com.trello.rxlifecycle2.** { *; }
 -keep interface com.trello.rxlifecycle2.** { *; }
+
+#RxPermissions
+-keep class com.tbruyelle.rxpermissions2.** { *; }
+-keep interface com.tbruyelle.rxpermissions2.** { *; }
 
 ### greenDAO 3
 -keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
@@ -402,6 +428,7 @@ public static java.lang.String TABLENAME;
 -keep class com.linkedin.** { *; }
 -keep class com.android.dingtalk.share.ddsharemodule.** { *; }
 -keepattributes Signature
+
 #umeng统计
 -keep class com.umeng.** {*;}
 -keepclassmembers class * {

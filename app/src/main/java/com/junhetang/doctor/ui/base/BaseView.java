@@ -3,7 +3,7 @@ package com.junhetang.doctor.ui.base;
 import android.app.Activity;
 import android.os.Message;
 
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 
 /**
  * @author: ZhaoYun

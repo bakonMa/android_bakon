@@ -14,8 +14,8 @@ import com.junhetang.doctor.widget.dialog.LoadingDialog;
 
 import javax.inject.Inject;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by table on 2017/11/24.
@@ -24,8 +24,8 @@ import rx.subscriptions.CompositeSubscription;
 
 public class LoginPresenter implements LoginContact.Presenter {
     private LoginContact.View mView;
-    private CompositeSubscription mSubscription;
-    private LoadingDialog mdialog;
+    private CompositeDisposable mDisposable;
+    private LoadingDialog mDialog;
 
     public static final int SEND_CODE = 0x110;//发送验证码
     public static final int LOGIN_SUCCESS = 0x111;//登录
@@ -37,17 +37,17 @@ public class LoginPresenter implements LoginContact.Presenter {
     @Inject
     public LoginPresenter(LoginContact.View view) {
         this.mView = view;
-        mdialog = new LoadingDialog(mView.provideContext());
-        mSubscription = new CompositeSubscription();
+        mDialog = new LoadingDialog(mView.provideContext());
+        mDisposable = new CompositeDisposable();
     }
 
     @Override
     public void unsubscribe() {
-        if (!mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
+        if (!mDisposable.isDisposed()) {
+            mDisposable.dispose();
         }
-        if (mdialog != null) {
-            mdialog = null;
+        if (null != mDialog) {
+            mDialog = null;
         }
         mView = null;
     }
@@ -60,13 +60,18 @@ public class LoginPresenter implements LoginContact.Presenter {
         params.put("mobile", phone);
         params.put("type", type);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().sendCode(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mdialog != null) mdialog.show();
+                .doOnSubscribe(disposable -> {
+                    if (mDialog != null) mDialog.show();
                 })
-                .subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
+                .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<String> stringHttpResponse) {
                         mView.onSuccess(M.createMessage(stringHttpResponse.data, SEND_CODE));
@@ -77,7 +82,6 @@ public class LoginPresenter implements LoginContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
     }
 
     @Override
@@ -91,14 +95,18 @@ public class LoginPresenter implements LoginContact.Presenter {
             params.put("password", code);
         }
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().login(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mdialog != null) mdialog.show();
+                .doOnSubscribe(disposable -> {
+                    if (mDialog != null) mDialog.show();
                 })
-                .subscribe(new BaseObserver<HttpResponse<LoginResponse>>(mdialog) {
+                .subscribe(new BaseObserver<HttpResponse<LoginResponse>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<LoginResponse> response) {
                         //保存token
@@ -120,7 +128,6 @@ public class LoginPresenter implements LoginContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
     }
 
     @Override
@@ -131,13 +138,18 @@ public class LoginPresenter implements LoginContact.Presenter {
         params.put("vcode", code);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
 
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().register(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mdialog != null) mdialog.show();
+                .doOnSubscribe(disposable -> {
+                    if (mDialog != null) mDialog.show();
                 })
-                .subscribe(new BaseObserver<HttpResponse<LoginResponse>>(mdialog) {
+                .subscribe(new BaseObserver<HttpResponse<LoginResponse>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<LoginResponse> loginResponseHttpResponse) {
                         //保存token
@@ -156,7 +168,6 @@ public class LoginPresenter implements LoginContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
     }
 
     @Override
@@ -167,13 +178,18 @@ public class LoginPresenter implements LoginContact.Presenter {
         params.put("password", pwd);
         params.put("confirm_password", pwd);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().updatePwd(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mdialog != null) mdialog.show();
+                .doOnSubscribe(disposable -> {
+                    if (mDialog != null) mDialog.show();
                 })
-                .subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
+                .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<String> loginResponseHttpResponse) {
                         mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, RESETPWD_SUCCESS));
@@ -184,7 +200,6 @@ public class LoginPresenter implements LoginContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
     }
 
     //设置是否推送
@@ -193,13 +208,18 @@ public class LoginPresenter implements LoginContact.Presenter {
         Params params = new Params();
         params.put("status", status);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().setPushStatus(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mdialog != null) mdialog.show();
+                .doOnSubscribe(disposable -> {
+                    if (mDialog != null) mDialog.show();
                 })
-                .subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
+                .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<String> loginResponseHttpResponse) {
                         mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, SETPUSHSTATIS_SUCCESS));
@@ -210,7 +230,6 @@ public class LoginPresenter implements LoginContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
     }
 
     //是否开通在线咨询
@@ -219,13 +238,18 @@ public class LoginPresenter implements LoginContact.Presenter {
         Params params = new Params();
         params.put("is_consult", flag);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().setChatFlag(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mdialog != null) mdialog.show();
+                .doOnSubscribe(disposable -> {
+                    if (mDialog != null) mDialog.show();
                 })
-                .subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
+                .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<String> loginResponseHttpResponse) {
                         mView.onSuccess(M.createMessage(loginResponseHttpResponse.data, SET_CHAT_FLAG_SUCCESS));
@@ -236,6 +260,5 @@ public class LoginPresenter implements LoginContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
     }
 }

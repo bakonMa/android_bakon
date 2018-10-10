@@ -26,8 +26,8 @@ import com.junhetang.doctor.utils.MD5Util;
 import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.widget.dialog.AppUpdateDialog;
-import com.tbruyelle.rxpermissions.RxPermissions;
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -113,7 +113,6 @@ public class TranslucentActivity extends BaseActivity implements TranslucentCont
     public void showUpdateDialog(AppUpdateBean appUpdateBean) {
         AppUpdateDialog.StartDownloadingListener startDownloadingListener = (downloadUrl, netMD5, force) -> {
             RxPermissions rxPermissions = new RxPermissions(this);
-            rxPermissions.setLogging(BuildConfig.DEBUG);
             rxPermissions
                     .request(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     .subscribe(aBoolean -> {

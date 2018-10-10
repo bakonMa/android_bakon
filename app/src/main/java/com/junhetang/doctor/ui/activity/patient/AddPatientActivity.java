@@ -25,7 +25,7 @@ import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.dialog.CommSuperDialog;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 
 import java.lang.ref.WeakReference;
 

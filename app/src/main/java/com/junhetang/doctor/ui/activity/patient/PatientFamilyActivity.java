@@ -28,7 +28,7 @@ import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.ImageUtil;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

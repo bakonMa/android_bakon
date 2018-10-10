@@ -18,8 +18,8 @@ import com.junhetang.doctor.widget.dialog.LoadingDialog;
 
 import java.util.List;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * PatientPresenter 患者
@@ -29,7 +29,7 @@ import rx.subscriptions.CompositeSubscription;
 public class PatientPresenter implements PatientContact.Presenter {
     private PatientContact.View mView;
 
-    private CompositeSubscription compositeSubscription;
+    private CompositeDisposable mDisposable;
 
     private LoadingDialog mDialog;
 
@@ -44,40 +44,47 @@ public class PatientPresenter implements PatientContact.Presenter {
 
     public PatientPresenter(PatientContact.View mView) {
         this.mView = mView;
-        compositeSubscription = new CompositeSubscription();
+        mDisposable = new CompositeDisposable();
         mDialog = new LoadingDialog(mView.provideContext());
     }
 
     @Override
     public void unsubscribe() {
-        if (!compositeSubscription.isUnsubscribed()) {
-            compositeSubscription.unsubscribe();
+        if (!mDisposable.isDisposed()) {
+            mDisposable.dispose();
         }
+        if (null != mDialog) {
+            mDialog = null;
+        }
+        mView = null;
     }
-
 
     @Override
     public void getPatientlist() {
         Params params = new Params();
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getpatientlist(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null)
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<List<PatientBean>>>(mDialog) {
-                    @Override
-                    public void onSuccess(HttpResponse<List<PatientBean>> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_PATIENTLIST_0K));
-                    }
+            @Override
+            public void onSubscribe(Disposable d) {
+                mDisposable.add(d);
+            }
 
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-                        mView.onError(errorCode, errorMsg);
-                    }
-                });
-        compositeSubscription.add(subscription);
+            @Override
+            public void onSuccess(HttpResponse<List<PatientBean>> personalBeanHttpResponse) {
+                mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_PATIENTLIST_0K));
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                mView.onError(errorCode, errorMsg);
+            }
+        });
     }
 
     @Override
@@ -85,14 +92,19 @@ public class PatientPresenter implements PatientContact.Presenter {
         Params params = new Params();
         params.put("search", search);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getpatientlist(params))
                 .compose(mView.toLifecycle())
-//                .doOnSubscribe(() -> {
+//                .doOnSubscribe(disposable -> {
 //                    if (mDialog != null)
 //                        mDialog.show();
 //                })
                 .subscribe(new BaseObserver<HttpResponse<List<PatientBean>>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<List<PatientBean>> httpResponse) {
                         mView.onSuccess(M.createMessage(httpResponse.data, SEARCH_PATIENT_OK));
@@ -103,7 +115,6 @@ public class PatientPresenter implements PatientContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        compositeSubscription.add(subscription);
     }
 
     @Override
@@ -111,25 +122,28 @@ public class PatientPresenter implements PatientContact.Presenter {
         Params params = new Params();
         params.put("memb_no", memb_no);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getpatientinfo(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null)
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<PatientFamilyBean>>(mDialog) {
-                    @Override
-                    public void onSuccess(HttpResponse<PatientFamilyBean> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_PATIENTFAMILY_0K));
-                    }
+            @Override
+            public void onSubscribe(Disposable d) {
+                mDisposable.add(d);
+            }
 
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-                        mView.onError(errorCode, errorMsg);
-                    }
-                });
-        compositeSubscription.add(subscription);
+            @Override
+            public void onSuccess(HttpResponse<PatientFamilyBean> personalBeanHttpResponse) {
+                mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_PATIENTFAMILY_0K));
+            }
 
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                mView.onError(errorCode, errorMsg);
+            }
+        });
     }
 
     @Override
@@ -139,24 +153,28 @@ public class PatientPresenter implements PatientContact.Presenter {
         params.put("memb_no", memb_no);
         params.put("remark_name", remarkName);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().setRemarkName(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null)
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
-                    @Override
-                    public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_PATIENTFAMILY_0K));
-                    }
+            @Override
+            public void onSubscribe(Disposable d) {
+                mDisposable.add(d);
+            }
 
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-                        mView.onError(errorCode, errorMsg);
-                    }
-                });
-        compositeSubscription.add(subscription);
+            @Override
+            public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
+                mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_PATIENTFAMILY_0K));
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                mView.onError(errorCode, errorMsg);
+            }
+        });
     }
 
     @Override
@@ -165,24 +183,28 @@ public class PatientPresenter implements PatientContact.Presenter {
         params.put("memb_no", memb_no);
         params.put("advisory_fee", advisory_fee);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().setAdvisoryfee(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null)
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
-                    @Override
-                    public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, SET_PRICE_0K));
-                    }
+            @Override
+            public void onSubscribe(Disposable d) {
+                mDisposable.add(d);
+            }
 
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-                        mView.onError(errorCode, errorMsg);
-                    }
-                });
-        compositeSubscription.add(subscription);
+            @Override
+            public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
+                mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, SET_PRICE_0K));
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                mView.onError(errorCode, errorMsg);
+            }
+        });
     }
 
     @Override
@@ -191,10 +213,15 @@ public class PatientPresenter implements PatientContact.Presenter {
         params.put("daccid", NimU.getNimAccount());
         params.put("saccid", accid);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().docToTalk(params))
 //                .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<String>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
                         LogUtil.d("docToTalk ok");
@@ -208,16 +235,20 @@ public class PatientPresenter implements PatientContact.Presenter {
                     }
 
                 });
-        compositeSubscription.add(subscription);
     }
 
     @Override
     public void addPatient(Params params) {
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().addPatient(params))
                 .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<OtherBean>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<OtherBean> httpResponse) {
                         mView.onSuccess(M.createMessage(httpResponse.data, ADD_PATIENT_OK));
@@ -229,16 +260,20 @@ public class PatientPresenter implements PatientContact.Presenter {
                     }
 
                 });
-        compositeSubscription.add(subscription);
     }
 
     @Override
     public void addPatientJZR(Params params) {
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().addPatientJZR(params))
                 .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<String>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
                         mView.onSuccess(M.createMessage(httpResponse.data, ADD_PATIENT_JZR_OK));
@@ -250,7 +285,6 @@ public class PatientPresenter implements PatientContact.Presenter {
                     }
 
                 });
-        compositeSubscription.add(subscription);
     }
 
     @Override
@@ -260,23 +294,27 @@ public class PatientPresenter implements PatientContact.Presenter {
         params.put("patient_id", patient_id);
         params.put("memb_no", memb_no);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getPatientPaperlist(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null)
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<BasePageBean<CheckPaperBean>>>(mDialog) {
-                    @Override
-                    public void onSuccess(HttpResponse<BasePageBean<CheckPaperBean>> httpResponse) {
-                        mView.onSuccess(M.createMessage(httpResponse.data, GET_PATIEN_PAPER_TLIST_0K));
-                    }
+            @Override
+            public void onSubscribe(Disposable d) {
+                mDisposable.add(d);
+            }
 
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-                        mView.onError(errorCode, errorMsg);
-                    }
-                });
-        compositeSubscription.add(subscription);
+            @Override
+            public void onSuccess(HttpResponse<BasePageBean<CheckPaperBean>> httpResponse) {
+                mView.onSuccess(M.createMessage(httpResponse.data, GET_PATIEN_PAPER_TLIST_0K));
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                mView.onError(errorCode, errorMsg);
+            }
+        });
     }
 }

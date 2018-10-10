@@ -12,7 +12,6 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.junhetang.doctor.BuildConfig;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.SPConfig;
@@ -37,12 +36,14 @@ import com.netease.nimlib.sdk.Observer;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.CustomNotification;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
-import com.tbruyelle.rxpermissions.RxPermissions;
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Set;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * P2PChatActivity  定制p2p单聊
@@ -270,28 +271,17 @@ public class P2PChatActivity extends BaseMessageActivity implements BaseView {
     //录音权限
     private void requestPermissions() {
         RxPermissions rxPermissions = new RxPermissions(this);
-        rxPermissions.setLogging(BuildConfig.DEBUG);
         rxPermissions
                 .request(new String[]{Manifest.permission.RECORD_AUDIO})
-                .subscribe(new rx.Observer<Boolean>() {
-                    @Override
-                    public void onNext(Boolean aBoolean) {
-                        if (!aBoolean) {
-                            ToastUtil.show("请求语音权限失败");
-                        }
-                    }
-
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                });
+                .subscribe(new Consumer<Boolean>() {
+                               @Override
+                               public void accept(Boolean aBoolean) throws Exception {
+                                   if (!aBoolean) {
+                                       ToastUtil.show("请求语音权限失败");
+                                   }
+                               }
+                           }
+                );
     }
 
     @Override

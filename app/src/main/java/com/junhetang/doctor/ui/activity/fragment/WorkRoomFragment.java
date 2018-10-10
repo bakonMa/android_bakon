@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.junhetang.doctor.BuildConfig;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.EventConfig;
@@ -67,8 +66,8 @@ import com.netease.nimlib.sdk.msg.model.CustomMessageConfig;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
 import com.netease.nimlib.sdk.msg.model.RecentContact;
 import com.netease.nimlib.sdk.uinfo.model.UserInfo;
-import com.tbruyelle.rxpermissions.RxPermissions;
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.umeng.analytics.MobclickAgent;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -606,30 +605,16 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
     }
 
     private void requestPermissions() {
-        RxPermissions rxPermissions = new RxPermissions(getActivity());
-        rxPermissions.setLogging(BuildConfig.DEBUG);
+        RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions
                 .request(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE})
-                .subscribe(new rx.Observer<Boolean>() {
-                    @Override
-                    public void onCompleted() {
-
+                .subscribe(aBoolean -> {
+                    if (!aBoolean) {
+                        ToastUtil.show("请求存储权限失败");
+                    } else {
+                        showServiceInfo();
                     }
-
-                    @Override
-                    public void onNext(Boolean aBoolean) {
-                        if (!aBoolean) {
-                            ToastUtil.show("请求存储权限失败");
-                        } else {
-                            showServiceInfo();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                });
+                }
+                );
     }
 }

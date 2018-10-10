@@ -7,8 +7,8 @@ import com.junhetang.doctor.ui.bean.DownloadProgressBean;
 
 import java.io.IOException;
 
-import javax.annotation.Nullable;
 
+import io.reactivex.annotations.Nullable;
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import okio.Buffer;

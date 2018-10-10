@@ -1,19 +1,19 @@
 package com.junhetang.doctor.nim.action;
 
 import android.Manifest;
+import android.support.v4.app.FragmentActivity;
 
 import com.junhetang.doctor.R;
+import com.junhetang.doctor.utils.ToastUtil;
 import com.netease.nim.uikit.business.session.actions.PickImageAction;
 import com.netease.nim.uikit.business.session.constant.RequestCode;
 import com.netease.nimlib.sdk.chatroom.ChatRoomMessageBuilder;
 import com.netease.nimlib.sdk.msg.MessageBuilder;
 import com.netease.nimlib.sdk.msg.constant.SessionTypeEnum;
 import com.netease.nimlib.sdk.msg.model.IMMessage;
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.io.File;
-
-import rx.Observer;
 
 /**
  * PhotoAction 照片，拍照
@@ -43,27 +43,15 @@ public class PhotoAction extends PickImageAction {
     @Override
     public void onClick() {
         //拍照权限
-        RxPermissions rxPermissions = new RxPermissions(getActivity());
+        RxPermissions rxPermissions = new RxPermissions((FragmentActivity) getActivity());
         rxPermissions.request(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA})
-                .subscribe(new Observer<Boolean>() {
-                    @Override
-                    public void onNext(Boolean aBoolean) {
-                        if (aBoolean) {
-                            int requestCode = makeRequestCode(RequestCode.PICK_IMAGE);
-                            showSelector(getTitleId(), requestCode, false, tempFile(), type);
-                        }
+                .subscribe(aBoolean -> {
+                    if (aBoolean) {
+                        int requestCode = makeRequestCode(RequestCode.PICK_IMAGE);
+                        showSelector(getTitleId(), requestCode, false, tempFile(), type);
+                    } else {
+                        ToastUtil.showCenterToast(type == 0 ? "请求相册权限失败败" : "请求照相机权限失");
                     }
-
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
                 });
     }
 

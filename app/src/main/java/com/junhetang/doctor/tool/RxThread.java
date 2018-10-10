@@ -1,8 +1,10 @@
 package com.junhetang.doctor.tool;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author: ZhaoYun
@@ -14,30 +16,34 @@ public class RxThread {
 
     /**
      * 给任何Observable加上在Activity或Fragment中运行的线程调度器
+     *
      * @param <T>
-     * @param <R>
      * @return
      */
-    public static <T,R> Observable.Transformer<T,R>  uiSchedulersTransformer(){
-        return new Observable.Transformer<T , R>(){
+    public static <T> ObservableTransformer<T, T> uiSchedulersTransformer() {
+        return new ObservableTransformer<T, T>() {
             @Override
-            public Observable<R> call(Observable<T> tObservable) {
-                return (Observable<R>) tObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+            public ObservableSource<T> apply(Observable<T> upstream) {
+                return upstream
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread());
             }
         };
     }
 
     /**
      * 给任何Observable加上在Service中运行的线程调度器
+     *
      * @param <T>
-     * @param <R>
      * @return
      */
-    public static <T,R> Observable.Transformer<T,R>  serviceSchedulersTransformer(){
-        return new Observable.Transformer<T , R>(){
+    public static <T> ObservableTransformer<T, T> serviceSchedulersTransformer() {
+        return new ObservableTransformer<T, T>() {
             @Override
-            public Observable<R> call(Observable<T> tObservable) {
-                return (Observable<R>) tObservable.subscribeOn(Schedulers.io()).observeOn(Schedulers.io());
+            public ObservableSource<T> apply(Observable<T> upstream) {
+                return upstream
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io());
             }
         };
     }

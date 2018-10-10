@@ -24,8 +24,8 @@ import com.junhetang.doctor.widget.dialog.LoadingDialog;
 
 import java.util.List;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * OpenPaperPresenter 开方
@@ -35,7 +35,7 @@ import rx.subscriptions.CompositeSubscription;
 public class WorkRoomPresenter implements WorkRoomContact.Presenter {
     private WorkRoomContact.View mView;
 
-    private CompositeSubscription mSubscription;
+    private CompositeDisposable mDisposable;
 
     private LoadingDialog mDialog;
 
@@ -50,14 +50,14 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
 
     public WorkRoomPresenter(WorkRoomContact.View mView) {
         this.mView = mView;
-        mSubscription = new CompositeSubscription();
+        mDisposable = new CompositeDisposable();
         mDialog = new LoadingDialog(mView.provideContext());
     }
 
     @Override
     public void unsubscribe() {
-        if (!mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
+        if (!mDisposable.isDisposed()) {
+            mDisposable.dispose();
         }
         if (null != mDialog) {
             mDialog = null;
@@ -69,10 +69,15 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
     public void getUserIdentifyStatus() {
         Params params = new Params();
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getUserIdentifyStatus(params))
                 .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<OtherBean>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<OtherBean> resultResponse) {
                         U.setAuthStatus(resultResponse.data.status);
@@ -86,17 +91,21 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
     }
 
     @Override
     public void getRedPointStatus() {
         Params params = new Params();
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getHomeRedPointStatus(params))
                 .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<OtherBean>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<OtherBean> resultResponse) {
                         //审方
@@ -124,20 +133,25 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
 //                        mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
     }
 
     @Override
     public void getHomeBanner() {
         Params params = new Params();
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getHomeBanner(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null)
                         mDialog.show();
-                }).subscribe(new BaseObserver<HttpResponse<List<BannerBean>>>(mDialog) {
+                })
+                .subscribe(new BaseObserver<HttpResponse<List<BannerBean>>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<List<BannerBean>> personalBeanHttpResponse) {
                         mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_BANNER_OK));
@@ -148,7 +162,6 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
     }
 
     //开方基础数据
@@ -156,10 +169,15 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
     public void getOPenPaperBaseData() {
         Params params = new Params();
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getSomeadvisory(params))
                 .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<OPenPaperBaseBean>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<OPenPaperBaseBean> personalBeanHttpResponse) {
                         U.saveOpenpaperBaseData(new Gson().toJson(personalBeanHttpResponse.data));
@@ -171,7 +189,6 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
     }
 
     //更新token
@@ -179,13 +196,19 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
     public void updataToken() {
         Params params = new Params();
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().updateToken(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null)
                         mDialog.show();
-                }).subscribe(new BaseObserver<HttpResponse<OtherBean>>(mDialog) {
+                })
+                .subscribe(new BaseObserver<HttpResponse<OtherBean>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<OtherBean> response) {
                         U.updateToken(response.data.token);
@@ -198,7 +221,6 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
                         LogUtil.d("updataToken error:" + errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
     }
 
     //后台绑定信鸽token
@@ -207,9 +229,14 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
         Params params = new Params();
         params.put("c_token", xgToken);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().bindXGToken(params))
                 .subscribe(new BaseObserver<HttpResponse<String>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<String> httpResponse) {
                         LogUtil.d("bingXGToken OK");
@@ -221,7 +248,7 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
                     }
 
                 });
-        mSubscription.add(subscription);
+
     }
 
     @Override
@@ -229,10 +256,15 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
         Params params = new Params();
         params.put("page", page);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getSystemMsglist(params))
                 .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<BasePageBean<SystemMsgBean>>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<BasePageBean<SystemMsgBean>> response) {
                         mView.onSuccess(M.createMessage(response.data, GET_SYSTEMMSG_LIST_OK));
@@ -243,17 +275,22 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
+
     }
 
     @Override
     public void getJobScheduleList() {
         Params params = new Params();
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getJobScheduleList(params))
                 .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<List<JobScheduleBean>>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<List<JobScheduleBean>> response) {
                         mView.onSuccess(M.createMessage(response.data, GET_JOBSCHEDULE_LIST_OK));
@@ -264,7 +301,6 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
     }
 
     @Override
@@ -274,10 +310,15 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
         params.put("store_id", store_id);
         params.put("status", type);//1：已预约 -1：已取消
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getJobSchedulePatientList(params))
                 .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<List<JobSchedulePatientBean>>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<List<JobSchedulePatientBean>> response) {
                         mView.onSuccess(M.createMessage(response.data, type == 1 ? GET_JOBSCHEDULE_PATIENT_COMPLETE : GET_JOBSCHEDULE_PATIENT_CANCLE));
@@ -288,7 +329,6 @@ public class WorkRoomPresenter implements WorkRoomContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
     }
 
 }

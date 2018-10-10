@@ -15,8 +15,8 @@ import com.junhetang.doctor.utils.LogUtil;
 import com.junhetang.doctor.utils.M;
 import com.junhetang.doctor.widget.dialog.LoadingDialog;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by table on 2017/12/13.
@@ -28,7 +28,7 @@ public class CommonPresenter implements BasePresenter {
     private LoadingDialog mDialog;
     private BaseView mView;
 
-    private CompositeSubscription compositeSubscription;
+    private CompositeDisposable mDisposable;
 
     public static final int GET_MOMBNO_OK = 0x110;
     public static final int ADD_CHAT_RECORD_OK = 0x112;//添加交互记录
@@ -38,14 +38,18 @@ public class CommonPresenter implements BasePresenter {
             this.mView = view;
             mDialog = new LoadingDialog(view.provideContext());
         }
-        compositeSubscription = new CompositeSubscription();
+        mDisposable = new CompositeDisposable();
     }
 
     @Override
     public void unsubscribe() {
-        if (!compositeSubscription.isUnsubscribed()) {
-            compositeSubscription.unsubscribe();
+        if (!mDisposable.isDisposed()) {
+            mDisposable.dispose();
         }
+        if (null != mDialog) {
+            mDialog = null;
+        }
+        mView = null;
     }
 
     //accid 获取 memb_no
@@ -58,10 +62,15 @@ public class CommonPresenter implements BasePresenter {
         Params params = new Params();
         params.put("accid", accid);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getMembNo(params))
 //                .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<OtherBean>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<OtherBean> httpResponse) {
                         if (httpResponse.data == null || TextUtils.isEmpty(httpResponse.data.memb_no)) {
@@ -81,7 +90,7 @@ public class CommonPresenter implements BasePresenter {
                     }
 
                 });
-        compositeSubscription.add(subscription);
+
     }
 
     //添加记录
@@ -92,10 +101,15 @@ public class CommonPresenter implements BasePresenter {
         params.put("type", type);//1:问诊单 2:随诊单 3:开方
         params.put("source", source);//0:首页 1：聊天
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().addChatRecord(params))
 //                .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<String>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<String> personalBeanHttpResponse) {
                         LogUtil.d("CommonPresenter addChatRecord ok");
@@ -108,7 +122,7 @@ public class CommonPresenter implements BasePresenter {
 //                        mView.onError(errorCode, errorMsg);
                     }
                 });
-        compositeSubscription.add(subscription);
+
     }
 
 }

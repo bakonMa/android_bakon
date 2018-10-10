@@ -21,7 +21,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
-import com.junhetang.doctor.BuildConfig;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.config.EventConfig;
@@ -52,8 +51,8 @@ import com.junhetang.doctor.widget.popupwindow.BottomListPopupView;
 import com.junhetang.doctor.widget.popupwindow.ProvCityPopupView;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
-import com.tbruyelle.rxpermissions.RxPermissions;
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.tbruyelle.rxpermissions2.RxPermissions;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
@@ -66,7 +65,6 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import rx.Observer;
 
 /**
  * 认证第一步
@@ -282,44 +280,29 @@ public class AuthStep1Activity extends BaseActivity implements AuthContact.View,
     private void openCameraOrPhoto(boolean isCamera) {
         //根据路径拍照并存储照片
         RxPermissions rxPermissions = new RxPermissions(this);
-        rxPermissions.setLogging(BuildConfig.DEBUG);
         rxPermissions
                 .request(isCamera ? new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA} : new String[]{Manifest.permission.READ_EXTERNAL_STORAGE})
-                .subscribe(new Observer<Boolean>() {
-                    @Override
-                    public void onNext(Boolean aBoolean) {
-                        if (aBoolean) {
-                            if (isCamera) {//打开照相机
-                                File dir;
-                                if (Environment.MEDIA_MOUNTED.equals(DocApplication.getAppComponent().dataRepo().storage().externalRootDirState())) {
-                                    dir = DocApplication.getAppComponent().dataRepo().storage().externalPublicDir(Environment.DIRECTORY_PICTURES);
-                                } else {
-                                    dir = DocApplication.getAppComponent().dataRepo().storage().internalCustomDir(Environment.DIRECTORY_PICTURES);
-                                }
-                                if (!dir.exists()) {
-                                    dir.mkdirs();
-                                }
-                                cameraPath = new File(dir, UriUtil.headerFileName(actContext()));
-                                ActivityUtil.openCamera(AuthStep1Activity.this, cameraPath, REQUEST_CAMERA_CODE);
-                            } else {//打开相册
-                                ActivityUtil.openAlbum(AuthStep1Activity.this, "image/*", REQUEST_ALBUM_CODE);
+                .subscribe(aBoolean -> {
+                    if (aBoolean) {
+                        if (isCamera) {//打开照相机
+                            File dir;
+                            if (Environment.MEDIA_MOUNTED.equals(DocApplication.getAppComponent().dataRepo().storage().externalRootDirState())) {
+                                dir = DocApplication.getAppComponent().dataRepo().storage().externalPublicDir(Environment.DIRECTORY_PICTURES);
+                            } else {
+                                dir = DocApplication.getAppComponent().dataRepo().storage().internalCustomDir(Environment.DIRECTORY_PICTURES);
                             }
-
-                        } else {
-                            ToastUtil.show(isCamera ? "请求照相机权限失败" : "请求相册权限失败");
+                            if (!dir.exists()) {
+                                dir.mkdirs();
+                            }
+                            cameraPath = new File(dir, UriUtil.headerFileName(actContext()));
+                            ActivityUtil.openCamera(AuthStep1Activity.this, cameraPath, REQUEST_CAMERA_CODE);
+                        } else {//打开相册
+                            ActivityUtil.openAlbum(AuthStep1Activity.this, "image/*", REQUEST_ALBUM_CODE);
                         }
+
+                    } else {
+                        ToastUtil.show(isCamera ? "请求照相机权限失败" : "请求相册权限失败");
                     }
-
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
                 });
     }
 

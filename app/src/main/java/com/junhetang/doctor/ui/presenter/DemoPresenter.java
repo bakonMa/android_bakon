@@ -1,18 +1,18 @@
 package com.junhetang.doctor.ui.presenter;
 
+import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.data.http.Params;
 import com.junhetang.doctor.data.response.HttpResponse;
 import com.junhetang.doctor.ui.base.BaseObserver;
+import com.junhetang.doctor.ui.bean.LoginResponse;
 import com.junhetang.doctor.ui.contact.DemoContact;
 import com.junhetang.doctor.utils.ToastUtil;
-import com.junhetang.doctor.application.DocApplication;
-import com.junhetang.doctor.ui.bean.LoginResponse;
 import com.junhetang.doctor.widget.dialog.LoadingDialog;
 
 import javax.inject.Inject;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by table on 2017/11/22.
@@ -20,22 +20,26 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class DemoPresenter implements DemoContact.Presenter {
 
-    private final DemoContact.View mView;
-    private CompositeSubscription mSubscription;
+    private DemoContact.View mView;
+    private CompositeDisposable mDisposable;
     private LoadingDialog mDialog;
 
     @Inject
     public DemoPresenter(DemoContact.View view) {
         this.mView = view;
-        mSubscription = new CompositeSubscription();
+        mDisposable = new CompositeDisposable();
         mDialog = new LoadingDialog(mView.provideContext());
     }
 
     @Override
     public void unsubscribe() {
-        if (!mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
+        if (!mDisposable.isDisposed()) {
+            mDisposable.dispose();
         }
+        if (null != mDialog) {
+            mDialog = null;
+        }
+        mView = null;
     }
 
     @Override
@@ -43,13 +47,18 @@ public class DemoPresenter implements DemoContact.Presenter {
         Params params = new Params();
         params.put("mobilePhone", "13276386385");
         params.put("checkCode", "123456");
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().login(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null) mDialog.show();
                 })
                 .subscribe(new BaseObserver<HttpResponse<LoginResponse>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<LoginResponse> loginResponseHttpResponse) {
 
@@ -60,6 +69,5 @@ public class DemoPresenter implements DemoContact.Presenter {
                         ToastUtil.show(errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
     }
 }

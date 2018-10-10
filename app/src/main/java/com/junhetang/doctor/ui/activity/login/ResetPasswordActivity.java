@@ -28,7 +28,7 @@ import com.junhetang.doctor.widget.dialog.CommonDialog;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.netease.nim.uikit.api.NimUIKit;
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
@@ -38,12 +38,10 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
-import rx.Observable;
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Func1;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * ResetPasswordActivity 修改密码/忘记密码  一套
@@ -85,7 +83,7 @@ public class ResetPasswordActivity extends BaseActivity implements LoginContact.
      * 验证码倒计时
      */
     private int time = 60;//每次验证请求需要间隔60S
-    private Subscription subscription;
+    private Disposable disposable;
     private String title;
 
     @Override
@@ -239,26 +237,31 @@ public class ResetPasswordActivity extends BaseActivity implements LoginContact.
 
     //倒计时
     public void timeDown() {
-        subscription = Observable.interval(0, 1, TimeUnit.SECONDS)
+        io.reactivex.Observable.interval(0, 1, TimeUnit.SECONDS)
                 .take(time) //设置循环次数
-                .map(new Func1<Long, Long>() {
+                .map(new Function<Long, Long>() {
                     @Override
-                    public Long call(Long aLong) {
+                    public Long apply(Long aLong) throws Exception {
                         return time - aLong;
                     }
                 })
-                .doOnSubscribe(new Action0() {
+                .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
-                    public void call() {
+                    public void accept(Disposable disposable) throws Exception {
                         tvSendcode.setEnabled(false);//不可点击
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())//操作UI主要在UI线程
-                .subscribe(new Observer<Long>() {
+                .subscribe(new io.reactivex.Observer<Long>() {
                     @Override
-                    public void onCompleted() {
-                        tvSendcode.setText("重新获取验证码");//数据发送完后设置为原来的文字
-                        tvSendcode.setEnabled(true);
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onNext(Long aLong) {//接受到一条就是会操作一次UI
+                        tvSendcode.setText(aLong + "s后可重发");
+
                     }
 
                     @Override
@@ -267,8 +270,9 @@ public class ResetPasswordActivity extends BaseActivity implements LoginContact.
                     }
 
                     @Override
-                    public void onNext(Long aLong) { //接受到一条就是会操作一次UI
-                        tvSendcode.setText(aLong + "s后可重发");
+                    public void onComplete() {
+                        tvSendcode.setText("重新获取验证码");//数据发送完后设置为原来的文字
+                        tvSendcode.setEnabled(true);
                     }
                 });
     }
@@ -296,8 +300,8 @@ public class ResetPasswordActivity extends BaseActivity implements LoginContact.
     protected void onDestroy() {
         super.onDestroy();
         //取消订阅
-        if (subscription != null) {
-            subscription.unsubscribe();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
         }
         mPresenter.unsubscribe();
     }

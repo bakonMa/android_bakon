@@ -14,8 +14,8 @@ import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.widget.dialog.LoadingDialog;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * PersonalPresenter 个人中心
@@ -24,7 +24,7 @@ import rx.subscriptions.CompositeSubscription;
 public class PersonalPresenter implements PersonalContact.Presenter {
     private PersonalContact.View mView;
 
-    private CompositeSubscription compositeSubscription;
+    private CompositeDisposable mDisposable;
 
     private LoadingDialog mDialog;
 
@@ -36,28 +36,34 @@ public class PersonalPresenter implements PersonalContact.Presenter {
 
     public PersonalPresenter(PersonalContact.View mView) {
         this.mView = mView;
-        compositeSubscription = new CompositeSubscription();
+        mDisposable = new CompositeDisposable();
         mDialog = new LoadingDialog(mView.provideContext());
     }
 
     @Override
     public void unsubscribe() {
-        if (mDialog != null && mDialog.isShowing()) {
-            mDialog.dismiss();
+        if (!mDisposable.isDisposed()) {
+            mDisposable.dispose();
         }
-        if (!compositeSubscription.isUnsubscribed()) {
-            compositeSubscription.unsubscribe();
+        if (null != mDialog) {
+            mDialog = null;
         }
+        mView = null;
     }
 
     @Override
     public void getUserIdentifyStatus() {
         Params params = new Params();
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getUserIdentifyStatus(params))
                 .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<OtherBean>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<OtherBean> resultResponse) {
                         U.setAuthStatus(resultResponse.data.status);
@@ -70,33 +76,38 @@ public class PersonalPresenter implements PersonalContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        compositeSubscription.add(subscription);
+
     }
 
     @Override
     public void getUserBasicInfo() {
         Params params = new Params();
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getUserBasicInfo(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null)
                         mDialog.show();
                 }).subscribe(new BaseObserver<HttpResponse<UserBaseInfoBean>>(mDialog) {
-                    @Override
-                    public void onSuccess(HttpResponse<UserBaseInfoBean> personalBeanHttpResponse) {
-                        //sp 本地持久化
-                        U.saveUserInfo(new Gson().toJson(personalBeanHttpResponse.data));
-                        mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_USEBASE_INFO));
-                    }
+            @Override
+            public void onSubscribe(Disposable d) {
+                mDisposable.add(d);
+            }
 
-                    @Override
-                    public void onError(String errorCode, String errorMsg) {
-                        ToastUtil.showShort(errorCode);
-                    }
-                });
-        compositeSubscription.add(subscription);
+            @Override
+            public void onSuccess(HttpResponse<UserBaseInfoBean> personalBeanHttpResponse) {
+                //sp 本地持久化
+                U.saveUserInfo(new Gson().toJson(personalBeanHttpResponse.data));
+                mView.onSuccess(M.createMessage(personalBeanHttpResponse.data, GET_USEBASE_INFO));
+            }
+
+            @Override
+            public void onError(String errorCode, String errorMsg) {
+                ToastUtil.showShort(errorCode);
+            }
+        });
+
     }
 
     //个人公告和简介的提交
@@ -107,13 +118,18 @@ public class PersonalPresenter implements PersonalContact.Presenter {
         //提交类型标识 1：简介 2：公告
         params.put("post_type", type);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().addUserbasic(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null) mDialog.show();
                 })
                 .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<String> resultResponse) {
                         mView.onSuccess(M.createMessage(resultResponse.data, ADD_USER_BASEINFO));
@@ -124,7 +140,7 @@ public class PersonalPresenter implements PersonalContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        compositeSubscription.add(subscription);
+
     }
 
     @Override
@@ -132,13 +148,18 @@ public class PersonalPresenter implements PersonalContact.Presenter {
         Params params = new Params();
         params.put("first_diagnose", first);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().setVisitPrice(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
+                .doOnSubscribe(disposable -> {
                     if (mDialog != null) mDialog.show();
                 })
                 .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<String> resultResponse) {
                         mView.onSuccess(M.createMessage(resultResponse.data, SET_VISITINFO_OK));
@@ -149,7 +170,7 @@ public class PersonalPresenter implements PersonalContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        compositeSubscription.add(subscription);
+
     }
 
 

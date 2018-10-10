@@ -9,7 +9,7 @@ import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.ui.activity.login.LoginActivity;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.base.BaseView;
-import com.trello.rxlifecycle.LifecycleTransformer;
+import com.trello.rxlifecycle2.LifecycleTransformer;
 
 import butterknife.OnClick;
 

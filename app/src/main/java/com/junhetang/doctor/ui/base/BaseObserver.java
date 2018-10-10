@@ -10,7 +10,8 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.concurrent.TimeoutException;
 
-import rx.Observer;
+import io.reactivex.Observer;
+
 
 /**
  * Created by table on 2017/11/22.
@@ -19,14 +20,16 @@ import rx.Observer;
 public abstract class BaseObserver<T extends HttpResponse> implements Observer<T> {
     private LoadingDialog mDialog;
 
+
     public BaseObserver(LoadingDialog dialog) {
         this.mDialog = dialog;
     }
 
     @Override
-    public void onCompleted() {
-        if (mDialog != null)
+    public void onComplete() {
+        if (mDialog != null) {
             mDialog.dismiss();
+        }
     }
 
     @Override

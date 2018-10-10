@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.junhetang.doctor.data.eventbus.EventBusUtil;
 import com.junhetang.doctor.utils.StatusBarUtil;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;

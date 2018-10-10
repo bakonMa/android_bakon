@@ -14,17 +14,17 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * ChatMessagePresenter 聊天相关
  * Create at 2018/4/19 下午12:02 by mayakun
  */
 public class ChatMessagePresenter implements ChatMessageContact.Presenter {
-    private final ChatMessageContact.View mView;
-    private CompositeSubscription mSubscription;
-    private LoadingDialog mdialog;
+    private ChatMessageContact.View mView;
+    private CompositeDisposable mDisposable;
+    private LoadingDialog mDialog;
 
     public static final int GET_USERFUL_OK = 0x110;//获取常用语
     public static final int ADD_USERFUL_OK = 0x111;//添加常用语
@@ -33,15 +33,19 @@ public class ChatMessagePresenter implements ChatMessageContact.Presenter {
     @Inject
     public ChatMessagePresenter(ChatMessageContact.View view) {
         this.mView = view;
-        mdialog = new LoadingDialog(mView.provideContext());
-        mSubscription = new CompositeSubscription();
+        mDialog = new LoadingDialog(mView.provideContext());
+        mDisposable = new CompositeDisposable();
     }
 
     @Override
     public void unsubscribe() {
-        if (!mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
+        if (!mDisposable.isDisposed()) {
+            mDisposable.dispose();
         }
+        if (null != mDialog) {
+            mDialog = null;
+        }
+        mView = null;
     }
 
     //用户获取常用语
@@ -50,13 +54,18 @@ public class ChatMessagePresenter implements ChatMessageContact.Presenter {
         Params params = new Params();
         params.put("type", type);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getuseful(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mdialog != null) mdialog.show();
+                .doOnSubscribe(disposable -> {
+                    if (mDialog != null) mDialog.show();
                 })
-                .subscribe(new BaseObserver<HttpResponse<List<CommMessageBean>>>(mdialog) {
+                .subscribe(new BaseObserver<HttpResponse<List<CommMessageBean>>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<List<CommMessageBean>> stringHttpResponse) {
                         mView.onSuccess(M.createMessage(stringHttpResponse.data, GET_USERFUL_OK));
@@ -67,7 +76,7 @@ public class ChatMessagePresenter implements ChatMessageContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
+
     }
 
     @Override
@@ -76,13 +85,18 @@ public class ChatMessagePresenter implements ChatMessageContact.Presenter {
         params.put("type", type);
         params.put("content", message);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().adduseful(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mdialog != null) mdialog.show();
+                .doOnSubscribe(disposable -> {
+                    if (mDialog != null) mDialog.show();
                 })
-                .subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
+                .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<String> stringHttpResponse) {
                         mView.onSuccess(M.createMessage(stringHttpResponse.data, ADD_USERFUL_OK));
@@ -93,7 +107,7 @@ public class ChatMessagePresenter implements ChatMessageContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
+
     }
 
     @Override
@@ -101,13 +115,18 @@ public class ChatMessagePresenter implements ChatMessageContact.Presenter {
         Params params = new Params();
         params.put("id", ids);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().deluseful(params))
                 .compose(mView.toLifecycle())
-                .doOnSubscribe(() -> {
-                    if (mdialog != null) mdialog.show();
+                .doOnSubscribe(disposable -> {
+                    if (mDialog != null) mDialog.show();
                 })
-                .subscribe(new BaseObserver<HttpResponse<String>>(mdialog) {
+                .subscribe(new BaseObserver<HttpResponse<String>>(mDialog) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<String> stringHttpResponse) {
                         mView.onSuccess(M.createMessage(stringHttpResponse.data, DEL_USERFUL_OK));
@@ -118,7 +137,7 @@ public class ChatMessagePresenter implements ChatMessageContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
+
     }
 
 

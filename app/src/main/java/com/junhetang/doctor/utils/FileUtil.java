@@ -20,7 +20,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import rx.Observable;
+import io.reactivex.Observable;
+
 
 public class FileUtil {
 

@@ -4,21 +4,22 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.f2prateek.rx.preferences.Preference;
-import com.f2prateek.rx.preferences.RxSharedPreferences;
-import com.junhetang.doctor.config.SPConfig;
+import com.f2prateek.rx.preferences2.Preference;
+import com.f2prateek.rx.preferences2.RxSharedPreferences;
 import com.junhetang.doctor.application.DocApplication;
+import com.junhetang.doctor.config.SPConfig;
 
 import java.util.Set;
 
-import rx.Observable;
-import rx.functions.Action1;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+
 
 /**
  * @author: ZhaoYun
  * @date: 2017/11/1
  * @project: customer-android-2th
- * @detail:
+ * @detail: RxSharedPreferences 暫時沒有使用
  */
 public final class SharePreferencesWrapper {
 
@@ -51,7 +52,7 @@ public final class SharePreferencesWrapper {
 
     //==================================String==================================//
     public String getString(@NonNull String key) {
-        return getString(key, null);
+        return getString(key, "");
     }
 
     public String getString(@NonNull String key, @NonNull String defaultValue) {
@@ -70,14 +71,14 @@ public final class SharePreferencesWrapper {
         return stringPreference.asObservable();
     }
 
-    public Action1<? super String> getStringAction(@NonNull String key) {
-        return getStringAction(key, null);
+    public Consumer<? super String> getStringConsumer(@NonNull String key) {
+        return getStringConsumer(key, null);
     }
 
-    public Action1<? super String> getStringAction(@NonNull String key, @NonNull String defaultValue) {
+    public Consumer<? super String> getStringConsumer(@NonNull String key, @NonNull String defaultValue) {
         Preference<String> stringPreference = mRXPreferences.getString(key, defaultValue);
         settingDefaultValueWhenNotExists(stringPreference, defaultValue);
-        return stringPreference.asAction();
+        return stringPreference.asConsumer();
     }
 
     public void setString(@NonNull String key, @Nullable String value) {
@@ -105,14 +106,14 @@ public final class SharePreferencesWrapper {
         return booleanPreference.asObservable();
     }
 
-    public Action1<? super Boolean> getBooleanAction(@NonNull String key) {
-        return getBooleanAction(key, false);
+    public Consumer<? super Boolean> getBooleanConsumer(@NonNull String key) {
+        return getBooleanConsumer(key, false);
     }
 
-    public Action1<? super Boolean> getBooleanAction(@NonNull String key, @NonNull Boolean defaultValue) {
+    public Consumer<? super Boolean> getBooleanConsumer(@NonNull String key, @NonNull Boolean defaultValue) {
         Preference<Boolean> booleanPreference = mRXPreferences.getBoolean(key, defaultValue);
         settingDefaultValueWhenNotExists(booleanPreference, defaultValue);
-        return booleanPreference.asAction();
+        return booleanPreference.asConsumer();
     }
 
     public void setBoolean(@NonNull String key, @Nullable Boolean value) {
@@ -141,14 +142,14 @@ public final class SharePreferencesWrapper {
         return floatPreference.asObservable();
     }
 
-    public Action1<? super Float> getFloatAction(@NonNull String key) {
-        return getFloatAction(key, 0f);
+    public Consumer<? super Float> getFloatConsumer(@NonNull String key) {
+        return getFloatConsumer(key, 0f);
     }
 
-    public Action1<? super Float> getFloatAction(@NonNull String key, @NonNull Float defaultValue) {
+    public Consumer<? super Float> getFloatConsumer(@NonNull String key, @NonNull Float defaultValue) {
         Preference<Float> floatPreference = mRXPreferences.getFloat(key, defaultValue);
         settingDefaultValueWhenNotExists(floatPreference, defaultValue);
-        return floatPreference.asAction();
+        return floatPreference.asConsumer();
     }
 
     public void setFloat(@NonNull String key, @Nullable Float value) {
@@ -177,14 +178,14 @@ public final class SharePreferencesWrapper {
         return integerPreference.asObservable();
     }
 
-    public Action1<? super Integer> getIntegerAction(@NonNull String key) {
-        return getIntegerAction(key, 0);
+    public Consumer<? super Integer> getIntegerConsumer(@NonNull String key) {
+        return getIntegerConsumer(key, 0);
     }
 
-    public Action1<? super Integer> getIntegerAction(@NonNull String key, @NonNull Integer defaultValue) {
+    public Consumer<? super Integer> getIntegerConsumer(@NonNull String key, @NonNull Integer defaultValue) {
         Preference<Integer> integerPreference = mRXPreferences.getInteger(key, defaultValue);
         settingDefaultValueWhenNotExists(integerPreference, defaultValue);
-        return integerPreference.asAction();
+        return integerPreference.asConsumer();
     }
 
     public void setInteger(@NonNull String key, @Nullable Integer value) {
@@ -213,14 +214,14 @@ public final class SharePreferencesWrapper {
         return longPreference.asObservable();
     }
 
-    public Action1<? super Long> getLongAction(@NonNull String key) {
-        return getLongAction(key, 0l);
+    public Consumer<? super Long> getLongConsumer(@NonNull String key) {
+        return getLongConsumer(key, 0l);
     }
 
-    public Action1<? super Long> getLongAction(@NonNull String key, @NonNull Long defaultValue) {
+    public Consumer<? super Long> getLongConsumer(@NonNull String key, @NonNull Long defaultValue) {
         Preference<Long> longPreference = mRXPreferences.getLong(key, defaultValue);
         settingDefaultValueWhenNotExists(longPreference, defaultValue);
-        return longPreference.asAction();
+        return longPreference.asConsumer();
     }
 
     public void setLong(@NonNull String key, @Nullable Long value) {
@@ -249,14 +250,14 @@ public final class SharePreferencesWrapper {
         return setPreference.asObservable();
     }
 
-    public Action1<? super Set<String>> getStringSetAction(@NonNull String key) {
-        return getStringSetAction(key, null);
+    public Consumer<? super Set<String>> getStringSetConsumer(@NonNull String key) {
+        return getStringSetConsumer(key, null);
     }
 
-    public Action1<? super Set<String>> getStringSetAction(@NonNull String key, @Nullable Set<String> defaultValue) {
+    public Consumer<? super Set<String>> getStringSetConsumer(@NonNull String key, @Nullable Set<String> defaultValue) {
         Preference<Set<String>> setPreference = mRXPreferences.getStringSet(key, defaultValue);
         settingDefaultValueWhenNotExists(setPreference, defaultValue);
-        return setPreference.asAction();
+        return setPreference.asConsumer();
     }
 
     public void setStringSet(@NonNull String key, @Nullable Set<String> value) {
@@ -285,72 +286,45 @@ public final class SharePreferencesWrapper {
         return tPreference.asObservable();
     }
 
-    public <T extends Enum<T>> Action1<? super T> getEnumAction(@NonNull String key, @NonNull Class<T> enumClass) {
-        return getEnumAction(key, null, enumClass);
+    public <T extends Enum<T>> Consumer<? super T> getEnumConsumer(@NonNull String key, @NonNull Class<T> enumClass) {
+        return getEnumConsumer(key, null, enumClass);
     }
 
-    public <T extends Enum<T>> Action1<? super T> getEnumAction(@NonNull String key, @Nullable T defaultValue, @NonNull Class<T> enumClass) {
+    public <T extends Enum<T>> Consumer<? super T> getEnumConsumer(@NonNull String key, @Nullable T defaultValue, @NonNull Class<T> enumClass) {
         Preference<T> tPreference = mRXPreferences.getEnum(key, defaultValue, enumClass);
         settingDefaultValueWhenNotExists(tPreference, defaultValue);
-        return tPreference.asAction();
+        return tPreference.asConsumer();
     }
-
-    public <T extends Enum<T>> void setEnum(@NonNull String key, @Nullable T value, @NonNull Class<T> enumClass) {
-        mRXPreferences.getEnum(key, enumClass).set(value);
-    }
-
 
     //==================================Object==================================//
-    public <T> T getObject(@NonNull String key, @NonNull Preference.Adapter<T> adapter) {
+    public <T> T getObject(@NonNull String key, @NonNull Preference.Converter<T> adapter) {
         return getObject(key, null, adapter);
     }
 
-    public <T> T getObject(@NonNull String key, @Nullable T defaultValue, @NonNull Preference.Adapter<T> adapter) {
+    public <T> T getObject(@NonNull String key, @Nullable T defaultValue, @NonNull Preference.Converter<T> adapter) {
         Preference<T> tPreference = mRXPreferences.getObject(key, defaultValue, adapter);
         settingDefaultValueWhenNotExists(tPreference, defaultValue);
         return tPreference.get();
     }
 
-    public <T> Observable<T> getObjectObservable(@NonNull String key, @NonNull Preference.Adapter<T> adapter) {
+    public <T> Observable<T> getObjectObservable(@NonNull String key, @NonNull Preference.Converter<T> adapter) {
         return getObjectObservable(key, null, adapter);
     }
 
-    public <T> Observable<T> getObjectObservable(@NonNull String key, @Nullable T defaultValue, @NonNull Preference.Adapter<T> adapter) {
+    public <T> Observable<T> getObjectObservable(@NonNull String key, @Nullable T defaultValue, @NonNull Preference.Converter<T> adapter) {
         Preference<T> tPreference = mRXPreferences.getObject(key, defaultValue, adapter);
         settingDefaultValueWhenNotExists(tPreference, defaultValue);
         return tPreference.asObservable();
     }
 
-    public <T> Action1<? super T> getObjectAction(@NonNull String key, @NonNull Preference.Adapter<T> adapter) {
-        return getObjectAction(key, null, adapter);
+    public <T> Consumer<? super T> getObjectConsumer(@NonNull String key, @NonNull Preference.Converter<T> adapter) {
+        return getObjectConsumer(key, null, adapter);
     }
 
-    public <T> Action1<? super T> getObjectAction(@NonNull String key, @Nullable T defaultValue, @NonNull Preference.Adapter<T> adapter) {
+    public <T> Consumer<? super T> getObjectConsumer(@NonNull String key, @Nullable T defaultValue, @NonNull Preference.Converter<T> adapter) {
         Preference<T> tPreference = mRXPreferences.getObject(key, defaultValue, adapter);
         settingDefaultValueWhenNotExists(tPreference, defaultValue);
-        return tPreference.asAction();
-    }
-
-    public <T> void setObject(@NonNull String key, @Nullable T value, @NonNull Preference.Adapter<T> adapter) {
-        mRXPreferences.getObject(key, adapter).set(value);
-    }
-
-    public static abstract class SharePreferencesAdapter<T> implements Preference.Adapter<T> {
-
-        @Override
-        public T get(@NonNull String key, @NonNull SharedPreferences preferences) {
-            return str2Obj(preferences.getString(key, null));
-        }
-
-        @Override
-        public void set(@NonNull String key, @NonNull T value, @NonNull SharedPreferences.Editor editor) {
-            editor.putString(key, obj2Str(value)).apply();
-        }
-
-        public abstract String obj2Str(T t);
-
-        public abstract T str2Obj(String str);
-
+        return tPreference.asConsumer();
     }
 
 }

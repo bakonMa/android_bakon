@@ -13,8 +13,8 @@ import com.junhetang.doctor.widget.dialog.LoadingDialog;
 
 import javax.inject.Inject;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * WalletPresenter 钱包
@@ -24,22 +24,26 @@ public class FindPresenter implements FindContact.Presenter {
 
     public static final int GET_NEWS_OK = 0x110;
 
-    private final FindContact.View mView;
-    private CompositeSubscription mSubscription;
+    private FindContact.View mView;
+    private CompositeDisposable mDisposable;
     private LoadingDialog mDialog;
 
     @Inject
     public FindPresenter(FindContact.View view) {
         this.mView = view;
-        mSubscription = new CompositeSubscription();
+        mDisposable = new CompositeDisposable();
         mDialog = new LoadingDialog(mView.provideContext());
     }
 
     @Override
     public void unsubscribe() {
-        if (!mSubscription.isUnsubscribed()) {
-            mSubscription.unsubscribe();
+        if (!mDisposable.isDisposed()) {
+            mDisposable.dispose();
         }
+        if (null != mDialog) {
+            mDialog = null;
+        }
+        mView = null;
     }
 
     @Override
@@ -48,10 +52,15 @@ public class FindPresenter implements FindContact.Presenter {
         params.put("type", type);
         params.put("page", page);
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
-        Subscription subscription = DocApplication.getAppComponent().dataRepo().http()
+        DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getNewslist(params))
                 .compose(mView.toLifecycle())
                 .subscribe(new BaseObserver<HttpResponse<BasePageBean<NewsInfoBean>>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
                     @Override
                     public void onSuccess(HttpResponse<BasePageBean<NewsInfoBean>> response) {
                         mView.onSuccess(M.createMessage(response.data, GET_NEWS_OK));
@@ -62,6 +71,5 @@ public class FindPresenter implements FindContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-        mSubscription.add(subscription);
     }
 }

@@ -111,7 +111,9 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
 
     //Butterknife
-    implementation "com.jakewharton:butterknife:$butterknife_version"
+    implementation("com.jakewharton:butterknife:$butterknife_version") {
+        exclude group: 'com.android.support'//忽略内置依赖版本，是用外部最新版本
+    }
     annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
 
     //Eventbus
@@ -119,8 +121,10 @@ dependencies {
     //annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
 
     //Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava:$retrofit_version"
+    implementation("com.squareup.retrofit2:retrofit:$retrofit_version") {
+        exclude module: 'okhttp'//忽略内置依赖版本，是用外部最新版本
+    }
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     //OkHttp
@@ -131,47 +135,52 @@ dependencies {
     implementation "com.google.code.gson:gson:$gson_version"
 
     //RxJava
-    implementation "io.reactivex:rxjava:$rxjava_version"
-
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
     //RxAndroid
-    implementation "io.reactivex:rxandroid:$rxandroid_version"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
 
     //RxLifecycle
-    implementation "com.trello:rxlifecycle:$rxlifecycle_version"
-    // If you want to bind to Android-specific lifecycles
-    implementation "com.trello:rxlifecycle-android:$rxlifecycle_version"
-    // If you want pre-written Activities and Fragments you can subclass as providers
-    implementation "com.trello:rxlifecycle-components:$rxlifecycle_version"
-    // If you want to use Navi for providers
-    implementation "com.trello:rxlifecycle-navi:$rxlifecycle_version"
+    implementation "com.trello.rxlifecycle2:rxlifecycle:$rxlifecycle_version"
+    implementation "com.trello.rxlifecycle2:rxlifecycle-android:$rxlifecycle_version"
+    implementation "com.trello.rxlifecycle2:rxlifecycle-components:$rxlifecycle_version"
+    implementation "com.trello.rxlifecycle2:rxlifecycle-navi:$rxlifecycle_version"
 
     //RxPermissions
-    implementation "com.tbruyelle.rxpermissions:rxpermissions:$rxpermissions_version@aar"
-
+    implementation("com.github.tbruyelle:rxpermissions:$rxpermissions_version") {
+        exclude module: 'rxjava'
+    }
     //RxSharePreferences
-    implementation "com.f2prateek.rx.preferences:rx-preferences:$rxsharepreferences_version"
+    implementation("com.f2prateek.rx.preferences2:rx-preferences:$rxsharepreferences_version") {
+        exclude module: 'support-annotations'
+        exclude module: 'rxjava'
+    }
 
     //Glide
     implementation "com.github.bumptech.glide:glide:$glide_version"
-    implementation "com.github.bumptech.glide:okhttp3-integration:$glide_version"
+    implementation("com.github.bumptech.glide:okhttp3-integration:$glide_version") {
+        exclude module: 'okhttp'
+    }
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
     //内存泄漏监控
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
-
-    //    testCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+    //testCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
 
     //方法数超过64k
     implementation "com.android.support:multidex:$multidex_version"
 
     //viewpage指示器
-    implementation 'com.github.hackware1993:MagicIndicator:1.5.0'
+    implementation('com.github.hackware1993:MagicIndicator:1.5.0') {
+        exclude module: 'appcompat-v7'
+    }
 
     //BaseRecyclerViewAdapterHelper
     implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$brvah_version"
     //分组可悬浮title
-    implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3'
+    implementation('com.timehop.stickyheadersrecyclerview:library:0.4.3') {
+        exclude module: 'recyclerview-v7'
+    }
     //greendao
     implementation "org.greenrobot:greendao:$greendao_version"
     //数据库加密 ***保留***
@@ -195,7 +204,9 @@ dependencies {
     //选择照片
     implementation 'com.zhihu.android:matisse:0.5.1'
     //阿里云 oss
-    implementation 'com.aliyun.dpa:oss-android-sdk:2.8.4'
+    implementation('com.aliyun.dpa:oss-android-sdk:2.8.4') {
+        exclude module: 'okhttp'
+    }
     //友盟 统计
     implementation 'com.umeng.sdk:analytics:7.5.0'
 
