@@ -56,7 +56,7 @@ public class AboutUsActivity extends BaseActivity {
                 }).bind();
     }
 
-    @OnClick({R.id.tv_function_introduction, R.id.tv_produce_info, R.id.tv_agreement})
+    @OnClick({R.id.tv_function_introduction, R.id.tv_produce_info, R.id.tv_agreement, R.id.tv_private})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_function_introduction://功能介绍
@@ -79,6 +79,13 @@ public class AboutUsActivity extends BaseActivity {
                         WebViewActivity.WEB_TYPE.WEB_TYPE_AGREEMENT,
                         H5Config.H5_AGREEMENT_TITLE,
                         H5Config.H5_AGREEMENT);
+                break;
+            case R.id.tv_private://隐私权政策
+                WebViewActivity.startAct(this,
+                        true,
+                        WebViewActivity.WEB_TYPE.WEB_TYPE_PRIVATE,
+                        H5Config.H5_PRIVATE_TITLE,
+                        H5Config.H5_PRIVATE);
                 break;
         }
     }

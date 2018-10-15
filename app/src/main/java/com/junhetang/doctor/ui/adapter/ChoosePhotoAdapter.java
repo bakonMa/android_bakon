@@ -9,9 +9,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.utils.ImageUtil;
+import com.junhetang.doctor.utils.LogUtil;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -22,11 +21,9 @@ public class ChoosePhotoAdapter extends BaseQuickAdapter<String, BaseViewHolder>
 
     private Context mContext;
     private int showMaxNum = 9;
-    private List<String> data = new ArrayList<>();
 
     public ChoosePhotoAdapter(Context context, @Nullable List<String> data, int maxSize) {
         super(R.layout.item_choose_img, data);
-        this.data = data;
         this.mContext = context;
         this.showMaxNum = maxSize;
     }
@@ -41,6 +38,7 @@ public class ChoosePhotoAdapter extends BaseQuickAdapter<String, BaseViewHolder>
                 .setImageResource(R.id.iv_img, 0)
                 .addOnClickListener(R.id.tv_close)
                 .addOnClickListener(R.id.iv_img);
+        LogUtil.d("ChoosePhotoAdapter", mData.size() + "---" + path);
         if (TextUtils.isEmpty(path)) {
             ((ImageView) helper.getView(R.id.iv_img)).setImageDrawable(null);
         } else {
@@ -50,25 +48,27 @@ public class ChoosePhotoAdapter extends BaseQuickAdapter<String, BaseViewHolder>
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return mData.size();
     }
 
     //处理最后显示多一张添加提示的图片
     public void changeNotifyData() {
-        //******有关对list 遍历的同时，修改list 都可以这样处理，多线程需再考虑
-        //去除自己追加空的占位数据
-        Iterator<String> iterator = data.iterator();
-        while (iterator.hasNext()) {
-            String str = iterator.next();
-            if (TextUtils.isEmpty(str)) {
-                iterator.remove();//可以达到同样删除的效果 会维护modCount和expectedModCount的值的一致性，
-                //data.remove(str);这句是不会的，直接删除会引发list ConcurrentModificationException错误
+        //查找添加的空数据
+        int tempPos = -1;
+        for (int i = 0; i < mData.size(); i++) {
+            if (TextUtils.isEmpty(mData.get(i))) {
+                tempPos = i;
+                break;
             }
         }
-
-        if (data.size() < showMaxNum) {
-            data.add("");
+        if (tempPos > -1) {
+            mData.remove(tempPos);
         }
+        //不足max 显示添加图标
+        if (mData.size() < showMaxNum) {
+            mData.add("");
+        }
+
         notifyDataSetChanged();
     }
 

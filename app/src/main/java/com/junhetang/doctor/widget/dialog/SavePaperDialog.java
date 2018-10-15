@@ -26,7 +26,7 @@ public class SavePaperDialog extends Dialog implements View.OnClickListener {
 
     private ClickListener clickListener;
     private Button btn_no, btn_yes;
-    private EditText etName, etRemark;
+    private EditText etName;
 
     public SavePaperDialog(@NonNull Activity context, ClickListener listener) {
         super(context, R.style.common_dialog);
@@ -43,7 +43,6 @@ public class SavePaperDialog extends Dialog implements View.OnClickListener {
     private void init() {
         View view = LayoutInflater.from(mContext).inflate(R.layout.dialog_save_commpaper, null);
         etName = view.findViewById(R.id.et_papername);
-        etRemark = view.findViewById(R.id.et_remark);
         btn_no = view.findViewById(R.id.btn_no);
         btn_no.setOnClickListener(this);
         btn_yes = view.findViewById(R.id.btn_ok);
@@ -62,14 +61,13 @@ public class SavePaperDialog extends Dialog implements View.OnClickListener {
     public void setEditeText(String title, String explain) {
         etName.setText(TextUtils.isEmpty(title) ? "" : title);
         etName.setSelection(etName.getText().length());
-        etRemark.setText(TextUtils.isEmpty(explain) ? "" : explain);
-        etRemark.setSelection(etRemark.getText().length());
     }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_no:
                 dismiss();
+                clickListener.confirm(null);
                 break;
             case R.id.btn_ok:
                 if (clickListener != null) {
@@ -77,14 +75,14 @@ public class SavePaperDialog extends Dialog implements View.OnClickListener {
                         ToastUtil.showShort("请输入处方名称");
                         return;
                     }
-                    clickListener.confirm(etName.getText().toString().trim(), etRemark.getText().toString().trim());
+                    clickListener.confirm(etName.getText().toString().trim());
                 }
                 break;
         }
     }
 
     public interface ClickListener {
-        void confirm(String name, String remark);
+        void confirm(String name);
     }
 
 

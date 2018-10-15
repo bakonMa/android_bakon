@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
@@ -61,7 +63,7 @@ import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.utils.UriUtil;
 import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.EditableLayout;
-import com.junhetang.doctor.widget.dialog.CommonDialog;
+import com.junhetang.doctor.widget.dialog.CommSuperDialog;
 import com.junhetang.doctor.widget.dialog.LoadingDialog;
 import com.junhetang.doctor.widget.popupwindow.BottomChoosePopupView;
 import com.junhetang.doctor.widget.popupwindow.BottomListPopupView;
@@ -77,7 +79,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -123,8 +124,10 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     EditableLayout etDrugClass;
     @BindView(R.id.et_drugstore)
     EditableLayout etDrugstore;
-    @BindView(R.id.et_memb_see)
-    EditableLayout etMembSee;
+    @BindView(R.id.tv_memb_see_leftimg)
+    TextView tv_membseeLeftimg;
+    @BindView(R.id.st_memb_see)
+    Switch stMembSee;
     @BindView(R.id.recycleview_img)
     RecyclerView recyclerView;
     @BindView(R.id.et_remark)
@@ -146,7 +149,6 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private int relationship = 4;//就诊人关系（不是选择 默认4-其他）
     private String pAccid = "";//患者云信 accid
     private int storeId = -1;//药房id
-    private int membSee = 0;//购药前患者是否可见，默认0 不可见
 
     private GestureDetectorCompat mDetector;//手势
     private OPenPaperBaseBean baseBean;
@@ -158,10 +160,10 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     private List<PatientFamilyBean.JiuzhenBean> jzrList = new ArrayList<>();//手机号的就诊人
     private List<String> imgLocalList = new ArrayList<>();//图片 有删除  防止错误
     private List<String> imgUploadList = new ArrayList<>();
-    private List<String> menbSeeList = new ArrayList<>();//是否可见
     private ChoosePhotoAdapter photoAdapter;
     private LoadingDialog loadingDialog;
     private OSSAsyncTask upLoadTask;
+    private CommSuperDialog commSuperDialog;
 
     //带有返回的startActivityForResult-仅限nim中使用 formParent=1
     public static void startResultActivity(Context context, int requestCode, int formParent, String p_accid, String membNo) {
@@ -179,6 +181,8 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
 
     @Override
     protected void initView() {
+        //leftImg 设置大小
+        UIUtils.setCompoundDrawable(tv_membseeLeftimg, 12, 0, R.drawable.icon_memb_see, Gravity.LEFT);
         SoftHideKeyBoardUtil.assistActivity(this);
         formParent = getIntent().getIntExtra("formParent", 0);
         membNo = getIntent().getStringExtra("memb_no");//患者momb_no
@@ -190,8 +194,6 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         initToolbar();
         //聊天进来不能填写
         tv_editepatient.setVisibility(formParent == 0 ? View.VISIBLE : View.GONE);
-        //默认 不可见
-        etMembSee.setText(menbSeeList.get(membSee));
         //性别
         rgSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -217,6 +219,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                     case R.id.tv_close://点击红点  删除
                         imgLocalList.remove(position);
                         imgUploadList.remove(position);
+                        recyclerView.removeAllViews();
                         photoAdapter.changeNotifyData();
                         break;
                 }
@@ -252,14 +255,14 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         baseBean = U.getOpenpapeBaseData();
         //基础数据空的时候
         if (null == baseBean || null == baseBean.store || null == baseBean.drug_class) {
-            commonDialog = new CommonDialog(this, true, "数据异常，请退出后重试", new View.OnClickListener() {
+            commSuperDialog = new CommSuperDialog(this, false, "数据异常，请退出后重试", new CommSuperDialog.ClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void btnOnClick(int btnId) {
                     EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_BASEDATA_NULL));
                     finish();
                 }
             });
-            commonDialog.show();
+            commSuperDialog.show();
         }
         //药房
         for (OPenPaperBaseBean.StoreBean bean : baseBean.store) {
@@ -274,8 +277,6 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         for (OPenPaperBaseBean.CommBean bean : baseBean.drug_class) {
             drugClassList.add(bean.name);
         }
-        //是否可见
-        menbSeeList = Arrays.asList(UIUtils.getArray(R.array.memb_see));
     }
 
     //获取当前界面可用高度
@@ -323,7 +324,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     }
 
     @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugclass,
-            R.id.et_drugstore, R.id.et_memb_see, R.id.tv_next_step})
+            R.id.et_drugstore, R.id.tv_next_step})
     public void tabOnClick(View view) {
         //防止多次点击
         if (UIUtils.isDoubleClick()) {
@@ -356,16 +357,6 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                     public void selectItem(int position) {
                         drugClassId = baseBean.drug_class.get(position).id;
                         etDrugClass.setText(drugClassList.get(position));
-                    }
-                });
-                bottomPopupView.show(scrollView);
-                break;
-            case R.id.et_memb_see://购药前是否可见
-                bottomPopupView = new BottomListPopupView(this, "患者购药前是否可见", menbSeeList, new BottomListPopupView.OnClickListener() {
-                    @Override
-                    public void selectItem(int position) {
-                        membSee = position;
-                        etMembSee.setText(menbSeeList.get(membSee));
                     }
                 });
                 bottomPopupView.show(scrollView);
@@ -489,7 +480,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
         if (!TextUtils.isEmpty(etServerprice.getText().toString().trim())) {
             params.put("service_price", etServerprice.getText().toString().trim());
         }
-        params.put("memb_see", membSee);//处方是否可见
+        params.put("memb_see", stMembSee.isChecked() ? 1 : 0);//处方是否可见
 
         mPresenter.openPaperCamera(params);
     }
@@ -577,12 +568,10 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 .inject(this);
     }
 
-    private CommonDialog commonDialog;
-
     @Override
     public void onError(String errorCode, String errorMsg) {
-        commonDialog = new CommonDialog(this, errorMsg);
-        commonDialog.show();
+        commSuperDialog = new CommSuperDialog(this, errorMsg);
+        commSuperDialog.show();
     }
 
     @Override
@@ -608,13 +597,13 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                     setResult(RESULT_OK, new Intent());
                     finish();
                 } else {//普通开方
-                    commonDialog = new CommonDialog(this, true, TextUtils.isEmpty(msg) ? "处方已上传至药房" : msg, new View.OnClickListener() {
+                    commSuperDialog = new CommSuperDialog(this, false, TextUtils.isEmpty(msg) ? "处方已上传至药房" : msg, new CommSuperDialog.ClickListener() {
                         @Override
-                        public void onClick(View view) {
+                        public void btnOnClick(int btnId) {
                             finish();
                         }
                     });
-                    commonDialog.show();
+                    commSuperDialog.show();
                 }
                 break;
         }
@@ -639,15 +628,15 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
     @Override
     public void onBackPressed() {
         //关闭activity 提示
-        commonDialog = new CommonDialog(this, false, "确定要退出开方吗？", new View.OnClickListener() {
+        commSuperDialog = new CommSuperDialog(this, "确定要退出开方吗？", new CommSuperDialog.ClickListener() {
             @Override
-            public void onClick(View view) {
-                if (view.getId() == R.id.btn_ok) {
+            public void btnOnClick(int btnId) {
+                if (btnId == R.id.btn_right) {
                     finish();
                 }
             }
         });
-        commonDialog.show();
+        commSuperDialog.show();
     }
 
     @Override
@@ -684,6 +673,7 @@ public class OpenPaperCameraActivity extends BaseActivity implements OpenPaperCo
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        recyclerView.removeAllViews();
                         photoAdapter.changeNotifyData();
                     }
                 });

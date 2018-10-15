@@ -35,6 +35,9 @@ public interface H5Config {
     //用户协议
     String H5_AGREEMENT = BuildConfig.BASE_URL + "static/agreement.html";
     String H5_AGREEMENT_TITLE = "君和中医用户协议";
+    //隐私权政策
+    String H5_PRIVATE = BuildConfig.BASE_URL + "static/privacyAgreement.html";
+    String H5_PRIVATE_TITLE = "隐私权政策";
     //审核处方
     String H5_CHECKPAPER = BuildConfig.BASE_URL + "check_extraction?id=";
     //处方详情

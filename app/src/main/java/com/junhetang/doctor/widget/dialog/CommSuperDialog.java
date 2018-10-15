@@ -48,6 +48,15 @@ public class CommSuperDialog extends Dialog {
     public CommSuperDialog(@NonNull Activity context, String content, ClickListener clickListener) {
         this(context, content, 0, true, "取  消", "确  定", clickListener);
     }
+    /**
+     * 【确定】带ClickListener
+     *
+     * @param context
+     * @param clickListener
+     */
+    public CommSuperDialog(@NonNull Activity context, boolean isShowDouble, String content, ClickListener clickListener) {
+        this(context, content, 0, false, "", "确  定", clickListener);
+    }
 
     /**
      * 默认【确定】只有一个
@@ -102,6 +111,10 @@ public class CommSuperDialog extends Dialog {
         switch (uiType) {
             case 0://默认样式
                 break;
+            case 1://左右都是用主题色
+                btnLeft.setBackgroundResource(R.drawable.selector_bg_button_login);
+                btnRight.setBackgroundResource(R.drawable.selector_bg_button_login);
+                break;
         }
 
         setCancelable(false);
@@ -126,6 +139,10 @@ public class CommSuperDialog extends Dialog {
         }
     }
 
+    //修改dialog文字
+    public void setDialogTitle(String msg){
+        dialogTitle.setText(TextUtils.isEmpty(msg) ? "" : msg);
+    }
 
     public interface ClickListener {
         void btnOnClick(int btnId);

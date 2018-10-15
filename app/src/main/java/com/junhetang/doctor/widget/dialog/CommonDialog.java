@@ -30,6 +30,7 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
 
     private boolean isSingelBtn;//true：只有确定 false：确定和取消(显示模式)
     private EditText commEditext;
+    private TextView dialogTitle;
     private boolean isInput = false;//是否显示输入框
     private int inputType;
     private String titleStr;
@@ -88,6 +89,7 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
             case R.layout.dialog_common://普通 确定，取消；是否显示确定
                 layoutView = LayoutInflater.from(mContext).inflate(R.layout.dialog_common, null);
                 commEditext = layoutView.findViewById(R.id.dialog_content);
+                dialogTitle = layoutView.findViewById(R.id.dialog_title);
                 Button buttonNo = layoutView.findViewById(R.id.btn_no);
                 Button buttonOK = layoutView.findViewById(R.id.btn_ok);
                 buttonNo.setOnClickListener(this);
@@ -106,14 +108,14 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
 
                 //title
                 if (!TextUtils.isEmpty(titleStr)) {
-                    ((TextView) layoutView.findViewById(R.id.dialog_title)).setText(titleStr);
+                    dialogTitle.setText(titleStr);
                 }
                 break;
             case R.layout.dialog_auth:// 提示认证
                 layoutView = LayoutInflater.from(mContext).inflate(R.layout.dialog_auth, null);
                 //title
                 if (!TextUtils.isEmpty(titleStr)) {
-                    ((TextView) layoutView.findViewById(R.id.dialog_title)).setText(titleStr);
+                    dialogTitle.setText(titleStr);
                 }
                 TextView noBtn = layoutView.findViewById(R.id.btn_no);
                 noBtn.setOnClickListener(this);
@@ -127,7 +129,7 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
                 }
                 //title
                 if (!TextUtils.isEmpty(titleStr)) {
-                    ((TextView) layoutView.findViewById(R.id.dialog_title)).setText(titleStr);
+                    dialogTitle.setText(titleStr);
                 }
                 break;
         }
@@ -148,6 +150,10 @@ public class CommonDialog extends Dialog implements View.OnClickListener {
             listener.onClick(view);
         }
 
+    }
+    //修改dialog文字
+    public void setDialogTitle(String msg){
+        dialogTitle.setText(TextUtils.isEmpty(msg) ? "" : msg);
     }
 
     //dialog_edite_common 使用

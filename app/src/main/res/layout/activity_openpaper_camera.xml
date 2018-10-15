@@ -196,18 +196,39 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp" />
 
-            <com.junhetang.doctor.widget.EditableLayout
-                android:id="@+id/et_memb_see"
+            <RelativeLayout
+                android:id="@+id/rlt_memb_see"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:background="@color/white"
                 android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                app:edit_editTextHint="不可见"
-                app:edit_leftIcon="@drawable/icon_memb_see"
-                app:edit_leftText="患者购药前处方是否可见"
-                app:edit_mode="select"
-                app:edit_textMainSize="16sp" />
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:id="@+id/tv_memb_see_leftimg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="患者购药前处方是否可见"
+                    android:textColor="@color/color_000"
+                    android:textSize="16sp" />
+
+                <Switch
+                    android:id="@+id/st_memb_see"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:checked="false"
+                    android:padding="5dp"
+                    android:thumb="@drawable/switch_bg_thumb"
+                    android:track="@drawable/switch_bg_track" />
+
+                <View
+                    style="@style/line_gray_hor"
+                    android:layout_alignParentBottom="true" />
+
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="match_parent"

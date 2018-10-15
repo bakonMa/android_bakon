@@ -45,7 +45,7 @@
         android:paddingTop="5dp"
         android:textColor="@color/color_000"
         android:textSize="16sp"
-        tools:text="主诉挤辩证：累的，闲的，无聊的 累的，闲的，无聊的 累的，闲的，无聊的 累的，闲的，无聊的 累的，闲的，无聊的 累的，闲的，无聊的 " />
+        tools:text="主诉及辩证：累的，闲的，无聊的 累的，闲的，无聊的 累的，闲的，无聊的 累的，闲的，无聊的 累的，闲的，无聊的 累的，闲的，无聊的 " />
 
     <TextView
         android:id="@+id/service_money"

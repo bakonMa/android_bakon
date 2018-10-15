@@ -106,9 +106,9 @@
                         android:background="@null"
                         android:gravity="center_vertical"
                         android:hint="就诊人手机号"
-                        android:singleLine="true"
                         android:inputType="phone"
                         android:maxLength="11"
+                        android:singleLine="true"
                         android:textColor="@color/color_000"
                         android:textSize="16sp" />
 
@@ -144,8 +144,8 @@
                         android:gravity="center_vertical"
                         android:hint="就诊人姓名"
                         android:inputType="text"
-                        android:singleLine="true"
                         android:maxLength="10"
+                        android:singleLine="true"
                         android:textColor="@color/color_000"
                         android:textSize="16sp" />
 
@@ -314,9 +314,9 @@
                     android:layout_alignParentRight="true"
                     android:gravity="center"
                     android:text="保存为常用处方"
-                    android:visibility="gone"
                     android:textColor="@color/color_main"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <View
@@ -462,7 +462,6 @@
                         android:button="@drawable/selector_radiobutton"
                         android:checked="true"
                         android:paddingLeft="20dp"
-
                         android:text="否"
                         android:textSize="16sp" />
                 </RadioGroup>
@@ -473,15 +472,27 @@
             </RelativeLayout>
 
             <com.junhetang.doctor.widget.EditableLayout
-                android:id="@+id/et_memb_see"
+                android:id="@+id/et_usetype"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:background="@color/white"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                app:edit_editTextHint="不可见"
-                app:edit_leftIcon="@drawable/icon_memb_see"
-                app:edit_leftText="患者购药前处方是否可见"
+                android:visibility="gone"
+                app:edit_editTextHint="请选择用法用量"
+                app:edit_leftText="用法用量"
+                app:edit_mode="select"
+                app:edit_textMainSize="16sp" />
+
+            <com.junhetang.doctor.widget.EditableLayout
+                android:id="@+id/et_docadvice"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                app:edit_editTextHint="（必填）"
+                app:edit_leftText="服药时间及禁忌"
                 app:edit_mode="select"
                 app:edit_textMainSize="16sp" />
 
@@ -516,56 +527,10 @@
             <com.junhetang.doctor.widget.DrawableTextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/white"
-                android:drawablePadding="20dp"
-                android:text="服药说明"
-                android:textColor="@color/color_main"
-                android:textSize="18sp"
-                app:leftDrawable="@drawable/icon_left_arrows"
-                app:leftDrawableHeight="14dp"
-                app:leftDrawableWidth="16dp"
-                app:rightDrawable="@drawable/icon_right_arrows"
-                app:rightDrawableHeight="14dp"
-                app:rightDrawableWidth="16dp" />
-
-            <View
-                style="@style/line_gray_hor"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp" />
-
-            <com.junhetang.doctor.widget.EditableLayout
-                android:id="@+id/et_usetype"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="@color/white"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:visibility="gone"
-                app:edit_editTextHint="请选择用法用量"
-                app:edit_leftText="用法用量"
-                app:edit_mode="select"
-                app:edit_textMainSize="16sp" />
-
-            <com.junhetang.doctor.widget.EditableLayout
-                android:id="@+id/et_docadvice"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:background="@color/white"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                app:edit_editTextHint="（必填）"
-                app:edit_leftText="服药时间及禁忌"
-                app:edit_mode="select"
-                app:edit_textMainSize="16sp"
-                app:isShowLineBottom="false" />
-
-            <com.junhetang.doctor.widget.DrawableTextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:drawablePadding="20dp"
-                android:text=" 诊疗费 "
+                android:text="　其他　"
                 android:textColor="@color/color_main"
                 android:textSize="18sp"
                 app:leftDrawable="@drawable/icon_left_arrows"
@@ -619,6 +584,41 @@
                     android:textSize="16sp" />
 
             </LinearLayout>
+
+            <View
+                style="@style/line_gray_hor"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp" />
+
+            <RelativeLayout
+                android:id="@+id/rlt_memb_see"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@color/white"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:id="@+id/tv_memb_see_leftimg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="患者购药前处方是否可见"
+                    android:textColor="@color/color_000"
+                    android:textSize="16sp" />
+
+                <Switch
+                    android:id="@+id/st_memb_see"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:checked="false"
+                    android:padding="5dp"
+                    android:thumb="@drawable/switch_bg_thumb"
+                    android:track="@drawable/switch_bg_track" />
+
+            </RelativeLayout>
 
             <com.junhetang.doctor.widget.DrawableTextView
                 android:layout_width="match_parent"

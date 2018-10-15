@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +23,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -56,7 +58,7 @@ import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.utils.UmengKey;
 import com.junhetang.doctor.widget.EditTextlayout;
 import com.junhetang.doctor.widget.EditableLayout;
-import com.junhetang.doctor.widget.dialog.CommonDialog;
+import com.junhetang.doctor.widget.dialog.CommSuperDialog;
 import com.junhetang.doctor.widget.dialog.SavePaperDialog;
 import com.junhetang.doctor.widget.popupwindow.BottomListPopupView;
 import com.junhetang.doctor.widget.popupwindow.TwoPopupWheel;
@@ -67,10 +69,10 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.greenrobot.greendao.annotation.NotNull;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -125,8 +127,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     RadioButton rbNo;
     @BindView(R.id.tv_addcommpaper)
     TextView tvAddcommpaper;
-    @BindView(R.id.et_memb_see)
-    EditableLayout etMembSee;
     @BindView(R.id.rlt_daijian)
     RelativeLayout rltDaijian;
     @BindView(R.id.rg_daijian)
@@ -137,6 +137,10 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     EditText etNum;
     @BindView(R.id.et_serverprice)
     EditText etServerprice;
+    @BindView(R.id.tv_memb_see_leftimg)
+    TextView tv_membseeLeftimg;
+    @BindView(R.id.st_memb_see)
+    Switch stMembSee;
     @BindView(R.id.et_skillname)
     EditText etSkillname;
     @BindView(R.id.tv_drug_info)
@@ -149,8 +153,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     TextView tvMoneyTotal;
     @BindView(R.id.et_remark)
     EditText etRemark;
-    @BindView(R.id.tv_next_step)
-    TextView tvNextStep;
 
     @Inject
     OpenPaperPresenter mPresenter;
@@ -162,18 +164,16 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     private String freqStr = "";//用量str
     private int sexType = 0;
     private int daijianType = 1;
-    private int membSee = 0;//购药前患者是否可见，默认0 不可见
     private String membNo = "";//患者编号，选择患者才有
     private int relationship = 4;//就诊人关系（不是选择 默认4-其他）
     private String pAccid = "";//患者云信 accid
     private String docadviceStr = "";//医嘱
-    private String drugType = "";//处方药材类型 “ZY”：”中草药” “ZCY”：”中成药” “XY” ：”西药” “QC” ：”器材”
+    private String drugType = "";//处方药材类型 “ZY”：”中草药” “ZCY”：”中成药” “XY” ：”西药” “QC” ：”器材” "KLJ"："颗粒剂"
     private ArrayList<DrugBean> drugBeans = new ArrayList<>();
     private int checekId;//处方id，【调用此放】使用
     private OPenPaperBaseBean baseBean;
     private List<String> drugStoreList = new ArrayList<>();//药房
     private List<String> drugClassList = new ArrayList<>();//剂型
-    private List<String> menbSeeList = new ArrayList<>();//是否可见
     private List<String> drugUseList = new ArrayList<>();//用法
     private List<String> frequencyList = new ArrayList<>();//用量
     private OPenPaperDrugAdapter adapter;
@@ -199,6 +199,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
 
     @Override
     protected void initView() {
+        //leftImg 设置大小
+        UIUtils.setCompoundDrawable(tv_membseeLeftimg, 12, 0, R.drawable.icon_memb_see, Gravity.LEFT);
         SoftHideKeyBoardUtil.assistActivity(this);
         //来源
         formParent = getIntent().getIntExtra("formParent", 0);
@@ -212,8 +214,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         initToolbar();
         //聊天进来不能填写
         tv_editepatient.setVisibility(formParent == 0 ? View.VISIBLE : View.GONE);
-        //默认 不可见
-        etMembSee.setText(menbSeeList.get(membSee));
         //性别
         rgSex.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -230,8 +230,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                     if (TextUtils.isEmpty(etNum.getText().toString().trim()) || Integer.parseInt(etNum.getText().toString()) < 5) {
                         daijianType = 1;
                         rgDaijian.check(R.id.rb_no);
-                        commonDialog = new CommonDialog(OpenPaperOnlineActivity.this, "5副及以上才可选择代煎");
-                        commonDialog.show();
+                        showCommSuperDialog("5副及以上才可选择代煎");
                         return;
                     } else {
                         daijianType = 0;
@@ -255,15 +254,15 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         if (formParent == 1 && !TextUtils.isEmpty(membNo)) {
             String jsonTemp = DocApplication.getAppComponent().dataRepo().appSP().getString(membNo, "");
             if (!TextUtils.isEmpty(jsonTemp)) {
-                commonDialog = new CommonDialog(this, false, "此患者有未结束的处方，是否继续使用此处方？", new View.OnClickListener() {
+                commSuperDialog = new CommSuperDialog(this, "此患者有未结束的处方，是否继续使用此处方？", new CommSuperDialog.ClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        if (view.getId() == R.id.btn_ok) {
+                    public void btnOnClick(int btnId) {
+                        if (btnId == R.id.btn_right) {
                             editePaperInfoDate(new Gson().fromJson(jsonTemp, PaperInfoBean.class));
                         }
                     }
                 });
-                commonDialog.show();
+                commSuperDialog.show();
             }
         }
         //手势监听，滑动关闭软键盘
@@ -368,14 +367,14 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         //基础数据空的时候
         if (null == baseBean || null == baseBean.store || null == baseBean.drug_class
                 || null == baseBean.usage || null == baseBean.frequency) {
-            commonDialog = new CommonDialog(this, true, "数据异常，请退出后重试", new View.OnClickListener() {
+            commSuperDialog = new CommSuperDialog(this, false, "数据异常，请退出后重试", new CommSuperDialog.ClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void btnOnClick(int btnId) {
                     EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_BASEDATA_NULL));
                     finish();
                 }
             });
-            commonDialog.show();
+            commSuperDialog.show();
         }
 
         //药房
@@ -399,8 +398,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         for (OPenPaperBaseBean.CommBean bean : baseBean.frequency) {
             frequencyList.add(bean.name);
         }
-        //是否可见
-        menbSeeList = Arrays.asList(UIUtils.getArray(R.array.memb_see));
     }
 
     //获取当前界面可用高度
@@ -420,7 +417,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     }
 
     @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugstore, R.id.et_drugclass,
-            R.id.tv_adddrug, R.id.et_usetype, R.id.tv_addcommpaper, R.id.et_memb_see, R.id.et_docadvice, R.id.tv_next_step})
+            R.id.tv_adddrug, R.id.et_usetype, R.id.tv_addcommpaper, R.id.et_docadvice, R.id.tv_next_step})
     public void tabOnClick(View view) {
         //防止多次点击
         if (UIUtils.isDoubleClick()) {
@@ -448,39 +445,21 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 writeJzInfo();
                 break;
             case R.id.tv_addcommpaper://添加为常用处方
-                //Umeng 埋点
-                MobclickAgent.onEvent(this, UmengKey.online_add_commpaper);
-                if (drugBeans == null || drugBeans.isEmpty()) {
-                    ToastUtil.showShort("请添加药材");
-                    return;
-                }
-                savePaperDialog = new SavePaperDialog(this, new SavePaperDialog.ClickListener() {
-                    @Override
-                    public void confirm(String name, String remark) {
-                        Params params = new Params();
-                        params.put("title", name);
-                        params.put("m_explain", remark);
-                        params.put("param", new Gson().toJson(drugBeans));
-                        mPresenter.addOftenmed(params);
-                        savePaperDialog.dismiss();
-                    }
-                });
-                savePaperDialog.show();
                 break;
             case R.id.et_drugstore://药房
                 //是否选过了药房 切换药房 要提醒
                 if (TextUtils.isEmpty(etDrugstore.getText()) || drugBeans.size() == 0) {
                     chooseDrugStore();
                 } else {
-                    commonDialog = new CommonDialog(this, false, "切换药房会导致药品信息变更，\n是否确定切换药房？", new View.OnClickListener() {
+                    commSuperDialog = new CommSuperDialog(this, "切换药房会导致药品信息变更，\n是否确定切换药房？", new CommSuperDialog.ClickListener() {
                         @Override
-                        public void onClick(View view) {
-                            if (view.getId() == R.id.btn_ok) {
+                        public void btnOnClick(int btnId) {
+                            if (btnId == R.id.btn_right) {
                                 chooseDrugStore();
                             }
                         }
                     });
-                    commonDialog.show();
+                    commSuperDialog.show();
                 }
                 break;
             case R.id.et_drugclass://剂型
@@ -501,16 +480,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                             rltDaijian.setVisibility(View.GONE);
                             daijianType = 0;
                         }
-                    }
-                });
-                bottomPopupView.show(scrollView);
-                break;
-            case R.id.et_memb_see://购药前是否可见
-                bottomPopupView = new BottomListPopupView(this, "患者购药前是否可见", menbSeeList, new BottomListPopupView.OnClickListener() {
-                    @Override
-                    public void selectItem(int position) {
-                        membSee = position;
-                        etMembSee.setText(menbSeeList.get(position));
                     }
                 });
                 bottomPopupView.show(scrollView);
@@ -536,8 +505,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             case R.id.tv_adddrug://添加药材
                 //是否选择了药房
                 if (TextUtils.isEmpty(etDrugstore.getText())) {
-                    commonDialog = new CommonDialog(this, "请先选择药房");
-                    commonDialog.show();
+                    showCommSuperDialog("请先选择药房");
                     return;
                 }
 
@@ -635,44 +603,47 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 || sexType < 0
                 || TextUtils.isEmpty(etPhone.getText().toString().trim())
                 || TextUtils.isEmpty(etAge.getEditText().getText())) {
-            commonDialog = new CommonDialog(this, "请填写就诊人信息");
-            commonDialog.show();
+            showCommSuperDialog("请填写就诊人信息");
             return;
         }
         if (TextUtils.isEmpty(etDrugstore.getText())) {
-            commonDialog = new CommonDialog(this, "请选择药房");
-            commonDialog.show();
+            showCommSuperDialog("请选择药房");
             return;
         }
         if (drugBeans == null || drugBeans.isEmpty()) {
-            commonDialog = new CommonDialog(this, "请添加药材");
-            commonDialog.show();
+            showCommSuperDialog("请添加药材");
             return;
         }
 
         switch (drugType) {
             case "ZY"://中草药
                 if (TextUtils.isEmpty(etDrugClass.getText())) {
-                    commonDialog = new CommonDialog(this, "请选择剂型");
-                    commonDialog.show();
+                    showCommSuperDialog("请选择剂型");
                     return;
                 }
                 if (TextUtils.isEmpty(etUsetype.getText())) {
-                    commonDialog = new CommonDialog(this, "请选择用法用量");
-                    commonDialog.show();
+                    showCommSuperDialog("请选择用法用量");
                     return;
                 }
                 if (TextUtils.isEmpty(etNum.getText().toString().trim()) || Integer.parseInt(etNum.getText().toString()) <= 0) {
-                    commonDialog = new CommonDialog(this, "请填写副数");
-                    commonDialog.show();
+                    showCommSuperDialog("请填写副数");
+                    return;
+                }
+                break;
+            case "KLJ"://颗粒剂
+                if (TextUtils.isEmpty(etUsetype.getText())) {
+                    showCommSuperDialog("请选择用法用量");
+                    return;
+                }
+                if (TextUtils.isEmpty(etNum.getText().toString().trim()) || Integer.parseInt(etNum.getText().toString()) <= 0) {
+                    showCommSuperDialog("请填写副数");
                     return;
                 }
                 break;
             case "ZCY"://中成药
             case "XY"://西药
                 if (TextUtils.isEmpty(etUsetype.getText())) {
-                    commonDialog = new CommonDialog(this, "请选择用法用量");
-                    commonDialog.show();
+                    showCommSuperDialog("请选择用法用量");
                     return;
                 }
                 break;
@@ -681,8 +652,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         }
 
         if (TextUtils.isEmpty(docadviceStr)) {
-            commonDialog = new CommonDialog(this, "请填写服药时间和禁忌");
-            commonDialog.show();
+            showCommSuperDialog("请填写服药时间和禁忌");
             return;
         }
 
@@ -714,6 +684,12 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 params.put("usages", usagesStr);//用法
                 params.put("freq", freqStr);//用量
                 break;
+            case "KLJ"://颗粒剂
+                params.put("drug_class", -1);//剂型-代配
+                params.put("drug_num", Integer.parseInt(etNum.getText().toString()));//副数
+                params.put("usages", usagesStr);//用法
+                params.put("freq", freqStr);//用量
+                break;
             case "ZCY"://中成药
             case "XY"://西药
                 params.put("usages", usagesStr);//用法
@@ -728,7 +704,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             params.put("service_price", etServerprice.getText().toString().trim());
         }
         params.put("doc_remark", docadviceStr);//医嘱
-        params.put("memb_see", membSee);//处方是否可见
+        params.put("memb_see", stMembSee.isChecked() ? 1 : 0);//处方是否可见
         mPresenter.openPaperOnline(params);
     }
 
@@ -741,21 +717,17 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 .inject(this);
     }
 
-    private CommonDialog commonDialog;
-
     @Override
     public void onError(String errorCode, String errorMsg) {
-        commonDialog = new CommonDialog(this, errorMsg);
-        commonDialog.show();
+        showCommSuperDialog(errorMsg);
     }
-
 
     @Override
     public void onSuccess(Message message) {
         switch (message.what) {
             case OpenPaperPresenter.ADD_COMMPAPER_OK:
-                commonDialog = new CommonDialog(this, "添加常用处方成功");
-                commonDialog.show();
+                ToastUtil.showCenterToast("添加常用处方成功");
+                finish();
                 break;
             case OpenPaperPresenter.GET_PAPER_INFO_OK://获取处方详情ok
                 PaperInfoBean infoBean = (PaperInfoBean) message.obj;
@@ -785,13 +757,17 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                         finish();
                     } else {//普通开方
                         String msgStr = TextUtils.isEmpty(httpResponse.msg) ? "处方提交成功，已通知患者支付" : httpResponse.msg;
-                        commonDialog = new CommonDialog(this, true, msgStr, new View.OnClickListener() {
+                        commSuperDialog = new CommSuperDialog(this, msgStr, 1, true,"保存为常用处方", "确  定", new CommSuperDialog.ClickListener() {
                             @Override
-                            public void onClick(View view) {
-                                finish();
+                            public void btnOnClick(int btnId) {
+                                if (btnId == R.id.btn_left) {
+                                    addCommPaperDialog();
+                                } else {
+                                    finish();
+                                }
                             }
                         });
-                        commonDialog.show();
+                        commSuperDialog.show();
                     }
                 } else {//药物和药房 有不匹配，处理返回的数据
                     //status为-4时返回处方中不能用的药品param，其他状态未定义
@@ -801,8 +777,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                         adapter.notifyDataSetChanged();
                     }
                     String msgError = TextUtils.isEmpty(httpResponse.msg) ? "药房缺少药材，请修改处方" : httpResponse.msg;
-                    commonDialog = new CommonDialog(this, msgError);
-                    commonDialog.show();
+                    showCommSuperDialog(msgError);
                 }
                 break;
         }
@@ -839,7 +814,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 break;
             }
         }
-        //药材类型（“ZY”：”中草药” “ZCY”：”中成药” “XY” ：”西药” “QC” ：”器材”）
+        //药材类型（“ZY”：”中草药” “ZCY”：”中成药” “XY” ：”西药” “QC” ：”器材” "KLJ":"颗粒剂"）
         drugType = infoBean.param.get(0).drug_type;
         setDrugType();
         switch (drugType) {
@@ -854,6 +829,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 }
                 //副数
                 etNum.setText(infoBean.drug_num > 0 ? String.valueOf(infoBean.drug_num) : "1");
+                //代煎
                 if (drugClassId == baseBean.drug_class.get(0).id) {//汤剂
                     if (infoBean.drug_num < 5) {
                         //不可代煎
@@ -876,6 +852,18 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                     etUsetype.setText(usagesStr + "-" + freqStr);
                 }
                 break;
+            case "KLJ"://颗粒剂
+                //剂型
+                drugClassId = infoBean.drug_class;
+                //副数
+                etNum.setText(infoBean.drug_num > 0 ? String.valueOf(infoBean.drug_num) : "1");
+                //用法，用量
+                usagesStr = TextUtils.isEmpty(infoBean.usages) ? "" : infoBean.usages;
+                freqStr = TextUtils.isEmpty(infoBean.freq) ? "" : infoBean.freq;
+                if (!TextUtils.isEmpty(usagesStr) && !TextUtils.isEmpty(usagesStr)) {
+                    etUsetype.setText(usagesStr + "-" + freqStr);
+                }
+                break;
             case "XY"://西药
             case "ZCY"://中成药
                 //用法，用量
@@ -889,8 +877,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 break;
         }
         //是否可见
-        membSee = infoBean.memb_see >= 0 ? infoBean.memb_see : 0;
-        etMembSee.setText(menbSeeList.get(membSee));
+        stMembSee.setChecked(infoBean.memb_see > 0);
 
         //诊疗费
         etServerprice.setText(infoBean.service_price > 0 ? String.valueOf(infoBean.service_price) : "");
@@ -916,8 +903,6 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             }
             updateTotalMoney();
         }
-        //保存长用处方 是否显示
-        tvAddcommpaper.setVisibility(drugBeans.isEmpty() ? View.GONE : View.VISIBLE);
     }
 
     //不同的type UI展示不同
@@ -933,6 +918,12 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                     etDrugClass.setText(drugClassList.get(0));
                     rltDaijian.setVisibility(View.VISIBLE);//代煎
                 }
+                break;
+            case "KLJ"://颗粒剂
+                rltNum.setVisibility(View.VISIBLE);//副数
+                drugClassId = -1;//代配=-1
+                etUsetype.setVisibility(View.VISIBLE);//用法用量
+                rltDaijian.setVisibility(View.GONE);//代煎
                 break;
             case "ZCY"://中成药
             case "XY"://西药
@@ -994,15 +985,15 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
             saveTempPaperInfo();
             finish();
         } else {
-            commonDialog = new CommonDialog(this, false, "确定要退出开方吗？", new View.OnClickListener() {
+            commSuperDialog = new CommSuperDialog(this, "确定要退出开方吗？", new CommSuperDialog.ClickListener() {
                 @Override
-                public void onClick(View view) {
-                    if (view.getId() == R.id.btn_ok) {
+                public void btnOnClick(int btnId) {
+                    if (btnId == R.id.btn_right) {
                         finish();
                     }
                 }
             });
-            commonDialog.show();
+            commSuperDialog.show();
         }
     }
 
@@ -1043,6 +1034,33 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         DocApplication.getAppComponent().dataRepo().appSP().setString(membNo, new Gson().toJson(tempBean));
     }
 
+    private CommSuperDialog commSuperDialog;
+
+    //确定 dialog
+    private void showCommSuperDialog(@NotNull String msg) {
+        commSuperDialog = new CommSuperDialog(this, msg);
+        commSuperDialog.show();
+    }
+
+    //添加常用处方dialog
+    private void addCommPaperDialog() {
+        savePaperDialog = new SavePaperDialog(this, new SavePaperDialog.ClickListener() {
+            @Override
+            public void confirm(String name) {
+                if (null == name) {//取消-关闭画面
+                    savePaperDialog.dismiss();
+                    finish();
+                } else {
+                    Params params = new Params();
+                    params.put("title", name);
+                    params.put("param", new Gson().toJson(drugBeans));
+                    mPresenter.addOftenmed(params);
+                    savePaperDialog.dismiss();
+                }
+            }
+        });
+        savePaperDialog.show();
+    }
 
     @Override
     protected boolean useEventBus() {

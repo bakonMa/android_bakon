@@ -556,13 +556,16 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
         } else {
             savePaperDialog = new SavePaperDialog(this, new SavePaperDialog.ClickListener() {
                 @Override
-                public void confirm(String name, String remark) {
+                public void confirm(String name) {
+                    if(null == name){//取消
+                        savePaperDialog.dismiss();
+                        return;
+                    }
                     Params params = new Params();
                     if (formtype == 2) {
                         params.put("id", id);
                     }
                     params.put("title", name);
-                    params.put("m_explain", remark);
                     params.put("param", gson.toJson(drugBeans));
                     mPresenter.addOftenmed(params);
                 }

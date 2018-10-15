@@ -33,6 +33,7 @@ public interface Constant {
     Map<String, String> DRUG_TYPE = new HashMap<String, String>() {
         {
             put("ZY", "中草药");
+            put("KLJ", "颗粒剂");
             put("ZCY", "中成药");
             put("XY", "西药");
             put("QC", "器材");

@@ -3,11 +3,12 @@ apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 27
+    buildToolsVersion '28.0.2'
     defaultConfig {
         applicationId "com.junhetang.doctor"
         minSdkVersion 19  //16:4.1(99.1%) 19:4.4(90%)
         targetSdkVersion 27
-        versionCode 13
+        versionCode 14
         versionName "1.2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true //dex分包
@@ -73,6 +74,10 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 def devAddress() {
@@ -81,8 +86,8 @@ def devAddress() {
 }
 
 def onLineAddress() {
-    "\"http://dev.dr.jhtcm.com/\""  //测试环境
-//    "\"https://dr.jhtcm.vip/\""//正式线上环境
+//    "\"http://dev.dr.jhtcm.com/\""  //测试环境
+    "\"https://dr.jhtcm.vip/\""//正式线上环境
 //    "\"https://dr.beta.jhtcm.vip/\""//beta测试环境
 }
 
@@ -98,6 +103,8 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
     implementation project(':uikit')
+
+    implementation 'com.google.guava:guava:25.0-android'
     //Android
 //    implementation "com.android.support:appcompat-v7:$support_version"
 //    implementation "com.android.support.constraint:constraint-layout:$constraintlayout_version"

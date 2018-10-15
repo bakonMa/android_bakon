@@ -130,7 +130,7 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
             @Override
             protected void convert(BaseViewHolder helper, CheckPaperBean item) {
                 helper.setText(R.id.patient_name, "就诊人：" + item.patient_name + "     " + (item.sex == 0 ? "男" : "女") + "     " + item.age + "岁")
-                        .setText(R.id.skill_name, "主诉挤辩证：" + (TextUtils.isEmpty(item.bz_remark) ? "" : item.bz_remark))
+                        .setText(R.id.skill_name, "主诉及辩证：" + (TextUtils.isEmpty(item.bz_remark) ? "" : item.bz_remark))
                         .setText(R.id.service_money, "诊疗费：" + (TextUtils.isEmpty(item.service_price) ? "" : (item.service_price + "元")))
                         .setText(R.id.drug_money, "药材费：" + (TextUtils.isEmpty(item.total_drug) ? "" : (item.total_drug + "元")))
                         .setText(R.id.paper_date, "开方时间：" + (TextUtils.isEmpty(item.create_time) ? "" : item.create_time));
