@@ -107,13 +107,10 @@ public class FileUtil {
     public static void byte2File(byte[] buf, String filePath, String fileName) {
         BufferedOutputStream bos = null;
         FileOutputStream fos = null;
-        File file = null;
         try {
-            File dir = new File(filePath);
-            if (!dir.exists() && dir.isDirectory()) {
-                dir.mkdirs();
-            }
-            file = new File(filePath + File.separator + fileName);
+            //创建文件夹
+            createDirByPath(filePath);
+            File file = new File(filePath + File.separator + fileName);
             fos = new FileOutputStream(file);
             bos = new BufferedOutputStream(fos);
             bos.write(buf);
