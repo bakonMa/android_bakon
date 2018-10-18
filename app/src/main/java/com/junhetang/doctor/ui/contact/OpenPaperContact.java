@@ -53,6 +53,7 @@ public interface OpenPaperContact {
 
         void getJZRByPhone(String phone);//根据手机号 显示所有就诊人
 
+        void getJZRHistoryPaper(int pageNum, String phone, String name, String memb_no);//手机号，姓名 就诊人历史处方
     }
 
 }

@@ -14,6 +14,7 @@ import com.junhetang.doctor.ui.activity.home.CommUsePaperActivity;
 import com.junhetang.doctor.ui.activity.home.HistoryPaperActivity;
 import com.junhetang.doctor.ui.activity.home.JZRListActivity;
 import com.junhetang.doctor.ui.activity.home.JobScheduleActivity;
+import com.junhetang.doctor.ui.activity.home.JzrHistoryListActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperCameraActivity;
 import com.junhetang.doctor.ui.activity.home.OpenPaperOnlineActivity;
 import com.junhetang.doctor.ui.activity.home.PersonCardActivity;
@@ -149,5 +150,7 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(PatientCenterActivity patientCenterActivity);
 
     void inject(PersonCardActivity personCardActivity);
+
+    void inject(JzrHistoryListActivity jzrHistoryListActivity);
 
 }

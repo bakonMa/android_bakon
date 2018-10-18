@@ -65,6 +65,7 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
     public static final int CHECK_DRUG_TYPE = 0x129;
     public static final int GET_JZR_BY_PHONE = 0x130;
     public static final int GET_JZR_LIST = 0x131;
+    public static final int GET_JZR_HISTORY_MEDICINAL = 0x132;
 
     public OpenPaperPresenter(OpenPaperContact.View mView) {
         this.mView = mView;
@@ -662,6 +663,35 @@ public class OpenPaperPresenter implements OpenPaperContact.Presenter {
                     }
                 });
 
+    }
+
+    @Override
+    public void getJZRHistoryPaper(int pageNum, String phone, String name, String memb_no) {
+        Params params = new Params();
+        params.put("page", pageNum);
+        params.put("phone", phone);
+        params.put("name", name);
+        params.put("memb_no", memb_no);
+        params.put(HttpConfig.SIGN_KEY, params.getSign(params));
+        DocApplication.getAppComponent().dataRepo().http()
+                .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getJzrHistoryMedicinal(params))
+                .compose(mView.toLifecycle())
+                .subscribe(new BaseObserver<HttpResponse<BasePageBean<PaperInfoBean>>>(null) {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(HttpResponse<BasePageBean<PaperInfoBean>> httpResponse) {
+                        mView.onSuccess(M.createMessage(httpResponse.data, GET_JZR_HISTORY_MEDICINAL));
+                    }
+
+                    @Override
+                    public void onError(String errorCode, String errorMsg) {
+                        mView.onError(errorCode, errorMsg);
+                    }
+                });
     }
 
 

@@ -159,7 +159,6 @@ public class ChooseCommFragment extends BaseFragment implements OpenPaperContact
             };
         }
 
-
         mAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {

@@ -289,6 +289,9 @@
             android:name=".ui.activity.patient.PatientListActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activity.home.JzrHistoryListActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activity.home.SearchSkillNameActivity"
             android:screenOrientation="portrait" />
         <activity

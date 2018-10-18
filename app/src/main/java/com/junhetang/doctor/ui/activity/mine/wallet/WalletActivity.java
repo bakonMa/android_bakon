@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,21 +13,27 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.junhetang.doctor.R;
 import com.junhetang.doctor.application.DocApplication;
+import com.junhetang.doctor.config.EventConfig;
 import com.junhetang.doctor.data.eventbus.Event;
+import com.junhetang.doctor.injection.components.DaggerActivityComponent;
+import com.junhetang.doctor.injection.modules.ActivityModule;
 import com.junhetang.doctor.ui.base.BaseActivity;
+import com.junhetang.doctor.ui.bean.BankCardBean;
+import com.junhetang.doctor.ui.bean.BasePageBean;
+import com.junhetang.doctor.ui.bean.DealDetailBean;
 import com.junhetang.doctor.ui.bean.WalletBean;
 import com.junhetang.doctor.ui.contact.WalletContact;
 import com.junhetang.doctor.ui.presenter.WalletPresenter;
+import com.junhetang.doctor.utils.Constant;
 import com.junhetang.doctor.utils.SoftHideKeyBoardUtil;
+import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.widget.dialog.CommonDialog;
-import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
-import com.junhetang.doctor.config.EventConfig;
-import com.junhetang.doctor.injection.components.DaggerActivityComponent;
-import com.junhetang.doctor.injection.modules.ActivityModule;
-import com.junhetang.doctor.ui.bean.BankCardBean;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
+import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -33,6 +41,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -71,11 +80,15 @@ public class WalletActivity extends BaseActivity implements WalletContact.View {
     TextView tvJiangli;
     @BindView(R.id.tv_tixian)
     TextView tvTixian;
+    @BindView(R.id.recycleview)
+    RecyclerView recyclerView;
 
     @Inject
     WalletPresenter mPresenter;
     private WalletBean walletBean;
-    private ArrayList<BankCardBean> bankCardBeans;
+    private ArrayList<BankCardBean> bankCardBeans = new ArrayList<>();//银行卡
+    private BaseQuickAdapter mAdapter;
+    private List<DealDetailBean> dealDetailBeans = new ArrayList<>();//交易明细
 
     @Override
     protected int provideRootLayout() {
@@ -86,8 +99,31 @@ public class WalletActivity extends BaseActivity implements WalletContact.View {
     protected void initView() {
         SoftHideKeyBoardUtil.assistActivity(this);
         initToolbar();
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new com.chad.library.adapter.base.BaseQuickAdapter<DealDetailBean, BaseViewHolder>(R.layout.item_deal_detail, dealDetailBeans) {
+            @Override
+            protected void convert(BaseViewHolder helper, DealDetailBean item) {
+                helper.setText(R.id.tv_dealtype, TextUtils.isEmpty(item.type) ? "" : item.type)
+                        .setText(R.id.tv_patient_name, TextUtils.isEmpty(item.patient_name) ? "" : "就诊人：" + item.patient_name)
+                        .setText(R.id.tv_date, TextUtils.isEmpty(item.deal_time) ? "" : item.deal_time);
+                if (item.type_id == -1) {//提现
+                    helper.setText(R.id.tv_patient_name, Constant.WITHDRAW_TYPE.get(item.status))
+                            .setText(R.id.tv_money, TextUtils.isEmpty(item.money) ? "" : ((item.status == 1 || item.status == 2) ? "-" : "") + item.money)
+                            .setTextColor(R.id.tv_patient_name, UIUtils.getColor(item.status == -1 ? R.color.red : R.color.color_main));
+                    //拒绝受理-红色
+                } else {
+                    helper.setText(R.id.tv_patient_name, TextUtils.isEmpty(item.patient_name) ? "" : "就诊人：" + item.patient_name)
+                            .setText(R.id.tv_money, TextUtils.isEmpty(item.money) ? "" : ("+" + item.money))
+                            .setTextColor(R.id.tv_patient_name, UIUtils.getColor(R.color.color_000));
+                }
+            }
+        };
+        recyclerView.setAdapter(mAdapter);
+
         mPresenter.getWallet();
         mPresenter.userBankList();
+        mPresenter.getDealFlow(1, Constant.PAGE_SIZE_5);
     }
 
     //获取当前界面可用高度
@@ -204,7 +240,14 @@ public class WalletActivity extends BaseActivity implements WalletContact.View {
                     tvCardnum.setText(TextUtils.isEmpty(bankCardBeans.get(0).bank_number) ? "" : bankCardBeans.get(0).bank_number);
                 }
                 break;
-
+            case WalletPresenter.GET_DEAL_LIST_OK://交易明细 5条
+                BasePageBean<DealDetailBean> tempBean = (BasePageBean<DealDetailBean>) message.obj;
+                if (tempBean != null && tempBean.list != null) {
+                    dealDetailBeans.clear();
+                    dealDetailBeans.addAll(tempBean.list);
+                    mAdapter.notifyDataSetChanged();
+                }
+                break;
         }
     }
 
@@ -218,6 +261,7 @@ public class WalletActivity extends BaseActivity implements WalletContact.View {
                     break;
                 case EventConfig.EVENT_KEY_WITHRAW_OK://提现成功
                     mPresenter.getWallet();
+                    mPresenter.getDealFlow(1, Constant.PAGE_SIZE_5);
 //                    finish();
                     break;
             }

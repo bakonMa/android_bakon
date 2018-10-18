@@ -317,6 +317,10 @@ public interface HttpAPI {
     @POST("phone_getmempatient")
     Observable<HttpResponse<List<PatientFamilyBean.JiuzhenBean>>> getPatientByPhone(@Body Params params);
 
+    //手机号，姓名 就诊人历史处方
+    @POST("history_medicinal")
+    Observable<HttpResponse<BasePageBean<PaperInfoBean>>> getJzrHistoryMedicinal(@Body Params params);
+
     //检查App更新
     @POST("getVersion")
     Observable<HttpResponse<AppUpdateBean>> appUpdateCheck(@Body Params params);

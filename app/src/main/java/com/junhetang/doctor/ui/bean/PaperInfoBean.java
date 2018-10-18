@@ -13,6 +13,7 @@ public class PaperInfoBean {
     public int source;//来源：1：首页，2：聊天
     public String memb_no;//患者编号
     public String name;
+    public String create_time;//开方日期
     public int sex;//男：0、女：1
     public int memb_see;//0:不可见 1 可见
     public String age;

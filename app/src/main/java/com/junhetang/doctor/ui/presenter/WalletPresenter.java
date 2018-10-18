@@ -238,10 +238,17 @@ public class WalletPresenter implements WalletContact.Presenter {
 
     }
 
-    @Override
+    //交易明细
     public void getDealFlow(int pageNum) {
+        getDealFlow(pageNum, 0);
+    }
+    @Override
+    public void getDealFlow(int pageNum, int pageSize) {
         Params params = new Params();
         params.put("page", pageNum);
+        if (pageSize > 0) {
+            params.put("page_size", pageSize);
+        }
         params.put(HttpConfig.SIGN_KEY, params.getSign(params));
         DocApplication.getAppComponent().dataRepo().http()
                 .wrapper(DocApplication.getAppComponent().dataRepo().http().provideHttpAPI().getDealFlow(params))
@@ -262,6 +269,6 @@ public class WalletPresenter implements WalletContact.Presenter {
                         mView.onError(errorCode, errorMsg);
                     }
                 });
-
     }
+
 }

@@ -79,7 +79,6 @@ public class DealDetailListActivity extends BaseActivity implements WalletContac
         mAdapter = new BaseQuickAdapter<DealDetailBean, BaseViewHolder>(R.layout.item_deal_detail, dealDetailBeans) {
             @Override
             protected void convert(BaseViewHolder helper, DealDetailBean item) {
-                String montyType = item.type_id == -1 ? "-" : "+";//提现类型
                 helper.setText(R.id.tv_dealtype, TextUtils.isEmpty(item.type) ? "" : item.type)
                         .setText(R.id.tv_patient_name, TextUtils.isEmpty(item.patient_name) ? "" : "就诊人：" + item.patient_name)
                         .setText(R.id.tv_date, TextUtils.isEmpty(item.deal_time) ? "" : item.deal_time);

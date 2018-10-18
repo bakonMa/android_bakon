@@ -8,6 +8,10 @@ import java.util.Map;
  * Create at 2018/4/9 下午4:43 by mayakun
  */
 public interface Constant {
+    //分页 每页数量
+    int PAGE_SIZE_5 = 5;
+    int PAGE_SIZE_DEFAULT_15 = 15;
+
     //上传图片 0：头像 1：其他认证图片 2:拍照开方照片
     String UPLOADIMG_TYPE_0 = "0";
     String UPLOADIMG_TYPE_1 = "1";
@@ -40,11 +44,11 @@ public interface Constant {
         }
     };
 
-    //提现类型 0:待受理 1：已受理 2：提现成功 -1:拒绝受理
+    //提现类型 0:待受理 1：受理中 2：提现成功 -1:拒绝受理
     Map<Integer, String> WITHDRAW_TYPE = new HashMap<Integer, String>() {
         {
             put(0, "待受理");
-            put(1, "已受理");
+            put(1, "受理中");
             put(2, "提现成功");
             put(-1, "拒绝受理");
         }

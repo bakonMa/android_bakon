@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -22,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -73,6 +73,7 @@ import org.greenrobot.greendao.annotation.NotNull;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -92,7 +93,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     @BindView(R.id.id_toolbar)
     Toolbar idToolbar;
     @BindView(R.id.scrollView)
-    ScrollView scrollView;
+    NestedScrollView scrollView;
     @BindView(R.id.tv_addpatient)
     TextView tvAddpatient;
     @BindView(R.id.tv_editepatient)
@@ -125,8 +126,8 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     RadioButton rbYes;
     @BindView(R.id.rb_no)
     RadioButton rbNo;
-    @BindView(R.id.tv_addcommpaper)
-    TextView tvAddcommpaper;
+    @BindView(R.id.tv_history_paper)
+    TextView tvHistoryPaper;
     @BindView(R.id.rlt_daijian)
     RelativeLayout rltDaijian;
     @BindView(R.id.rg_daijian)
@@ -306,11 +307,30 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
         });
     }
 
-    //输入姓名监听
+    //输入手机监听
     @OnTextChanged(value = R.id.et_phone, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     void afterPhoneChanged(Editable s) {
+        //是否显示 "历史处方"
+        isShowHistory();
+        //手动填写时，先匹配手机号，动态匹配就诊人
         if (s.toString().trim().length() == 11 && !isChoosePatient) {//先 匹配手机号
             mPresenter.getJZRByPhone(s.toString());
+        }
+    }
+
+    //输入姓名监听
+    @OnTextChanged(value = R.id.et_name, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    void afterNameChanged(Editable s) {
+        isShowHistory();
+    }
+
+    //是否显示 "历史处方"
+    private void isShowHistory() {
+        if (etPhone.getText().toString().trim().length() == 11
+                && !TextUtils.isEmpty(etName.getText().toString().trim())) {
+            tvHistoryPaper.setVisibility(View.VISIBLE);
+        } else {
+            tvHistoryPaper.setVisibility(View.GONE);
         }
     }
 
@@ -417,7 +437,7 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
     }
 
     @OnClick({R.id.tv_addpatient, R.id.tv_editepatient, R.id.et_drugstore, R.id.et_drugclass,
-            R.id.tv_adddrug, R.id.et_usetype, R.id.tv_addcommpaper, R.id.et_docadvice, R.id.tv_next_step})
+            R.id.tv_adddrug, R.id.et_usetype, R.id.tv_history_paper, R.id.et_docadvice, R.id.tv_next_step})
     public void tabOnClick(View view) {
         //防止多次点击
         if (UIUtils.isDoubleClick()) {
@@ -444,7 +464,13 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 isChoosePatient = false;
                 writeJzInfo();
                 break;
-            case R.id.tv_addcommpaper://添加为常用处方
+            case R.id.tv_history_paper://历史处方
+                Intent jzrHistoryIntent = new Intent(this, JzrHistoryListActivity.class);
+                jzrHistoryIntent.putExtra("phone", etPhone.getText().toString().trim());
+                jzrHistoryIntent.putExtra("name", etName.getText().toString().trim());
+                jzrHistoryIntent.putExtra("memb_no", TextUtils.isEmpty(membNo) ? "" : membNo);
+                jzrHistoryIntent.putExtra("hasdrug", drugBeans.size() > 0);
+                startActivity(jzrHistoryIntent);
                 break;
             case R.id.et_drugstore://药房
                 //是否选过了药房 切换药房 要提醒
@@ -952,6 +978,30 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 PatientFamilyBean.JiuzhenBean bean = (PatientFamilyBean.JiuzhenBean) event.getData();
                 if (bean != null) {
                     chooseJzInfo(bean);
+                }
+                break;
+            case EventConfig.EVENT_KEY_JZR_EDITE_DRUG://载入历史处方
+                HashMap map = (HashMap) event.getData();
+                String dType = (String) map.get("drug_type");
+                int storeid = (int) map.get("store_id");
+                List<DrugBean> beans = (List<DrugBean>) map.get("druglist");
+
+                if (!TextUtils.isEmpty(dType)) {//药材类型
+                    drugType = dType;
+                    setDrugType();
+                }
+                if (storeid > 0) {//药房id
+                    //药房id
+                    for (OPenPaperBaseBean.StoreBean storeBean : baseBean.store) {
+                        if (storeBean.drug_store_id == storeid) {
+                            storeId = storeid;
+                            etDrugstore.setText(storeBean.drug_store_name);
+                            break;
+                        }
+                    }
+                }
+                if (null != beans && !beans.isEmpty()) {//显示药材
+                    setDrugBeans(beans);
                 }
                 break;
         }

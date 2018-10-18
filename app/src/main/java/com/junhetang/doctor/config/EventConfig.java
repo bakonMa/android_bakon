@@ -45,5 +45,6 @@ public interface EventConfig {
     int EVENT_KEY_BASEDATA_NULL= 0x136;//基础数据空异常
 
     int EVENT_KEY_ADD_PATIENT= 0x137;//添加患者成功
+    int EVENT_KEY_JZR_EDITE_DRUG= 0x138;//在线开发，载入历史处方
 
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +18,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -46,10 +46,9 @@ import com.junhetang.doctor.utils.ToastUtil;
 import com.junhetang.doctor.utils.U;
 import com.junhetang.doctor.utils.UIUtils;
 import com.junhetang.doctor.utils.UmengKey;
-import com.junhetang.doctor.widget.dialog.CommonDialog;
+import com.junhetang.doctor.widget.dialog.CommSuperDialog;
 import com.junhetang.doctor.widget.dialog.SavePaperDialog;
 import com.junhetang.doctor.widget.popupwindow.BottomListPopupView;
-import com.junhetang.doctor.widget.popupwindow.OnePopupWheel;
 import com.junhetang.doctor.widget.toolbar.TitleOnclickListener;
 import com.junhetang.doctor.widget.toolbar.ToolbarBuilder;
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -57,9 +56,11 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.greenrobot.greendao.annotation.NotNull;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -80,7 +81,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     @BindView(R.id.scrollView)
-    ScrollView scrollView;
+    NestedScrollView scrollView;
     @BindView(R.id.search_recycleview)
     RecyclerView searchRecycleview;
     @BindView(R.id.tv_commpaper)
@@ -113,15 +114,14 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
     private ArrayList<DrugBean> drugBeans;
     private List<String> userTypeListStr = new ArrayList<>();
     private BaseQuickAdapter adapterSearch, adapter;
-    private OnePopupWheel mPopupWheel;
-    private int formtype = 0;//0：添加处方 1：在线开放 2：编辑处方
+    private int formtype = 0;//0：添加处方 1：在线开放 2：编辑处方 3：载入处方
     private boolean hasError = false;//提交前检查是否有重复或者不可用药材
     private SavePaperDialog savePaperDialog;//保存dialog
     private ToolbarBuilder toolbarBuilder;
     private Gson gson;
-    private CommonDialog commonDialog;
     private BottomListPopupView bottomPopupView;
     private GestureDetectorCompat mDetector;//手势
+    private CommSuperDialog commSuperDialog;
 
     @Override
     protected int provideRootLayout() {
@@ -151,8 +151,8 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
         drugStoreId = getIntent().getIntExtra("store_id", 0);
         title = getIntent().getStringExtra("title");
         mExplain = getIntent().getStringExtra("m_explain");
-        rgChangedrug.setVisibility(formtype == 1 ? View.VISIBLE : View.GONE);//开方显示，其他不显示
-        tvDrugPS.setVisibility(formtype == 1 ? View.VISIBLE : View.GONE);//开方显示，其他不显示
+        rgChangedrug.setVisibility((formtype == 1 || formtype == 3) ? View.VISIBLE : View.GONE);//开方显示，其他不显示
+        tvDrugPS.setVisibility((formtype == 1 || formtype == 3) ? View.VISIBLE : View.GONE);//开方显示，其他不显示
 
         gson = new Gson();
         //比较是否改变（开方）
@@ -166,7 +166,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
         //头部处理
         initToolbar();
         //选择常用处方的时候显示，其他不显示
-        tvCommpaper.setVisibility(formtype == 1 ? View.VISIBLE : View.GONE);
+        tvCommpaper.setVisibility((formtype == 1 || formtype == 3) ? View.VISIBLE : View.GONE);
 
         //添加的药材列表处理
         adapter = new BaseQuickAdapter<DrugBean, BaseViewHolder>(R.layout.item_add_drug, drugBeans) {
@@ -467,21 +467,21 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
      */
     @Override
     public void onBackPressed() {
-        if (formtype == 1) {//开方
+        if (formtype == 1 || formtype == 3) {//开方
             if ((TextUtils.isEmpty(addDrugJsonTemp) && drugBeans.isEmpty())
                     || addDrugJsonTemp.equals(gson.toJson(drugBeans))) {//空列表 或者么有改变 直接返回
                 finish();
                 return;
             } else {
-                commonDialog = new CommonDialog(AddDrugActivity.this, false, "您尚未保存是否退出？", new View.OnClickListener() {
+                commSuperDialog = new CommSuperDialog(this, "您尚未保存是否退出？", new CommSuperDialog.ClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        if (view.getId() == R.id.btn_ok) {
+                    public void btnOnClick(int btnId) {
+                        if (btnId == R.id.btn_right) {
                             finish();
                         }
                     }
                 });
-                commonDialog.show();
+                commSuperDialog.show();
             }
         } else {// 常用处方 返回提醒保存
             //列表完全一样 直接关闭
@@ -490,15 +490,15 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                 finish();
                 return;
             }
-            commonDialog = new CommonDialog(AddDrugActivity.this, false, "您尚未保存是否退出？", new View.OnClickListener() {
+            commSuperDialog = new CommSuperDialog(this, "您尚未保存是否退出？", new CommSuperDialog.ClickListener() {
                 @Override
-                public void onClick(View view) {
-                    if (view.getId() == R.id.btn_ok) {
+                public void btnOnClick(int btnId) {
+                    if (btnId == R.id.btn_right) {
                         finish();
                     }
                 }
             });
-            commonDialog.show();
+            commSuperDialog.show();
         }
     }
 
@@ -507,26 +507,23 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
     //点击保存
     private void clickSave() {
         if (drugBeans.isEmpty()) {
-            commonDialog = new CommonDialog(this, "请添加药材");
-            commonDialog.show();
+            showCommSuperDialog("请添加药材");
             return;
         }
         //是否有重复药材
         if (hasError) {
-            commonDialog = new CommonDialog(this, "处方中有重复药材或者此药房药材不足");
-            commonDialog.show();
+            showCommSuperDialog("处方中有重复药材或者此药房药材不足");
             return;
         }
         //药材用量是否填写
         for (DrugBean bean : drugBeans) {
             if (bean.drug_num <= 0) {
-                commonDialog = new CommonDialog(this, "请填写全部药材的用量");
-                commonDialog.show();
+                showCommSuperDialog("请填写全部药材的用量");
                 return;
             }
         }
 
-        if (formtype == 1) {//返回 在线开放
+        if (formtype == 1 || formtype == 3) {//返回 在线开放
             typeList.clear();
             //药材用量
             for (DrugBean bean : drugBeans) {
@@ -535,11 +532,24 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                 }
             }
             if (typeList.size() == 1) {
-                Intent intent = new Intent();
-                intent.putParcelableArrayListExtra("druglist", drugBeans);
-                intent.putExtra("drug_type", typeList.get(0));//药材类型
-                setResult(RESULT_OK, intent);
-                finish();
+                switch (formtype) {
+                    case 1://返回开方
+                        Intent intent = new Intent();
+                        intent.putParcelableArrayListExtra("druglist", drugBeans);
+                        intent.putExtra("drug_type", typeList.get(0));//药材类型
+                        setResult(RESULT_OK, intent);
+                        finish();
+                        break;
+                    case 3://载入处方 返回开方
+                        HashMap dataMap = new HashMap();
+                        dataMap.put("drug_type", typeList.get(0));//药材类型
+                        dataMap.put("store_id", drugStoreId);//药房id
+                        dataMap.put("druglist", drugBeans);//药房id
+                        EventBusUtil.sendEvent(new Event(EventConfig.EVENT_KEY_JZR_EDITE_DRUG, dataMap));
+                        finish();
+                        break;
+                }
+
             } else {
                 //中草药，西药。。拼接
                 StringBuffer typeStr = new StringBuffer();
@@ -549,8 +559,8 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                     }
                     typeStr.append(Constant.DRUG_TYPE.get(s));
                 }
-                commonDialog = new CommonDialog(this, String.format(getString(R.string.str_drug_type), typeStr.toString()));
-                commonDialog.show();
+
+                showCommSuperDialog(String.format(getString(R.string.str_drug_type), typeStr.toString()));
             }
 
         } else {
@@ -647,8 +657,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
 
     @Override
     public void onError(String errorCode, String errorMsg) {
-        commonDialog = new CommonDialog(this, errorMsg);
-        commonDialog.show();
+        showCommSuperDialog(errorMsg);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -714,6 +723,12 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
         commDrugJsonTemp = gson.toJson(drugBeans);
     }
 
+    //确定 dialog
+    private void showCommSuperDialog(@NotNull String msg) {
+        commSuperDialog = new CommSuperDialog(this, msg);
+        commSuperDialog.show();
+    }
+
 
     @Override
     public Activity provideContext() {
@@ -748,13 +763,9 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
             savePaperDialog.dismiss();
             savePaperDialog = null;
         }
-        if (commonDialog != null) {
-            commonDialog.dismiss();
-            commonDialog = null;
-        }
-        if (mPopupWheel != null) {
-            mPopupWheel.onDismiss();
-            mPopupWheel = null;
+        if (commSuperDialog != null) {
+            commSuperDialog.dismiss();
+            commSuperDialog = null;
         }
     }
 }

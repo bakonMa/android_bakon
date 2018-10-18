@@ -61,10 +61,6 @@ public class MainActivity extends BaseActivity implements BaseView{
 
     @Override
     protected void initView() {
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        transaction.add(fragment对象);
-//        transaction.addToBackStack(null);
-//        transaction.commit();
         commonPresenter = new CommonPresenter(this);
         switchFrgment(R.id.tab_home);
     }
@@ -166,7 +162,7 @@ public class MainActivity extends BaseActivity implements BaseView{
                 }
                 break;
         }
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
         currTag = viewId;
         setTabState();
     }

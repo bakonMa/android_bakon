@@ -26,7 +26,7 @@ public interface WalletContact {
 
         void witdraw(int bound_bank_id, String exmoney_submit);
 
-        void getDealFlow(int pageNum);
+        void getDealFlow(int pageNum, int pageSize);
     }
 
 }
