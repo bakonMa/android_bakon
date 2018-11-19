@@ -37,6 +37,7 @@ import com.junhetang.doctor.ui.activity.mine.wallet.DeleteBankCardActivity;
 import com.junhetang.doctor.ui.activity.mine.wallet.MyBankCardActivity;
 import com.junhetang.doctor.ui.activity.mine.wallet.WalletActivity;
 import com.junhetang.doctor.ui.activity.mine.wallet.WithdrawActivity;
+import com.junhetang.doctor.ui.activity.openoline.OpenOnlinMenuActivity;
 import com.junhetang.doctor.ui.activity.patient.AddPatientActivity;
 import com.junhetang.doctor.ui.activity.patient.PatienHealthRecordActivity;
 import com.junhetang.doctor.ui.activity.patient.PatientCenterActivity;
@@ -61,7 +62,7 @@ import dagger.Component;
         dependencies = ApplicationComponent.class,
         modules = {ActivityModule.class}
 )
-public interface ActivityComponent extends ApplicationComponent {
+public interface ActivityComponent extends ApplicationComponent{
     @ActivityContext
     Context actContext();
 
@@ -152,5 +153,7 @@ public interface ActivityComponent extends ApplicationComponent {
     void inject(PersonCardActivity personCardActivity);
 
     void inject(JzrHistoryListActivity jzrHistoryListActivity);
+
+    void inject(OpenOnlinMenuActivity openOnlinMenuActivity);
 
 }

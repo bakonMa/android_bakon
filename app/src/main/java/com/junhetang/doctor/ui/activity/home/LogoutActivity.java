@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Message;
 
 import com.junhetang.doctor.R;
-import com.junhetang.doctor.application.DocApplication;
 import com.junhetang.doctor.ui.activity.login.LoginActivity;
 import com.junhetang.doctor.ui.base.BaseActivity;
 import com.junhetang.doctor.ui.base.BaseView;
@@ -31,8 +30,13 @@ public class LogoutActivity extends BaseActivity implements BaseView {
     @OnClick(R.id.btn_ok)
     public void btnOnClick() {
         //关闭所有activity
-        DocApplication.getAppComponent().mgrRepo().actMgr().finishAllActivity();
-        startActivity(new Intent(DocApplication.getInstance(), LoginActivity.class));
+        //会出现黑屏
+        //DocApplication.getAppComponent().mgrRepo().actMgr().finishAllActivity();
+
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setClass(this, LoginActivity.class);
+        startActivity(intent);
     }
 
 

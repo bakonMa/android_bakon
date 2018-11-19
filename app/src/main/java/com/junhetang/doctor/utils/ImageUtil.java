@@ -55,6 +55,23 @@ public class ImageUtil {
     }
 
     /**
+     * 显示图片drawable
+     *
+     * @param res
+     * @param imageView
+     */
+    public static void showDraw(int res, ImageView imageView) {
+        if (imageView == null) {
+            return;
+        }
+        GlideApp.with(imageView.getContext())
+                .load(res)
+                .placeholder(R.drawable.default_img)
+                .error(R.drawable.default_img)
+                .into(imageView);
+    }
+
+    /**
      * 显示圆形头像
      *
      * @param url

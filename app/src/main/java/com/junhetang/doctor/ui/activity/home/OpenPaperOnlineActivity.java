@@ -668,12 +668,11 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 break;
             case "ZCY"://中成药
             case "XY"://西药
+            case "QC"://器材
                 if (TextUtils.isEmpty(etUsetype.getText())) {
                     showCommSuperDialog("请选择用法用量");
                     return;
                 }
-                break;
-            case "QC"://器材
                 break;
         }
 
@@ -718,10 +717,9 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 break;
             case "ZCY"://中成药
             case "XY"://西药
+            case "QC"://器材
                 params.put("usages", usagesStr);//用法
                 params.put("freq", freqStr);//用量
-                break;
-            case "QC"://器材
                 break;
         }
 
@@ -892,14 +890,13 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 break;
             case "XY"://西药
             case "ZCY"://中成药
+            case "QC"://器材
                 //用法，用量
                 usagesStr = TextUtils.isEmpty(infoBean.usages) ? "" : infoBean.usages;
                 freqStr = TextUtils.isEmpty(infoBean.freq) ? "" : infoBean.freq;
                 if (!TextUtils.isEmpty(usagesStr) && !TextUtils.isEmpty(usagesStr)) {
                     etUsetype.setText(usagesStr + "-" + freqStr);
                 }
-                break;
-            case "QC"://器材
                 break;
         }
         //是否可见
@@ -953,16 +950,11 @@ public class OpenPaperOnlineActivity extends BaseActivity implements OpenPaperCo
                 break;
             case "ZCY"://中成药
             case "XY"://西药
-                etDrugClass.setVisibility(View.GONE);//剂型
-                rltDaijian.setVisibility(View.GONE);//代煎
-                rltNum.setVisibility(View.GONE);//副数
-                etUsetype.setVisibility(View.VISIBLE);//用法用量 显示
-                break;
             case "QC"://器材
                 etDrugClass.setVisibility(View.GONE);//剂型
                 rltDaijian.setVisibility(View.GONE);//代煎
                 rltNum.setVisibility(View.GONE);//副数
-                etUsetype.setVisibility(View.GONE);//副数
+                etUsetype.setVisibility(View.VISIBLE);//用法用量 显示
                 break;
         }
     }

@@ -421,7 +421,7 @@ public class WorkRoomFragment extends BaseFragment implements WorkRoomContact.Vi
                 MobclickAgent.onEvent(getActivity(), UmengKey.workroom_addpatient);
                 //个人卡片
                 startActivity(new Intent(actContext(), PersonCardActivity.class));
-//                WebViewActivity.startAct(actContext(), true, WebViewActivity.WEB_TYPE.WEB_TYPE_MYCARD, H5Config.H5_USERCARD_TITLE, H5Config.H5_USERCARD);
+//                startActivity(new Intent(actContext(), OpenOnlinMenuActivity.class));
                 break;
             case R.id.tv_online_paper://在线开方
                 //Umeng 埋点

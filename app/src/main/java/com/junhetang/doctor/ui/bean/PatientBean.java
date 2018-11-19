@@ -37,22 +37,11 @@ public class PatientBean implements Comparable<PatientBean> {
         if (CharacterParser.getInstance().getInitials(string).equals("#")) {
             return 1;
         }
-        char[] chars = string.toCharArray();
         //当前bean
         String antherString = CharacterParser.getInstance().getSelling(TextUtils.isEmpty(bean.remark_name) ? bean.nick_name : bean.remark_name);
         if (CharacterParser.getInstance().getInitials(antherString).equals("#")) {
             return -1;
         }
-        char[] anotherChars = antherString.toCharArray();
-
-        int length = chars.length > anotherChars.length ? anotherChars.length : chars.length;
-        for (int i = 0; i < length; i++) {
-            if (chars[i] < anotherChars[i]) {
-                return -1;
-            } else if (chars[i] > anotherChars[i]) {
-                return 1;
-            }
-        }
-        return 0;
+        return string.compareTo(antherString);
     }
 }

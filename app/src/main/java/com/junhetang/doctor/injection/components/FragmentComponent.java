@@ -28,7 +28,7 @@ import dagger.Component;
         dependencies = ApplicationComponent.class,
         modules = {FragmentModule.class}
 )
-public interface FragmentComponent extends ApplicationComponent {
+public interface FragmentComponent extends ApplicationComponent{
 
     @FragmentContext
     Context actContext();

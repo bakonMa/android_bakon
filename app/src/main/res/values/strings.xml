@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">君和中医</string>
 
     <string name="home_workroom">工作室</string>
@@ -127,10 +127,14 @@
     <string name="str_money_list">费用明细<font color='#f5a623' size='12'>(不含运费、代煎费、加工费)</font></string>
     <string name="str_setting_price">是否开通在线咨询\n<font color='#f5a623' size='14'>关闭后将无法与患者进行在线咨询</font></string>
 
-    <!--患者购药前是否可见-->
-    <string-array name="memb_see">
-        <item>不可见</item>
-        <item>可见</item>
+    <!--开方menu文字-->
+    <string-array name="openonline_menu">
+        <item>中药饮片</item>
+        <item>颗粒剂</item>
+        <item>定制膏方</item>
+        <item>定制丸剂</item>
+        <item>打粉制撒</item>
+        <item>中成（西）药</item>
     </string-array>
 
     <string-array name="guide_1">

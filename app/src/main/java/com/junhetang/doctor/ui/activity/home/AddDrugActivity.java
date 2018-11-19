@@ -304,6 +304,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                     drugBean.drug_type = bean.drug_type;
                     drugBean.use_flag = bean.use_flag;
                     drugBean.drug_name = bean.name;
+                    drugBean.sub_drug_type = bean.sub_drug_type;
                     drugBean.unit = bean.unit;
                     drugBean.spec = bean.spec;
                     drugBean.price = bean.price;
@@ -527,8 +528,15 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
             typeList.clear();
             //药材用量
             for (DrugBean bean : drugBeans) {
-                if (!typeList.contains(bean.drug_type)) {
-                    typeList.add(bean.drug_type);
+                //西药，中成药，器材 可以一起开
+                if("XY".equals(bean.drug_type) || "ZCY".equals(bean.drug_type) || "QC".equals(bean.drug_type)){
+                    if (!typeList.contains("XY")) {
+                        typeList.add("XY");
+                    }
+                } else {
+                    if (!typeList.contains(bean.drug_type)) {
+                        typeList.add(bean.drug_type);
+                    }
                 }
             }
             if (typeList.size() == 1) {
@@ -617,6 +625,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
                     tempDrugBean.mcode = bean.mcode;
                     tempDrugBean.drug_type = bean.drug_type;
                     tempDrugBean.drug_name = bean.name;
+                    tempDrugBean.sub_drug_type = bean.sub_drug_type;
                     tempDrugBean.unit = bean.unit;
                     tempDrugBean.spec = bean.spec;
                     tempDrugBean.price = bean.price;
@@ -711,6 +720,7 @@ public class AddDrugActivity extends BaseActivity implements OpenPaperContact.Vi
             tempBean.mcode = bean.mcode;
             tempBean.drug_type = bean.drug_type;
             tempBean.drug_name = bean.name;
+            tempBean.sub_drug_type = bean.sub_drug_type;
             tempBean.unit = bean.unit;
             tempBean.spec = bean.spec;
             tempBean.price = bean.price;

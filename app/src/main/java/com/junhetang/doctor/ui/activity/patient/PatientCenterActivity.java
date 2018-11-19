@@ -183,32 +183,31 @@ public class PatientCenterActivity extends BaseActivity implements PatientContac
 
     @OnClick({R.id.iv_remark, R.id.tv_gotochat, R.id.tv_openpaper})
     public void btnOnClick(View view) {
+        if (!U.isHasAuthOK()) { //认证通过 进入聊天
+            commonDialog = new CommonDialog(this, R.layout.dialog_auth, U.getAuthStatusMsg(),
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (view.getId() == R.id.btn_gotuauth) {
+                                startActivity(new Intent(PatientCenterActivity.this, AuthStep1Activity.class));
+                            }
+                        }
+                    });
+            commonDialog.show();
+            return;
+        }
         switch (view.getId()) {
             case R.id.tv_gotochat:
                 //Umeng 埋点
                 MobclickAgent.onEvent(this, UmengKey.patientcenter_chat);
-                if (U.isHasAuthOK()) { //认证通过 进入聊天
-                    if (TextUtils.isEmpty(im_accid)) {//处方患者 不能咨询
-                        commonDialog = new CommonDialog(this, "患者尚未关注公众号，无法发起咨询");
-                        commonDialog.show();
-                        return;
-                    }
-
-                    //告诉 后台 医生主动聊天
-                    mPresenter.docToTalk(im_accid);
-                    SessionHelper.startP2PSession(actContext(), im_accid);
-                } else {
-                    commonDialog = new CommonDialog(this, R.layout.dialog_auth, U.getAuthStatusMsg(),
-                            new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if (view.getId() == R.id.btn_gotuauth) {
-                                        startActivity(new Intent(PatientCenterActivity.this, AuthStep1Activity.class));
-                                    }
-                                }
-                            });
+                if (TextUtils.isEmpty(im_accid)) {//处方患者 不能咨询
+                    commonDialog = new CommonDialog(this, "患者尚未关注公众号，无法发起咨询");
                     commonDialog.show();
+                    return;
                 }
+                //告诉 后台 医生主动聊天
+                mPresenter.docToTalk(im_accid);
+                SessionHelper.startP2PSession(actContext(), im_accid);
                 break;
             case R.id.iv_remark://设置备注
                 //Umeng 埋点

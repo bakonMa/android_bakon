@@ -64,6 +64,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!--androidautosize 配置设计稿的尺寸-->
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="375"/>
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="667"/>
+
         <!-- 防止有的构建工具（如Maven、Ant等）不支持manifest merging，特意在主project的manifest中声明一次 -->
         <meta-data
             android:name="com.bumptech.glide.integration.okhttp3.OkHttpGlideModule"
@@ -184,7 +192,9 @@
 
         <activity
             android:name=".ui.activity.login.LoginActivity"
-            android:theme="@style/translucent" />
+            android:screenOrientation="portrait" />
+
+        <!-- 不设置singleTask的话，强制登录时 多次触发后，背景会加深 变成黑色-->
         <activity
             android:name=".ui.activity.home.LogoutActivity"
             android:launchMode="singleTask"
@@ -336,6 +346,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.home.PersonCardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.openoline.OpenOnlinMenuActivity"
             android:screenOrientation="portrait" />
 
 

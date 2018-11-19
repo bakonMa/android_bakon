@@ -217,6 +217,8 @@ dependencies {
     //友盟 统计
     implementation 'com.umeng.sdk:analytics:7.5.0'
 
+    implementation 'me.jessyan:autosize:1.0.1'
+
 }
 
 

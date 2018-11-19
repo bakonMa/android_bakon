@@ -15,7 +15,7 @@ public class DrugBean implements Parcelable {
     public String unit;//单位
     public String spec;//规格
     public String mcode;//药品唯一性code
-    public String drug_type;//药品唯一类型（“ZY”：”中草药” “ZCY”：”中成药” “XY” ：”西药” “QC” ：”器材”）
+    public String drug_type;//药品唯一类型（“ZY”：”中草药” "KLJ"：颗粒剂  “ZCY”：”中成药” “XY” ：”西药” “QC” ：”器材”）
     public int drug_num;//用量
     public double price;//价格
     public String decoction;//用法（常规）
