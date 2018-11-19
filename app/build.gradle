@@ -86,9 +86,8 @@ def devAddress() {
 }
 
 def onLineAddress() {
-    "\"http://dev.dr.jhtcm.com/\""  //测试环境
-//    "\"https://dr.jhtcm.vip/\""//正式线上环境
-//    "\"https://dr.beta.jhtcm.vip/\""//beta测试环境
+//    "\"http://dev.dr.jhtcm.com/\""  //测试环境
+    "\"https://dr.jhtcm.vip/\""//正式线上环境
 }
 
 greendao {
@@ -216,8 +215,6 @@ dependencies {
     }
     //友盟 统计
     implementation 'com.umeng.sdk:analytics:7.5.0'
-
-    implementation 'me.jessyan:autosize:1.0.1'
 
 }
 
