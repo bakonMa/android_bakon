@@ -182,9 +182,9 @@
             <intent-filter>
                 <action android:name="android.printservice.PrintService" />
             </intent-filter>
-            <meta-data
-                android:name="android.printservice"
-                android:resource="@xml/printservice" />
+            <!--<meta-data-->
+                <!--android:name="android.printservice"-->
+                <!--android:resource="@xml/printservice" />-->
         </service>
 
     </application>
