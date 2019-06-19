@@ -2,15 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '28.0.2'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
-        applicationId "com.junhetang.doctor"
+        applicationId "com.bakon.android"
         minSdkVersion 19  //16:4.1(99.1%) 19:4.4(90%)
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 16
         versionName "1.5.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true //dex分包
         ndk {
             //设置支持的SO库架构 一般而言，取你所有的库支持的构架的`交集`
@@ -18,7 +17,7 @@ android {
             abiFilters "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
             //信鸽推送
             manifestPlaceholders = [
-                    PACKAGE_NAME       : "com.junhetang.doctor",
+                    PACKAGE_NAME       : "com.bakon.android",
                     XG_ACCESS_ID       : "2100291473",
                     XG_ACCESS_KEY      : "AT43LK65VM3M",
                     HW_APPID           : "100287577",
@@ -81,8 +80,8 @@ android {
 }
 
 def devAddress() {
-    "\"http://dev.dr.jhtcm.com/\""  //测试环境
-//    "\"https://dr.jhtcm.vip/\""//正式线上环境
+//    "\"http://dev.dr.jhtcm.com/\""  //测试环境
+    "\"https://dr.jhtcm.vip/\""//正式线上环境
 }
 
 def onLineAddress() {
@@ -93,7 +92,7 @@ def onLineAddress() {
 greendao {
     //数据库schema版本号,默认1，数据库升级必须修改值
     schemaVersion 1
-    daoPackage 'com.junhetang.doctor.greendao.gen'
+    daoPackage 'com.bakon.android.greendao.gen'
     targetGenDir 'src/main/java'
 }
 
@@ -101,30 +100,21 @@ greendao {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
-    implementation project(':uikit')
 
     implementation 'com.google.guava:guava:25.0-android'
     //Android
-//    implementation "com.android.support:appcompat-v7:$support_version"
-//    implementation "com.android.support.constraint:constraint-layout:$constraintlayout_version"
-//    implementation "com.android.support:design:$support_version"
+    implementation "com.android.support:appcompat-v7:$support_version"
+    implementation "com.android.support:design:$support_version"
     implementation "com.android.support:recyclerview-v7:$support_version"
-    //banner
-    implementation 'com.youth.banner:banner:1.4.10'
+    implementation "com.android.support.constraint:constraint-layout:$constraintlayout_version"
+
     //Dagger2
     implementation "com.google.dagger:dagger:$dagger_version"
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
 
-    //Butterknife
-    implementation("com.jakewharton:butterknife:$butterknife_version") {
-        exclude group: 'com.android.support'//忽略内置依赖版本，是用外部最新版本
-    }
-    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
-
-    //Eventbus
-    implementation "org.greenrobot:eventbus:$eventbus_version"
-    //annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
+    //OkHttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version") {
@@ -132,10 +122,6 @@ dependencies {
     }
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-
-    //OkHttp
-    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
     //Gson
     implementation "com.google.code.gson:gson:$gson_version"
@@ -155,11 +141,23 @@ dependencies {
     implementation("com.github.tbruyelle:rxpermissions:$rxpermissions_version") {
         exclude module: 'rxjava'
     }
+    //代替sharepreferences的高性能通用 key-value 组件
+    implementation 'com.tencent:mmkv:1.0.18'
     //RxSharePreferences
     implementation("com.f2prateek.rx.preferences2:rx-preferences:$rxsharepreferences_version") {
         exclude module: 'support-annotations'
         exclude module: 'rxjava'
     }
+
+    //Butterknife
+    implementation("com.jakewharton:butterknife:$butterknife_version") {
+        exclude group: 'com.android.support'//忽略内置依赖版本，是用外部最新版本
+    }
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
+
+    //Eventbus
+    implementation "org.greenrobot:eventbus:$eventbus_version"
+    //annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
 
     //Glide
     implementation "com.github.bumptech.glide:glide:$glide_version"
@@ -171,16 +169,17 @@ dependencies {
     //内存泄漏监控
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
-    //testCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
 
     //方法数超过64k
     implementation "com.android.support:multidex:$multidex_version"
 
+
+    //banner
+    implementation 'com.youth.banner:banner:1.4.10'
     //viewpage指示器
     implementation('com.github.hackware1993:MagicIndicator:1.5.0') {
         exclude module: 'appcompat-v7'
     }
-
     //BaseRecyclerViewAdapterHelper
     implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$brvah_version"
     //分组可悬浮title
@@ -192,7 +191,7 @@ dependencies {
     //数据库加密 ***保留***
     //implementation 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
 
-    //信鸽
+    //信鸽 推送
     //信鸽jar
     implementation 'com.tencent.xinge:xinge:3.2.3-release'
     //wup包
@@ -205,10 +204,12 @@ dependencies {
     //华为3.2.4 beta版本
     implementation 'com.tencent.xinge:xghw:3.2.4-beta'
 
-    //bugly
-    implementation 'com.tencent.bugly:crashreport:latest.release'
+    //bugly 带升级
+    implementation 'com.tencent.bugly:crashreport_upgrade:latest.release'
     //选择照片
-    implementation 'com.zhihu.android:matisse:0.5.1'
+//    implementation('com.zhihu.android:matisse:0.5.1') {
+//        exclude module: 'appcompat-v7'
+//    }
     //阿里云 oss
     implementation('com.aliyun.dpa:oss-android-sdk:2.8.4') {
         exclude module: 'okhttp'

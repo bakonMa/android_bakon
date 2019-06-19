@@ -150,10 +150,10 @@
 -keep class * extends java.lang.annotation.Annotation { *; }
 
 #---------------------------------实体类---------------------------------
--keep class com.junhetang.doctor.ui.bean.** {*;}
--keep class com.junhetang.doctor.data.response.** {*;}
--keep class com.junhetang.doctor.greendao.gen.** {*;}
--keep class com.junhetang.doctor.widget.popupwindow.** {*;}#地区 内部bean
+-keep class com.bakon.android.ui.bean.** {*;}
+-keep class com.bakon.android.data.response.** {*;}
+-keep class com.bakon.android.greendao.gen.** {*;}
+-keep class com.bakon.android.widget.popupwindow.** {*;}#地区 内部bean
 
 # -----------------------------------END---------------------------------
 
@@ -306,8 +306,8 @@ public static java.lang.String TABLENAME;
 -keep class com.ut.*
 
 #网易云IM
--dontwarn com.junhetang.doctor.nim.**
--keep class com.junhetang.doctor.nim.** {*;}
+-dontwarn com.bakon.android.nim.**
+-keep class com.bakon.android.nim.** {*;}
 
 -dontwarn com.netease.**
 -keep class com.netease.** {*;}

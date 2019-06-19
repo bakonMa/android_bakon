@@ -8,14 +8,14 @@
 
     <include layout="@layout/base_toolbar" />
 
-    <com.junhetang.doctor.widget.RelativeWithImage
+    <com.bakon.android.widget.RelativeWithImage
         android:id="@+id/tv_drug"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         app:leftIamge="@drawable/icon_drug_message"
         app:title="用药常用语" />
 
-    <com.junhetang.doctor.widget.RelativeWithImage
+    <com.bakon.android.widget.RelativeWithImage
         android:id="@+id/tv_chat"
         android:layout_width="match_parent"
         android:layout_height="44dp"

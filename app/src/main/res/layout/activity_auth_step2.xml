@@ -25,7 +25,7 @@
                 android:layout_marginBottom="10dp"
                 android:background="@color/color_main">
 
-                <com.junhetang.doctor.widget.ScheduleView
+                <com.bakon.android.widget.ScheduleView
                     android:id="@+id/id_step"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
                     app:step1="two" />
             </RelativeLayout>
 
-            <com.junhetang.doctor.widget.EditTextlayout
+            <com.bakon.android.widget.EditTextlayout
                 android:id="@+id/et_sfz"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"

@@ -20,14 +20,14 @@
         android:textColor="@color/color_000"
         android:textSize="16sp" />
 
-    <com.junhetang.doctor.widget.RelativeWithText
+    <com.bakon.android.widget.RelativeWithText
         android:id="@+id/tv_function_introduction"
         android:layout_width="match_parent"
         android:layout_height="44dp"
         app:isShowTab="false"
         app:titleT="功能介绍" />
 
-    <com.junhetang.doctor.widget.RelativeWithText
+    <com.bakon.android.widget.RelativeWithText
         android:id="@+id/tv_produce_info"
         android:layout_width="match_parent"
         android:layout_height="44dp"

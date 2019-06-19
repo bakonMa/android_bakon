@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.junhetang.doctor">
+    package="com.bakon.android">
+    <!--打印服务-->
+    <uses-permission android:name="android.permission.START_PRINT_SERVICE_CONFIG_ACTIVITY" />
 
     <!--打电话，修改联系人-->
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -56,7 +58,7 @@
 
 
     <application
-        android:name=".application.DocApplication"
+        android:name=".application.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
@@ -85,59 +87,17 @@
             android:name="UMENG_CHANNEL"
             android:value="${UMENG_CHANNEL_VALUE}" />
 
-        <!-- 网易IM，APPkey, 可以在这里设置，也可以在 SDKOptions 中提供。
-          如果 SDKOptions 中提供了，取 SDKOptions 中的值。
-          dev:2e3de4134edc75184f5fa5f67a8a2ae2
-          release:5edefcfb5b5abeb615aea00f15a6943d-->
-        <meta-data
-            android:name="com.netease.nim.appKey"
-            android:value="5edefcfb5b5abeb615aea00f15a6943d" />
-        <!-- 云信后台服务，请使用独立进程。 -->
-        <service
-            android:name="com.netease.nimlib.service.NimService"
-            android:process=":core" />
-        <!-- 云信后台辅助服务 -->
-        <service
-            android:name="com.netease.nimlib.service.NimService$Aux"
-            android:process=":core" />
-        <!-- 云信后台辅助服务 -->
-        <service
-            android:name="com.netease.nimlib.job.NIMJobService"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:process=":core" />
-        <!-- 云信监视系统启动和网络变化的广播接收器，保持和 NimService 同一进程 -->
-        <receiver
-            android:name="com.netease.nimlib.service.NimReceiver"
-            android:exported="false"
-            android:process=":core">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
-        <!-- 云信进程间通信 Receiver -->
-        <receiver android:name="com.netease.nimlib.service.ResponseReceiver" />
-        <!-- 云信进程间通信service -->
-        <service android:name="com.netease.nimlib.service.ResponseService" />
-        <!-- 云信进程间通信provider -->
-        <provider
-            android:name="com.netease.nimlib.ipc.NIMContentProvider"
-            android:authorities="${applicationId}.ipc.provider"
-            android:exported="false"
-            android:process=":core" />
-
         <!-- 信鸽推送 YOUR_PACKAGE_PATH.CustomPushReceiver需要改为自己的Receiver： -->
-        <receiver
-            android:name="com.junhetang.doctor.receiver.XGMessageReceiver"
+        <!--<receiver
+            android:name="com.bakon.android.receiver.XGMessageReceiver"
             android:exported="true">
             <intent-filter>
-                <!-- 接收消息透传 -->
+                &lt;!&ndash; 接收消息透传 &ndash;&gt;
                 <action android:name="com.tencent.android.tpush.action.PUSH_MESSAGE" />
-                <!-- 监听注册、反注册、设置/删除标签、通知被点击等处理结果 -->
+                &lt;!&ndash; 监听注册、反注册、设置/删除标签、通知被点击等处理结果 &ndash;&gt;
                 <action android:name="com.tencent.android.tpush.action.FEEDBACK" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
 
 
         <!--微信分享-->
@@ -186,11 +146,12 @@
             android:name=".ui.activity.login.LoginActivity"
             android:screenOrientation="portrait" />
 
+
         <!-- 不设置singleTask的话，强制登录时 多次触发后，背景会加深 变成黑色-->
-        <activity
-            android:name=".ui.activity.home.LogoutActivity"
-            android:launchMode="singleTask"
-            android:theme="@style/translucent" />
+        <!--<activity-->
+        <!--android:name=".ui.activity.home.LogoutActivity"-->
+        <!--android:launchMode="singleTask"-->
+        <!--android:theme="@style/translucent" />-->
         <activity
             android:name=".ui.activity.fragment.MainActivity"
             android:launchMode="singleTask"
@@ -201,176 +162,30 @@
         <activity
             android:name=".ui.activity.login.ResetPasswordActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".ui.activity.mine.SetPriceActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
-        <activity
-            android:name=".ui.activity.mine.AuthStep1Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".ui.activity.mine.ChooseGoodAtActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.mine.AuthStep2Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".ui.activity.mine.AuthStep3Activity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.mine.AuthStep4Activity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.mine.UserInfoActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.mine.UserExplainActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.mine.AddUseInfoActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.mine.UserNoticeActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".ui.activity.mine.wallet.WalletActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.mine.wallet.WithdrawActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".ui.activity.mine.wallet.AddBankCardActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.mine.wallet.MyBankCardActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.mine.wallet.DeleteBankCardActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.mine.wallet.DealDetailListActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.mine.SettingActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.mine.AboutUsActivity"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.activity.WebViewActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.patient.PatientFamilyActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.patient.PatientCenterActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.patient.RemarkNameActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.patient.PatienHealthRecordActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.home.OpenPaperCameraActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".ui.activity.home.OpenPaperOnlineActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".ui.activity.home.ChooseDocAdviceActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".ui.activity.patient.PatientListActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.home.JzrHistoryListActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.home.SearchSkillNameActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.home.CommUsePaperActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.home.CommPaperActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.home.ChooseCommActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.patient.AddPatientActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.home.AddDrugActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".ui.activity.home.CheckPaperActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.home.HistoryPaperActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity
-            android:name=".ui.activity.home.JZRListActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity
-            android:name=".ui.activity.patient.SearchPatientActivity"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.activity.find.GuildNewsListActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.home.SystemMsgListActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.home.JobScheduleActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.home.PersonCardActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.openoline.OpenOnlinMenuActivity"
-            android:screenOrientation="portrait" />
 
 
-        <!--im-->
         <activity
-            android:name=".ui.nimview.QuickReplyActivity"
+            android:name=".ui.activity.print.PrintActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.nimview.CommMessageActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.nimview.AddCommMessageActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.nimview.PaperH5Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name=".ui.nimview.CheckPaperH5Activity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name=".ui.nimview.RecentActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.nimview.P2PChatActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <service
+            android:name=".ui.activity.print.MyPrintService"
+            android:permission="android.permission.BIND_PRINT_SERVICE">
+            <intent-filter>
+                <action android:name="android.printservice.PrintService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.printservice"
+                android:resource="@xml/printservice" />
+        </service>
 
     </application>
 

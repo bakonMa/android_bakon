@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.junhetang.doctor.widget.DrawableTextView
+            <com.bakon.android.widget.DrawableTextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/white"
@@ -204,7 +204,7 @@
                         android:layout_alignParentBottom="true" />
                 </RelativeLayout>
 
-                <com.junhetang.doctor.widget.EditTextlayout
+                <com.bakon.android.widget.EditTextlayout
                     android:id="@+id/et_age"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
@@ -247,7 +247,7 @@
 
             </LinearLayout>
 
-            <com.junhetang.doctor.widget.DrawableTextView
+            <com.bakon.android.widget.DrawableTextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
@@ -268,7 +268,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp" />
 
-            <com.junhetang.doctor.widget.EditableLayout
+            <com.bakon.android.widget.EditableLayout
                 android:id="@+id/et_drugstore"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -352,7 +352,7 @@
                     android:textSize="16sp" />
             </RelativeLayout>
 
-            <com.junhetang.doctor.widget.EditableLayout
+            <com.bakon.android.widget.EditableLayout
                 android:id="@+id/et_drugclass"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -467,7 +467,7 @@
                     android:layout_alignParentBottom="true" />
             </RelativeLayout>
 
-            <com.junhetang.doctor.widget.EditableLayout
+            <com.bakon.android.widget.EditableLayout
                 android:id="@+id/et_usetype"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -480,7 +480,7 @@
                 app:edit_mode="select"
                 app:edit_textMainSize="16sp" />
 
-            <com.junhetang.doctor.widget.EditableLayout
+            <com.bakon.android.widget.EditableLayout
                 android:id="@+id/et_docadvice"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -520,7 +520,7 @@
                 android:textCursorDrawable="@drawable/color_cursor"
                 android:textSize="16sp" />
 
-            <com.junhetang.doctor.widget.DrawableTextView
+            <com.bakon.android.widget.DrawableTextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
@@ -616,7 +616,7 @@
 
             </RelativeLayout>
 
-            <com.junhetang.doctor.widget.DrawableTextView
+            <com.bakon.android.widget.DrawableTextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"

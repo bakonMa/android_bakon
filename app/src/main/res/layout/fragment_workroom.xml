@@ -322,7 +322,7 @@
                 android:layout_marginRight="15dp" />
         </RelativeLayout>
 
-        <com.junhetang.doctor.widget.RelativeWithImage
+        <com.bakon.android.widget.RelativeWithImage
             android:id="@+id/id_job_schedule"
             android:layout_width="match_parent"
             android:layout_height="45dp"

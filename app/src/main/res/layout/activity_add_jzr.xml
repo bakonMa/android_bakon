@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.junhetang.doctor.widget.EditTextlayout
+        <com.bakon.android.widget.EditTextlayout
             android:id="@+id/et_phone"
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -27,7 +27,7 @@
             app:maxLength="11"
             app:textMainSize="16sp" />
 
-        <com.junhetang.doctor.widget.EditTextlayout
+        <com.bakon.android.widget.EditTextlayout
             android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -87,7 +87,7 @@
                 android:layout_alignParentBottom="true" />
         </RelativeLayout>
 
-        <com.junhetang.doctor.widget.EditTextlayout
+        <com.bakon.android.widget.EditTextlayout
             android:id="@+id/et_age"
             android:layout_width="match_parent"
             android:layout_height="44dp"

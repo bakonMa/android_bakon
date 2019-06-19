@@ -54,7 +54,7 @@
                     android:layout_below="@+id/tv_name"
                     android:layout_centerHorizontal="true"
                     android:text="主任医师"
-                    android:textColor="@color/color_black_333333"
+                    android:textColor="@color/color_333"
                     android:textSize="16sp" />
 
                 <ImageView
@@ -75,7 +75,7 @@
                     android:gravity="center"
                     android:lineSpacingExtra="5dp"
                     android:text="扫码关注\n在线咨询、复诊调方"
-                    android:textColor="@color/color_black_333333"
+                    android:textColor="@color/color_333"
                     android:textSize="16sp" />
 
             </RelativeLayout>
@@ -87,7 +87,7 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <com.junhetang.doctor.widget.DrawableTextView
+                <com.bakon.android.widget.DrawableTextView
                     android:id="@+id/dtv_share"
                     android:layout_width="wrap_content"
                     android:layout_height="70dp"
@@ -99,7 +99,7 @@
                     app:topDrawableHeight="44dp"
                     app:topDrawableWidth="44dp" />
 
-                <com.junhetang.doctor.widget.DrawableTextView
+                <com.bakon.android.widget.DrawableTextView
                     android:id="@+id/dtv_save"
                     android:layout_width="wrap_content"
                     android:layout_height="70dp"

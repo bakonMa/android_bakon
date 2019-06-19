@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f6f6f6"
+    android:orientation="vertical">
+
+    <include layout="@layout/base_toolbar" />
+
+    <TextView
+        android:id="@+id/tv_print"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:layout_margin="15dp"
+        android:background="@drawable/selector_bg_tab"
+        android:text="打印服务"
+        android:textSize="15sp" />
+
+</LinearLayout>
+

@@ -7,7 +7,7 @@
 
     <include layout="@layout/base_toolbar" />
 
-    <com.junhetang.doctor.widget.ProgressWebView
+    <com.bakon.android.widget.ProgressWebView
         android:id="@+id/wb_webview"
         android:layout_width="match_parent"
         android:layout_height="0dp"

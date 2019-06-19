@@ -35,7 +35,7 @@
                     android:textSize="14sp" />
             </RelativeLayout>
 
-            <com.junhetang.doctor.widget.EditTextlayout
+            <com.bakon.android.widget.EditTextlayout
                 android:id="@+id/tv_idcard"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -48,7 +48,7 @@
                 app:leftText="身份证号"
                 app:textMainSize="14sp" />
 
-            <com.junhetang.doctor.widget.EditTextlayout
+            <com.bakon.android.widget.EditTextlayout
                 android:id="@+id/tv_address"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -58,7 +58,7 @@
                 app:leftText="地区"
                 app:textMainSize="14sp" />
 
-            <com.junhetang.doctor.widget.EditTextlayout
+            <com.bakon.android.widget.EditTextlayout
                 android:id="@+id/tv_organization"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -68,7 +68,7 @@
                 app:leftText="医疗机构"
                 app:textMainSize="14sp" />
 
-            <com.junhetang.doctor.widget.EditTextlayout
+            <com.bakon.android.widget.EditTextlayout
                 android:id="@+id/tv_lab_type"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -78,7 +78,7 @@
                 app:leftText="科室"
                 app:textMainSize="14sp" />
 
-            <com.junhetang.doctor.widget.EditTextlayout
+            <com.bakon.android.widget.EditTextlayout
                 android:id="@+id/tv_title"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

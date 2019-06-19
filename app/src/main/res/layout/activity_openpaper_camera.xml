@@ -20,7 +20,7 @@
             android:focusableInTouchMode="true"
             android:orientation="vertical">
 
-            <com.junhetang.doctor.widget.DrawableTextView
+            <com.bakon.android.widget.DrawableTextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/white"
@@ -66,7 +66,7 @@
                 android:textColor="@color/color_999"
                 android:textSize="12sp" />
 
-            <com.junhetang.doctor.widget.EditableLayout
+            <com.bakon.android.widget.EditableLayout
                 android:id="@+id/et_drugstore"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -124,7 +124,7 @@
 
             </RelativeLayout>
 
-            <com.junhetang.doctor.widget.DrawableTextView
+            <com.bakon.android.widget.DrawableTextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
@@ -140,7 +140,7 @@
                 app:rightDrawableHeight="14dp"
                 app:rightDrawableWidth="16dp" />
 
-            <com.junhetang.doctor.widget.EditableLayout
+            <com.bakon.android.widget.EditableLayout
                 android:id="@+id/et_drugclass"
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
@@ -424,7 +424,7 @@
                         android:layout_alignParentBottom="true" />
                 </RelativeLayout>
 
-                <com.junhetang.doctor.widget.EditTextlayout
+                <com.bakon.android.widget.EditTextlayout
                     android:id="@+id/et_age"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"

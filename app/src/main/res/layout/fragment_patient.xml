@@ -56,7 +56,7 @@
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
-        <com.junhetang.doctor.widget.SideBar
+        <com.bakon.android.widget.SideBar
             android:id="@+id/sideBar"
             android:layout_width="30dp"
             android:layout_height="match_parent"

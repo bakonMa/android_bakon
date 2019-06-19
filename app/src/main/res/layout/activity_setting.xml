@@ -72,14 +72,14 @@
             android:layout_alignParentBottom="true" />
     </RelativeLayout>
 
-    <com.junhetang.doctor.widget.RelativeWithText
+    <com.bakon.android.widget.RelativeWithText
         android:id="@+id/tv_setprice"
         android:layout_width="match_parent"
         android:layout_height="54dp"
         app:isShowTab="false"
         app:titleT="咨询费设置" />
 
-    <com.junhetang.doctor.widget.RelativeWithText
+    <com.bakon.android.widget.RelativeWithText
         android:id="@+id/tv_reset_password"
         android:layout_width="match_parent"
         android:layout_height="54dp"

@@ -50,7 +50,7 @@
             android:ellipsize="end"
             android:visibility="gone"
             android:singleLine="true"
-            android:textColor="@color/color_black_333333"
+            android:textColor="@color/color_333"
             android:textSize="14sp"
             tools:text="1828888888888" />
 
